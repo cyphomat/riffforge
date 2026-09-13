@@ -38,26 +38,58 @@
     --raster: rgba(255, 255, 255, 0.018);
     --halo: rgba(232, 162, 61, 0.05);
 
-    /* Sechs Saiten, von der tiefen E oben zur hohen e unten — die Stärke
-       nimmt ab wie am echten Hals. Der Abstand ist 62 px, die Saitenhöhe
-       aus dem Griffbrett; das Raster quer dazu steht auf 44 px, der
-       Bundbreite. Erst diese Ungleichheit macht den Grund zum Hals statt
-       zum Rechenkaro. */
+    /* ── Der Hals ──────────────────────────────────────────────────────
+       Der Grund ist kein Muster, das wie ein Griffbrett aussieht — er *ist*
+       das Griffbrett aus `components/theory/fretboard.tsx`, gekachelt. Die
+       Maße stehen einmal in `lib/theory/hals.ts`: 44 px Bundbreite, 62 px
+       Saitenabstand, Einlagen bei 3, 5, 7, 9 und doppelt am 12. Bund. Die
+       Kachel ist entsprechend 528 × 372 px.
+
+       `__tests__/hals.test.ts` liest diese Datei und rechnet die Zahlen
+       gegen das Modul nach. Wer hier etwas verschiebt, ohne dort zu
+       rechnen, fällt dort auf.
+
+       Vorher lagen die Saiten bei +3 bis +8 von 255 gegen einen Grund von
+       12 — dasselbe Register wie `--raster`. Das war ein Denkfehler: das
+       Raster hat die Aufgabe, nicht aufzufallen. Jetzt +10 bis +26, und
+       jede Saite trägt unter ihrem Licht einen Schatten, weil eine
+       umsponnene Saite rund ist und nicht flach. */
     --saiten: repeating-linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.032) 0 1.6px,
-      transparent 1.6px 62px,
-      rgba(255, 255, 255, 0.027) 62px 63.4px,
-      transparent 63.4px 124px,
-      rgba(255, 255, 255, 0.023) 124px 125.3px,
-      transparent 125.3px 186px,
-      rgba(255, 255, 255, 0.019) 186px 187.1px,
-      transparent 187.1px 248px,
-      rgba(255, 255, 255, 0.016) 248px 249px,
-      transparent 249px 310px,
-      rgba(255, 255, 255, 0.013) 310px 310.9px,
-      transparent 310.9px 372px
+      rgba(255, 255, 255, 0.105) 0 2.2px,
+      rgba(0, 0, 0, 0.45) 2.2px 3.4px,
+      transparent 3.4px 62px,
+      rgba(255, 255, 255, 0.092) 62px 64px,
+      rgba(0, 0, 0, 0.42) 64px 65.1px,
+      transparent 65.1px 124px,
+      rgba(255, 255, 255, 0.079) 124px 125.8px,
+      rgba(0, 0, 0, 0.38) 125.8px 126.8px,
+      transparent 126.8px 186px,
+      rgba(255, 255, 255, 0.066) 186px 187.5px,
+      rgba(0, 0, 0, 0.34) 187.5px 188.4px,
+      transparent 188.4px 248px,
+      rgba(255, 255, 255, 0.053) 248px 249.3px,
+      rgba(0, 0, 0, 0.3) 249.3px 250.1px,
+      transparent 250.1px 310px,
+      rgba(255, 255, 255, 0.042) 310px 311.1px,
+      rgba(0, 0, 0, 0.26) 311.1px 311.9px,
+      transparent 311.9px 372px
     );
+
+    /* Ein Bundstäbchen ist Metall. Das Rechenkaro war keins — deshalb
+       heller als `--raster`, das es ersetzt. */
+    --buende: rgba(255, 255, 255, 0.04);
+
+    /* Die Einlagen, an den Stellen aus `hals.ts`: `bundMitte(bund)` waagrecht,
+       `saitenLage(3.5)` senkrecht — hinter dem Bundstäbchen, nicht darauf.
+       Am 12. Bund zwei, auf `saitenLage(2.3)` und `saitenLage(4.7)`. */
+    --einlagen:
+      radial-gradient(circle 8px at 110px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
+      radial-gradient(circle 8px at 198px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
+      radial-gradient(circle 8px at 286px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
+      radial-gradient(circle 8px at 374px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
+      radial-gradient(circle 7px at 506px 80.6px, rgba(255, 255, 255, 0.042) 99%, transparent),
+      radial-gradient(circle 7px at 506px 229.4px, rgba(255, 255, 255, 0.042) 99%, transparent);
 
     /* Bildröhre. Aus — wie bei Setlist. Ein Flimmern über dem Satz will man
        erst sehen, bevor man es ausliefert. */
@@ -80,14 +112,30 @@
     color: var(--fg);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
-    /* Glut hinter der Kopfzeile, darunter Saiten und Bünde. Alles sehr
-       schwach — es soll Tiefe geben, nicht auffallen. */
+    /* Glut hinter der Kopfzeile, darunter Saiten und Bünde. Der Boden am
+       Fuss lässt den Hals auslaufen, statt ihn abzuschneiden — ohne ihn
+       hört eine kurze Seite unten einfach auf. */
     background-image:
       radial-gradient(1000px 500px at 50% -10%, var(--halo), transparent 70%),
+      linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45)),
       var(--saiten),
-      linear-gradient(90deg, var(--raster) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 372px, 44px 44px;
+      linear-gradient(90deg, var(--buende) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 372px, 44px 44px;
     background-attachment: fixed;
+  }
+
+  /* Die Einlagen liegen auf einer eigenen Ebene, weil ihre Kachel 528 px
+     breit ist und nicht 44 — sie in die Liste oben zu mischen hiesse, sechs
+     weitere Grössen mitzuführen. `-1` hält sie über dem Grund und unter
+     allem Inhalt. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--einlagen);
+    background-size: 528px 372px;
   }
 
   /* Bildröhre über allem, statisch. Eine Animation, die im Satz flimmert,
@@ -132,10 +180,17 @@
     background: linear-gradient(90deg, var(--line), transparent);
   }
 
-  /* Fläche mit Bernsteinkante links: markiert, was gerade dran ist. */
+  /* Fläche mit Bernsteinkante links: markiert, was gerade dran ist.
+     Die Bespannung darüber ist Tolex — das genarbte Kunstleder am
+     Verstärkergehäuse. Zwei Kreuzschraffuren, eine hell und eine dunkel,
+     beide so schwach, dass sie keine Struktur zeigen, sondern nur
+     verhindern, dass die Fläche ein blosser Farbwert bleibt. */
   .card {
     @apply relative border border-line p-[18px];
-    background: linear-gradient(160deg, var(--panel), var(--panel2));
+    background:
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 4px),
+      linear-gradient(160deg, var(--panel), var(--panel2));
   }
   .card::before {
     content: "";
@@ -225,14 +280,18 @@
     background: linear-gradient(90deg, var(--akzent), var(--stahl));
   }
 
+  /* Die drei Zahlen auf „Heute" sind Zifferblätter, keine Kästchen — sie
+     teilen sich die Fläche mit `.platte` weiter unten. Das ist die
+     Heldenbehandlung, und sie gehört auf den Bildschirm, der täglich
+     aufgeht, nicht nur hinter den Startknopf. */
   .stat {
-    @apply border border-line bg-panel px-[14px] py-3;
+    @apply px-[14px] pb-3 pt-[17px];
   }
   .stat .n {
     @apply font-mono text-[10.5px] uppercase tracking-[0.15em] text-muted;
   }
   .stat .v {
-    @apply display mt-0.5 text-[28px] text-akzent;
+    @apply display glimmt mt-0.5 text-[28px] text-akzent;
     font-variant-numeric: tabular-nums;
   }
 
@@ -265,14 +324,19 @@
      Ein eingelassenes Blech mit Skalenstrichen, wie das Zifferblatt an
      einem Amp. Der Innenschatten oben und das Haarlicht unten sind die
      Kante der Aussparung. */
-  .platte {
-    @apply relative border border-line px-[14px] pb-[6px] pt-[13px];
+  .platte,
+  .stat {
+    @apply relative border border-line;
     background: var(--sunken);
     box-shadow:
       inset 0 2px 5px rgba(0, 0, 0, 0.6),
       inset 0 -1px 0 rgba(255, 255, 255, 0.035);
   }
-  .platte::after {
+  .platte {
+    @apply px-[14px] pb-[6px] pt-[13px];
+  }
+  .platte::after,
+  .stat::after {
     content: "";
     position: absolute;
     left: 9px;
@@ -286,6 +350,20 @@
   /* Glimmen, kein Strahlen — ein Röhrenamp leuchtet nicht, er glüht. */
   .glimmt {
     text-shadow: 0 0 13px rgba(232, 162, 61, 0.22);
+  }
+
+  /* ── Kontrolllampe ────────────────────────────────────────────────────
+     Der Juwel-Einsatz über dem Netzschalter. Die Farbe kommt über
+     `currentColor` von aussen, damit die Lampe denselben Zustand zeigt wie
+     das Wort daneben — sie behauptet nichts Eigenes. Das Licht sitzt oben
+     links, wie bei einem Glaskörper, der von der Decke angestrahlt wird. */
+  .jewel {
+    @apply inline-block h-[10px] w-[10px] flex-none rounded-full;
+    background: radial-gradient(circle at 34% 30%, rgba(255, 252, 244, 0.9) 0 1.5px, currentColor 2px);
+    box-shadow:
+      0 0 8px 1px currentColor,
+      inset 0 0 3px rgba(0, 0, 0, 0.5);
+    opacity: 0.9;
   }
 
   /* ── Warnstreifen ─────────────────────────────────────────────────────

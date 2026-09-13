@@ -17,6 +17,45 @@ export interface CalendarOptions {
   now?: Date
 }
 
+/** Weniger ergibt kein Muster — eine Woche Kästchen ist keine Auskunft. */
+const MIN_WOCHEN = 4
+/** Vier Monate. Mehr wird auf dem Handy ein Streifen. */
+const MAX_WOCHEN = 16
+
+/**
+ * Wie weit der Rückblick reicht: so weit, wie es Verlauf gibt.
+ *
+ * Ein fester Rahmen von sechzehn Wochen zeigt einem Wiedereinsteiger
+ * hundertzwölf leere Kästchen und darunter „0 von 112 Tagen" — ein Raster,
+ * das die halbe Spalte einnimmt, um nichts zu sagen. Das Raster wächst
+ * deshalb mit dem Log und steht erst nach vier Monaten wieder voll da.
+ */
+export function weeksFor(log: PracticeLog, now = new Date()): number {
+  if (log.results.length === 0) return MIN_WOCHEN
+
+  const aeltester = log.results.reduce(
+    (bisher, result) => Math.min(bisher, new Date(result.at).getTime()),
+    Infinity,
+  )
+  if (!Number.isFinite(aeltester)) return MIN_WOCHEN
+
+  const wochen = weeksBetween(new Date(aeltester), now) + 1
+  return Math.min(MAX_WOCHEN, Math.max(MIN_WOCHEN, wochen))
+}
+
+/** Volle Kalenderwochen zwischen zwei Tagen, beide auf ihren Montag gelegt. */
+function weeksBetween(von: Date, bis: Date): number {
+  const montag = (datum: Date) => {
+    const d = new Date(datum)
+    d.setHours(0, 0, 0, 0)
+    d.setDate(d.getDate() - mondayIndex(d))
+    return d.getTime()
+  }
+  // Gerundet, nicht abgeschnitten: eine Zeitumstellung verschiebt die
+  // Differenz um eine Stunde, und das darf keine Woche kosten.
+  return Math.max(0, Math.round((montag(bis) - montag(von)) / (7 * 24 * 3600 * 1000)))
+}
+
 /**
  * Das Raster für den Übungskalender.
  *
@@ -26,8 +65,8 @@ export interface CalendarOptions {
  * Tage danach sind als Zukunft markiert.
  */
 export function practiceCalendar(log: PracticeLog, options: CalendarOptions = {}): CalendarDay[] {
-  const weeks = options.weeks ?? 16
   const now = options.now ?? new Date()
+  const weeks = options.weeks ?? weeksFor(log, now)
 
   const minutesByDay = new Map<string, number>()
   for (const result of log.results) {

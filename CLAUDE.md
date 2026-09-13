@@ -56,6 +56,7 @@ Verschiedenes.
 | `lib/theory/types.ts` | Karten, Fragen und der Antwort-Log |
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
+| `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |
 | `lib/storage/theory-log.ts` | localStorage, einziger Zugriffspunkt auf die Antworten |
@@ -93,20 +94,47 @@ Komponente.
   dem, was zählt, Stahlblau für alles Zweitrangige, harte Kanten mit 2 px.
   Farben stehen als CSS-Variablen in `app/globals.css`, nicht als Hex-Werte in
   Komponenten. Road-Case, kein HUD.
+- **Der Grund ist der Hals, nicht ein Muster, das so aussieht.** Die Maße
+  stehen einmal in `lib/theory/hals.ts` — 44 px Bundbreite, 62 px
+  Saitenabstand, Einlagen bei 3, 5, 7, 9 und doppelt am 12. Daraus zeichnet
+  `fretboard.tsx` das antippbare Griffbrett *und* `globals.css` den
+  Hintergrund, gekachelt mit 528 × 372 px. `__tests__/hals.test.ts` liest das
+  Stylesheet und rechnet die Einlagen gegen das Modul nach; wer eine Zahl
+  verschiebt, ohne sie zu rechnen, fällt dort auf. Dasselbe Prinzip wie bei
+  den Tönen: eine Tabelle mit hundert Zahlen lügt irgendwann unbemerkt.
+- **Ein Hintergrund, der nichts zeigt, ist kein Hintergrund.** Die Saiten
+  standen einmal bei +3 bis +8 von 255 gegen einen Grund von 12 — dasselbe
+  Register wie `--raster`, und ich hielt das für richtig eingestellt. Es war
+  falsch herum gedacht: `--raster` hat die Aufgabe, *nicht* aufzufallen. Wer
+  eine Zahl trifft statt ein Ziel, hat nichts gemessen. Jetzt +10 bis +26,
+  gestuft von der tiefen E zur hohen e, und `hals.test.ts` hält beide Grenzen
+  fest — nach unten, damit eine Saite sichtbar bleibt, nach oben, damit der
+  Hals nicht ins Auge springt.
 - **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
   `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
   und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende
   Block, der Wissens-Kopf. Ein Winkel an jeder Fläche wäre Dekoration.
-  `.platte` ist das eingelassene Blech unter der Tempozahl, mit Skalenstrichen
-  und einem Glimmen, das kaum zu sehen sein soll — ein Röhrenamp glüht, er
-  strahlt nicht. `.warnstreifen` markiert **nur verletzte Bedingungen** —
-  Mikrofon verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie
-  einen Fehler und nie Schmuck. Und `--saiten` legt sechs Saiten über den
-  Grund, im Bundmass aus `fretboard.tsx` (44 × 62 px): die Asymmetrie ist es,
-  die den Hintergrund als Hals lesbar macht statt als Karo. Alle drei
-  Flächenmuster liegen im selben Register wie `--raster` — nachgemessen +3
-  bis +8 von 255 gegen einen Grund von 12. Wer eines davon kräftiger macht,
-  macht es zur Dekoration.
+  `.platte` ist das eingelassene Blech mit Skalenstrichen und Glimmen, und es
+  trägt **die** Zahl, auf die es auf dem jeweiligen Bildschirm ankommt: das
+  Tempo im Block, die drei Zahlen unter *Bisher*. Nicht jede Zahl — dann wäre
+  keine mehr die Heldenzahl. `.jewel` ist die Kontrolllampe am Netzschalter;
+  ihre Farbe kommt über `currentColor` von aussen, damit sie denselben Zustand
+  zeigt, den das Wort daneben schon nennt, und keinen eigenen erfindet.
+  `.warnstreifen` markiert **nur verletzte Bedingungen** — Mikrofon
+  verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie einen Fehler
+  und nie Schmuck.
+- **Der Twist gehört dorthin, wo der Nutzer ist.** Als die vier Bauteile
+  fertig waren, sass genau eines davon auf *Heute* — dem Bildschirm, der
+  täglich aufgeht; der Rest lag hinter dem Startknopf oder in Fehlzuständen,
+  die man hoffentlich nie sieht. Beim Bauen fällt auf, woran man gerade baut.
+  Wer ein Bauteil hinzufügt, prüft deshalb zuerst *Heute*.
+- **Ein leeres Raster ist keine Auskunft.** Der Übungskalender zeigte feste
+  sechzehn Wochen — einem Wiedereinsteiger also hundertzwölf leere Kästchen
+  und darunter „0 von 112 Tagen". `weeksFor` lässt ihn mit dem Log wachsen.
+  Dabei die Falle, in die ich prompt gelaufen bin: weniger Wochen heissen
+  weniger Spalten, und `1fr` bläst die Zellen auf — das Raster wurde
+  *grösser*. Die Zellgrösse ist deshalb gedeckelt und die Platte schrumpft
+  aufs Raster statt auf die Spalte.
 - **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton als
   `--font-marke`, ausschliesslich auf `.marke`. Überschriften, Zahlen und
   Tempo bleiben Oswald, damit die App nicht überall schreit.

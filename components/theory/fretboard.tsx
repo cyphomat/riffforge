@@ -1,6 +1,7 @@
 "use client"
 
 import { noteAt, SAITENNAMEN } from "@/lib/theory/fretboard"
+import { BUENDE, BREITE, EINLAGEN, HOEHE, OKTAVBUND, bundMitte, saitenLage } from "@/lib/theory/hals"
 import type { Griff } from "@/lib/theory/types"
 
 /**
@@ -24,17 +25,11 @@ import type { Griff } from "@/lib/theory/types"
  * gedrungenen Halses. Ein Vergreifen trifft dann den Nachbarbund, nicht die
  * Nachbarsaite — und die Saite ist die Auskunft, auf die es ankommt.
  */
-const BUENDE = 12
-const BREITE = 44
-const HOEHE = 62
 const RAND_LINKS = 20
 const RAND_OBEN = 20
 
-/** Einlagen, wie auf einem echten Hals. Am 12. Bund doppelt. */
-const EINLAGEN = [3, 5, 7, 9]
-
-const x = (bund: number) => RAND_LINKS + (bund - 0.5) * BREITE
-const y = (saite: number) => RAND_OBEN + (saite - 1) * HOEHE
+const x = (bund: number) => RAND_LINKS + bundMitte(bund)
+const y = (saite: number) => RAND_OBEN + saitenLage(saite)
 
 export interface FretboardProps {
   /** Was von Anfang an markiert ist — etwa der Grundton einer Frage. */
@@ -78,8 +73,8 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
         {EINLAGEN.map((bund) => (
           <circle key={bund} cx={x(bund)} cy={y(3.5)} r={8} fill="var(--panel2)" />
         ))}
-        <circle cx={x(12)} cy={y(2.3)} r={7} fill="var(--panel2)" />
-        <circle cx={x(12)} cy={y(4.7)} r={7} fill="var(--panel2)" />
+        <circle cx={x(OKTAVBUND)} cy={y(2.3)} r={7} fill="var(--panel2)" />
+        <circle cx={x(OKTAVBUND)} cy={y(4.7)} r={7} fill="var(--panel2)" />
 
         {/* Sattel dick, Bundstäbchen dünn. */}
         <line
@@ -127,7 +122,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
           </text>
         ))}
 
-        {[...EINLAGEN, 12].map((bund) => (
+        {[...EINLAGEN, OKTAVBUND].map((bund) => (
           <text
             key={bund}
             x={x(bund)}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { practiceCalendar } from "../calendar"
+import { practiceCalendar, weeksFor } from "../calendar"
 import type { DrillResult, PracticeLog } from "../types"
 
 /** Dienstag, 10. März 2026. */
@@ -71,5 +71,42 @@ describe("practiceCalendar", () => {
     const monday = days.find((day) => day.key === "2026-03-09")!
     expect(monday.minutes).toBe(10)
     expect(monday.date.getDay()).toBe(1)
+  })
+})
+
+/**
+ * Der Rückblick wächst mit dem Log.
+ *
+ * Der Anlass war ein Screenshot: ein Wiedereinsteiger sah hundertzwölf leere
+ * Kästchen und darunter „0 von 112 Tagen". Ein Raster, das die halbe Spalte
+ * einnimmt, um nichts zu sagen, ist schlimmer als kein Raster.
+ */
+describe("weeksFor", () => {
+  it("zeigt den kleinsten Rahmen, solange nichts im Log steht", () => {
+    expect(weeksFor(log(), NOW)).toBe(4)
+  })
+
+  it("bleibt beim kleinsten Rahmen, wenn erst diese Woche geübt wurde", () => {
+    expect(weeksFor(log(on("2026-03-09")), NOW)).toBe(4)
+  })
+
+  it("wächst mit dem ältesten Eintrag", () => {
+    // 2026-01-26 ist ein Montag, sechs Wochen vor der laufenden — das Raster
+    // muss beide Wochen zeigen, also sieben.
+    expect(weeksFor(log(on("2026-01-26")), NOW)).toBe(7)
+  })
+
+  it("nimmt den ältesten Eintrag, nicht den ersten in der Liste", () => {
+    // Der Log ist append-only, aber nicht garantiert sortiert.
+    expect(weeksFor(log(on("2026-03-09"), on("2026-01-26")), NOW)).toBe(7)
+  })
+
+  it("deckelt bei vier Monaten", () => {
+    expect(weeksFor(log(on("2024-01-01")), NOW)).toBe(16)
+  })
+
+  it("zeigt dann auch nur die gewachsenen Kästchen", () => {
+    const days = practiceCalendar(log(on("2026-03-09")), { now: NOW })
+    expect(days).toHaveLength(4 * 7)
   })
 })

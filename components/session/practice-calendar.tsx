@@ -15,16 +15,23 @@ const MONTH = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "
  * Der genaue Wert steht im Titel jeder Zelle, damit die Farbe nicht die
  * einzige Auskunft ist.
  */
-export function PracticeCalendar({ log, weeks = 16 }: { log: PracticeLog; weeks?: number }) {
+export function PracticeCalendar({ log, weeks }: { log: PracticeLog; weeks?: number }) {
+  // Ohne Angabe wächst das Raster mit dem Log — siehe `weeksFor`.
   const days = practiceCalendar(log, { weeks })
   const played = days.filter((day) => day.minutes > 0).length
   const past = days.filter((day) => !day.isFuture).length
 
   return (
-    <div className="border border-line bg-panel p-[14px]">
+    // Schrumpft auf das Raster statt auf die Spalte: ein Rückblick über vier
+    // Wochen soll nicht so breit dastehen wie einer über sechzehn.
+    <div className="inline-block border border-line bg-panel p-[14px]">
       <div
         className="grid grid-flow-col grid-rows-7 gap-[3px]"
-        style={{ gridAutoColumns: "1fr" }}
+        // `1fr` allein bläst die Zellen auf, sobald das Raster mitwächst:
+        // vier Wochen auf voller Breite ergaben Kacheln von 165 px. Die
+        // Deckelung lässt sie auf dem Handy weiter schrumpfen, aber nicht
+        // über Daumennagelgrösse hinauswachsen.
+        style={{ gridAutoColumns: "1fr", maxWidth: `${days.length / 7 * 40}px` }}
         role="img"
         aria-label={`Übungskalender: ${played} von ${past} Tagen geübt`}
       >

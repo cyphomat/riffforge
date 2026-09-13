@@ -66,6 +66,10 @@ export function PracticeOverview() {
       {/* Die Ansage: was heute ansteht, und woran das festgemacht ist. */}
       <section className="card winkel mt-6">
         <div className="flex items-center gap-3">
+          {/* Kontrolllampe in der Farbe des Tonfalls — dieselbe Auskunft wie
+              das Wort daneben, nur als Lampe. `aria-hidden`, weil sie nichts
+              sagt, was daneben nicht schon steht. */}
+          <span className={`jewel ${TONE_CLASS[briefing.tone]}`} aria-hidden />
           <span className={`kicker border border-current px-2 py-[3px] ${TONE_CLASS[briefing.tone]}`}>
             {TONE_LABEL[briefing.tone]}
           </span>
