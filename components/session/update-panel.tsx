@@ -155,7 +155,7 @@ export function UpdatePanel() {
           >
             {originalBusy ? "Frage nach…" : "Beim Original nachsehen"}
           </button>
-          <p className="mt-2 font-mono text-[11px] leading-relaxed text-dim">
+          <p className="mt-2 font-mono text-[12px] leading-relaxed text-dim">
             Fragt api.github.com — die einzige Stelle, an der diese App ohne
             eingerichteten Abgleich nach draussen spricht, und nur auf diesen
             Knopf hin.

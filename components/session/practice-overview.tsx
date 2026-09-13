@@ -88,7 +88,7 @@ export function PracticeOverview() {
       </Link>
 
       <div className="mt-3 flex items-center gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-dim">oder</span>
+        <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">oder</span>
         {EXTRA_LENGTHS.map((length) => (
           <Link key={length} href={`/session?minutes=${length}`} className="btn btn-ghost btn-small">
             {length} Min
@@ -133,7 +133,7 @@ export function PracticeOverview() {
                           <span className="text-dim"> / {drill.targetBpm} BPM</span>
                         </div>
                         {progress.bestTimingScore !== null && (
-                          <div className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-stahl">
+                          <div className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-stahl">
                             Timing {progress.bestTimingScore}
                           </div>
                         )}

@@ -49,8 +49,8 @@ function Scatter({ deviations }: { deviations: number[] }) {
           />
         )
       })}
-      <span className="absolute bottom-0.5 left-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-dim">früh</span>
-      <span className="absolute bottom-0.5 right-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-dim">spät</span>
+      <span className="absolute bottom-0.5 left-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-dim">früh</span>
+      <span className="absolute bottom-0.5 right-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-dim">spät</span>
     </div>
   )
 }

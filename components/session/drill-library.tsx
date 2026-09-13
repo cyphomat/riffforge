@@ -55,7 +55,7 @@ export function DrillLibrary() {
                       <div className="ziffern text-[15px] font-bold text-akzent">
                         {nextBpm(drill, progress, profile)}
                       </div>
-                      <div className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim">
+                      <div className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
                         Ziel {drill.targetBpm}
                       </div>
                     </div>

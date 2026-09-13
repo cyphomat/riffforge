@@ -49,7 +49,7 @@ export function MicPanel({ status, detail, level, hits, onToggle }: MicPanelProp
         )}
 
         {!listening && !blocked && (
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-dim">
+          <span className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-dim">
             {LABELS[status]}
           </span>
         )}

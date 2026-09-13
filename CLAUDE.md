@@ -57,6 +57,7 @@ Verschiedenes.
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
 | `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
+| `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |
 | `lib/storage/theory-log.ts` | localStorage, einziger Zugriffspunkt auf die Antworten |
@@ -94,6 +95,22 @@ Komponente.
   dem, was zählt, Stahlblau für alles Zweitrangige, harte Kanten mit 2 px.
   Farben stehen als CSS-Variablen in `app/globals.css`, nicht als Hex-Werte in
   Komponenten. Road-Case, kein HUD.
+- **Lesbarkeit ist eine Zahl.** `lib/ui/__tests__/kontrast.test.ts` liest die
+  Farben aus `globals.css` und rechnet jede Paarung nach, die als Text
+  vorkommt — AA, also 4,5 : 1. Der Anlass war kein Geschmacksurteil: `--dim`
+  stand auf #57535c, das sind **2,4 : 1** gegen eine Karte, und trug trotzdem
+  fünfundvierzig Textstellen in fünfzehn Dateien. Die App war an Dutzenden
+  Stellen schlicht nicht lesbar, und gemerkt hat es niemand, weil Lesbarkeit
+  bis dahin Geschmack war statt einer Prüfung. Der schwierigste Grund ist
+  `--panel2`, das helle Ende des Kartenverlaufs — dort ist mein erster
+  Kandidat mit 4,47 gescheitert, und der Test hat ihn beim ersten Lauf
+  abgewiesen. Wer eine Farbe anfasst, lässt ihn laufen.
+- **Klein und gesperrt ist zweimal schlecht.** Die Etiketten standen auf
+  10,5 px mit 0,22 em Sperrung; Versalien in Monospace so weit auseinander
+  zerlegen das Wortbild, und auf einem Handy kommt beides zusammen. Der Boden
+  ist jetzt 11,5 px, die Sperrung höchstens 0,14 em. Wer ein Etikett setzt,
+  nimmt `.kicker` statt eigener Pixelwerte — sonst wandert der Boden wieder
+  nach unten.
 - **Der Grund ist der Hals, nicht ein Muster, das so aussieht.** Die Maße
   stehen einmal in `lib/theory/hals.ts` — 44 px Bundbreite, 62 px
   Saitenabstand, Einlagen bei 3, 5, 7, 9 und doppelt am 12. Daraus zeichnet

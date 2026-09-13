@@ -36,7 +36,7 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex-none border px-2 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors sm:px-2.5 sm:text-[11px] sm:tracking-[0.14em] ${
+              className={`flex-none border px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-[0.1em] ${
                 active
                   ? "border-akzent bg-[--tint-akzent] text-akzent"
                   : "border-line text-muted hover:border-stahl hover:text-stahl"

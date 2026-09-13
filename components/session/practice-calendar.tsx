@@ -48,7 +48,7 @@ export function PracticeCalendar({ log, weeks }: { log: PracticeLog; weeks?: num
         ))}
       </div>
 
-      <div className="mt-[11px] flex flex-wrap items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted">
+      <div className="mt-[11px] flex flex-wrap items-center gap-3 font-mono text-[11.5px] uppercase tracking-[0.1em] text-muted">
         <span className="flex items-center gap-1.5">
           <i className="inline-block h-[9px] w-[9px] bg-akzent" /> geübt
         </span>
