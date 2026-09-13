@@ -73,12 +73,14 @@ describe("Der Hals im Hintergrund", () => {
     // Weiss auf dem Grund #0c0c0e: der Zuwachs je Kanal ist alpha · (255−12).
     const zuwachs = weiss.map((alpha) => alpha * (255 - 12))
 
-    // Der Grund, warum es diese Prüfung gibt: einmal waren die Saiten auf
-    // das Register von `--raster` eingestellt — und das hat die Aufgabe,
-    // nicht aufzufallen. Unter +10 ist eine Saite keine Saite.
-    for (const wert of zuwachs) expect(wert).toBeGreaterThanOrEqual(10)
-    // Nach oben ebenso: ein Hals, der ins Auge springt, ist Dekoration.
-    for (const wert of zuwachs) expect(wert).toBeLessThanOrEqual(28)
+    // Diese Prüfung hat schon zweimal in beide Richtungen ausgeschlagen.
+    // Erst lagen die Saiten im Register von `--raster` — und das hat die
+    // Aufgabe, nicht aufzufallen. Dann zog ich sie auf +26 und dazu noch
+    // Bünde und Einlagen hoch, alle drei zugleich: auf einem OLED war das
+    // Unruhe statt Tiefe. Die Zahlen hier sind ein Korridor, kein Ziel —
+    // der Regler `--hals` nimmt den Rest.
+    for (const wert of zuwachs) expect(wert).toBeGreaterThanOrEqual(5)
+    for (const wert of zuwachs) expect(wert).toBeLessThanOrEqual(17)
 
     // Dick nach dünn, wie am echten Hals — die tiefe E zuerst.
     expect([...zuwachs].sort((a, b) => b - a)).toEqual(zuwachs)

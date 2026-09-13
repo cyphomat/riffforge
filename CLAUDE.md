@@ -102,14 +102,22 @@ Komponente.
   Stylesheet und rechnet die Einlagen gegen das Modul nach; wer eine Zahl
   verschiebt, ohne sie zu rechnen, fällt dort auf. Dasselbe Prinzip wie bei
   den Tönen: eine Tabelle mit hundert Zahlen lügt irgendwann unbemerkt.
-- **Ein Hintergrund, der nichts zeigt, ist kein Hintergrund.** Die Saiten
-  standen einmal bei +3 bis +8 von 255 gegen einen Grund von 12 — dasselbe
-  Register wie `--raster`, und ich hielt das für richtig eingestellt. Es war
-  falsch herum gedacht: `--raster` hat die Aufgabe, *nicht* aufzufallen. Wer
-  eine Zahl trifft statt ein Ziel, hat nichts gemessen. Jetzt +10 bis +26,
-  gestuft von der tiefen E zur hohen e, und `hals.test.ts` hält beide Grenzen
-  fest — nach unten, damit eine Saite sichtbar bleibt, nach oben, damit der
-  Hals nicht ins Auge springt.
+- **Der Hals hat einen Regler, und der heisst `--hals`.** Saiten, Bünde und
+  Einlagen liegen zusammen auf `body::before`, nicht an drei Stellen verteilt.
+  Der Grund dafür steht im Verlauf: erst lagen die Saiten im Register von
+  `--raster` und waren unsichtbar — `--raster` hat die Aufgabe, nicht
+  aufzufallen, eine Zahl zu treffen ist kein Ziel. Dann zog ich alle drei
+  zugleich hoch, bis an die obere Kante meines eigenen Korridors. Auf einem
+  OLED, wo Fast-Schwarz wirklich schwarz ist, war das Unruhe statt Tiefe —
+  und mein Messwert aus einem sRGB-Screenshot hatte das nicht gesehen. Drei
+  Stärken gleichzeitig zu verstellen heisst, keine davon beurteilen zu
+  können. Deshalb ein Regler.
+- **Ein Muster, das man nicht als Ganzes sieht, ist Unruhe.** Die Halskachel
+  ist 528 px breit — auf einem Handy passt sie nicht aufs Bild, und was
+  ankommt, sind Bruchstücke: Linien, die sich kreuzen, Punkte, die zu nichts
+  gehören. `--hals` steht deshalb schmal auf 0,28 und erst ab 900 px auf 1.
+  Dieselbe Schwelle wie `wide:`. Wer ein Flächenmuster hinzufügt, prüft es
+  zuerst auf 390 px.
 - **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
   `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
   und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende

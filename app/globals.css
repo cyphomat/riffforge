@@ -56,40 +56,48 @@
        umsponnene Saite rund ist und nicht flach. */
     --saiten: repeating-linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.105) 0 2.2px,
+      rgba(255, 255, 255, 0.062) 0 2.2px,
       rgba(0, 0, 0, 0.45) 2.2px 3.4px,
       transparent 3.4px 62px,
-      rgba(255, 255, 255, 0.092) 62px 64px,
+      rgba(255, 255, 255, 0.055) 62px 64px,
       rgba(0, 0, 0, 0.42) 64px 65.1px,
       transparent 65.1px 124px,
-      rgba(255, 255, 255, 0.079) 124px 125.8px,
+      rgba(255, 255, 255, 0.047) 124px 125.8px,
       rgba(0, 0, 0, 0.38) 125.8px 126.8px,
       transparent 126.8px 186px,
-      rgba(255, 255, 255, 0.066) 186px 187.5px,
+      rgba(255, 255, 255, 0.04) 186px 187.5px,
       rgba(0, 0, 0, 0.34) 187.5px 188.4px,
       transparent 188.4px 248px,
-      rgba(255, 255, 255, 0.053) 248px 249.3px,
+      rgba(255, 255, 255, 0.032) 248px 249.3px,
       rgba(0, 0, 0, 0.3) 249.3px 250.1px,
       transparent 250.1px 310px,
-      rgba(255, 255, 255, 0.042) 310px 311.1px,
+      rgba(255, 255, 255, 0.025) 310px 311.1px,
       rgba(0, 0, 0, 0.26) 311.1px 311.9px,
       transparent 311.9px 372px
     );
 
     /* Ein Bundstäbchen ist Metall. Das Rechenkaro war keins — deshalb
        heller als `--raster`, das es ersetzt. */
-    --buende: rgba(255, 255, 255, 0.04);
+    --buende: rgba(255, 255, 255, 0.026);
 
     /* Die Einlagen, an den Stellen aus `hals.ts`: `bundMitte(bund)` waagrecht,
        `saitenLage(3.5)` senkrecht — hinter dem Bundstäbchen, nicht darauf.
        Am 12. Bund zwei, auf `saitenLage(2.3)` und `saitenLage(4.7)`. */
     --einlagen:
-      radial-gradient(circle 8px at 110px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
-      radial-gradient(circle 8px at 198px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
-      radial-gradient(circle 8px at 286px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
-      radial-gradient(circle 8px at 374px 155px, rgba(255, 255, 255, 0.042) 99%, transparent),
-      radial-gradient(circle 7px at 506px 80.6px, rgba(255, 255, 255, 0.042) 99%, transparent),
-      radial-gradient(circle 7px at 506px 229.4px, rgba(255, 255, 255, 0.042) 99%, transparent);
+      radial-gradient(circle 8px at 110px 155px, rgba(255, 255, 255, 0.02) 99%, transparent),
+      radial-gradient(circle 8px at 198px 155px, rgba(255, 255, 255, 0.02) 99%, transparent),
+      radial-gradient(circle 8px at 286px 155px, rgba(255, 255, 255, 0.02) 99%, transparent),
+      radial-gradient(circle 8px at 374px 155px, rgba(255, 255, 255, 0.02) 99%, transparent),
+      radial-gradient(circle 7px at 506px 80.6px, rgba(255, 255, 255, 0.02) 99%, transparent),
+      radial-gradient(circle 7px at 506px 229.4px, rgba(255, 255, 255, 0.02) 99%, transparent);
+
+    /* Ein Regler für den ganzen Hals.
+       Die Kachel ist 528 px breit. Auf einem Handy passt sie gar nicht aufs
+       Bild — dort kommen keine Bünde und Saiten an, sondern Bruchstücke
+       davon: Linien, die sich kreuzen, und Punkte, die zu nichts gehören.
+       Ein Muster, das man nicht als Ganzes sieht, ist kein Muster, sondern
+       Unruhe. Deshalb ist der Hals schmal fast aus und breit erst da. */
+    --hals: 0.28;
 
     /* Bildröhre. Aus — wie bei Setlist. Ein Flimmern über dem Satz will man
        erst sehen, bevor man es ausliefert. */
@@ -112,30 +120,47 @@
     color: var(--fg);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
-    /* Glut hinter der Kopfzeile, darunter Saiten und Bünde. Der Boden am
-       Fuss lässt den Hals auslaufen, statt ihn abzuschneiden — ohne ihn
-       hört eine kurze Seite unten einfach auf. */
+    /* Nur noch Atmosphäre: die Glut hinter der Kopfzeile und der Boden am
+       Fuss, der eine kurze Seite auslaufen lässt statt sie abzuschneiden.
+       Der Hals selbst liegt auf `::before` — dort hat er einen Regler. */
     background-image:
       radial-gradient(1000px 500px at 50% -10%, var(--halo), transparent 70%),
-      linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45)),
-      var(--saiten),
-      linear-gradient(90deg, var(--buende) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 100% 372px, 44px 44px;
+      linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45));
+    background-size: 100% 100%, 100% 100%;
     background-attachment: fixed;
   }
 
-  /* Die Einlagen liegen auf einer eigenen Ebene, weil ihre Kachel 528 px
-     breit ist und nicht 44 — sie in die Liste oben zu mischen hiesse, sechs
-     weitere Grössen mitzuführen. `-1` hält sie über dem Grund und unter
-     allem Inhalt. */
+  /* Der ganze Hals auf einer Ebene — Saiten, Bünde, Einlagen —, damit
+     `--hals` ihn an *einem* Regler auf- und zudreht. Vorher lagen die
+     Stärken an drei Stellen verteilt, und ich habe alle drei zugleich
+     hochgezogen; das Ergebnis war Unruhe statt Tiefe. `-1` hält die Ebene
+     über dem Grund und unter allem Inhalt. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: var(--einlagen);
-    background-size: 528px 372px;
+    opacity: var(--hals);
+    background-image:
+      var(--einlagen),
+      var(--saiten),
+      linear-gradient(90deg, var(--buende) 1px, transparent 1px);
+    /* Sechs Grössen für die sechs Einlagen, dann Saiten und Bünde: die Liste
+       wird sonst zyklisch wiederholt und die Kacheln landen auf den falschen
+       Ebenen. */
+    background-size:
+      528px 372px, 528px 372px, 528px 372px, 528px 372px, 528px 372px, 528px 372px,
+      100% 372px,
+      44px 44px;
+  }
+
+  /* Breit genug, dass eine ganze Kachel aufs Bild passt: erst hier ist der
+     Hals ein Hals und nicht ein Ausschnitt daraus. */
+  @media (min-width: 900px) {
+    :root {
+      --hals: 1;
+    }
   }
 
   /* Bildröhre über allem, statisch. Eine Animation, die im Satz flimmert,
