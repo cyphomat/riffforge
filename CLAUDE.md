@@ -148,6 +148,16 @@ Komponente.
   `.warnstreifen` markiert **nur verletzte Bedingungen** — Mikrofon
   verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie einen Fehler
   und nie Schmuck.
+- **Der Taktzähler ist eine Spielhilfe, kein Bedienelement.** Er stand als
+  vier Quadrate von zehn Pixeln in der Knopfreihe — genug zum Ablesen, aber
+  unbrauchbar für den, der das Gerät auf dem Notenständer hat: im Augenwinkel
+  kommen Fläche und Helligkeitswechsel an, keine Formen. Jetzt über die volle
+  Breite, 42 px hoch, und **über** den Knöpfen statt zwischen ihnen; in die
+  Knopfreihe sieht man, wenn man drücken will. Gezählt werden **Schläge,
+  nicht Klicks**: bei Klick auf Achteln blinkte er sonst achtmal je Takt, und
+  acht Wechsel je Takt sind im Augenwinkel ein Flackern statt eines Pulses.
+  Die Eins bleibt auch im Ruhezustand markiert, damit man nach einem Blick
+  zur Griffhand wiederfindet, wo der Takt anfängt.
 - **Der Twist gehört dorthin, wo der Nutzer ist.** Als die vier Bauteile
   fertig waren, sass genau eines davon auf *Heute* — dem Bildschirm, der
   täglich aufgeht; der Rest lag hinter dem Startknopf oder in Fehlzuständen,

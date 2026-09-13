@@ -278,7 +278,14 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
           <i style={{ width: `${progress}%` }} />
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-[9px]">
+        {/* Der Taktzähler steht über den Knöpfen und über die volle Breite:
+            er ist eine Hilfe beim Spielen, kein Bedienelement. In der
+            Knopfreihe sass er dort, wohin man sieht, wenn man drücken will. */}
+        <div className="mt-4">
+          <BeatIndicator beatInBar={metronome.beatInBar} beatsPerBar={drill.beatsPerBar} />
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-[9px]">
           <button onClick={toggle} className="btn flex-1">
             {timer.isRunning ? (
               <>
@@ -293,7 +300,6 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
           <button onClick={finishPlaying} className="btn btn-ghost btn-small px-4 py-4">
             <MdSkipNext className="h-[18px] w-[18px]" /> Beenden
           </button>
-          <BeatIndicator beatInBar={metronome.beatInBar} beatsPerBar={drill.beatsPerBar} />
         </div>
       </div>
 
