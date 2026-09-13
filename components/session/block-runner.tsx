@@ -165,7 +165,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
             {block.rounds > 1 && ` · Runde ${block.round} von ${block.rounds}`}
           </p>
           <h2 className="display mt-1 text-[32px] text-fg">{drill.title}</h2>
-          <p className="num mt-1 text-[13px] text-muted">
+          <p className="ziffern mt-1 text-[13px] text-muted">
             {formatClock(Math.round(timer.elapsed))} bei {metronome.bpm} BPM
           </p>
         </div>
@@ -177,21 +177,33 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
           <div className="grid gap-[9px] sm:grid-cols-2">
             {RATINGS.map((option) => {
               const isSuggested = suggested === option.value
+              // Der Vorschlag ist bernsteinfarben, wenn er gute Nachricht ist,
+              // und rostfarben, wenn die Messung "das war zäh" sagt. Bernstein
+              // markiert, was gerade dran ist — nicht, was schiefging.
+              const rau = isSuggested && option.value <= 2
               return (
                 <button
                   key={option.value}
                   onClick={() => rate(option.value)}
                   className={`border p-[14px] text-left transition-colors ${
-                    isSuggested
-                      ? "border-akzent bg-[--tint-akzent] hover:bg-[--tint-akzent-stark]"
-                      : "border-line bg-panel hover:border-stahl"
+                    rau
+                      ? "border-rost bg-[--tint-rost]"
+                      : isSuggested
+                        ? "border-akzent bg-[--tint-akzent] hover:bg-[--tint-akzent-stark]"
+                        : "border-line bg-panel hover:border-stahl"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className={`display text-[19px] ${isSuggested ? "text-akzent" : "text-fg"}`}>
+                    <span
+                      className={`display text-[19px] ${
+                        rau ? "text-rost" : isSuggested ? "text-akzent" : "text-fg"
+                      }`}
+                    >
                       {option.label}
                     </span>
-                    {isSuggested && <span className="kicker text-akzent">gemessen</span>}
+                    {isSuggested && (
+                      <span className={`kicker ${rau ? "text-rost" : "text-akzent"}`}>gemessen</span>
+                    )}
                   </div>
                   <div className="mt-1 text-[13px] text-muted">{option.hint}</div>
                 </button>
@@ -226,7 +238,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
 
       <div className="zwei-spalten mt-5">
       <div className="spalte space-y-5">
-      <div className="card plain">
+      <div className="card plain winkel">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="kicker">Verbleibend</span>
@@ -236,8 +248,15 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
           </div>
 
           <div className="text-right">
-            <span className="kicker">Tempo</span>
-            <div className="display num text-[44px] leading-none text-akzent">{metronome.bpm}</div>
+            <span className="kicker block">Tempo</span>
+            {/* Die Heldenzahl der App sitzt auf einem eingelassenen Blech mit
+                Skalenstrichen — das Zifferblatt am Verstärker. Das Glimmen ist
+                absichtlich kaum zu sehen: ein Röhrenamp glüht, er strahlt nicht. */}
+            <div className="platte mt-1 inline-block">
+              <div className="display num glimmt text-[44px] leading-none text-akzent">
+                {metronome.bpm}
+              </div>
+            </div>
             <div className="mt-2 flex items-center justify-end gap-2">
               <button
                 className="btn btn-ghost btn-small"
@@ -304,7 +323,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
         <ul className="border-t border-line">
           {drill.cues.map((cue) => (
             <li key={cue} className="flex gap-3 border-b border-line py-[9px] text-[14px] text-fg">
-              <span className="num flex-none text-akzent">›</span>
+              <span className="ziffern flex-none text-akzent">›</span>
               <span>{cue}</span>
             </li>
           ))}

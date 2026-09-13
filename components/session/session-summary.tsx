@@ -57,7 +57,7 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
       <section className="card mt-6">
         <span className="kicker text-gruen">Feierabend</span>
         <h1 className="display mt-1 text-[38px] text-fg">Session steht</h1>
-        <p className="num mt-1 text-[13px] text-muted">
+        <p className="ziffern mt-1 text-[13px] text-muted">
           {minutes === 1 ? "1 Minute" : `${minutes} Minuten`} ·{" "}
           {results.length === 1 ? "1 Block" : `${results.length} Blöcke`}
           {fragen > 0 && ` · ${fragen === 1 ? "1 Frage" : `${fragen} Fragen`}`}
@@ -72,7 +72,7 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
                 className="flex items-baseline justify-between gap-3 border-b border-line py-[9px]"
               >
                 <span className="text-[14px] text-fg">{gain.title}</span>
-                <span className="num flex-none text-[13px] text-gruen">
+                <span className="ziffern flex-none text-[13px] text-gruen">
                   {gain.from === null ? "erster sauberer Lauf" : `${gain.from} →`}{" "}
                   <b className="text-[15px]">{gain.to} BPM</b>
                 </span>
@@ -92,7 +92,7 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
               className="flex items-baseline justify-between gap-3 border border-line bg-panel px-[15px] py-3"
             >
               <span className="display text-[17px] text-fg">{drill?.title ?? result.drillId}</span>
-              <span className="num flex-none text-[13px]">
+              <span className="ziffern flex-none text-[13px]">
                 {result.timing && (
                   <span className="text-dim">
                     Timing <span className="text-stahl">{result.timing.score}</span> · ±

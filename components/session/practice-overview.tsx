@@ -64,7 +64,7 @@ export function PracticeOverview() {
     <div className="huelle-breit zwei-spalten">
       <div className="spalte">
       {/* Die Ansage: was heute ansteht, und woran das festgemacht ist. */}
-      <section className="card mt-6">
+      <section className="card winkel mt-6">
         <div className="flex items-center gap-3">
           <span className={`kicker border border-current px-2 py-[3px] ${TONE_CLASS[briefing.tone]}`}>
             {TONE_LABEL[briefing.tone]}
@@ -124,7 +124,7 @@ export function PracticeOverview() {
                         </div>
                       </div>
                       <div className="flex-none text-right">
-                        <div className="num text-[15px] font-bold text-akzent">
+                        <div className="ziffern text-[15px] font-bold text-akzent">
                           {progress.bestBpm ?? "–"}
                           <span className="text-dim"> / {drill.targetBpm} BPM</span>
                         </div>

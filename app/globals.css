@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Metal Guitar Academy ── Backline.
+/* ── Riffforge ── Backline.
    Die Design-Sprache kommt aus Setlist: kein Neon, ein Röhrenamp glimmt.
    Bernstein liegt auf Zahlen, Kanten und dem, was gerade dran ist — Flächen
    bleiben matt und dunkel. Stahlblau trägt alles Zweitrangige. Harte
-   Rechtecke mit 2 px — Road-Case, kein HUD.                              */
+   Rechtecke mit 2 px — Road-Case, kein HUD.
+
+   Was hier über Setlist hinausgeht, hat mit der Gitarre zu tun und mit
+   nichts sonst: der Grund ist ein Hals, die Ecken sind Beschläge, das Tempo
+   sitzt auf einem Blech. Kein Kostüm — jedes Stück meint etwas.          */
 
 @layer base {
   :root {
@@ -28,10 +32,41 @@
     --tint-akzent: rgba(232, 162, 61, 0.1);
     --tint-akzent-stark: rgba(232, 162, 61, 0.22);
     --tint-gruen: rgba(127, 166, 92, 0.16);
+    --tint-rost: rgba(200, 118, 63, 0.16);
     --tint-stahl: rgba(111, 147, 173, 0.06);
 
     --raster: rgba(255, 255, 255, 0.018);
     --halo: rgba(232, 162, 61, 0.05);
+
+    /* Sechs Saiten, von der tiefen E oben zur hohen e unten — die Stärke
+       nimmt ab wie am echten Hals. Der Abstand ist 62 px, die Saitenhöhe
+       aus dem Griffbrett; das Raster quer dazu steht auf 44 px, der
+       Bundbreite. Erst diese Ungleichheit macht den Grund zum Hals statt
+       zum Rechenkaro. */
+    --saiten: repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.032) 0 1.6px,
+      transparent 1.6px 62px,
+      rgba(255, 255, 255, 0.027) 62px 63.4px,
+      transparent 63.4px 124px,
+      rgba(255, 255, 255, 0.023) 124px 125.3px,
+      transparent 125.3px 186px,
+      rgba(255, 255, 255, 0.019) 186px 187.1px,
+      transparent 187.1px 248px,
+      rgba(255, 255, 255, 0.016) 248px 249px,
+      transparent 249px 310px,
+      rgba(255, 255, 255, 0.013) 310px 310.9px,
+      transparent 310.9px 372px
+    );
+
+    /* Bildröhre. Aus — wie bei Setlist. Ein Flimmern über dem Satz will man
+       erst sehen, bevor man es ausliefert. */
+    --scan: 0;
+
+    /* Der einzige Schatten der dunklen Fassung ausser dem Fokusring: eine
+       Bodenleiste muss sich vom Inhalt abheben, sonst klebt sie darauf. */
+    --leiste: linear-gradient(180deg, #16151a, #0c0c0e);
+    --backdrop: rgba(8, 8, 10, 0.86);
 
     color-scheme: dark;
   }
@@ -45,14 +80,42 @@
     color: var(--fg);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
-    /* Glut hinter der Kopfzeile, darunter ein Raster wie auf Millimeterpapier.
-       Beides sehr schwach — es soll Tiefe geben, nicht auffallen. */
+    /* Glut hinter der Kopfzeile, darunter Saiten und Bünde. Alles sehr
+       schwach — es soll Tiefe geben, nicht auffallen. */
     background-image:
       radial-gradient(1000px 500px at 50% -10%, var(--halo), transparent 70%),
-      linear-gradient(var(--raster) 1px, transparent 1px),
+      var(--saiten),
       linear-gradient(90deg, var(--raster) 1px, transparent 1px);
-    background-size: 100% 100%, 44px 44px, 44px 44px;
+    background-size: 100% 100%, 100% 372px, 44px 44px;
     background-attachment: fixed;
+  }
+
+  /* Bildröhre über allem, statisch. Eine Animation, die im Satz flimmert,
+     wäre Selbstzweck. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+    background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px);
+    opacity: var(--scan);
+  }
+
+  /* Bis hierher gab es gar keine Tastatur-Anzeige. Wer nicht tippt, muss
+     trotzdem sehen können, wo er steht. */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--akzent);
+    outline-offset: 2px;
+  }
+
+  input[type="checkbox"] {
+    accent-color: var(--akzent);
   }
 }
 
@@ -104,13 +167,29 @@
     @apply font-mono text-[10.5px] font-bold uppercase tracking-[0.22em] text-muted;
   }
 
+  /* Die Wortmarke, und sonst nichts. Anton ist für engen Satz gezeichnet —
+     gesperrt sieht sie aus wie eine Grotesk, die sich verlaufen hat. */
+  .marke {
+    font-family: var(--font-marke), var(--font-display), "Helvetica Neue", Helvetica, sans-serif;
+    @apply uppercase leading-none tracking-[-0.01em];
+  }
+
   /* Grosse Zahlen und Namen: Oswald, versal, eng geführt. */
   .display {
     font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
     @apply font-semibold uppercase leading-[1.05] tracking-[0.01em];
   }
 
+  /* Ziffern in der Anzeigeschrift. Bewusst ohne `font-mono`: die Klasse
+     stand lange zusammen mit `.display` an Timer und Tempo, und weil sie in
+     derselben Schicht später kommt, stach ihre Monospace die Oswald aus —
+     die grössten Zahlen der App standen in der Systemschrift. Wer wirklich
+     Monospace will, nimmt `.ziffern`. */
   .num {
+    @apply tabular-nums;
+  }
+
+  .ziffern {
     @apply font-mono tabular-nums;
   }
 
@@ -155,6 +234,96 @@
   .stat .v {
     @apply display mt-0.5 text-[28px] text-akzent;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Eckwinkel am Road-Case ──────────────────────────────────────────
+     Zwei Beschläge, Bernstein oben links, Stahlblau unten rechts — die
+     Ecken einer Flightcase. Gezeichnet als vier Hintergrundstreifen auf
+     *einem* Pseudo-Element, weil `.card::before` schon die Bernsteinschiene
+     trägt und beide sich vertragen müssen.
+
+     Sparsam: höchstens zwei je Bildschirm, und nur auf dem, was gerade dran
+     ist. An jeder Fläche wäre es Dekoration. */
+  .winkel {
+    @apply relative;
+  }
+  .winkel::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    opacity: 0.7;
+    background-image:
+      linear-gradient(var(--akzent), var(--akzent)), linear-gradient(var(--akzent), var(--akzent)),
+      linear-gradient(var(--stahl), var(--stahl)), linear-gradient(var(--stahl), var(--stahl));
+    background-size: 18px 2px, 2px 18px, 18px 2px, 2px 18px;
+    background-position: left top, left top, right bottom, right bottom;
+    background-repeat: no-repeat;
+  }
+
+  /* ── Verstärker-Platte ────────────────────────────────────────────────
+     Ein eingelassenes Blech mit Skalenstrichen, wie das Zifferblatt an
+     einem Amp. Der Innenschatten oben und das Haarlicht unten sind die
+     Kante der Aussparung. */
+  .platte {
+    @apply relative border border-line px-[14px] pb-[6px] pt-[13px];
+    background: var(--sunken);
+    box-shadow:
+      inset 0 2px 5px rgba(0, 0, 0, 0.6),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.035);
+  }
+  .platte::after {
+    content: "";
+    position: absolute;
+    left: 9px;
+    right: 9px;
+    top: 5px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--dim) 0 1px, transparent 1px 8px);
+    opacity: 0.5;
+  }
+
+  /* Glimmen, kein Strahlen — ein Röhrenamp leuchtet nicht, er glüht. */
+  .glimmt {
+    text-shadow: 0 0 13px rgba(232, 162, 61, 0.22);
+  }
+
+  /* ── Warnstreifen ─────────────────────────────────────────────────────
+     Für Zustände, die eine Bedingung der App verletzen: Mikrofon
+     verweigert, Fassung zurückgerollt, Abgleich gescheitert. Nie als
+     Schmuck — wo er überall steht, warnt er nirgends. */
+  .warnstreifen {
+    height: 6px;
+    background: repeating-linear-gradient(135deg, var(--rost) 0 9px, var(--sunken) 9px 18px);
+    opacity: 0.55;
+  }
+
+  /* Gestrichelter Kasten mit Eingabeaufforderung — für einen Satz, der
+     nicht von der App kommt, sondern über sie hinausweist. */
+  .spruch {
+    @apply border border-dashed border-line px-4 py-[14px] text-[15px] italic leading-relaxed text-fg;
+    background: var(--tint-stahl);
+  }
+  .spruch::before {
+    content: "> ";
+    color: var(--stahl);
+    font-style: normal;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  }
+
+  /* Abschnittsbruch mit umgekehrter Linie: die Regel läuft von links auf
+     die Überschrift zu statt von ihr weg. Markiert, wo etwas aufhört. */
+  .rule-backstage {
+    @apply rule text-akzent tracking-[0.3em];
+  }
+  .rule-backstage::after {
+    display: none;
+  }
+  .rule-backstage::before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line));
   }
 
   /* Aufklappbares Wissen — die Theorie am Drill. */

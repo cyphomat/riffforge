@@ -140,8 +140,9 @@ export function UpdatePanel() {
             </p>
           )}
 
+          {originalFehler && <div className="warnstreifen mt-3" aria-hidden />}
           {originalFehler && (
-            <p className="mt-2 text-[13.5px] leading-relaxed text-rot">
+            <p className="mt-2 text-[13.5px] leading-relaxed text-rost">
               GitHub hat nicht geantwortet. Ohne Anmeldung sind sechzig Anfragen
               pro Stunde und Adresse erlaubt — vielleicht später nochmal.
             </p>

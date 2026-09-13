@@ -42,7 +42,7 @@ export function MicPanel({ status, detail, level, hits, onToggle }: MicPanelProp
             <div className="bar h-[6px] w-28">
               <i style={{ width: `${Math.min(100, Math.round(level * 320))}%` }} />
             </div>
-            <span className="num text-[13px] text-muted">
+            <span className="ziffern text-[13px] text-muted">
               {hits} {hits === 1 ? "Anschlag" : "Anschläge"}
             </span>
           </>
@@ -54,9 +54,13 @@ export function MicPanel({ status, detail, level, hits, onToggle }: MicPanelProp
           </span>
         )}
         {blocked && (
-          <span className="font-mono text-[11.5px] text-rot">{detail ?? LABELS[status]}</span>
+          <span className="font-mono text-[11.5px] text-rost">{detail ?? LABELS[status]}</span>
         )}
       </div>
+
+      {/* Ohne Mikrofon misst die App nichts — das ist keine Fehlermeldung,
+          sondern eine fehlende Bedingung. Deshalb Rost, nicht Rot. */}
+      {blocked && <div className="warnstreifen mt-3" aria-hidden />}
 
       {listening && (
         <p className="mt-2 text-[12px] leading-relaxed text-dim">

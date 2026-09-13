@@ -86,7 +86,7 @@ export function KnowledgeOverview() {
   return (
     <div className="huelle-breit zwei-spalten">
       <div className="spalte">
-        <section className="card mt-6">
+        <section className="card winkel mt-6">
           <span className="kicker text-akzent">Wissen</span>
           <h1 className="display mt-2 text-[34px] text-fg sm:text-[38px]">
             {faellig.length === 0

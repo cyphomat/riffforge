@@ -93,6 +93,31 @@ Komponente.
   dem, was zählt, Stahlblau für alles Zweitrangige, harte Kanten mit 2 px.
   Farben stehen als CSS-Variablen in `app/globals.css`, nicht als Hex-Werte in
   Komponenten. Road-Case, kein HUD.
+- **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
+  `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
+  und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende
+  Block, der Wissens-Kopf. Ein Winkel an jeder Fläche wäre Dekoration.
+  `.platte` ist das eingelassene Blech unter der Tempozahl, mit Skalenstrichen
+  und einem Glimmen, das kaum zu sehen sein soll — ein Röhrenamp glüht, er
+  strahlt nicht. `.warnstreifen` markiert **nur verletzte Bedingungen** —
+  Mikrofon verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie
+  einen Fehler und nie Schmuck. Und `--saiten` legt sechs Saiten über den
+  Grund, im Bundmass aus `fretboard.tsx` (44 × 62 px): die Asymmetrie ist es,
+  die den Hintergrund als Hals lesbar macht statt als Karo. Alle drei
+  Flächenmuster liegen im selben Register wie `--raster` — nachgemessen +3
+  bis +8 von 255 gegen einen Grund von 12. Wer eines davon kräftiger macht,
+  macht es zur Dekoration.
+- **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton als
+  `--font-marke`, ausschliesslich auf `.marke`. Überschriften, Zahlen und
+  Tempo bleiben Oswald, damit die App nicht überall schreit.
+- **`.num` gibt nur `tabular-nums`, `.ziffern` gibt die Monospace.** Beide
+  stehen in `@layer components`, und `font-mono` in `.num` stach früher die
+  Anzeigeschrift von `.display` aus — Timer und Tempo rendern dann in der
+  System-Monospace. Wer eine grosse Zahl setzt, nimmt `display num`; die
+  Monospace ist für Tabs und Log-Zeilen da.
+- **Rost ist „nicht ganz", Rot ist „kaputt".** `--rost` trägt die zähe
+  Bewertung, die überfällige Karte, die fehlende Bedingung. Bleibt Rot dafür
+  frei, heisst Rot wirklich noch etwas.
 - **Die Ansage behauptet nichts.** Jede Zeile in `briefing.ts` muss aus dem Log
   ableitbar sein, sonst gehört sie da nicht hin.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut

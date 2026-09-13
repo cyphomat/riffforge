@@ -37,6 +37,7 @@ const config: Config = {
       },
       fontFamily: {
         display: ["var(--font-display)", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        marke: ["var(--font-marke)", "var(--font-display)", "Helvetica Neue", "sans-serif"],
         mono: ["ui-monospace", "SF Mono", "SFMono-Regular", "Menlo", "monospace"],
       },
       borderRadius: {

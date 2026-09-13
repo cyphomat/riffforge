@@ -5,9 +5,9 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#111111",
-  "theme_color": "#111111",
-  "description": "15 Minuten Metal-Gitarre am Tag \u2014 aufw\u00e4rmen, eine Technik, ein Riff.",
+  "background_color": "#0c0c0e",
+  "theme_color": "#0c0c0e",
+  "description": "15 Minuten Metal-Gitarre am Tag — aufwärmen, eine Technik, ein Riff.",
   "icons": [
     {
       "src": "icons/icon-192.png",

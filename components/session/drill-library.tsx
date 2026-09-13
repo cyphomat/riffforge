@@ -52,7 +52,7 @@ export function DrillLibrary() {
                       </div>
                     </div>
                     <div className="flex-none text-right">
-                      <div className="num text-[15px] font-bold text-akzent">
+                      <div className="ziffern text-[15px] font-bold text-akzent">
                         {nextBpm(drill, progress, profile)}
                       </div>
                       <div className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim">

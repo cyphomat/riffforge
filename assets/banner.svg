@@ -41,10 +41,15 @@
   <circle cx="405" cy="196" r="8" fill="#e8a23d"/>
   <circle cx="615" cy="212" r="8" fill="#e8a23d"/>
 
+  <!-- Ganz in Bernstein und eng geführt, wie die Wortmarke in der App. Anton
+       steht vorn, greift aber nur, wo sie installiert ist: eine SVG-Datei im
+       README kann keine Schrift mitbringen, und Pfade statt Text wären hier
+       nicht mehr zu redigieren. Oswald ist der Rückfall, und dafür ist das
+       Sperrmass gesetzt. -->
   <text x="600" y="122"
-        font-family="'Oswald','Helvetica Neue',Helvetica,Arial,sans-serif"
-        font-size="96" font-weight="600" letter-spacing="7"
-        text-anchor="middle" fill="#f2f0ec">RIFF<tspan fill="#e8a23d">FORGE</tspan></text>
+        font-family="'Anton','Oswald','Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="96" font-weight="600" letter-spacing="4"
+        text-anchor="middle" fill="#e8a23d">RIFFFORGE</text>
 
   <text x="600" y="162"
         font-family="ui-monospace,'SF Mono',Menlo,monospace"

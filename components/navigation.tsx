@@ -24,9 +24,9 @@ export function Navigation() {
             in versaler Schrift liest man sonst nicht auseinander. */}
         <Link
           href="/"
-          className="display hidden flex-1 truncate text-[16px] tracking-[0.04em] text-fg min-[360px]:block sm:text-[19px] sm:tracking-[0.06em]"
+          className="marke hidden flex-1 truncate text-[19px] text-akzent min-[360px]:block sm:text-[23px]"
         >
-          Riff<span className="text-akzent">forge</span>
+          Riffforge
         </Link>
 
         {navItems.map((item) => {

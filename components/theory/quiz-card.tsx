@@ -142,7 +142,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
             const istLoesung = (loesungen as string[]).includes(option)
             const rahmen = aufgeloest
               ? istLoesung
-                ? "border-gruen text-gruen"
+                ? "border-gruen bg-[--tint-gruen] text-gruen"
                 : gewaehlt
                   ? "border-rot text-rot"
                   : "border-line text-dim"

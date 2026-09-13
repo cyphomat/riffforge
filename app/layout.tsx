@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Oswald } from "next/font/google"
+import { Anton, Oswald } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ServiceWorker } from "@/components/service-worker"
@@ -10,6 +10,11 @@ import { asset } from "@/lib/base-path"
 // next/font lädt sie beim Build herunter und liefert sie selbst aus, damit
 // die App offline genauso aussieht wie online.
 const oswald = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-display" })
+
+// Nur für die Wortmarke, sonst nirgends. Schwer, schmal, plakathaft — ein
+// Aufdruck, kein Fliesstext. Überschriften und Zahlen bleiben Oswald, damit
+// die App nicht überall schreit.
+const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-marke" })
 
 /**
  * Content-Security-Policy als Meta-Tag.
@@ -75,7 +80,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`dark ${oswald.variable}`}>
+    <html lang="de" className={`dark ${oswald.variable} ${anton.variable}`}>
       <head>
         <meta httpEquiv="Content-Security-Policy" content={CSP} />
       </head>

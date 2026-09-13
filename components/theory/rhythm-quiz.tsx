@@ -144,7 +144,7 @@ export function RhythmQuiz({ figur, bpm, takte, onFertig }: RhythmQuizProps) {
       <div className="border border-line bg-panel p-[18px]">
         <div className="flex items-baseline justify-between gap-3">
           <span className="kicker text-dim">{figur.name}</span>
-          <span className="num text-[13px] text-muted">{bpm} BPM</span>
+          <span className="ziffern text-[13px] text-muted">{bpm} BPM</span>
         </div>
 
         <p className="mt-3 text-[14.5px] leading-relaxed text-muted">
@@ -191,11 +191,16 @@ export function RhythmQuiz({ figur, bpm, takte, onFertig }: RhythmQuizProps) {
         )}
 
         {mic.status === "denied" || mic.status === "unsupported" || mic.status === "error" ? (
-          <p className="mt-3 flex items-start gap-2 text-[13.5px] leading-relaxed text-rot">
-            <MdMic className="mt-[2px] h-4 w-4 shrink-0" />
-            {mic.detail ?? "Mikrofon nicht verfügbar."} Ohne Mikrofon lässt sich diese Frage nicht
-            messen — überspring sie einfach.
-          </p>
+          <>
+            {/* Keine Fehlermeldung, sondern eine fehlende Bedingung: ohne
+                Mikrofon gibt es nichts zu messen. Deshalb Rost, nicht Rot. */}
+            <div className="warnstreifen mt-3" aria-hidden />
+            <p className="mt-2 flex items-start gap-2 text-[13.5px] leading-relaxed text-rost">
+              <MdMic className="mt-[2px] h-4 w-4 shrink-0" />
+              {mic.detail ?? "Mikrofon nicht verfügbar."} Ohne Mikrofon lässt sich diese Frage nicht
+              messen — überspring sie einfach.
+            </p>
+          </>
         ) : null}
       </div>
 
