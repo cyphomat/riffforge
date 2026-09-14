@@ -1,12 +1,14 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { DRILLS_BY_ID } from "@/lib/session/drills"
 import { progressFor, streakDays } from "@/lib/session/progress"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
-import { MdAdd } from "react-icons/md"
+import { sollErinnern } from "@/lib/backup-erinnerung"
+import { zuletztGesichert } from "@/lib/storage/lokal"
+import { MdAdd, MdFileDownload } from "react-icons/md"
 
 export interface SessionSummaryProps {
   results: DrillResult[]
@@ -43,6 +45,25 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
   const minutes = Math.max(1, Math.round(results.reduce((sum, r) => sum + r.seconds, 0) / 60))
   const streak = streakDays(log)
   const gains = gainsFrom(results, previousLog)
+
+  // Der Abschluss ist die einzige Stelle, an der jemand freiwillig stehen
+  // bleibt — und der Moment, in dem gerade etwas entstanden ist, das
+  // verlorengehen kann. Hier steht der Hinweis deshalb, und sonst nirgends.
+  // Dieselbe Regel wie auf „Daten": erst wenn es wirklich etwas zu verlieren
+  // gibt und lange nichts gesichert wurde.
+  const [sichern, setSichern] = useState(false)
+  useEffect(() => {
+    setSichern(
+      sollErinnern({
+        eintraege: log.results.length,
+        gesichert: zuletztGesichert(),
+        aeltester:
+          log.results.length > 0
+            ? new Date(Math.min(...log.results.map((r) => new Date(r.at).getTime())))
+            : null,
+      }),
+    )
+  }, [log])
 
   // Die frische Session hochschieben, sobald sie steht. Lautlos: mitten nach
   // dem Üben ist ein Fehlerbanner das Letzte, was jemand braucht, und der
@@ -114,6 +135,19 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
           <MdAdd className="h-[18px] w-[18px]" /> +5 Minuten
         </button>
       </div>
+
+      {sichern && (
+        <div className="mt-8">
+          <div className="warnstreifen mb-2" aria-hidden />
+          <p className="text-[13.5px] leading-relaxed text-rost">
+            Dein Log liegt nur in diesem Browser und ist länger nicht gesichert worden. Eine
+            Datei davon dauert einen Klick.
+          </p>
+          <Link href="/daten" className="btn btn-ghost btn-small mt-3 w-full py-3">
+            <MdFileDownload className="h-[16px] w-[16px]" /> Stand sichern
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

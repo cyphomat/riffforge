@@ -21,6 +21,9 @@ import { EMPTY_THEORY_LOG, type TheoryLog } from "@/lib/theory/types"
 import { EMPTY_LOG, type PracticeLog } from "@/lib/session/types"
 import { SyncPanel } from "@/components/session/sync-panel"
 import { UpdatePanel } from "@/components/session/update-panel"
+import { InstallPanel } from "@/components/session/install-panel"
+import { clearLokal, merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
+import { sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
 import { MdFileDownload, MdFileUpload } from "react-icons/md"
 
 type Notice = { tone: "ok" | "err"; text: string } | null
@@ -34,12 +37,14 @@ export function DataManager() {
   // Ein Log, der das Schema reisst, zählt null Einträge — der Knopf muss
   // trotzdem angehen, sonst kommt man an genau diese Daten nicht mehr heran.
   const [stored, setStored] = useState(false)
+  const [gesichert, setGesichert] = useState<Date | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setLog(loadLog())
     setTheorie(loadTheoryLog())
     setStored(hasStoredLog() || hasStoredTheoryLog())
+    setGesichert(zuletztGesichert())
   }, [])
 
   const days = practiceDays(log)
@@ -54,6 +59,10 @@ export function DataManager() {
     link.click()
     // Erst freigeben, wenn der Browser den Download übernommen hat.
     setTimeout(() => URL.revokeObjectURL(url), 1000)
+    // Ab jetzt gibt es eine Datei. Das ist die einzige Stelle, an der das
+    // stimmt — der Abgleich zählt nicht, er liegt auf demselben Konto.
+    merkeSicherung()
+    setGesichert(new Date())
     const eintraege = `${log.results.length} ${log.results.length === 1 ? "Eintrag" : "Einträge"}`
     const antworten = `${theorie.answers.length} ${theorie.answers.length === 1 ? "Antwort" : "Antworten"}`
     setNotice({
@@ -126,21 +135,50 @@ export function DataManager() {
         )}
       </section>
 
+      <InstallPanel />
+
       <UpdatePanel />
 
       </div>
 
       <div className="spalte">
-      <SyncPanel onChanged={() => setLog(loadLog())} />
-
       <section>
-        <h2 className="rule mb-1 mt-9">Sichern</h2>
+        <h2 className="rule mb-1 mt-8">Sichern</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
-          Eine JSON-Datei mit allem. Leg sie irgendwohin, wo sie einen Browserwechsel überlebt.
+          Eine JSON-Datei mit allem — Übungs-Log und beantwortete Wissensfragen. Leg sie
+          irgendwohin, wo sie einen Browserwechsel überlebt.
         </p>
+
+        {/* Die Erinnerung steht über dem Knopf, nicht als Banner quer durch
+            die App: hier ist sie handlungsnah, anderswo wäre sie Nörgeln.
+            Und sie kommt erst, wenn es wirklich etwas zu verlieren gibt —
+            siehe `backup-erinnerung.ts`. */}
+        {sollErinnern({
+          eintraege: log.results.length,
+          gesichert,
+          aeltester: log.results.length > 0
+            ? new Date(Math.min(...log.results.map((r) => new Date(r.at).getTime())))
+            : null,
+        }) && (
+          <>
+            <div className="warnstreifen mb-2" aria-hidden />
+            <p className="mb-3 text-[13.5px] leading-relaxed text-rost">
+              {gesichert
+                ? `Zuletzt vor ${tageSeit(gesichert)} Tagen gesichert.`
+                : "Noch nie gesichert."}{" "}
+              Der Log liegt nur in diesem Browser — wer ihn aufräumt, räumt ihn mit auf.
+            </p>
+          </>
+        )}
+
         <button onClick={download} disabled={log.results.length === 0} className="btn w-full">
           <MdFileDownload className="h-[18px] w-[18px]" /> Exportieren
         </button>
+        {gesichert && (
+          <p className="mt-2 font-mono text-[11.5px] text-dim">
+            zuletzt gesichert: {gesichert.toLocaleDateString("de-DE")}
+          </p>
+        )}
       </section>
 
       <section>
@@ -213,6 +251,8 @@ export function DataManager() {
                 clearLog()
                 clearProfile()
                 clearTheoryLog()
+                clearLokal()
+                setGesichert(null)
                 setTheorie(EMPTY_THEORY_LOG)
                 setLog(EMPTY_LOG)
                 setStored(false)
@@ -237,6 +277,21 @@ export function DataManager() {
           </button>
         )}
       </section>
+
+      {/* Der Abgleich ist die Ausnahme, nicht der Weg. Die App läuft
+          vollständig ohne ihn: alles liegt lokal, und mitgenommen wird über
+          die Datei oben. Wer zwei Geräte hat, klappt hier auf — alle anderen
+          sehen von GitHub nie etwas. */}
+      <details className="info mt-9">
+        <summary>Mehrere Geräte · Abgleich über GitHub</summary>
+        <div className="border-t border-line px-[15px] py-[15px]">
+          <p className="mb-3 text-[13px] leading-relaxed text-dim">
+            Optional. Wer auf Handy und Rechner übt, kann beide Stände über ein eigenes,
+            privates GitHub-Repo abgleichen. Ohne das läuft alles Übrige unverändert.
+          </p>
+          <SyncPanel onChanged={() => setLog(loadLog())} />
+        </div>
+      </details>
       </div>
     </div>
   )

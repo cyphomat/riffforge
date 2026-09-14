@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riffforge — Fünfzehn Minuten am Tag</title>
+<meta name="description" content="Eine Übungs-App für Metal-Gitarre. Kein Konto, kein Server, alles bleibt auf dem Gerät.">
+<meta name="color-scheme" content="dark">
+
+<!--
+  Eine eigenständige Startseite zum Ablegen auf einer fremden Seite.
+
+  Bewusst eine einzelne Datei ohne Abhängigkeiten: kein Bündel, kein
+  Framework, keine fremde Schrift, kein Analyse-Dienst. Sie lässt sich
+  irgendwohin kopieren und funktioniert.
+
+  DIE EINE STELLE ZUM ÄNDERN: href der beiden Knöpfe unten (APP-ADRESSE).
+
+  Warum hier KEIN Installieren-Knopf steht: `beforeinstallprompt` feuert nur
+  auf der Herkunft, zu der die App gehört. Liegt diese Seite auf
+  beispiel.de und die App auf cyphomat.github.io, kann der Browser von hier
+  aus nichts installieren — ein Knopf wäre eine Attrappe. Der echte
+  Installieren-Knopf sitzt deshalb in der App selbst, unter „Daten".
+  (Liegt die App später auf derselben Domain, kann er hierher wandern.)
+-->
+
+<style>
+  :root {
+    --bg: #0c0c0e; --panel: #17161b; --panel2: #1e1c22; --sunken: #0a090c;
+    --fg: #f2f0ec; --muted: #a7a3ab; --dim: #8b8593; --line: #2c2a30;
+    --akzent: #e8a23d; --stahl: #6f93ad;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    /* Anton und Oswald liegen nur in der App. Hier der nächstbeste Stapel
+       aus dem, was ohnehin auf dem Gerät ist — eine Schrift nachzuladen
+       hiesse, für eine Startseite einen fremden Host aufzumachen. */
+    --display: "Haettenschweiler", "Arial Narrow Bold", "Impact", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background-image: radial-gradient(900px 420px at 50% -10%, rgba(232,162,61,.05), transparent 70%);
+    padding: 0 16px calc(56px + env(safe-area-inset-bottom));
+  }
+  .huelle { max-width: 640px; margin: 0 auto; }
+
+  .marke {
+    font-family: var(--display); font-weight: 400;
+    text-transform: uppercase; letter-spacing: -.01em; line-height: 1;
+    color: var(--akzent); font-size: 30px; margin: 28px 0 0;
+  }
+
+  .kicker {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em; color: var(--muted);
+  }
+
+  /* Fläche mit Bernsteinkante links — markiert, was gerade dran ist. */
+  .card {
+    position: relative; border: 1px solid var(--line); padding: 18px;
+    background: linear-gradient(160deg, var(--panel), var(--panel2));
+    margin-top: 22px;
+  }
+  .card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--akzent); }
+  /* Eckwinkel wie am Road-Case. */
+  .card::after {
+    content: ""; position: absolute; inset: -1px; pointer-events: none; opacity: .7;
+    background-image:
+      linear-gradient(var(--akzent), var(--akzent)), linear-gradient(var(--akzent), var(--akzent)),
+      linear-gradient(var(--stahl), var(--stahl)), linear-gradient(var(--stahl), var(--stahl));
+    background-size: 18px 2px, 2px 18px, 18px 2px, 2px 18px;
+    background-position: left top, left top, right bottom, right bottom;
+    background-repeat: no-repeat;
+  }
+
+  h1 {
+    font-family: var(--display); font-weight: 400; text-transform: uppercase;
+    font-size: 34px; line-height: 1.05; letter-spacing: .01em;
+    margin: 6px 0 0;
+  }
+  @media (min-width: 420px) { h1 { font-size: 40px; } }
+  .lead { color: var(--muted); font-size: 15px; margin: 10px 0 0; }
+
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; margin-top: 16px; padding: 18px 20px;
+    border: 1px solid var(--akzent); background: rgba(232,162,61,.1);
+    color: var(--akzent); font-family: var(--mono); font-size: 14px;
+    font-weight: 800; text-transform: uppercase; letter-spacing: .14em;
+    text-decoration: none; cursor: pointer; transition: background .12s;
+  }
+  .btn:hover { background: rgba(232,162,61,.22); }
+  .btn.ghost {
+    border-color: var(--line); background: none; color: var(--muted);
+    padding: 12px 16px; font-size: 12px; letter-spacing: .1em; margin-top: 9px;
+  }
+  .btn.ghost:hover { border-color: var(--stahl); color: var(--stahl); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--akzent); outline-offset: 2px; }
+
+  .rule {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em; color: var(--muted);
+    margin: 38px 0 12px;
+  }
+  .rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+  ul.punkte { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  ul.punkte li { border-bottom: 1px solid var(--line); padding: 13px 0; }
+  ul.punkte b {
+    display: block; font-family: var(--display); font-weight: 400;
+    text-transform: uppercase; font-size: 17px; letter-spacing: .01em;
+  }
+  ul.punkte span { display: block; color: var(--muted); font-size: 14px; margin-top: 3px; }
+
+  ol.schritte { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); counter-reset: s; }
+  ol.schritte li {
+    border-bottom: 1px solid var(--line); padding: 9px 0 9px 26px;
+    position: relative; color: var(--muted); font-size: 14px;
+  }
+  ol.schritte li::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; left: 0; color: var(--akzent);
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+  }
+  ol.schritte b { color: var(--fg); font-weight: 600; }
+
+  footer { margin-top: 44px; color: var(--dim); font-size: 13px; }
+  footer a { color: var(--stahl); }
+  #ios { display: none; }
+</style>
+</head>
+<body>
+<div class="huelle">
+
+  <p class="marke">Riffforge</p>
+
+  <section class="card">
+    <span class="kicker">Metal-Gitarre</span>
+    <h1>Fünfzehn Minuten am Tag</h1>
+    <p class="lead">
+      Kein Kurskatalog, sondern eine Session-Maschine: starten, üben, fertig — und morgen
+      wieder. Was drankommt, entscheidet die App aus deinem Übungs-Log.
+    </p>
+  </section>
+
+  <!-- APP-ADRESSE: hier eintragen, beide Knöpfe. -->
+  <a class="btn" href="https://cyphomat.github.io/riffforge/">Öffnen und loslegen</a>
+  <a class="btn ghost" href="https://github.com/cyphomat/riffforge">Quelltext ansehen</a>
+
+  <h2 class="rule">Was du wissen solltest</h2>
+  <ul class="punkte">
+    <li>
+      <b>Kein Konto, kein Server</b>
+      <span>Es gibt nichts anzumelden. Die App spricht mit niemandem — kein Tracking, keine
+      Einbettungen, keine fremden Schriften.</span>
+    </li>
+    <li>
+      <b>Alles bleibt auf dem Gerät</b>
+      <span>Dein Übungs-Log liegt im Browser. Das ist der Vorteil und der Haken: Browserdaten
+      löschen heisst auch Log löschen.</span>
+    </li>
+    <li>
+      <b>Mitnehmen geht über eine Datei</b>
+      <span>Unter <i>Daten</i> holst du deinen Stand heraus und anderswo wieder hinein. Auf ein
+      zweites Gerät, in ein Backup, wohin du willst.</span>
+    </li>
+    <li>
+      <b>Läuft offline</b>
+      <span>Einmal geöffnet, funktioniert sie ohne Netz. Metronom, Drills und Wissensfragen
+      brauchen keine Verbindung.</span>
+    </li>
+  </ul>
+
+  <section id="ios">
+    <h2 class="rule">Auf dem iPhone ablegen</h2>
+    <ol class="schritte">
+      <li>Oben auf <b>Öffnen und loslegen</b> tippen</li>
+      <li>Unten im Safari-Menü auf <b>Teilen</b></li>
+      <li><b>Zum Home-Bildschirm</b> wählen und bestätigen</li>
+    </ol>
+  </section>
+
+  <footer>
+    Eigene Übungen im jeweiligen Stil — keine abgeschriebenen Tabs.
+    Quelltext offen auf <a href="https://github.com/cyphomat/riffforge">GitHub</a>.
+  </footer>
+
+</div>
+
+<script>
+  // Die Anleitung nur dort, wo sie gebraucht wird. Android und Desktop
+  // bekommen den echten Installieren-Knopf in der App selbst; auf iOS gibt
+  // es den nicht, dort ist das Teilen-Menü der einzige Weg.
+  (function () {
+    var ua = navigator.userAgent;
+    var iOS = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    var safari = /Safari/.test(ua) && !/CriOS|FxiOS|Chrome|Chromium|Edg/.test(ua);
+    if (iOS && safari) document.getElementById("ios").style.display = "block";
+  })();
+</script>
+</body>
+</html>

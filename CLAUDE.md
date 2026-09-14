@@ -58,6 +58,10 @@ Verschiedenes.
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
 | `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
+| `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
+| `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
+| `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
+| `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |
 | `lib/storage/theory-log.ts` | localStorage, einziger Zugriffspunkt auf die Antworten |
@@ -181,6 +185,34 @@ Komponente.
 - **Rost ist „nicht ganz", Rot ist „kaputt".** `--rost` trägt die zähe
   Bewertung, die überfällige Karte, die fehlende Bedingung. Bleibt Rot dafür
   frei, heisst Rot wirklich noch etwas.
+- **Lokal ist der Normalfall, der Abgleich die Ausnahme.** Die App läuft
+  vollständig ohne Datenrepo: alles liegt in `localStorage`, mitgenommen wird
+  über eine Datei. Auf *Daten* steht deshalb zuerst Sichern, Einlesen und
+  Löschen; der GitHub-Abgleich sitzt zugeklappt darunter unter *Mehrere
+  Geräte*. Wer ihn nicht will, sieht von GitHub nie etwas — und `runSync`
+  liefert ohne eingerichtetes Repo still `ok: false` statt eines Fehlers.
+- **Der Willkommens-Schirm kommt einmal und beantwortet drei Fragen.** Wo
+  bleiben meine Daten, brauche ich ein Konto, wie komme ich wieder raus. Die
+  dritte ist die, an der solche Apps scheitern: wer nicht weiss, dass sein
+  Stand nur in diesem Browser liegt, verliert ihn beim ersten Aufräumen. Das
+  gehört nicht ins Kleingedruckte. Er erscheint nur bei leerem Log — nach
+  einem Import wäre er nur eine Hürde.
+- **Erinnern, aber selten.** `sollErinnern` verlangt *beides*: mindestens
+  zwölf Einträge und vierzehn Tage seit der letzten Sicherung. Ohne je
+  gesicherte Datei zählt die Zeit ab dem ältesten Eintrag, sonst bekäme
+  jemand, der seit einem Jahr übt und nie exportiert hat, nie einen Hinweis.
+  Eine Erinnerung, die zu früh oder grundlos kommt, wird weggeklickt und
+  danach nie wieder gelesen — deshalb steht sie an genau zwei Stellen: über
+  dem Exportknopf und am Abschluss einer Session, also dort, wo man ohnehin
+  stehen bleibt.
+- **Installieren geht nur auf der Herkunft der App.** `beforeinstallprompt`
+  feuert nicht für eine fremde Domain — eine Startseite auf einer anderen
+  Adresse kann also keinen echten Installieren-Knopf haben, nur eine
+  Attrappe. Der Knopf sitzt deshalb in der App unter *Daten*;
+  `landing/index.html` verlinkt nur. Auf iOS gibt es das Ereignis gar nicht,
+  dort steht die Anleitung über *Teilen → Zum Home-Bildschirm*. Und `.marke`
+  ist in der Startseite ein Systemschrift-Stapel, weil eine Schrift
+  nachzuladen hiesse, für eine Startseite einen fremden Host aufzumachen.
 - **Die Ansage behauptet nichts.** Jede Zeile in `briefing.ts` muss aus dem Log
   ableitbar sein, sonst gehört sie da nicht hin.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut

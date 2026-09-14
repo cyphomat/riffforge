@@ -16,6 +16,8 @@ import { loadProfile } from "@/lib/storage/profile"
 import type { Profile } from "@/lib/session/profile"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
+import { Welcome } from "@/components/session/welcome"
+import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type PracticeLog } from "@/lib/session/types"
 
 const EXTRA_LENGTHS = [10, 25]
@@ -36,12 +38,31 @@ export function PracticeOverview() {
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [willkommen, setWillkommen] = useState(false)
 
   useEffect(() => {
-    setLog(loadLog())
+    const gelesen = loadLog()
+    setLog(gelesen)
     setProfile(loadProfile())
+    // Der Willkommens-Schirm gilt dem, der wirklich zum ersten Mal hier ist.
+    // Wer schon einen Log hat — etwa nach einem Import — hat die Antworten
+    // längst und würde nur aufgehalten.
+    setWillkommen(!willkommenGesehen() && gelesen.results.length === 0)
     setLoaded(true)
   }, [])
+
+  const willkommenWeg = () => {
+    merkeWillkommen()
+    setWillkommen(false)
+  }
+
+  // Einmal überhaupt: wo bleiben die Daten, brauche ich ein Konto, wie komme
+  // ich wieder raus. Erst danach die zwei Fragen zum Starttempo.
+  if (loaded && willkommen) {
+    return (
+      <Welcome onStart={willkommenWeg} onImport={willkommenWeg} />
+    )
+  }
 
   // Ersteinrichtung nur beim allerersten Mal — und nur, solange noch nichts
   // geübt wurde. Wer schon einen Log hat, braucht keine Starttempi mehr.
