@@ -1,0 +1,18 @@
+<!--
+  Die Wortmarke der App als Zeichen: ein Plektrum, massiv in Bernstein.
+
+  Die Kontur ist ein echtes 351er — zwei gleiche Schultern oben, eine Spitze
+  unten, die Flanken leicht konkav. Breiter als hoch: das ist der Unterschied
+  zwischen „Plektrum" und „Wassertropfen", und daran sind die ersten Entwürfe
+  gescheitert.
+
+  Bewusst ohne Binnenzeichnung. Geprüft wurde bei 48 px, nicht bei 512: dort
+  überlebt nur eine geschlossene Silhouette. Bundstäbchen, Einlagen und
+  Glutverläufe waren alle da und sind alle im Kleinen zerfallen.
+
+  Diese Datei ist die Quelle. `tools/icons.mjs` erzeugt daraus public/icons/.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#0c0c0e"/>
+  <path d="M256 108 C332 108 400 146 400 200 C400 274 318 378 256 410 C194 378 112 274 112 200 C112 146 180 108 256 108 Z" fill="#e8a23d"/>
+</svg>

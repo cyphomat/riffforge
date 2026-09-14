@@ -62,6 +62,8 @@ Verschiedenes.
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
+| `assets/logo/plektrum.svg` | Das Zeichen. Quelle für alle Icons. |
+| `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |
 | `lib/storage/theory-log.ts` | localStorage, einziger Zugriffspunkt auf die Antworten |
@@ -174,6 +176,27 @@ Komponente.
   weniger Spalten, und `1fr` bläst die Zellen auf — das Raster wurde
   *grösser*. Die Zellgrösse ist deshalb gedeckelt und die Platte schrumpft
   aufs Raster statt auf die Spalte.
+- **Das Zeichen ist ein Plektrum, und es wird bei 48 px entschieden.** Das
+  alte Icon war ein Amboss mit einem Vierstrahl-Stern: „Forge" war drin,
+  „Riff" nicht, der Funke las sich als KI-Glyph, und die liegende Silhouette
+  wurde auf dem Homescreen ein Klumpen. Beim Neubau sind neun Entwürfe
+  gescheitert — Kopfplatte, Griffbrett, zwei Plektren, Plektrum im Case —
+  und zwar **alle an derselben Spalte**: bei 48 px überlebt nur eine fette,
+  geschlossene Silhouette. Feine Linien zerfallen, dünne Formen werden
+  Striche, mehrfarbige Bänder werden Candy Corn. Wer das Zeichen anfasst,
+  prüft es zuerst klein. Die Quelle ist `assets/logo/plektrum.svg`, und
+  `tools/icons.mjs` erzeugt daraus alle Grössen — samt einer **maskierbaren**
+  Fassung, weil Android bis zu 20 % vom Rand wegschneidet und ein
+  flächenfüllendes Zeichen dort seine Spitze verliert.
+- **Die Wortfuge bekommt ein Haar Luft.** „Riff" + „forge" ergibt drei
+  gleiche Buchstaben hintereinander — dasselbe Problem wie bei
+  „Schifffahrt", und in versaler Anzeigeschrift liest man das als
+  Tippfehler. `.marke .fuge` gibt der Naht 0,05 em. Zwei naheliegende
+  Lösungen sind ausgeschieden: ein Farbwechsel, weil **Rost in dieser App
+  „nicht ganz" heisst** und ein zweifarbiger Name ein gebrochenes Versprechen
+  wäre; und ein Trennzeichen, weil „Riff · Forge" sich wie zwei Produkte
+  liest. Mehr als ein Haar sind übrigens auch falsch: bei 0,09 em zerfiel der
+  Name in zwei Wörter.
 - **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton als
   `--font-marke`, ausschliesslich auf `.marke`. Überschriften, Zahlen und
   Tempo bleiben Oswald, damit die App nicht überall schreit.

@@ -262,6 +262,18 @@
     @apply uppercase leading-none tracking-[-0.01em];
   }
 
+  /* Die Wortfuge. "RIFF" + "FORGE" ergibt drei gleiche Buchstaben
+     hintereinander — dasselbe Problem wie bei "Schifffahrt", und in versaler
+     Anzeigeschrift liest man das als Tippfehler. Ein Haar mehr Abstand an der
+     Naht, und das Auge findet den Bruch, ohne dass das Wort in zwei zerfällt.
+
+     Bewusst kein Farbwechsel: Rost hiesse in dieser App „nicht ganz", und ein
+     zweifarbiger Name wäre ein gebrochenes Versprechen. Bewusst auch kein
+     Trennzeichen — „Riff · Forge" liest sich wie zwei Produkte. */
+  .marke .fuge {
+    margin-left: 0.05em;
+  }
+
   /* Grosse Zahlen und Namen: Oswald, versal, eng geführt. */
   .display {
     font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
