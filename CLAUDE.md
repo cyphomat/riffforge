@@ -252,6 +252,16 @@ Komponente.
   ist keine. Die Rhythmuszellen und der Anlauf statt des dritten Motivs sind
   die Antwort darauf, und `lick.test.ts` prüft seither auch, was sich
   *unterscheiden* muss, nicht nur, was stimmen muss.
+- **Der Startwert wird durchgerührt, bevor er gewürfelt wird.** Mulberry32
+  liefert bei kleinen, *fortlaufenden* Startwerten korrelierte erste Werte —
+  und genau dort fängt jeder an, weil die Licks ab eins durchgezählt werden.
+  Nachgemessen über die ersten vierzig Startwerte: neunzehnmal dieselbe
+  Kontur, wo zehnmal zu erwarten gewesen wären (p ≈ 0,007). Ab Startwert
+  tausend verteilte es sich sauber. Ein neuer Nutzer hätte also ausgerechnet
+  die vierzig Licks bekommen, bei denen die Abwechslung fehlt. Eine
+  Lawinenfunktion vor dem Generator behebt das; `lick.test.ts` hält es fest.
+  Aufgefallen ist es nicht in einem Test, sondern beim Durchsehen von acht
+  Licks am Stück.
 - **Der Generator ist der Drill, das Lick ist der Inhalt.** Aller Fortschritt
   hängt an `drillId` — wäre jedes Lick ein eigener Drill, hätte keines eine
   Tempokurve und `masteryOf` nichts zu messen. Deshalb eine feste Nummer

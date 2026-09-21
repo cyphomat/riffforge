@@ -87,6 +87,22 @@ describe("baueLick", () => {
     expect(zahlen.size).toBeGreaterThanOrEqual(5)
   })
 
+  it("verteilt die Konturen gleichmässig — auch bei den ersten Startwerten", () => {
+    // Der Grund steht in `wuerfel`: mulberry32 lieferte bei kleinen,
+    // fortlaufenden Startwerten korrelierte erste Werte. Über die ersten
+    // vierzig Licks war neunzehnmal dieselbe Kontur dran statt zehnmal —
+    // und die ersten vierzig sind die, die ein neuer Nutzer spielt.
+    const ersten40 = Array.from({ length: 40 }, (_, i) => baueLick(i + 1).bauplan.kontur)
+    const haeufigkeit: Record<string, number> = {}
+    for (const k of ersten40) haeufigkeit[k] = (haeufigkeit[k] ?? 0) + 1
+    // Vier Konturen auf vierzig Licks: zehn je Stück wären gleich verteilt.
+    // Die Grenze lässt Zufall zu und schlägt bei echter Schieflage an.
+    for (const [kontur, anzahl] of Object.entries(haeufigkeit)) {
+      expect(anzahl, `${kontur} kam ${anzahl}× in den ersten 40`).toBeLessThanOrEqual(16)
+    }
+    expect(Object.keys(haeufigkeit)).toHaveLength(4)
+  })
+
   it("wiederholt sich nicht von Startwert zu Startwert", () => {
     const formen = new Set(SEEDS.map((seed) => tabOf(baueLick(seed))))
     // Zufall darf Wiederholungen erzeugen; ein Generator, der aus
