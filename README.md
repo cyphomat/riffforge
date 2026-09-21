@@ -159,6 +159,42 @@ spielst.
 | Hammer Down | Legato | Legato aus der Leersaite heraus, im Riff-Kontext | 55 → 130 |
 | Lick-Schmiede | Pentatonic | Ein neues Lead-Lick aus der Pentatonik — bleibt, bis es sitzt | 50 → 130 |
 
+## Ein Lick
+
+Neben der Viertelstunde gibt es einen zweiten Eingang: **Ein Lick**, der
+Geisterknopf unter dem Startknopf — oder direkt `/lick`. Drei Minuten Lead,
+ohne Session drumherum, für den, der gerade Lust darauf hat.
+
+Das Lick wird **gerechnet**, nicht aus einer Liste gezogen. Töne aus der
+Pentatonik zu würfeln ergäbe Tonsalat, und daran lernt man vor allem *keine
+Phrasierung*. Deshalb hat jedes Lick dieselbe Form — zwei Takte 4/4 auf
+Achteln:
+
+```
+Motiv        drei bis vier Töne mit einer Richtung: auf, ab, Bogen, Zickzack
+Entwicklung  dasselbe Motiv wiederholt, sequenziert oder umgekehrt
+Anlauf       schrittweise auf den Zielton zu
+Auflösung    Grundton oder Quinte, auf der Drei, gehalten mit Vibrato
+```
+
+Der Zielton ist stabil, weil ein Lick, das auf der kleinen Terz aufhört,
+abgebrochen klingt statt offen.
+
+Wählbar sind **alle zwölf Grundtöne in fünf Lagen** — sechzig Boxen. Die
+Auswahl nennt dabei den tiefsten Bund statt nur die Lagennummer: „Lage 3" sagt
+beim Greifen nichts, „ab Bund 8" schon. Die Lagen laufen im Kreis, und welche
+zuunterst liegt, hängt am Grundton: bei A-Moll ist es Lage 4, nicht Lage 1.
+
+Ein Lick **bleibt, bis du es mit _Sauber_ abhakst** — dann kommt das nächste.
+Es schreibt in denselben Log und unter dieselbe Drill-Nummer wie die
+Lick-Schmiede in der Session: der Generator ist der Drill, das Lick ist der
+Inhalt. Eine Tempokurve über lauter verschiedene Licks wäre nicht deutbar, und
+zwei Hälften, die nichts voneinander wissen, wären es auch nicht.
+
+Das Mikrofon hört dabei nur den **Rhythmus**. Ob die *Töne* sassen, kann die
+App nicht wissen und behauptet es auch nicht — das ändert sich erst mit einer
+[Tonhöhen-Erkennung](#was-noch-kommt).
+
 ## Wissen
 
 <p align="center">

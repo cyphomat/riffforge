@@ -163,6 +163,43 @@ you play.
 | Hammer Down | Legato | Legato out of the open string, in a riff | 55 → 130 |
 | Lick Forge | Pentatonic | A fresh lead lick from the pentatonic box — stays until you own it | 50 → 130 |
 
+## One lick
+
+Next to the quarter hour there is a second entrance: **one lick** — the ghost
+button under the start button, or `/lick` directly. Three minutes of lead
+playing, with no session around it, for when you just feel like it.
+
+The lick is **computed**, not pulled from a list. Rolling dice over the
+pentatonic scale would produce note salad, and what you would mostly fail to
+learn from it is *phrasing*. So every lick has the same shape — two bars of
+4/4 on eighths:
+
+```
+Motif        three or four notes with a direction: up, down, arc, zigzag
+Development  the same motif repeated, sequenced or inverted
+Approach     stepwise towards the target note
+Resolution   root or fifth, on beat three, held with vibrato
+```
+
+The target note is a stable one, because a lick that stops on the minor third
+sounds cut off rather than open.
+
+You can pick **all twelve roots in five positions** — sixty boxes. The picker
+names the lowest fret rather than just the position number: "position 3" tells
+you nothing under your fingers, "from fret 8" does. The positions run in a
+circle, and which one sits lowest depends on the root: in A minor it is
+position 4, not position 1.
+
+A lick **stays until you rate it clean** — then the next one comes. It writes
+into the same log and under the same drill id as the Lick Forge inside a
+session: the generator is the drill, the lick is the content. A tempo curve
+across a string of different licks would mean nothing, and neither would two
+halves that know nothing about each other.
+
+The microphone only hears the **rhythm** here. Whether the *notes* were right
+is something the app cannot know, and it does not claim to —
+[pitch detection](#what-is-still-coming) is what would change that.
+
 ## Knowledge
 
 <p align="center">
