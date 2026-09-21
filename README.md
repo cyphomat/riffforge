@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-644%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-664%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -194,6 +194,45 @@ zwei Hälften, die nichts voneinander wissen, wären es auch nicht.
 Das Mikrofon hört dabei nur den **Rhythmus**. Ob die *Töne* sassen, kann die
 App nicht wissen und behauptet es auch nicht — das ändert sich erst mit einer
 [Tonhöhen-Erkennung](#was-noch-kommt).
+
+## Sieben Saiten
+
+Ein eigener Modus für die Siebensaitige — **/sieben**, der zweite
+Geisterknopf auf *Heute*. Zehn Minuten, drei Blöcke aus einem eigenen
+Katalog: Aufwärmen, Technik, Riff. Kein Teil der täglichen Viertelstunde,
+und das ist kein Geschmacksurteil: für diese Übungen brauchst du eine andere
+Gitarre, und ein Block, den man nicht spielen kann, weil sie im Koffer liegt,
+wäre ein kaputter Tagesplan.
+
+Gestimmt wird **B Standard** — `B – E – A – D – G – B – E`. Sechs Saiten
+bleiben, wie sie waren, die tiefe B kommt unten dazu, eine Quarte unter der
+tiefen E. Das ist die Auskunft, die einem Umsteiger fehlt: **im fünften Bund
+der neuen Saite liegt genau der Ton, den deine bisher tiefste Leersaite
+gibt.** Alle Griffbilder gelten unverändert weiter, weil der Abstand zwischen
+zwei Saiten überall derselbe ist — ausser zwischen G und B, wie eh und je.
+
+Drop A gibt es bewusst nicht: das ist eine andere Orientierung auf der
+tiefsten Saite und wäre ein zweiter Katalog, kein Umschalter.
+
+| Drill | Sorte | Ziel | BPM |
+|---|---|---|---|
+| Alle Sieben | Warm-up | Die Anschlaghand lernt, dass der Hals unten weitergeht | 60 → 120 |
+| Quartensprung | Warm-up | Jede zweite Saite treffen, ohne hinzusehen | 55 → 120 |
+| Chug auf B | Technik | Die tiefe Saite trocken bekommen statt dumpf | 70 → 160 |
+| Stille auf der Sieben | Technik | Die tiefe Saite zum Schweigen bringen, während oben gespielt wird | 55 → 120 |
+| Power Chords auf der Sieben | Technik | Grundton auf der tiefsten Saite, ohne Nebengeräusch | 60 → 150 |
+| Gallop auf B | Technik | Die Gallop-Figur unten, ohne dass sie verschmiert | 60 → 140 |
+| Pentatonik in den Keller | Technik | Die vertraute Box um die siebte Saite verlängern | 55 → 140 |
+| Tieferlegung | Riff | Gedämpfte Chugs unten gegen offene Power Chords | 60 → 140 |
+| Wechselbad | Riff | Zwischen tiefster Saite und Mittellage springen, ohne Gebrumm | 55 → 130 |
+| Erdgeschoss | Riff | Eine Lead-Figur, die unten aus der Box herausfällt | 50 → 120 |
+
+Die Übungen landen im **selben** Übungs-Log wie alles andere, jede mit
+eigener Nummer und eigener Tempokurve. Getrennt sind nur die Kataloge, und
+zwar für die Auswahl: im *Drills*-Verzeichnis stehen sie unten für sich und
+lassen sich einzeln antippen. Wissensfragen gibt es hier keine — das ist ein
+Handwerks-Modus, und was es über die tiefe Saite zu wissen gibt, steht am
+Drill.
 
 ## Wissen
 

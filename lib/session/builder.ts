@@ -1,4 +1,4 @@
-import { DRILLS } from "./drills"
+import { ALLE_DRILLS_BY_ID, DRILLS } from "./drills"
 import { daysSince, masteryOf, nextBpm, progressFor } from "./progress"
 import { focusBonus, type Profile } from "./profile"
 import type { BlockKind, Drill, PracticeLog, SessionBlock, SessionPlan } from "./types"
@@ -49,14 +49,24 @@ export function priorityOf(
   return weakness * 0.55 + staleness * 0.45 + novelty + focusBonus(drill, profile)
 }
 
-function rank(
+/**
+ * Die Rangfolge innerhalb eines Katalogs.
+ *
+ * Der Katalog ist ein Parameter, weil es inzwischen zwei gibt: die tägliche
+ * Viertelstunde zieht aus `DRILLS`, der Sieben-Saiter-Modus aus seinem
+ * eigenen Vorrat. Die Auswahlregel ist in beiden dieselbe — zwei Fassungen
+ * davon wären zwei Gelegenheiten, sie auseinanderlaufen zu lassen.
+ */
+export function rangfolge(
+  katalog: Drill[],
   kind: BlockKind,
   log: PracticeLog,
   now: Date,
   random: () => number,
   profile: Profile | null,
 ): Drill[] {
-  return DRILLS.filter((drill) => drill.kind === kind)
+  return katalog
+    .filter((drill) => drill.kind === kind)
     .map((drill) => ({
       drill,
       // Small jitter so equal-priority drills rotate instead of locking in.
@@ -66,7 +76,25 @@ function rank(
     .map((entry) => entry.drill)
 }
 
-function toBlock(
+/** Dieselbe Rangfolge über den Hauptkatalog. */
+function rank(
+  kind: BlockKind,
+  log: PracticeLog,
+  now: Date,
+  random: () => number,
+  profile: Profile | null,
+): Drill[] {
+  return rangfolge(DRILLS, kind, log, now, random, profile)
+}
+
+/**
+ * Ein Drill als Block, mit dem Tempo, das sein Log hergibt.
+ *
+ * Exportiert, weil der Sieben-Saiter-Modus seine drei Blöcke selbst
+ * zusammenstellt, aber dieselbe Tempo-Fortschreibung braucht: derselbe Log,
+ * dieselbe Rechnung.
+ */
+export function toBlock(
   drill: Drill,
   log: PracticeLog,
   seconds: number,
@@ -193,7 +221,10 @@ export function buildDrillSession(
   drillId: string,
   options: BuildOptions = {},
 ): SessionPlan | null {
-  const drill = DRILLS.find((candidate) => candidate.id === drillId)
+  // Über beide Kataloge gesucht: getrennt sind sie für die *Auswahl* durch
+  // den Scheduler, nicht für die ausdrückliche Wahl. Wer im Katalog auf einen
+  // Sieben-Saiter-Drill tippt, weiss, welche Gitarre er dafür braucht.
+  const drill = ALLE_DRILLS_BY_ID[drillId]
   if (!drill) return null
 
   const seconds = Math.max(60, (options.minutes ?? 10) * 60)

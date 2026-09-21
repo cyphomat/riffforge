@@ -1,3 +1,4 @@
+import { SIEBEN_DRILLS } from "./drills-sieben"
 import type { Drill } from "./types"
 
 /**
@@ -498,3 +499,16 @@ export const DRILLS_BY_ID: Record<string, Drill> = Object.fromEntries(
 export function getDrill(id: string): Drill | undefined {
   return DRILLS_BY_ID[id]
 }
+
+/**
+ * Nachschlagen über **beide** Kataloge.
+ *
+ * Der Übungs-Log kennt die Trennung nicht: dort steht eine Drill-Nummer, und
+ * ob sie aus dem Hauptkatalog oder vom Sieben-Saiter kommt, ist ihm gleich.
+ * Getrennt sind die Kataloge nur für die *Auswahl* — der Scheduler der
+ * täglichen Viertelstunde soll nie eine Übung ziehen, für die eine zweite
+ * Gitarre nötig ist. Wer einen Titel zu einem Log-Eintrag sucht, sucht hier.
+ */
+export const ALLE_DRILLS_BY_ID: Record<string, Drill> = Object.fromEntries(
+  [...DRILLS, ...SIEBEN_DRILLS].map((drill) => [drill.id, drill]),
+)

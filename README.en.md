@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-644%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-664%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -199,6 +199,43 @@ halves that know nothing about each other.
 The microphone only hears the **rhythm** here. Whether the *notes* were right
 is something the app cannot know, and it does not claim to —
 [pitch detection](#what-is-still-coming) is what would change that.
+
+## Seven strings
+
+A mode of its own for the seven-string — **/sieben**, the second ghost button
+on *Heute*. Ten minutes, three blocks from a separate catalog: warm-up,
+technique, riff. Deliberately not part of the daily quarter hour, and that is
+not a matter of taste: these drills need a different guitar, and a block you
+cannot play because it is in its case is a broken plan for the day.
+
+The tuning is **B standard** — `B – E – A – D – G – B – E`. Six strings stay
+exactly as they were, the low B is added underneath, a fourth below the low E.
+That is the piece of information a switcher is missing: **the fifth fret of the
+new string gives you the note your lowest open string used to give.** Every
+shape you know still holds, because the interval between two strings is the
+same everywhere — except between G and B, as always.
+
+Drop A is deliberately absent: it is a different orientation on the lowest
+string, and it would be a second catalog rather than a toggle.
+
+| Drill | Kind | Goal | BPM |
+|---|---|---|---|
+| Alle Sieben | Warm-up | The picking hand learns that the neck goes on below | 60 → 120 |
+| Quartensprung | Warm-up | Hit every other string without looking | 55 → 120 |
+| Chug auf B | Technique | Get the low string dry instead of muddy | 70 → 160 |
+| Stille auf der Sieben | Technique | Keep the low string silent while you play above it | 55 → 120 |
+| Power Chords auf der Sieben | Technique | Root on the lowest string, with no string noise | 60 → 150 |
+| Gallop auf B | Technique | The gallop figure down there, without it smearing | 60 → 140 |
+| Pentatonik in den Keller | Technique | Extend the familiar box onto the seventh string | 55 → 140 |
+| Tieferlegung | Riff | Muted chugs below against ringing power chords | 60 → 140 |
+| Wechselbad | Riff | Jump between the lowest string and the middle, without rumble | 55 → 130 |
+| Erdgeschoss | Riff | A lead phrase that falls out of the box downwards | 50 → 120 |
+
+The drills go into the **same** practice log as everything else, each with its
+own id and its own tempo curve. Only the catalogs are separate, and only for
+picking: in the *Drills* library they sit at the bottom on their own and can be
+started individually. No knowledge questions here — this is a craft mode, and
+what there is to know about the low string sits on the drill itself.
 
 ## Knowledge
 

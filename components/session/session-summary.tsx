@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { DRILLS_BY_ID } from "@/lib/session/drills"
+// Über beide Kataloge: im Log steht eine Nummer, und der Sieben-Saiter-Modus
+// schreibt in denselben Log. Ohne das stünde hier die nackte Nummer.
+import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
 import { progressFor, streakDays } from "@/lib/session/progress"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
@@ -31,7 +33,7 @@ interface Gain {
 function gainsFrom(results: DrillResult[], previousLog: PracticeLog): Gain[] {
   return results.flatMap((result) => {
     if (result.rating < 3) return []
-    const drill = DRILLS_BY_ID[result.drillId]
+    const drill = ALLE_DRILLS_BY_ID[result.drillId]
     if (!drill) return []
 
     const before = progressFor(previousLog, result.drillId).bestBpm
@@ -106,7 +108,7 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
       <h2 className="rule mb-3 mt-8">Was du gespielt hast</h2>
       <div className="flex flex-col gap-[9px]">
         {results.map((result, index) => {
-          const drill = DRILLS_BY_ID[result.drillId]
+          const drill = ALLE_DRILLS_BY_ID[result.drillId]
           return (
             <div
               key={`${result.drillId}-${index}`}

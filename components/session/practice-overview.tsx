@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { DRILLS } from "@/lib/session/drills"
+import { SIEBEN_DRILLS } from "@/lib/session/drills-sieben"
 import { briefingFor, TONE_CLASS, TONE_LABEL } from "@/lib/session/briefing"
 import {
   daysPractisedInLast,
@@ -19,7 +20,7 @@ import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
 import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type PracticeLog } from "@/lib/session/types"
-import { MdMusicNote } from "react-icons/md"
+import { MdLinearScale, MdMusicNote } from "react-icons/md"
 
 const EXTRA_LENGTHS = [10, 25]
 
@@ -74,7 +75,11 @@ export function PracticeOverview() {
   const briefing = briefingFor(log)
   const hasHistory = loaded && log.results.length > 0
 
-  const tracked = DRILLS.filter((drill) => drill.kind !== "warmup")
+  // Beide Kataloge: der Sieben-Saiter schreibt in denselben Log, und was
+  // gespielt wurde, gehört in den Fortschritt — gefiltert wird ohnehin auf
+  // das, was Versuche hat.
+  const tracked = [...DRILLS, ...SIEBEN_DRILLS]
+    .filter((drill) => drill.kind !== "warmup")
     .map((drill) => {
       const progress = progressFor(log, drill.id)
       return { drill, progress, mastery: masteryOf(drill, progress, profile) }
@@ -118,12 +123,18 @@ export function PracticeOverview() {
         ))}
       </div>
 
-      {/* Der zweite Eingang: drei Minuten Lead, ohne Session drumherum.
-          Bewusst als Nebenweg gesetzt — die Viertelstunde bleibt das Produkt,
-          und ein zweiter Knopf in Bernstein hätte zwei Hauptwege gemacht. */}
-      <Link href="/lick" className="btn btn-ghost mt-[9px] w-full py-4">
-        <MdMusicNote className="h-[18px] w-[18px]" /> Ein Lick
-      </Link>
+      {/* Die zwei Nebenwege: drei Minuten Lead, und der Modus für die
+          Siebensaitige. Bewusst beide in Grau und nebeneinander — die
+          Viertelstunde bleibt das Produkt, und ein zweiter Knopf in Bernstein
+          hätte zwei Hauptwege gemacht. */}
+      <div className="mt-[9px] grid grid-cols-2 gap-[9px]">
+        <Link href="/lick" className="btn btn-ghost w-full py-4">
+          <MdMusicNote className="h-[18px] w-[18px]" /> Ein Lick
+        </Link>
+        <Link href="/sieben" className="btn btn-ghost w-full py-4">
+          <MdLinearScale className="h-[18px] w-[18px]" /> Sieben Saiten
+        </Link>
+      </div>
 
         {hasHistory && (
           <>

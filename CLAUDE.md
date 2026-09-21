@@ -59,7 +59,11 @@ Verschiedenes.
 | `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
+| `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
+| `lib/session/drills-sieben.ts` | Der Sieben-Saiter-Katalog (reine Daten, eigene Nummern) |
+| `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |
 | `components/session/lick-runner.tsx` | Der zweite Eingang: ein Lick allein, ohne Session |
+| `components/session/sieben-runner.tsx` | Der dritte Eingang: zehn Minuten Siebensaitige |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
@@ -283,6 +287,22 @@ Komponente.
   wissen. Auf *Heute* steht er bewusst als Geisterknopf unter dem
   Startknopf; zweimal Bernstein wären zwei Hauptwege, und die Viertelstunde
   ist das Produkt.
+- **Der Sieben-Saiter-Modus ist getrennt, weil das Instrument getrennt ist.**
+  `SIEBEN_DRILLS` steht bewusst *nicht* in `DRILLS`: ein Drill, den man nicht
+  spielen kann, weil die andere Gitarre im Koffer liegt, hat in der täglichen
+  Viertelstunde nichts verloren. Der Test dazu füttert den Log mit lauter
+  zähen Sieben-Saiter-Einträgen — damit wären sie, stünden sie im
+  Hauptkatalog, die dringendsten überhaupt — und prüft, dass der Tagesplan sie
+  trotzdem nie zieht. Getrennt ist damit die **Auswahl**, nicht der Log: beide
+  Kataloge schreiben in denselben, jede Übung mit eigener Nummer und eigener
+  Tempokurve, und wer zu einer Nummer den Titel sucht, nimmt
+  `ALLE_DRILLS_BY_ID` — sonst steht im Abschluss die nackte Nummer. Die
+  Stimmung ist **B Standard**, und zwar nur die: Drop A ist eine andere
+  Orientierung auf der tiefsten Saite und wäre ein zweiter Katalog, kein
+  Umschalter. Die Tabulaturen haben sieben Zeilen, und was sie über Töne
+  behaupten, rechnet `lib/theory/sieben.ts` nach — dieselbe Regel wie beim
+  Griffbrett, und dieselbe Begründung: eine Tabelle mit Zahlen lügt
+  irgendwann unbemerkt.
 - **Der Startwert wird durchgerührt, bevor er gewürfelt wird.** Mulberry32
   liefert bei kleinen, *fortlaufenden* Startwerten korrelierte erste Werte —
   und genau dort fängt jeder an, weil die Licks ab eins durchgezählt werden.
