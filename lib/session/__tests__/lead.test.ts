@@ -105,7 +105,9 @@ describe("Boxen", () => {
   it("schreibt die Box in den Titel", () => {
     const drill = DRILLS.find((d) => d.id === LEAD_DRILL_ID)!
     const titel = mitLick(drill, 1, { grundton: "D", lage: 3 }).title
-    expect(titel).toContain("Dm")
+    // Ausgeschrieben: `.display` versalisiert, und „DM" ist keine Tonart.
+    expect(titel).toContain("D-Moll")
+    expect(titel).not.toContain("Dm")
     expect(titel).toContain("Lage 3")
   })
 

@@ -204,27 +204,77 @@ export function baueLick(seed: number, grundton: Ton = "A", lage: Lage = 1): Lic
     return plaetze
   }
 
+  /**
+   * Der Bereich, in dem ein Motiv dieser Länge und Richtung *vollständig*
+   * Platz hat.
+   *
+   * Ohne ihn stösst ein Motiv am Rand des Vorrats an und kehrt um — und eine
+   * abwärts laufende Kontur, die bei Platz 0 anfängt, pendelt dann zwischen
+   * zwei Tönen hin und her. Nachgemessen über 1500 Licks kam das in 4,8 %
+   * heraus, und die sahen alle gleich aus: ein Triller auf einer Saite,
+   * fünfmal wiederholt. Als Lick ist das keines.
+   *
+   * Die Schranke ist deshalb nicht die Gesamtstrecke, sondern der *weiteste
+   * Ausschlag* der Kontur nach oben und nach unten — bei `bogen` (+1, +1, −1)
+   * sind das zwei Plätze nach oben und keiner nach unten, bei `abwaerts`
+   * drei nach unten und keiner nach oben.
+   */
+  const fenster = (richtung: 1 | -1, laenge: number) => {
+    let hier = 0
+    let tiefster = 0
+    let hoechster = 0
+    for (const schritt of schritte.slice(0, laenge - 1)) {
+      hier += schritt * richtung
+      tiefster = Math.min(tiefster, hier)
+      hoechster = Math.max(hoechster, hier)
+    }
+    const unten = -tiefster
+    const oben = vorrat.length - 1 - hoechster
+    return { unten, oben: Math.max(unten, oben) }
+  }
+
+  const ins = (platz: number, grenzen: { unten: number; oben: number }) =>
+    Math.max(grenzen.unten, Math.min(platz, grenzen.oben))
+
   const spanne = schritte.reduce((s, x) => s + Math.abs(x), 0)
-  const obergrenze = Math.max(0, vorrat.length - 1 - spanne)
-  const start = Math.max(0, Math.min(ziel.i - 2 + Math.floor(rnd() * 3) - 1, obergrenze))
 
   const zelleA = waehle(ZELLEN)
   const zelleB = waehle(ZELLEN)
   const zelleC = waehle(ZELLEN)
 
+  // Der Einstieg liegt in der Nähe des Ziels, damit die Phrase nicht quer
+  // durch die Lage laufen muss — aber immer so weit vom Rand, dass die
+  // Kontur ganz hineinpasst.
+  const gewuenscht = ziel.i - 2 + Math.floor(rnd() * 3) - 1
+  const start = ins(gewuenscht, fenster(1, zelleA.length))
+
   const a = motiv(start, 1, zelleA.length)
   const b =
     entwicklung === "wiederholung"
-      ? motiv(start, 1, zelleB.length)
+      ? motiv(ins(start, fenster(1, zelleB.length)), 1, zelleB.length)
       : entwicklung === "sequenz"
-        ? motiv(Math.min(start + 1, obergrenze), 1, zelleB.length)
-        : motiv(Math.min(start + spanne, vorrat.length - 1), -1, zelleB.length)
+        ? motiv(ins(start + 1, fenster(1, zelleB.length)), 1, zelleB.length)
+        : motiv(ins(start + spanne, fenster(-1, zelleB.length)), -1, zelleB.length)
 
   // Der Anlauf: schrittweise vom Ende der Entwicklung auf den Zielton zu,
   // sodass die letzte Note davor unmittelbar daneben liegt.
   const anlauf = (() => {
     const von = b[b.length - 1]
-    const schritt = ziel.i >= von ? 1 : -1
+    // Von welcher Seite herangelaufen wird, entscheidet zuerst die
+    // Entwicklung — aber nur, solange auf dieser Seite überhaupt genug Töne
+    // liegen. Sitzt der Zielton unten in der Lage, gibt es unter ihm nichts
+    // mehr, und der geklemmte Anlauf trat dann auf der Stelle: drei Noten auf
+    // demselben Ton, direkt vor der Auflösung. Über 1500 Licks in allen
+    // sechzig Boxen sassen **alle** Stotterstellen genau dort. Von der
+    // anderen Seite heranzulaufen kostet nichts — schrittweise bleibt
+    // schrittweise, ob von oben oder von unten.
+    const noetig = zelleC.length
+    const unten = ziel.i
+    const oben = vorrat.length - 1 - ziel.i
+    let schritt: 1 | -1 = ziel.i >= von ? 1 : -1
+    if (schritt === 1 && unten < noetig && oben >= noetig) schritt = -1
+    else if (schritt === -1 && oben < noetig && unten >= noetig) schritt = 1
+
     const nachbar = ziel.i - schritt
     const plaetze: number[] = []
     for (let i = zelleC.length - 1; i >= 0; i -= 1) {
@@ -257,8 +307,22 @@ export function baueLick(seed: number, grundton: Ton = "A", lage: Lage = 1): Lic
       // noch einmal an. Nachgemessen betraf das ein Drittel aller Licks.
       // Ein Platz weiter in Richtung des Vorrats behebt es, ohne die Kontur
       // zu verlieren — die Phrase geht dann weiter, statt zu stottern.
-      if (platz === vorigesPlatz && achtel === vorigesAchtel + 1) {
-        platz = platz + 1 < vorrat.length ? platz + 1 : platz - 1
+      //
+      // Der zweite Fall ist der Zielton: er wird nach der Schleife angehängt,
+      // also weiss die Schleife nichts von ihm. Kommt die letzte Note des
+      // Anlaufs auf ihm zu liegen, steht derselbe Ton zweimal da — und zwar
+      // ausgerechnet an der Auflösung. Über 1500 Licks in allen sechzig Boxen
+      // sassen alle verbliebenen Stotterstellen genau dort (11→12). Deshalb
+      // gilt der Platz des Ziels an der Stelle davor als belegt.
+      const belegt = (kandidat: number, wann: number) =>
+        (kandidat === vorigesPlatz && wann === vorigesAchtel + 1) ||
+        (wann === ZIEL_ACHTEL - 1 && kandidat === ziel.i)
+
+      if (belegt(platz, achtel)) {
+        const hoeher = platz + 1
+        const tiefer = platz - 1
+        if (hoeher < vorrat.length && !belegt(hoeher, achtel)) platz = hoeher
+        else if (tiefer >= 0 && !belegt(tiefer, achtel)) platz = tiefer
       }
 
       const griff = vorrat[platz]
@@ -291,7 +355,7 @@ export function baueLick(seed: number, grundton: Ton = "A", lage: Lage = 1): Lic
 /**
  * Das Lick als ASCII-Tabulatur, in derselben Form wie die Drills im Katalog.
  *
- * Zwei Dinge halten sie schmal genug, um auf ein Handy zu passen — und das
+ * Drei Dinge halten sie schmal genug, um auf ein Handy zu passen — und das
  * ist kein Schönheitsproblem: eine Tabulatur, für die man beim Spielen nach
  * rechts wischen muss, ist keine Hilfe.
  *
@@ -299,6 +363,17 @@ export function baueLick(seed: number, grundton: Ton = "A", lage: Lage = 1): Lic
  * reichen für `-5` und `h8`, drei braucht es erst ab dem zehnten Bund.
  * Zweitens wird der leere Schwanz abgeschnitten — nach dem Zielton klingt
  * nichts mehr, und sechs Spalten Striche sagen das nicht besser als eine.
+ *
+ * Drittens steht **jeder Takt auf einer eigenen Zeile**. Das war der Fall,
+ * den die erste Messung nicht sah: sie lief in der Standardbox, und dort
+ * bleibt jeder Bund einstellig. Ab dem zehnten Bund braucht jede Spalte ein
+ * Zeichen mehr, und aus 31 Zeichen werden 45 — nachgemessen betraf das 36 %
+ * aller Licks über die sechzig Boxen. Im Browser bei 390 px gemessen:
+ * 339 px Inhalt in einem 324 px breiten Feld, abgeschnitten wird rechts,
+ * und rechts steht der Zielton. Zwei Systeme à einem Takt sind höchstens
+ * 27 Zeichen breit und passen auch auf 320 px — und nebenbei sieht man dem
+ * Lick jetzt seinen Bau an: Motiv und Entwicklung oben, Anlauf und
+ * Auflösung unten.
  *
  * Die Bindungen stehen *vor* dem Bund, wie in jeder Tabulatur: `h8` heisst,
  * die 8 wird gehämmert. Das Vibrato am Schluss als `~`.
@@ -332,7 +407,16 @@ export function tabOf(lick: Lick): string {
   })
 
   const namen = ["e", "B", "G", "D", "A", "E"]
-  return zeilen.map((felder, i) => `${namen[i]}|${felder.join("")}|`).join("\n")
+  const system = (von: number, bis: number) =>
+    zeilen
+      .map((felder, i) => `${namen[i]}|${felder.slice(von, bis).join("")}|`)
+      .join("\n")
+
+  // Ein Takt sind acht Achtel. Der zweite ist kürzer, wenn der Schwanz nach
+  // dem Zielton schon weg ist.
+  const TAKT = 8
+  if (spalten <= TAKT) return system(0, spalten)
+  return `${system(0, TAKT)}\n\n${system(TAKT, spalten)}`
 }
 
 /**

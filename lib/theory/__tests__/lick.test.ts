@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { ACHTEL_GESAMT, baueLick, erklaerungOf, tabOf } from "../lick"
-import { PENTATONIK, TOENE, midiAt } from "../fretboard"
+import { PENTATONIK, TOENE, midiAt, type Lage, type Ton } from "../fretboard"
 
 /**
  * Was ein Lick sein muss, damit es sich zu üben lohnt.
@@ -12,6 +12,18 @@ import { PENTATONIK, TOENE, midiAt } from "../fretboard"
  */
 
 const SEEDS = Array.from({ length: 400 }, (_, i) => i + 1)
+
+/**
+ * Alle sechzig Boxen.
+ *
+ * Die Prüfungen liefen lange nur in der Standardbox (A-Moll, Lage 1) — und
+ * die ist der freundlichste Fall: einstellige Bünde, der Zielton mitten im
+ * Vorrat. Zwei Fehler haben dort nie gezuckt und sind erst beim Durchspielen
+ * anderer Lagen aufgefallen.
+ */
+const BOXEN: Array<[Ton, Lage]> = TOENE.flatMap((grundton) =>
+  ([1, 2, 3, 4, 5] as Lage[]).map((lage) => [grundton, lage] as [Ton, Lage]),
+)
 
 describe("baueLick", () => {
   it("ist aus seinem Startwert wieder herstellbar", () => {
@@ -80,27 +92,56 @@ describe("baueLick", () => {
     }
   })
 
-  it("stottert fast nie", () => {
+  it("stottert nicht — in keiner der sechzig Boxen", () => {
     // Derselbe Ton zweimal hintereinander, ohne Bindung, liest sich in einer
-    // Tabulatur wie ein Tippfehler. Ursache war die Phrasengrenze: ein
-    // Zickzack-Motiv (+1, −1, +2) endet nach drei Tönen dort, wo es anfing.
-    // Das betraf ein Drittel aller Licks; mit dem Ausweichen sind es fünf
-    // Prozent, und die übrigen liegen am Rand des Tonvorrats. Die Schranke
-    // hält den Stand fest — sie ist kein Freibrief, sondern die Zahl, gegen
-    // die eine Verschlechterung auffällt.
-    let stotternd = 0
-    for (const seed of SEEDS) {
-      const noten = baueLick(seed).noten
-      const hat = noten.some(
-        (note, i) =>
-          i > 0 &&
-          note.achtel === noten[i - 1].achtel + 1 &&
-          note.griff.saite === noten[i - 1].griff.saite &&
-          note.griff.bund === noten[i - 1].griff.bund,
-      )
-      if (hat) stotternd += 1
+    // Tabulatur wie ein Tippfehler. Zwei Ursachen, beide am Rand des
+    // Tonvorrats, beide erst beim Durchspielen anderer Lagen aufgefallen:
+    //
+    // 1. Die Phrasengrenze — ein Zickzack-Motiv (+1, −1, +2) endet nach drei
+    //    Tönen dort, wo es anfing, und die Wiederholung setzt denselben Ton
+    //    noch einmal an. Das betraf ein Drittel aller Licks.
+    // 2. Der Anlauf, dem unter dem Zielton die Töne ausgingen: geklemmt
+    //    stand er dreimal auf derselben Stelle, direkt vor der Auflösung.
+    //    Nach der ersten Behebung waren das die verbliebenen 4,8 %.
+    //
+    // Mit dem Motivfenster und dem Anlauf, der sich die Seite mit Platz
+    // sucht, ist es null — über 1500 Licks in allen sechzig Boxen gemessen.
+    // Deshalb steht hier keine Schranke mehr, sondern die Null.
+    for (const [grundton, lage] of BOXEN) {
+      for (const seed of SEEDS.slice(0, 25)) {
+        const noten = baueLick(seed, grundton, lage).noten
+        const stotter = noten.find(
+          (note, i) =>
+            i > 0 &&
+            note.achtel === noten[i - 1].achtel + 1 &&
+            note.griff.saite === noten[i - 1].griff.saite &&
+            note.griff.bund === noten[i - 1].griff.bund,
+        )
+        expect(stotter, `${grundton} Lage ${lage}, seed ${seed}`).toBeUndefined()
+      }
     }
-    expect(stotternd / SEEDS.length).toBeLessThan(0.1)
+  })
+
+  it("ist nie ein Triller auf zwei Tönen", () => {
+    // Das war der andere Befund aus den höheren Lagen: 4,8 % der Licks
+    // liefen auf einer einzigen Saite zwischen genau zwei Griffen hin und
+    // her — fünfmal dieselbe Figur, weil eine abwärts laufende Kontur am
+    // unteren Rand des Vorrats umkehrte statt weiterzulaufen. Spielbar,
+    // prüfbar, und trotzdem kein Lick.
+    //
+    // Die Böden sind gemessen, nicht gewünscht: über 12 000 Licks in allen
+    // sechzig Boxen liegt das Minimum bei drei verschiedenen Griffen auf
+    // zwei Saiten.
+    for (const [grundton, lage] of BOXEN) {
+      for (const seed of SEEDS.slice(0, 25)) {
+        const noten = baueLick(seed, grundton, lage).noten
+        const griffe = new Set(noten.map((n) => `${n.griff.saite}-${n.griff.bund}`))
+        const saiten = new Set(noten.map((n) => n.griff.saite))
+        const wo = `${grundton} Lage ${lage}, seed ${seed}`
+        expect(griffe.size, wo).toBeGreaterThanOrEqual(3)
+        expect(saiten.size, wo).toBeGreaterThanOrEqual(2)
+      }
+    }
   })
 
   it("atmet — die Notenzahl ist nicht bei allen gleich", () => {
@@ -135,14 +176,32 @@ describe("baueLick", () => {
 })
 
 describe("tabOf", () => {
-  it("setzt sechs gleich lange Saiten", () => {
+  it("setzt je Takt ein System aus sechs gleich langen Saiten", () => {
     for (const seed of [1, 42, 777]) {
-      const zeilen = tabOf(baueLick(seed)).split("\n")
-      expect(zeilen).toHaveLength(6)
-      expect(new Set(zeilen.map((z) => z.length)).size, `seed ${seed}`).toBe(1)
-      expect(zeilen.map((z) => z[0])).toEqual(["e", "B", "G", "D", "A", "E"])
-      // Passt sie aufs Handy? Die Tabs im Katalog sind 33 Zeichen breit.
-      expect(zeilen[0].length, `seed ${seed}`).toBeLessThanOrEqual(34)
+      for (const system of tabOf(baueLick(seed)).split("\n\n")) {
+        const zeilen = system.split("\n")
+        expect(zeilen).toHaveLength(6)
+        expect(new Set(zeilen.map((z) => z.length)).size, `seed ${seed}`).toBe(1)
+        expect(zeilen.map((z) => z[0])).toEqual(["e", "B", "G", "D", "A", "E"])
+      }
+    }
+  })
+
+  it("passt in jeder Box aufs Handy", () => {
+    // Die alte Prüfung lief nur in der Standardbox — und dort bleibt jeder
+    // Bund einstellig. Ab dem zehnten Bund braucht jede Spalte ein Zeichen
+    // mehr: 36 % aller Licks waren 45 Zeichen breit und wurden im Browser
+    // bei 390 px rechts abgeschnitten, samt dem Zielton. Ein Takt je System
+    // hält sie unter dreissig, und das passt auch auf 320 px.
+    for (const [grundton, lage] of BOXEN) {
+      for (const seed of SEEDS.slice(0, 25)) {
+        const breit = Math.max(
+          ...tabOf(baueLick(seed, grundton, lage))
+            .split("\n")
+            .map((zeile) => zeile.length),
+        )
+        expect(breit, `${grundton} Lage ${lage}, seed ${seed}`).toBeLessThanOrEqual(30)
+      }
     }
   })
 

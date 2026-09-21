@@ -260,14 +260,22 @@ Komponente.
   Bünde. Die Auswahl nennt den **tiefsten Bund**, nicht nur die Lagennummer —
   „Lage 3" sagt beim Greifen nichts, „ab Bund 8" schon, und weil die Lagen im
   Kreis laufen, liegt bei A-Moll Lage 4 zuunterst und nicht Lage 1.
-- **Ein Lick darf nicht stottern.** Derselbe Ton zweimal hintereinander ohne
-  Bindung liest sich in einer Tabulatur wie ein Tippfehler. Ursache war die
-  Phrasengrenze: ein Zickzack-Motiv (+1, −1, +2) endet nach drei Tönen genau
-  dort, wo es anfing, und die Wiederholung setzte denselben Ton noch einmal
-  an. Nachgemessen über 1800 Licks betraf das **ein Drittel**; mit dem
-  Ausweichen sind es fünf Prozent, und die übrigen liegen am Rand des
-  Tonvorrats. Der Test hält die Schranke fest — sie ist kein Freibrief,
-  sondern die Zahl, gegen die eine Verschlechterung auffällt.
+- **Ein Lick darf nicht stottern, und es darf kein Triller sein.** Derselbe
+  Ton zweimal hintereinander ohne Bindung liest sich in einer Tabulatur wie
+  ein Tippfehler. Ursache war zuerst die Phrasengrenze: ein Zickzack-Motiv
+  (+1, −1, +2) endet nach drei Tönen genau dort, wo es anfing, und die
+  Wiederholung setzte denselben Ton noch einmal an — **ein Drittel** aller
+  Licks, mit dem Ausweichen fünf Prozent. Die restlichen lagen am **Rand des
+  Tonvorrats**, und dort lag auch der zweite, hässlichere Fall: eine abwärts
+  laufende Kontur, die unten anstösst, kehrt um und pendelt zwischen zwei
+  Tönen — 4,8 % der Licks waren ein Triller auf einer Saite, fünfmal
+  dieselbe Figur. Beides sind Randfälle, und beide sind in der Standardbox
+  nie aufgetreten: dort bleibt der Zielton in der Mitte des Vorrats. Die
+  Antwort ist zweimal dieselbe — **Platz vorher rechnen statt hinterher
+  klemmen**: das Motiv bekommt ein Fenster aus dem weitesten Ausschlag seiner
+  Kontur, und der Anlauf sucht sich die Seite, auf der noch Töne liegen. Seit
+  dem ist beides null, gemessen über 1500 Licks in allen sechzig Boxen, und
+  `lick.test.ts` prüft es auch in allen sechzig statt nur in A-Moll Lage 1.
 - **Der zweite Eingang ist ein Nebenweg, kein zweiter Hauptweg.**
   `/lick` gibt drei Minuten Lead ohne Session drumherum — für den, der
   gerade Lust darauf hat. Er schreibt in denselben Log und unter dieselbe
@@ -295,10 +303,17 @@ Komponente.
   woran diese App überall hängt. `tab` und `why` bleiben im Katalog leer —
   was dort stünde, wäre eine Behauptung über ein Lick, das es noch nicht gibt.
 - **Eine Tabulatur, für die man wischen muss, ist keine Hilfe.** Die Spalte
-  ist so breit wie nötig (zwei Zeichen, drei erst ab dem zehnten Bund), und
-  der leere Schwanz nach dem Zielton wird abgeschnitten. Der erste Wurf war
-  48 Zeichen breit und auf dem Handy rechts abgeschnitten — samt dem
-  Zielton. Der Test nagelt die Breite deshalb fest.
+  ist so breit wie nötig (zwei Zeichen, drei erst ab dem zehnten Bund), der
+  leere Schwanz nach dem Zielton wird abgeschnitten — und **jeder Takt steht
+  auf einer eigenen Zeile**. Der erste Wurf war 48 Zeichen breit und auf dem
+  Handy rechts abgeschnitten, samt dem Zielton. Der Test nagelte die Breite
+  danach fest, aber nur in der Standardbox, und die ist der freundlichste
+  Fall: dort bleibt jeder Bund einstellig. Ab dem zehnten Bund braucht jede
+  Spalte ein Zeichen mehr — **36 % aller Licks** über die sechzig Boxen waren
+  wieder 45 Zeichen breit, im Browser bei 390 px gemessen 339 px Inhalt in
+  einem 324 px breiten Feld. Zwei Systeme à einem Takt sind höchstens 27
+  Zeichen und passen auch auf 320 px. Eine Breitenprüfung, die nur einen Fall
+  kennt, prüft nicht die Breite, sondern diesen Fall.
 - **Das Mikrofon hört beim Lick nur den Rhythmus.** Anschläge, keine
   Tonhöhen — ob die *Töne* sassen, kann die App nicht wissen und behauptet es
   auch nicht. Gemessen wird wie überall Streuung und Versatz, der Rest ist

@@ -39,7 +39,11 @@ export function mitLick(drill: Drill, seed: number, box: LickBox = BOX_STANDARD)
     ...drill,
     // Der Titel nennt die Box: sonst stünde auf dem Bildschirm „Lick-Schmiede"
     // und man wüsste nicht, woran man gerade arbeitet.
-    title: `${drill.title} · ${box.grundton}m Lage ${box.lage}`,
+    //
+    // Ausgeschrieben, weil `.display` versalisiert: aus „Dm" wurde auf dem
+    // Schirm „DM", und das liest sich wie eine Abkürzung und nicht wie eine
+    // Tonart.
+    title: `${drill.title} · ${box.grundton}-Moll Lage ${box.lage}`,
     tab: tabOf(lick),
     why: erklaerungOf(lick),
   }
