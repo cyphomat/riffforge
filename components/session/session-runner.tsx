@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/session/lead"
-import { lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
+import { lickBox, lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { buildDrillSession, buildSession, nextExtraBlock } from "@/lib/session/builder"
@@ -109,13 +109,19 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   // jedem Anstrich neu aus dem Speicher kommen, wechselte das Lick mitten im
   // Block, sobald der Wert sich ändert.
   const seed = useRef<number | null>(null)
-  if (seed.current === null && typeof window !== "undefined") seed.current = lickSeed()
+  const box = useRef<ReturnType<typeof lickBox> | null>(null)
+  if (seed.current === null && typeof window !== "undefined") {
+    seed.current = lickSeed()
+    box.current = lickBox()
+  }
 
   const active: SessionBlock | undefined = block && {
     ...block,
     bpm: carried.current[block.drill.id]?.bpm ?? block.bpm,
     // Der einzige Drill, dessen Inhalt gerechnet wird — siehe lib/session/lead.ts.
-    drill: istLead(block.drill) ? mitLick(block.drill, seed.current ?? 1) : block.drill,
+    drill: istLead(block.drill)
+      ? mitLick(block.drill, seed.current ?? 1, box.current ?? undefined)
+      : block.drill,
   }
 
   const completeBlock = (outcome: BlockOutcome) => {

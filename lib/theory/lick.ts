@@ -242,19 +242,34 @@ export function baueLick(seed: number, grundton: Ton = "A", lage: Lage = 1): Lic
 
   const noten: LickNote[] = []
   let vorige: Griff | null = null
+  let vorigesPlatz = -1
   let vorigesAchtel = -1
 
   for (const { zelle, plaetze, ab } of phrasen) {
     zelle.forEach((versatz, i) => {
-      const griff = vorrat[plaetze[i]]
-      if (!griff) return
       const achtel = ab + versatz
+      let platz = plaetze[i]
+
+      // Derselbe Ton zweimal hintereinander, ohne Bindung, liest sich in
+      // einer Tabulatur wie ein Tippfehler. Das passierte an der
+      // Phrasengrenze: ein Zickzack-Motiv (+1, −1, +2) endet nach drei Tönen
+      // genau dort, wo es anfing, und die Wiederholung setzt denselben Ton
+      // noch einmal an. Nachgemessen betraf das ein Drittel aller Licks.
+      // Ein Platz weiter in Richtung des Vorrats behebt es, ohne die Kontur
+      // zu verlieren — die Phrase geht dann weiter, statt zu stottern.
+      if (platz === vorigesPlatz && achtel === vorigesAchtel + 1) {
+        platz = platz + 1 < vorrat.length ? platz + 1 : platz - 1
+      }
+
+      const griff = vorrat[platz]
+      if (!griff) return
       noten.push({
         griff,
         achtel,
         artikulation: bindung(vorige, griff, achtel !== vorigesAchtel + 1),
       })
       vorige = griff
+      vorigesPlatz = platz
       vorigesAchtel = achtel
     })
   }

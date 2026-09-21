@@ -19,6 +19,7 @@ import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
 import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type PracticeLog } from "@/lib/session/types"
+import { MdMusicNote } from "react-icons/md"
 
 const EXTRA_LENGTHS = [10, 25]
 
@@ -116,6 +117,13 @@ export function PracticeOverview() {
           </Link>
         ))}
       </div>
+
+      {/* Der zweite Eingang: drei Minuten Lead, ohne Session drumherum.
+          Bewusst als Nebenweg gesetzt — die Viertelstunde bleibt das Produkt,
+          und ein zweiter Knopf in Bernstein hätte zwei Hauptwege gemacht. */}
+      <Link href="/lick" className="btn btn-ghost mt-[9px] w-full py-4">
+        <MdMusicNote className="h-[18px] w-[18px]" /> Let&apos;s play a lick
+      </Link>
 
         {hasHistory && (
           <>

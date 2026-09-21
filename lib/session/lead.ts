@@ -1,4 +1,5 @@
 import { baueLick, erklaerungOf, tabOf } from "@/lib/theory/lick"
+import { TOENE, pentatonikLage, type Lage, type Ton } from "@/lib/theory/fretboard"
 import type { Drill } from "./types"
 
 /**
@@ -32,9 +33,61 @@ export function istLead(drill: Drill): boolean {
  * `tab` und `why` bleiben im Katalog leer — was dort stünde, wäre eine
  * Behauptung über ein Lick, das es noch gar nicht gibt.
  */
-export function mitLick(drill: Drill, seed: number): Drill {
-  const lick = baueLick(seed)
-  return { ...drill, tab: tabOf(lick), why: erklaerungOf(lick) }
+export function mitLick(drill: Drill, seed: number, box: LickBox = BOX_STANDARD): Drill {
+  const lick = baueLick(seed, box.grundton, box.lage)
+  return {
+    ...drill,
+    // Der Titel nennt die Box: sonst stünde auf dem Bildschirm „Lick-Schmiede"
+    // und man wüsste nicht, woran man gerade arbeitet.
+    title: `${drill.title} · ${box.grundton}m Lage ${box.lage}`,
+    tab: tabOf(lick),
+    why: erklaerungOf(lick),
+  }
+}
+
+/** Grundton und Lage, in der die Licks gebaut werden. */
+export interface LickBox {
+  grundton: Ton
+  lage: Lage
+}
+
+export const BOX_STANDARD: LickBox = { grundton: "A", lage: 1 }
+
+/** Die Lagen, in der Reihenfolge, in der sie am Hals aufeinander folgen. */
+export const LAGEN: Lage[] = [1, 2, 3, 4, 5]
+
+/**
+ * Die Grundtöne zur Auswahl.
+ *
+ * Alle zwölf, ohne Vorauswahl: welcher gebraucht wird, hängt am Repertoire,
+ * und eine App, die dem Nutzer sagt, in welchen Tonarten Metal stattfindet,
+ * läge daneben. Die Schreibweise ist die englische — so steht es in jeder
+ * Tabulatur, und dieselbe Regel gilt in der ganzen App.
+ */
+export const GRUNDTOENE: readonly Ton[] = TOENE
+
+/**
+ * Ob eine Box am Hals überhaupt existiert.
+ *
+ * `pentatonikLage` sucht den Anker auf der tiefen E-Saite. Für jeden der
+ * zwölf Grundtöne und jede der fünf Lagen gibt es ihn — aber die Prüfung
+ * steht hier, damit eine leere Box nie bis in den Generator durchschlägt.
+ */
+export function boxVorhanden(box: LickBox): boolean {
+  return pentatonikLage(box.grundton, box.lage).length >= 12
+}
+
+/**
+ * Eine Box in Worten — für die Auswahl und die Kopfzeile.
+ *
+ * Nennt den tiefsten Bund, weil das die Auskunft ist, die beim Greifen
+ * zählt: „Lage 3" sagt einem nichts, „ab dem 8. Bund" schon.
+ */
+export function boxBeschreibung(box: LickBox): string {
+  const griffe = pentatonikLage(box.grundton, box.lage)
+  if (griffe.length === 0) return `${box.grundton}-Moll, Lage ${box.lage}`
+  const tiefster = Math.min(...griffe.map((g) => g.bund))
+  return `${box.grundton}-Moll · Lage ${box.lage} · ab Bund ${tiefster}`
 }
 
 /**

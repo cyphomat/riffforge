@@ -80,6 +80,29 @@ describe("baueLick", () => {
     }
   })
 
+  it("stottert fast nie", () => {
+    // Derselbe Ton zweimal hintereinander, ohne Bindung, liest sich in einer
+    // Tabulatur wie ein Tippfehler. Ursache war die Phrasengrenze: ein
+    // Zickzack-Motiv (+1, −1, +2) endet nach drei Tönen dort, wo es anfing.
+    // Das betraf ein Drittel aller Licks; mit dem Ausweichen sind es fünf
+    // Prozent, und die übrigen liegen am Rand des Tonvorrats. Die Schranke
+    // hält den Stand fest — sie ist kein Freibrief, sondern die Zahl, gegen
+    // die eine Verschlechterung auffällt.
+    let stotternd = 0
+    for (const seed of SEEDS) {
+      const noten = baueLick(seed).noten
+      const hat = noten.some(
+        (note, i) =>
+          i > 0 &&
+          note.achtel === noten[i - 1].achtel + 1 &&
+          note.griff.saite === noten[i - 1].griff.saite &&
+          note.griff.bund === noten[i - 1].griff.bund,
+      )
+      if (hat) stotternd += 1
+    }
+    expect(stotternd / SEEDS.length).toBeLessThan(0.1)
+  })
+
   it("atmet — die Notenzahl ist nicht bei allen gleich", () => {
     // Der Fehler des ersten Baus, wörtlich: 400 Licks, alle mit exakt 13
     // Noten. Rhythmisch identisch heisst als Übung identisch.

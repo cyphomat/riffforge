@@ -1,5 +1,7 @@
 "use client"
 
+import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
+
 /**
  * Was die App über sich selbst weiss, nicht über das Üben.
  *
@@ -16,9 +18,10 @@
 const GESICHERT_KEY = "mga.zuletzt-gesichert.v1"
 const WILLKOMMEN_KEY = "mga.willkommen.v1"
 const LICK_KEY = "mga.lick-seed.v1"
+const BOX_KEY = "mga.lick-box.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -75,6 +78,36 @@ export function lickSeed(): number {
 
 export function merkeLickSeed(seed: number): void {
   schreiben(LICK_KEY, `${seed}`)
+}
+
+/**
+ * In welcher Box die Licks gebaut werden: Grundton und Lage.
+ *
+ * Auch das ist ein Lesezeichen und kein Übungsergebnis — es gehört diesem
+ * Gerät. Wer auf dem Handy an Lage 2 arbeitet und am Rechner an Lage 4, will
+ * keinen Abgleich, der sich für eine entscheidet.
+ *
+ * Geprüft wird gegen die Aufzählungen, nicht nur auf den Typ: aus einem
+ * `lage: 9` käme sonst eine leere Box und daraus ein Lick ohne Töne. Was
+ * nicht passt, fällt auf den Standard zurück — hier ist Wegwerfen richtig,
+ * anders als beim Log, wo ein kaputter Stand beiseitegelegt wird.
+ */
+export function lickBox(): LickBox {
+  const roh = lesen(BOX_KEY)
+  if (!roh) return BOX_STANDARD
+  try {
+    const wert = JSON.parse(roh) as Partial<LickBox>
+    const grundton = GRUNDTOENE.find((ton) => ton === wert.grundton)
+    const lage = LAGEN.find((l) => l === wert.lage)
+    if (!grundton || !lage) return BOX_STANDARD
+    return { grundton, lage }
+  } catch {
+    return BOX_STANDARD
+  }
+}
+
+export function merkeLickBox(box: LickBox): void {
+  schreiben(BOX_KEY, JSON.stringify(box))
 }
 
 export function clearLokal(): void {

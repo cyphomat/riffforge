@@ -59,6 +59,7 @@ Verschiedenes.
 | `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
+| `components/session/lick-runner.tsx` | Der zweite Eingang: ein Lick allein, ohne Session |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
@@ -252,6 +253,28 @@ Komponente.
   ist keine. Die Rhythmuszellen und der Anlauf statt des dritten Motivs sind
   die Antwort darauf, und `lick.test.ts` prüft seither auch, was sich
   *unterscheiden* muss, nicht nur, was stimmen muss.
+- **Sechzig Boxen, und jede muss tragen.** Zwölf Grundtöne mal fünf Lagen
+  sind die Sorte Menge, in der eine kaputte niemandem auffiele, bis sie
+  jemand wählt und ein Lick ohne Töne bekommt. `lead.test.ts` geht deshalb
+  alle sechzig durch: Box vorhanden, Lick spielbar, Griffweite höchstens vier
+  Bünde. Die Auswahl nennt den **tiefsten Bund**, nicht nur die Lagennummer —
+  „Lage 3" sagt beim Greifen nichts, „ab Bund 8" schon, und weil die Lagen im
+  Kreis laufen, liegt bei A-Moll Lage 4 zuunterst und nicht Lage 1.
+- **Ein Lick darf nicht stottern.** Derselbe Ton zweimal hintereinander ohne
+  Bindung liest sich in einer Tabulatur wie ein Tippfehler. Ursache war die
+  Phrasengrenze: ein Zickzack-Motiv (+1, −1, +2) endet nach drei Tönen genau
+  dort, wo es anfing, und die Wiederholung setzte denselben Ton noch einmal
+  an. Nachgemessen über 1800 Licks betraf das **ein Drittel**; mit dem
+  Ausweichen sind es fünf Prozent, und die übrigen liegen am Rand des
+  Tonvorrats. Der Test hält die Schranke fest — sie ist kein Freibrief,
+  sondern die Zahl, gegen die eine Verschlechterung auffällt.
+- **Der zweite Eingang ist ein Nebenweg, kein zweiter Hauptweg.**
+  `/lick` gibt drei Minuten Lead ohne Session drumherum — für den, der
+  gerade Lust darauf hat. Er schreibt in denselben Log und unter dieselbe
+  Nummer: sonst hätte die Tempokurve zwei Hälften, die nichts voneinander
+  wissen. Auf *Heute* steht er bewusst als Geisterknopf unter dem
+  Startknopf; zweimal Bernstein wären zwei Hauptwege, und die Viertelstunde
+  ist das Produkt.
 - **Der Startwert wird durchgerührt, bevor er gewürfelt wird.** Mulberry32
   liefert bei kleinen, *fortlaufenden* Startwerten korrelierte erste Werte —
   und genau dort fängt jeder an, weil die Licks ab eins durchgezählt werden.
