@@ -101,7 +101,9 @@ export function LickRunner() {
     <div className="huelle">
       <header className="mt-6">
         <span className="kicker">Lead</span>
-        <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Let&apos;s play a lick</h1>
+        {/* Heisst wie der Knopf, der hierher führt — sonst fragt man sich
+            beim Ankommen, ob man richtig ist. */}
+        <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Ein Lick</h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Ein gerechnetes Lead-Lick aus der Pentatonik, drei Minuten, ohne Session drumherum. Es
           bleibt, bis du es mit <b className="text-fg">Sauber</b> abhakst — dann kommt das nächste.

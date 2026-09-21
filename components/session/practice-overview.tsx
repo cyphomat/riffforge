@@ -122,7 +122,7 @@ export function PracticeOverview() {
           Bewusst als Nebenweg gesetzt — die Viertelstunde bleibt das Produkt,
           und ein zweiter Knopf in Bernstein hätte zwei Hauptwege gemacht. */}
       <Link href="/lick" className="btn btn-ghost mt-[9px] w-full py-4">
-        <MdMusicNote className="h-[18px] w-[18px]" /> Let&apos;s play a lick
+        <MdMusicNote className="h-[18px] w-[18px]" /> Ein Lick
       </Link>
 
         {hasHistory && (
