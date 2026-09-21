@@ -15,9 +15,10 @@
 
 const GESICHERT_KEY = "mga.zuletzt-gesichert.v1"
 const WILLKOMMEN_KEY = "mga.willkommen.v1"
+const LICK_KEY = "mga.lick-seed.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -57,6 +58,23 @@ export function willkommenGesehen(): boolean {
 
 export function merkeWillkommen(): void {
   schreiben(WILLKOMMEN_KEY, new Date().toISOString())
+}
+
+/**
+ * Welches Lick gerade dran ist.
+ *
+ * Gehört diesem Gerät: es ist kein Übungsergebnis, sondern ein Lesezeichen.
+ * Ein Abgleich müsste sich sonst einigen, welches Lick „das aktuelle" ist,
+ * und das ist keine Frage mit einer richtigen Antwort.
+ */
+export function lickSeed(): number {
+  const roh = lesen(LICK_KEY)
+  const zahl = roh === null ? NaN : Number(roh)
+  return Number.isFinite(zahl) && zahl > 0 ? zahl : 1
+}
+
+export function merkeLickSeed(seed: number): void {
+  schreiben(LICK_KEY, `${seed}`)
 }
 
 export function clearLokal(): void {

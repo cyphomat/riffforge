@@ -57,6 +57,8 @@ Verschiedenes.
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
 | `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
+| `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
+| `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
@@ -236,6 +238,38 @@ Komponente.
   dort steht die Anleitung über *Teilen → Zum Home-Bildschirm*. Und `.marke`
   ist in der Startseite ein Systemschrift-Stapel, weil eine Schrift
   nachzuladen hiesse, für eine Startseite einen fremden Host aufzumachen.
+- **Ein Lick ist eine Grammatik, kein Würfel.** Töne aus der Pentatonik zu
+  würfeln ergibt Tonsalat — unmusikalisch ist dabei das kleinere Problem, man
+  lernt daran vor allem *keine Phrasierung*. `lib/theory/lick.ts` baut deshalb
+  immer dieselbe Form: **Motiv, Entwicklung, Anlauf, Auflösung.** Das Motiv
+  hat eine Kontur, die Entwicklung wiederholt oder sequenziert es, der Anlauf
+  läuft schrittweise auf den Zielton zu, und der Zielton ist stabil —
+  Grundton oder Quinte — und wird mit Vibrato gehalten. Ein Lick, das auf der
+  kleinen Terz aufhört, klingt abgebrochen, nicht offen.
+- **Der erste Bau hat alle Prüfungen bestanden und war trotzdem unbrauchbar.**
+  Vierhundert Licks, alle mit exakt dreizehn Noten: zwölf gerade Achtel am
+  Stück, dreimal dasselbe Motiv. Eine Grammatik, die immer dasselbe ausspuckt,
+  ist keine. Die Rhythmuszellen und der Anlauf statt des dritten Motivs sind
+  die Antwort darauf, und `lick.test.ts` prüft seither auch, was sich
+  *unterscheiden* muss, nicht nur, was stimmen muss.
+- **Der Generator ist der Drill, das Lick ist der Inhalt.** Aller Fortschritt
+  hängt an `drillId` — wäre jedes Lick ein eigener Drill, hätte keines eine
+  Tempokurve und `masteryOf` nichts zu messen. Deshalb eine feste Nummer
+  (`LEAD_DRILL_ID`) mit eigener Geschichte, und daneben ein Startwert, aus
+  dem sich jedes gespielte Lick wieder herstellen lässt. Ein Lick bleibt, bis
+  es mit *sauber* abgehakt ist: eine Tempokurve über lauter verschiedene
+  Licks wäre nicht deutbar, und Wiederholung mit Abstand ist ohnehin das,
+  woran diese App überall hängt. `tab` und `why` bleiben im Katalog leer —
+  was dort stünde, wäre eine Behauptung über ein Lick, das es noch nicht gibt.
+- **Eine Tabulatur, für die man wischen muss, ist keine Hilfe.** Die Spalte
+  ist so breit wie nötig (zwei Zeichen, drei erst ab dem zehnten Bund), und
+  der leere Schwanz nach dem Zielton wird abgeschnitten. Der erste Wurf war
+  48 Zeichen breit und auf dem Handy rechts abgeschnitten — samt dem
+  Zielton. Der Test nagelt die Breite deshalb fest.
+- **Das Mikrofon hört beim Lick nur den Rhythmus.** Anschläge, keine
+  Tonhöhen — ob die *Töne* sassen, kann die App nicht wissen und behauptet es
+  auch nicht. Gemessen wird wie überall Streuung und Versatz, der Rest ist
+  Selbsteinschätzung. Das ändert sich erst mit einer Tonhöhen-Erkennung.
 - **Die Ansage behauptet nichts.** Jede Zeile in `briefing.ts` muss aus dem Log
   ableitbar sein, sonst gehört sie da nicht hin.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut

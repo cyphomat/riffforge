@@ -324,6 +324,25 @@ E|-------------------------------|`,
     subdivision: 2,
   },
   {
+    // Der einzige Drill, dessen Inhalt gerechnet wird — siehe lib/session/lead.ts.
+    // `tab` und `why` bleiben hier leer: was hier stünde, wäre eine Behauptung
+    // über ein Lick, das es noch nicht gibt.
+    id: "riff-lead-pentatonik",
+    title: "Lick-Schmiede",
+    kind: "riff",
+    technique: "pentatonic",
+    goal: "Ein neues Lead-Lick aus der Pentatonik — bleibt, bis es sitzt",
+    cues: [
+      "Erst die Töne sicher, dann das Metronom dazu",
+      "Gebundene Töne nicht anschlagen — das ist der halbe Lead-Sound",
+      "Der letzte Ton wird gehalten: Vibrato bis zum Schluss",
+    ],
+    startBpm: 50,
+    targetBpm: 130,
+    beatsPerBar: 4,
+    subdivision: 2,
+  },
+  {
     id: "tech-legato",
     title: "Hammer-on und Pull-off",
     kind: "technique",

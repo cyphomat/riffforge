@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-498%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-509%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -120,7 +120,7 @@ heutigen Tag — aus dem Log, nicht aus dem Bauch.
 
 ## Die Übungen
 
-Neunzehn Stück. Das Tempo rechts ist Start → Ziel; wo du tatsächlich anfängst,
+Zwanzig Stück. Das Tempo rechts ist Start → Ziel; wo du tatsächlich anfängst,
 hängt an deiner Antwort beim ersten Start, und wie es weitergeht an dem, was du
 spielst.
 
@@ -157,6 +157,7 @@ spielst.
 | Escape Lick | Pentatonic | Erstes Lead-Lick: Pentatonik mit Bending am Ende | 55 → 120 |
 | Ghost Machine | Dead Notes | Dead Notes im Riff — Sechzehntel, von denen nur die Hälfte klingt | 60 → 150 |
 | Hammer Down | Legato | Legato aus der Leersaite heraus, im Riff-Kontext | 55 → 130 |
+| Lick-Schmiede | Pentatonic | Ein neues Lead-Lick aus der Pentatonik — bleibt, bis es sitzt | 50 → 130 |
 
 ## Wissen
 

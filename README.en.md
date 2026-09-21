@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-498%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-509%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -124,7 +124,7 @@ today — from the log, not from a hunch.
 
 ## The drills
 
-Nineteen of them. The tempo on the right is start → target; where you actually
+Twenty of them. The tempo on the right is start → target; where you actually
 begin depends on your answer at first launch, and where it goes depends on what
 you play.
 
@@ -161,6 +161,7 @@ you play.
 | Escape Lick | Pentatonic | First lead lick: pentatonic with a bend at the end | 55 → 120 |
 | Ghost Machine | Dead notes | Dead notes in a riff — sixteenths where only half of them ring | 60 → 150 |
 | Hammer Down | Legato | Legato out of the open string, in a riff | 55 → 130 |
+| Lick Forge | Pentatonic | A fresh lead lick from the pentatonic box — stays until you own it | 50 → 130 |
 
 ## Knowledge
 

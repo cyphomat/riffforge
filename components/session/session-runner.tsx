@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
+import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/session/lead"
+import { lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { buildDrillSession, buildSession, nextExtraBlock } from "@/lib/session/builder"
@@ -103,9 +105,17 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
 
   // Runde zwei startet mit dem Tempo, das in Runde eins tatsächlich lief —
   // nicht mit dem, das der Plan vor der Session vorgesehen hatte.
+  // Der Startwert wird einmal gelesen und dann festgehalten: würde er bei
+  // jedem Anstrich neu aus dem Speicher kommen, wechselte das Lick mitten im
+  // Block, sobald der Wert sich ändert.
+  const seed = useRef<number | null>(null)
+  if (seed.current === null && typeof window !== "undefined") seed.current = lickSeed()
+
   const active: SessionBlock | undefined = block && {
     ...block,
     bpm: carried.current[block.drill.id]?.bpm ?? block.bpm,
+    // Der einzige Drill, dessen Inhalt gerechnet wird — siehe lib/session/lead.ts.
+    drill: istLead(block.drill) ? mitLick(block.drill, seed.current ?? 1) : block.drill,
   }
 
   const completeBlock = (outcome: BlockOutcome) => {
@@ -128,6 +138,15 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
       seconds,
       at: new Date().toISOString(),
       timing: outcome.timing,
+    }
+
+    // „Sitzt" heisst: nächstes Lick. Darunter bleibt dieses — Wiederholung
+    // mit Abstand ist der Sinn, und eine Tempokurve über lauter verschiedene
+    // Licks wäre ohnehin nicht deutbar.
+    if (block.drill.id === LEAD_DRILL_ID && outcome.rating >= SITZT_AB) {
+      const weiter = naechsterSeed(seed.current ?? 1)
+      seed.current = weiter
+      merkeLickSeed(weiter)
     }
 
     // Pro Block geschrieben, nicht am Ende: eine abgebrochene Session zählt
