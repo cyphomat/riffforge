@@ -334,6 +334,15 @@ Komponente.
   einem 324 px breiten Feld. Zwei Systeme à einem Takt sind höchstens 27
   Zeichen und passen auch auf 320 px. Eine Breitenprüfung, die nur einen Fall
   kennt, prüft nicht die Breite, sondern diesen Fall.
+  Umgebrochen wird aber **nur, wenn es sein muss**: der Umbruch ist die
+  Antwort auf das Handy, nicht auf die Tabulatur. In der Standardbox bleibt
+  jeder Bund einstellig, die Zeile wird 31 Zeichen lang und passt überall —
+  sie trotzdem zu zerlegen sah auf einem breiten Schirm nach Fehler aus, ein
+  halber zweiter Takt neben einem ganzen ersten. Gemessen passen auf 320 px
+  rund 33 Zeichen; darunter bleibt es eine Zeile, darüber wird in **ganze**
+  Takte zerlegt, beide gleich lang. Und eine Bindung rutscht nie an einen
+  Zeilenanfang: `|p5` behauptet einen Pull-off von einem Ton, der in dieser
+  Zeile gar nicht steht.
 - **Das Mikrofon hört beim Lick nur den Rhythmus.** Anschläge, keine
   Tonhöhen — ob die *Töne* sassen, kann die App nicht wissen und behauptet es
   auch nicht. Gemessen wird wie überall Streuung und Versatz, der Rest ist

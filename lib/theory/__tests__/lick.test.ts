@@ -191,8 +191,8 @@ describe("tabOf", () => {
     // Die alte Prüfung lief nur in der Standardbox — und dort bleibt jeder
     // Bund einstellig. Ab dem zehnten Bund braucht jede Spalte ein Zeichen
     // mehr: 36 % aller Licks waren 45 Zeichen breit und wurden im Browser
-    // bei 390 px rechts abgeschnitten, samt dem Zielton. Ein Takt je System
-    // hält sie unter dreissig, und das passt auch auf 320 px.
+    // bei 390 px rechts abgeschnitten, samt dem Zielton. Auf 320 px passen
+    // gemessen rund 33 Zeichen — das ist die Schranke.
     for (const [grundton, lage] of BOXEN) {
       for (const seed of SEEDS.slice(0, 25)) {
         const breit = Math.max(
@@ -200,7 +200,49 @@ describe("tabOf", () => {
             .split("\n")
             .map((zeile) => zeile.length),
         )
-        expect(breit, `${grundton} Lage ${lage}, seed ${seed}`).toBeLessThanOrEqual(30)
+        expect(breit, `${grundton} Lage ${lage}, seed ${seed}`).toBeLessThanOrEqual(33)
+      }
+    }
+  })
+
+  it("bricht nur um, wenn es sein muss", () => {
+    // Der Umbruch ist die Antwort auf das Handy, nicht auf die Tabulatur.
+    // In der Standardbox bleibt alles einstellig, die Zeile wird 31 Zeichen
+    // lang und passt überall — sie trotzdem zu zerlegen sah auf einem
+    // breiten Schirm nach Fehler aus: ein halber zweiter Takt neben einem
+    // ganzen ersten, ohne Not.
+    for (const [grundton, lage] of BOXEN) {
+      for (const seed of SEEDS.slice(0, 25)) {
+        const tab = tabOf(baueLick(seed, grundton, lage))
+        const systeme = tab.split("\n\n")
+        const einzeilig = systeme.length === 1
+        const breit = Math.max(...tab.split("\n").map((zeile) => zeile.length))
+        const wo = `${grundton} Lage ${lage}, seed ${seed}`
+
+        // Zweistellige Bünde brauchen eine Spalte mehr — und nur dann bricht es.
+        const zweistellig = /\d\d/.test(tab)
+        expect(einzeilig, wo).toBe(!zweistellig)
+
+        if (!einzeilig) {
+          // Beide Takte gleich lang, sonst steht eine halbe Zeile neben einer
+          // vollen.
+          expect(systeme, wo).toHaveLength(2)
+          const laengen = systeme.map((system) => system.split("\n")[0].length)
+          expect(new Set(laengen).size, wo).toBe(1)
+        }
+        expect(breit, wo).toBeLessThanOrEqual(33)
+      }
+    }
+  })
+
+  it("setzt keine Bindung an den Zeilenanfang", () => {
+    // `|p5` behauptet einen Pull-off von einem Ton, der in dieser Zeile gar
+    // nicht steht — in einer Tabulatur liest sich das wie ein Tippfehler.
+    for (const [grundton, lage] of BOXEN) {
+      for (const seed of SEEDS.slice(0, 25)) {
+        const zeilen = tabOf(baueLick(seed, grundton, lage)).split("\n")
+        const haenger = zeilen.find((zeile) => /^[eBGDAE]\|[hp]/.test(zeile))
+        expect(haenger, `${grundton} Lage ${lage}, seed ${seed}`).toBeUndefined()
       }
     }
   })

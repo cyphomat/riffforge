@@ -69,6 +69,14 @@ export interface Lick {
 /** Zwei Takte 4/4, auf Achteln gezählt. */
 export const ACHTEL_GESAMT = 16
 
+/**
+ * Wie viele Zeichen auf das schmalste Gerät passen.
+ *
+ * Im Browser bei 320 px gemessen: 254 px Platz, rund 7,5 px je Zeichen in der
+ * Tabulaturschrift. Was darunter bleibt, braucht keinen Umbruch.
+ */
+const PASST_AUFS_HANDY = 33
+
 /** Der Zielton sitzt auf der Drei des zweiten Takts und wird gehalten. */
 const ZIEL_ACHTEL = 12
 
@@ -409,14 +417,36 @@ export function tabOf(lick: Lick): string {
   const namen = ["e", "B", "G", "D", "A", "E"]
   const system = (von: number, bis: number) =>
     zeilen
-      .map((felder, i) => `${namen[i]}|${felder.slice(von, bis).join("")}|`)
+      .map((felder, i) => {
+        const teil = felder.slice(von, bis)
+        // Eine Bindung an den Anfang einer Zeile zu setzen liest sich wie ein
+        // Tippfehler: `|p5` behauptet einen Pull-off von einem Ton, der in
+        // dieser Zeile gar nicht steht. Der Ton bleibt, das Zeichen geht.
+        teil[0] = teil[0].replace(/^[hp]/, "-")
+        return `${namen[i]}|${teil.join("")}|`
+      })
       .join("\n")
 
-  // Ein Takt sind acht Achtel. Der zweite ist kürzer, wenn der Schwanz nach
-  // dem Zielton schon weg ist.
+  // Ein Takt sind acht Achtel — aber umgebrochen wird nur, wenn es sein muss.
+  //
+  // Zwei Systeme sind die Antwort auf das Handy, nicht auf die Tabulatur: in
+  // der Standardbox bleibt jeder Bund einstellig, die Zeile wird 31 Zeichen
+  // lang und passt überall. Sie trotzdem zu zerlegen sieht auf einem breiten
+  // Schirm nach Fehler aus — ein halber zweiter Takt neben einem ganzen
+  // ersten, und das ohne Not. Gemessen passen auf 320 px rund 33 Zeichen;
+  // was darüber liegt, wird in Takte zerlegt, der Rest bleibt eine Zeile.
   const TAKT = 8
-  if (spalten <= TAKT) return system(0, spalten)
-  return `${system(0, TAKT)}\n\n${system(TAKT, spalten)}`
+  const breite = 2 + spalten * spalte + 1
+  if (spalten <= TAKT || breite <= PASST_AUFS_HANDY) return system(0, spalten)
+
+  // Beim Umbruch steht jeder Takt für sich, und zwar ganz: ein zweiter Takt,
+  // der nach dem letzten Ton einfach aufhört, wäre eine Zeile in halber
+  // Länge neben einer vollen. Deshalb wird hier wieder aufgefüllt, was die
+  // Schwanzkürzung oben weggenommen hat.
+  for (const felder of zeilen) {
+    while (felder.length < 2 * TAKT) felder.push("-".repeat(spalte))
+  }
+  return `${system(0, TAKT)}\n\n${system(TAKT, 2 * TAKT)}`
 }
 
 /**
