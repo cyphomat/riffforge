@@ -148,6 +148,16 @@ Komponente.
   gehören. `--hals` steht deshalb schmal auf 0,28 und erst ab 900 px auf 1.
   Dieselbe Schwelle wie `wide:`. Wer ein Flächenmuster hinzufügt, prüft es
   zuerst auf 390 px.
+- **Wo der Hals eine Antwort ist, darf der Grund kein Hals sein.** Das
+  antippbare Griffbrett war durchsichtig, und der Seitenhintergrund ist aus
+  denselben Massen gezeichnet — nur gegen das Griffbrett verschoben. Auf
+  einem breiten Schirm, wo `--hals` auf 1 steht, sassen dann fremde
+  Einlagen zwischen den Bünden und Linien quer über den Saiten. Bei einer
+  Frage, deren Antwort eine Stelle auf dem Hals *ist*, liest sich jeder
+  solche Punkt als Hinweis. Das Griffbrett steht deshalb auf `--sunken`,
+  mit Rand, wie die Tabulatur im Block: ein Instrument zum Ablesen bekommt
+  eine eigene, deckende Fläche. Wer ein weiteres Ablese-Element baut, gibt
+  ihm dieselbe.
 - **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
   `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
   und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende
