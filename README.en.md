@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-693%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-724%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -248,7 +248,7 @@ second screen to read. So here the **question is the normal state** and the text
 is what comes after it: retrieval is measurably better for retention than
 re-reading, and in music it is barely used.
 
-Ninety-eight concepts across six levels — from the semitone to how riffs are put
+A hundred and ten concepts across six levels — from the semitone to how riffs are put
 together. Each with two or three sentences and a question:
 
 - **Answer on the fretboard** where that is possible. Producing an answer beats

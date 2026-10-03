@@ -8,8 +8,10 @@ import {
   pentatonikLage,
   sameGriff,
   TOENE,
+  TOENE_B,
   type Lage,
 } from "@/lib/theory/fretboard"
+import { EINLAGEN, OKTAVBUND } from "@/lib/theory/hals"
 import {
   beatSeconds,
   beatsFor,
@@ -420,5 +422,89 @@ describe("Was die Metal-Karten behaupten, stimmt auch", () => {
   it("zählt bei 180 BPM in Achteln sechs Anschläge je Sekunde", () => {
     expect((180 / 60) * 2).toBe(6)
     expect(cardById("x-anschlaege-pro-sekunde")!.frage.richtig).toContain("6")
+  })
+})
+
+describe("Was die Grundlagen- und Intervall-Karten behaupten, stimmt auch", () => {
+  it("legt F direkt neben das leere E", () => {
+    expect(noteAt(g(6, 1))).toBe("F")
+    expect(intervalBetween(g(6, 0), g(6, 1)).name).toBe("kleine Sekunde")
+  })
+
+  it("D-Saite: 3. Bund F, 5. Bund G, 7. Bund A", () => {
+    expect(noteAt(g(4, 3))).toBe("F")
+    expect(noteAt(g(4, 5))).toBe("G")
+    expect(noteAt(g(4, 7))).toBe("A")
+  })
+
+  it("lässt hohe und tiefe E-Saite in jedem Bund denselben Ton tragen", () => {
+    for (let bund = 0; bund <= 15; bund += 1) {
+      expect(noteAt(g(1, bund)), `Bund ${bund}`).toBe(noteAt(g(6, bund)))
+    }
+    // Zwei Oktaven auseinander, nicht eine.
+    expect(midiAt(g(1, 0)) - midiAt(g(6, 0))).toBe(24)
+    expect(noteAt(g(1, 3))).toBe("G")
+    expect(noteAt(g(1, 5))).toBe("A")
+    expect(noteAt(g(1, 7))).toBe("B")
+  })
+
+  it("stimmt im 5. Bund — ausser von G nach B", () => {
+    // E→A, A→D, D→G und B→e im fünften Bund.
+    for (const saite of [6, 5, 4, 2]) {
+      expect(midiAt(g(saite, 5)), `Saite ${saite}`).toBe(midiAt(g(saite - 1, 0)))
+    }
+    // Die eine Ausnahme liegt einen Bund tiefer.
+    expect(midiAt(g(3, 4))).toBe(midiAt(g(2, 0)))
+    expect(midiAt(g(3, 5))).not.toBe(midiAt(g(2, 0)))
+    expect(cardById("m-stimmen")!.frage.richtig).toContain("5")
+    expect(cardById("m-stimmen-ausnahme")!.frage.richtig).toContain("4")
+  })
+
+  it("nennt die Einlagen so, wie der Hals sie zeichnet", () => {
+    // Dieselben Zahlen, aus denen der Hintergrund und das Griffbrett gezeichnet
+    // werden — sonst stünde in der Karte etwas anderes als auf dem Schirm.
+    const erwartet = `${EINLAGEN.join(", ")} und ${OKTAVBUND}`
+    expect(cardById("m-einlagen")!.frage.richtig).toEqual([erwartet])
+  })
+
+  it("legt Bb einen Bund unter B, auf A#", () => {
+    const b = TOENE.indexOf("B")
+    const bb = TOENE_B.indexOf("Bb")
+    expect(bb).toBe(b - 1)
+    expect(TOENE[bb]).toBe("A#")
+  })
+
+  it("findet die Terzformen eine Saite höher: klein zwei Bünde zurück, gross einen", () => {
+    expect(intervalBetween(g(6, 5), g(5, 3)).name).toBe("kleine Terz")
+    expect(intervalBetween(g(6, 5), g(5, 4)).name).toBe("grosse Terz")
+    // Über den Knick hinweg stimmt die Form nicht mehr — die Karte sagt das.
+    expect(intervalBetween(g(3, 5), g(2, 3)).name).not.toBe("kleine Terz")
+    const stellen = cardById("i-kleine-terz-form")!.frage.richtig as Griff[]
+    for (const stelle of stellen) expect(noteAt(stelle)).toBe("C")
+  })
+
+  it("setzt die grosse Terz über C auf ein E der D-Saite", () => {
+    const stellen = cardById("i-grosse-terz")!.frage.richtig as Griff[]
+    expect(stellen.length).toBeGreaterThan(0)
+    for (const stelle of stellen) {
+      expect(stelle.saite).toBe(4)
+      expect(noteAt(stelle)).toBe("E")
+    }
+    expect(intervalBetween(g(5, 3), g(4, 2)).name).toBe("grosse Terz")
+  })
+
+  it("zählt Sexte und Septime richtig — und die Sexte als Umkehrung der Terz", () => {
+    expect(intervallOf(8).name).toBe("kleine Sexte")
+    expect(12 - 4).toBe(8)
+    expect(cardById("i-kleine-sexte")!.frage.richtig).toEqual(["8"])
+    expect(intervallOf(11).name).toBe("grosse Septime")
+    expect(cardById("i-grosse-septime")!.frage.richtig).toContain("11")
+  })
+
+  it("findet unter A eine Quarte tiefer dasselbe E wie eine Quinte höher", () => {
+    const a = TOENE.indexOf("A")
+    expect(TOENE[(a - 5 + 12) % 12]).toBe("E")
+    expect(TOENE[(a + 7) % 12]).toBe("E")
+    expect(cardById("i-quarte-abwaerts")!.frage.richtig).toEqual(["E"])
   })
 })

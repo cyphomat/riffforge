@@ -174,6 +174,93 @@ export const THEORY_CARDS: TheoryCard[] = [
     },
   },
 
+  {
+    id: "m-f-erster",
+    stufe: 1,
+    begriff: "E und F, direkt nebeneinander",
+    erklaerung:
+      "Zwischen E und F liegt nur ein Halbton — also nur ein Bund. Auf der tiefen E-Saite heisst das: gleich im ersten Bund sitzt F, nicht F#. Wer hier zwei Bünde zählt, liegt bei jedem Riff in F einen Halbton daneben.",
+    frage: {
+      art: "griffbrett",
+      text: "Wo liegt F auf der tiefen E-Saite, so tief wie möglich?",
+      richtig: [griff(6, 1)],
+    },
+  },
+  {
+    id: "m-d-saite",
+    stufe: 1,
+    begriff: "Töne auf der D-Saite",
+    erklaerung:
+      "Die D-Saite trägt dieselben Marken wie die A-Saite, nur eine Quarte höher: 3. Bund F, 5. Bund G, 7. Bund A. Mit E-, A- und D-Saite zusammen hast du den Teil des Halses, auf dem fast jedes Riff spielt.",
+    frage: {
+      art: "griffbrett",
+      text: "Wo liegt F auf der D-Saite?",
+      richtig: positionsOf("F").filter((stelle) => stelle.saite === 4),
+    },
+  },
+  {
+    id: "m-hohe-e",
+    stufe: 1,
+    begriff: "Die hohe e-Saite",
+    erklaerung:
+      "Die dünnste Saite ist wieder ein E, zwei Oktaven über der dicksten. Deshalb tragen beide in jedem Bund denselben Ton: G im 3., A im 5., B im 7. Wer die tiefe E kann, kann die hohe schon.",
+    frage: {
+      art: "griffbrett",
+      text: "Wo liegt G auf der hohen e-Saite?",
+      richtig: positionsOf("G").filter((stelle) => stelle.saite === 1),
+    },
+  },
+  {
+    id: "m-stimmen",
+    stufe: 1,
+    begriff: "Nach Gehör stimmen",
+    erklaerung:
+      "Im 5. Bund klingt jede Saite wie die nächsthöhere leer — tiefe E im 5. ist A, A im 5. ist D, D im 5. ist G. So stimmt man ohne Gerät: einen Ton greifen, die nächste Saite leer daneben, bis beide gleich klingen.",
+    frage: {
+      art: "eingabe",
+      text: "In welchem Bund der tiefen E-Saite klingt derselbe Ton wie die leere A-Saite?",
+      richtig: ["5", "fünf", "fuenf"],
+    },
+  },
+  {
+    id: "m-stimmen-ausnahme",
+    stufe: 1,
+    begriff: "Die Ausnahme beim Stimmen",
+    erklaerung:
+      "Eine Saite bricht die Regel vom 5. Bund: die leere B-Saite findest du auf der G-Saite schon im 4. Bund. Dahinter steckt derselbe Knick, der jede Form über diese beiden Saiten um einen Bund verschiebt — beim Stimmen begegnet man ihm zum ersten Mal.",
+    frage: {
+      art: "eingabe",
+      text: "In welchem Bund der G-Saite klingt derselbe Ton wie die leere B-Saite?",
+      richtig: ["4", "vier"],
+    },
+  },
+  {
+    id: "m-einlagen",
+    stufe: 1,
+    begriff: "Die Punkte auf dem Hals",
+    erklaerung:
+      "Die Einlagen sitzen im 3., 5., 7. und 9. Bund, doppelt im 12. — und dann wiederholt sich das Muster eine Oktave höher. Sie sind kein Schmuck, sondern das schnellste Lineal auf dem Hals: wer weiss, dass im 5. Bund der E-Saite A liegt, braucht nicht zu zählen.",
+    frage: {
+      art: "auswahl",
+      text: "Auf welchen Bünden sitzen die Einlagen bis zur Oktave?",
+      auswahl: ["3, 5, 7, 9 und 12", "2, 4, 6, 8 und 12", "3, 6, 9 und 12", "1, 5, 7, 10 und 12"],
+      richtig: ["3, 5, 7, 9 und 12"],
+    },
+  },
+  {
+    id: "m-b-vorzeichen",
+    stufe: 1,
+    begriff: "Kreuz und b",
+    erklaerung:
+      "Ein Kreuz hebt einen Ton um einen Halbton, ein b senkt ihn um einen — auf der Gitarre ein Bund nach oben oder nach unten. Bb liegt also einen Bund unter B, und das ist derselbe Bund wie A#.",
+    frage: {
+      art: "auswahl",
+      text: "Wo liegt Bb, von B aus gesehen?",
+      auswahl: ["einen Bund tiefer", "einen Bund höher", "zwei Bünde tiefer", "auf demselben Bund"],
+      richtig: ["einen Bund tiefer"],
+    },
+  },
+
   // ─────────────────────────────────────────────────── Stufe 2: Intervalle
   {
     id: "i-was",
@@ -328,6 +415,70 @@ export const THEORY_CARDS: TheoryCard[] = [
       text: "Vom 3. zum 10. Bund derselben Saite: welches Intervall ist das?",
       auswahl: ["Quinte", "Quarte", "kleine Sexte", "grosse Sexte"],
       richtig: ["Quinte"],
+    },
+  },
+  {
+    id: "i-kleine-terz-form",
+    stufe: 2,
+    begriff: "Die kleine Terz auf dem Hals",
+    erklaerung:
+      "Eine Saite höher und zwei Bünde zurück — das ist die kleine Terz, auf jedem Saitenpaar ausser G zu B. Die grosse Terz liegt einen Bund zurück. Die beiden Formen nebeneinander zu sehen ist der schnellste Weg, Dur und Moll auf dem Hals zu unterscheiden.",
+    frage: {
+      art: "griffbrett",
+      text: "Der Grundton A liegt auf der tiefen E-Saite im 5. Bund. Zeig die kleine Terz dazu auf der A-Saite.",
+      gegeben: [griff(6, 5)],
+      richtig: positionsOfInterval(griff(6, 5), 3).filter((stelle) => stelle.saite === 5),
+    },
+  },
+  {
+    id: "i-grosse-terz",
+    stufe: 2,
+    begriff: "Die grosse Terz",
+    erklaerung:
+      "Vier Halbtöne — der helle Ton im Dur-Akkord. Im Metal-Riff ist sie selten, weil sie unter Verzerrung schnell matscht; dafür ist sie der Ton, der in Phrygisch dominant den ganzen Klang umdreht.",
+    frage: {
+      art: "griffbrett",
+      text: "Der Grundton C liegt auf der A-Saite im 3. Bund. Zeig die grosse Terz dazu auf der D-Saite.",
+      gegeben: [griff(5, 3)],
+      richtig: positionsOfInterval(griff(5, 3), 4).filter((stelle) => stelle.saite === 4),
+    },
+  },
+  {
+    id: "i-kleine-sexte",
+    stufe: 2,
+    begriff: "Die kleine Sexte",
+    erklaerung:
+      "Acht Halbtöne über dem Grundton — die sechste Stufe von Moll und die Umkehrung der grossen Terz. Sie ist der dunkle Ton, der Moll-Melodien ihre Schwere gibt; im Riff kippt eine ♭6 auf die Quinte zurück und erzeugt genau das Ziehen, das man aus düsteren Refrains kennt.",
+    frage: {
+      art: "auswahl",
+      text: "Wie viele Halbtöne umfasst die kleine Sexte?",
+      auswahl: ["8", "9", "7", "6"],
+      richtig: ["8"],
+    },
+  },
+  {
+    id: "i-grosse-septime",
+    stufe: 2,
+    begriff: "Die grosse Septime",
+    erklaerung:
+      "Elf Halbtöne, einen Halbton unter der Oktave. Als Einzelton zieht sie nach oben zum Grundton — der Leitton, den harmonisch Moll einführt, damit eine Auflösung wirklich ankommt. Zusammen gegriffen mit dem Grundton reibt sie fast so scharf wie die kleine Sekunde.",
+    frage: {
+      art: "eingabe",
+      text: "Wie viele Halbtöne umfasst die grosse Septime?",
+      richtig: ["11", "elf"],
+    },
+  },
+  {
+    id: "i-quarte-abwaerts",
+    stufe: 2,
+    begriff: "Eine Quarte nach unten",
+    erklaerung:
+      "Eine Quarte unter dem Grundton liegt derselbe Ton wie eine Quinte darüber, nur eine Oktave tiefer — Quarte und Quinte ergänzen sich zur Oktave. Unter A liegt deshalb E. Darum klingt ein Powerchord mit der Quinte unten, also umgekehrt gegriffen, so verwandt mit dem normalen.",
+    frage: {
+      art: "auswahl",
+      text: "Welcher Ton liegt eine Quarte unter A?",
+      auswahl: ["E", "D", "F", "G"],
+      richtig: ["E"],
     },
   },
   // ─────────────────────────────────────────────────── Stufe 3: Tonleitern
