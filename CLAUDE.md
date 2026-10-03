@@ -56,7 +56,7 @@ Verschiedenes.
 | `lib/theory/types.ts` | Karten, Fragen und der Antwort-Log |
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
-| `lib/theory/hals.ts` | Die Maße des Halses — einmal für das SVG, einmal fürs CSS |
+| `lib/theory/hals.ts` | Die Maße des Halses — für das antippbare Griffbrett |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
@@ -124,40 +124,25 @@ Komponente.
   ist jetzt 11,5 px, die Sperrung höchstens 0,14 em. Wer ein Etikett setzt,
   nimmt `.kicker` statt eigener Pixelwerte — sonst wandert der Boden wieder
   nach unten.
-- **Der Grund ist der Hals, nicht ein Muster, das so aussieht.** Die Maße
-  stehen einmal in `lib/theory/hals.ts` — 44 px Bundbreite, 62 px
-  Saitenabstand, Einlagen bei 3, 5, 7, 9 und doppelt am 12. Daraus zeichnet
-  `fretboard.tsx` das antippbare Griffbrett *und* `globals.css` den
-  Hintergrund, gekachelt mit 528 × 372 px. `__tests__/hals.test.ts` liest das
-  Stylesheet und rechnet die Einlagen gegen das Modul nach; wer eine Zahl
-  verschiebt, ohne sie zu rechnen, fällt dort auf. Dasselbe Prinzip wie bei
-  den Tönen: eine Tabelle mit hundert Zahlen lügt irgendwann unbemerkt.
-- **Der Hals hat einen Regler, und der heisst `--hals`.** Saiten, Bünde und
-  Einlagen liegen zusammen auf `body::before`, nicht an drei Stellen verteilt.
-  Der Grund dafür steht im Verlauf: erst lagen die Saiten im Register von
-  `--raster` und waren unsichtbar — `--raster` hat die Aufgabe, nicht
-  aufzufallen, eine Zahl zu treffen ist kein Ziel. Dann zog ich alle drei
-  zugleich hoch, bis an die obere Kante meines eigenen Korridors. Auf einem
-  OLED, wo Fast-Schwarz wirklich schwarz ist, war das Unruhe statt Tiefe —
-  und mein Messwert aus einem sRGB-Screenshot hatte das nicht gesehen. Drei
-  Stärken gleichzeitig zu verstellen heisst, keine davon beurteilen zu
-  können. Deshalb ein Regler.
-- **Ein Muster, das man nicht als Ganzes sieht, ist Unruhe.** Die Halskachel
-  ist 528 px breit — auf einem Handy passt sie nicht aufs Bild, und was
-  ankommt, sind Bruchstücke: Linien, die sich kreuzen, Punkte, die zu nichts
-  gehören. `--hals` steht deshalb schmal auf 0,28 und erst ab 900 px auf 1.
-  Dieselbe Schwelle wie `wide:`. Wer ein Flächenmuster hinzufügt, prüft es
-  zuerst auf 390 px.
-- **Wo der Hals eine Antwort ist, darf der Grund kein Hals sein.** Das
-  antippbare Griffbrett war durchsichtig, und der Seitenhintergrund ist aus
-  denselben Massen gezeichnet — nur gegen das Griffbrett verschoben. Auf
-  einem breiten Schirm, wo `--hals` auf 1 steht, sassen dann fremde
-  Einlagen zwischen den Bünden und Linien quer über den Saiten. Bei einer
-  Frage, deren Antwort eine Stelle auf dem Hals *ist*, liest sich jeder
-  solche Punkt als Hinweis. Das Griffbrett steht deshalb auf `--sunken`,
-  mit Rand, wie die Tabulatur im Block: ein Instrument zum Ablesen bekommt
-  eine eigene, deckende Fläche. Wer ein weiteres Ablese-Element baut, gibt
-  ihm dieselbe.
+- **Der Grund ist matt.** Bis Oktober lag ein ganzer Hals als Hintergrund
+  auf der Seite — Saiten, Bünde, Einlagen, gekachelt aus `lib/theory/hals.ts`,
+  mit einem Regler und einem Test, der die Einlagen im Stylesheet nachrechnete.
+  Er ist in drei Anläufen an drei verschiedenen Stellen gescheitert: erst
+  unsichtbar, weil er im Register von `--raster` lag; dann hochgezogen und
+  auf einem OLED unruhig; dann schien er durch das antippbare Griffbrett und
+  setzte fremde Punkte zwischen die Bünde, und zuletzt lag er hinter Listen,
+  die selbst aus Linien bestehen. Daniels Urteil: stört mehr, als es hilft.
+  Der Grund für alle drei Fehlschläge ist derselbe — **der Inhalt dieser App
+  ist aus Linien und Punkten gemacht**: Tabulaturen, Griffbrett,
+  Skalenstriche, Trennlinien. Ein Grund, der dieselbe Sprache spricht,
+  konkurriert mit ihm, egal wie leise er gestellt ist. Textur gehört auf
+  Flächen (Tolex auf `.card`), nicht auf den Grund; `hals.test.ts` hält fest,
+  dass dort keiner mehr liegt. Wer ein Flächenmuster erwägt, prüft es zuerst
+  hinter dem Griffbrett und hinter einer Liste — dort ist es gescheitert.
+- **Ein Instrument zum Ablesen bekommt eine eigene Fläche.** Griffbrett und
+  Tabulatur stehen auf `--sunken`, mit Rand. Das war zuerst die Antwort auf
+  den durchscheinenden Hals, ist aber auch ohne ihn richtig: was man liest,
+  während die Hände spielen, soll sich vom Rest des Bildschirms abheben.
 - **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
   `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
   und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende

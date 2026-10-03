@@ -62,14 +62,12 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
     liste?.some((stelle) => stelle.saite === saite && stelle.bund === bund) ?? false
 
   return (
-    // Eigener, deckender Grund — wie die Tabulatur im Block.
-    //
-    // Der Seitenhintergrund ist selbst ein Hals, aus denselben Massen
-    // gezeichnet. Ohne eigene Fläche scheinen seine Einlagen und Saiten durch
-    // dieses Griffbrett hindurch, nur gegen es verschoben: ein Punkt zwischen
-    // zwei Bünden, eine Linie quer über eine Saite. Auf einem Bildschirm, auf
-    // dem die Antwort eine Stelle auf dem Hals *ist*, sieht jeder fremde Punkt
-    // aus wie ein Hinweis — und zwei Hälse übereinander wie ein Fehler.
+    // Eigener, deckender Grund — wie die Tabulatur im Block. Was man liest,
+    // während die Hände spielen, hebt sich vom Rest des Bildschirms ab.
+    // Entstanden ist das, als der Seitenhintergrund noch ein Hals war und
+    // seine Einlagen durch dieses Griffbrett schienen: auf einem Bildschirm,
+    // auf dem die Antwort eine Stelle auf dem Hals *ist*, sah jeder fremde
+    // Punkt aus wie ein Hinweis.
     <div className="overflow-x-auto border border-line bg-sunken px-2 py-3">
       <svg
         viewBox={`0 0 ${breite} ${hoehe}`}
