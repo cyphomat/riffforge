@@ -3,9 +3,11 @@ import { cardById, cardsOfStufe, THEORY_CARDS } from "@/lib/theory/cards"
 import {
   intervalBetween,
   intervallOf,
+  midiAt,
   noteAt,
   pentatonikLage,
   sameGriff,
+  TOENE,
   type Lage,
 } from "@/lib/theory/fretboard"
 import {
@@ -318,5 +320,105 @@ describe("Was im Text steht, stimmt auch", () => {
   it("der Tritonus zur Quinte liegt einen Bund tiefer — die Blue Note", () => {
     expect(intervalBetween(g(6, 5), g(5, 6)).name).toBe("Tritonus")
     expect(intervalBetween(g(6, 5), g(5, 7)).name).toBe("Quinte")
+  })
+})
+
+/**
+ * Stufe 6 rechnet mit Physik und Stimmungen — beides lässt sich nachrechnen,
+ * also wird es nachgerechnet. Eine Karte, die beim Flageolett den falschen
+ * Bund nennt, schickt jemanden eine Woche lang an die falsche Stelle.
+ */
+describe("Was die Metal-Karten behaupten, stimmt auch", () => {
+  /** Wo ein Bund die Saite teilt — als Anteil der Länge, vom Sattel aus. */
+  const teilung = (bund: number) => 1 - 2 ** (-bund / 12)
+  /** Welcher Oberton an dieser Stelle klingt, und wie viele Halbtöne über leer. */
+  const oberton = (bund: number) => {
+    const teile = Math.round(1 / teilung(bund))
+    return { teile, halbtoene: Math.round(12 * Math.log2(teile)) }
+  }
+
+  it("legt das Oktav-Flageolett auf den 12. Bund", () => {
+    expect(teilung(12)).toBeCloseTo(1 / 2, 5)
+    expect(oberton(12).halbtoene).toBe(12)
+    expect(cardById("x-flageolett-12")!.frage.richtig).toContain("12")
+  })
+
+  it("lässt den 7. Bund eine Oktave plus Quinte klingen, den 5. zwei Oktaven", () => {
+    // „Fast genau ein Drittel" — die Bünde sind gleichstufig, die Obertöne
+    // nicht. Der Unterschied liegt unter einem Prozent der Saitenlänge.
+    expect(Math.abs(teilung(7) - 1 / 3)).toBeLessThan(0.01)
+    expect(oberton(7).halbtoene).toBe(12 + 7)
+    expect(intervallOf(oberton(7).halbtoene - 12).name).toBe("Quinte")
+    expect(oberton(5).halbtoene).toBe(24)
+    expect(cardById("x-flageolett-7")!.frage.richtig).toEqual(["eine Oktave plus Quinte"])
+  })
+
+  it("nennt die Stufen der Metal-Kadenz richtig", () => {
+    // C und D über E: kleine Sexte und kleine Septime, also ♭VI und ♭VII.
+    expect(intervalBetween(g(6, 0), g(6, 8)).name).toBe("kleine Sexte")
+    expect(noteAt(g(6, 8))).toBe("C")
+    expect(intervalBetween(g(6, 0), g(6, 10)).name).toBe("kleine Septime")
+    expect(noteAt(g(6, 10))).toBe("D")
+    expect(cardById("x-kadenz-moll")!.frage.richtig).toEqual(["♭VI – ♭VII – i"])
+  })
+
+  it("verteilt die Terzen in A-Moll so, wie die Karte sagt", () => {
+    // Vier kleine über A, B, D, E — drei grosse über C, F, G.
+    const moll = [0, 2, 3, 5, 7, 8, 10]
+    const a = TOENE.indexOf("A")
+    const kleine: string[] = []
+    const grosse: string[] = []
+    moll.forEach((stufe, i) => {
+      const terz = (moll[(i + 2) % 7] - stufe + 12) % 12
+      const ton = TOENE[(a + stufe) % 12]
+      ;(terz === 3 ? kleine : grosse).push(ton)
+      expect([3, 4]).toContain(terz)
+    })
+    expect(kleine).toEqual(["A", "B", "D", "E"])
+    expect(grosse).toEqual(["C", "F", "G"])
+  })
+
+  it("setzt die zweite Stimme über A auf ein C", () => {
+    const stellen = cardById("x-terzen-zweistimmig")!.frage.richtig as Griff[]
+    expect(stellen.length).toBeGreaterThan(0)
+    for (const stelle of stellen) {
+      expect(noteAt(stelle)).toBe("C")
+      expect(stelle.saite).toBe(5)
+    }
+  })
+
+  it("greift F5 in Drop D im dritten Bund", () => {
+    // Drop D: die tiefste Saite auf D2 (MIDI 38) statt E2 (40).
+    const dropD = (bund: number) => 38 + bund
+    expect(TOENE[dropD(3) % 12]).toBe("F")
+    expect(TOENE[dropD(5) % 12]).toBe("G")
+    // Die Quinte liegt im selben Bund auf der A-Saite — ein Finger reicht.
+    expect(midiAt(g(5, 3)) - dropD(3)).toBe(7)
+    // Und in Standardstimmung liegt F zwei Bünde tiefer.
+    expect(noteAt(g(6, 1))).toBe("F")
+    expect(cardById("x-drop-d-bund")!.frage.richtig).toContain("3")
+  })
+
+  it("rechnet den Spannungsverlust beim Tieferstimmen", () => {
+    // Spannung wächst mit dem Quadrat der Frequenz.
+    const verlust = 1 - (2 ** (-2 / 12)) ** 2
+    expect(verlust).toBeGreaterThan(0.18)
+    expect(verlust).toBeLessThan(0.23)
+    expect(cardById("x-spannung")!.frage.richtig).toEqual(["etwa ein Fünftel"])
+  })
+
+  it("lässt den verminderten Septakkord alle drei Bünde auf sich selbst fallen", () => {
+    const akkord = new Set([0, 3, 6, 9])
+    const verschoben = new Set([...akkord].map((ton) => (ton + 3) % 12))
+    expect(verschoben).toEqual(akkord)
+    // Und zwei Bünde reichen nicht — die Drei ist keine Faustregel.
+    const zwei = new Set([...akkord].map((ton) => (ton + 2) % 12))
+    expect(zwei).not.toEqual(akkord)
+    expect(cardById("x-vermindert-symmetrie")!.frage.richtig).toContain("3")
+  })
+
+  it("zählt bei 180 BPM in Achteln sechs Anschläge je Sekunde", () => {
+    expect((180 / 60) * 2).toBe(6)
+    expect(cardById("x-anschlaege-pro-sekunde")!.frage.richtig).toContain("6")
   })
 })

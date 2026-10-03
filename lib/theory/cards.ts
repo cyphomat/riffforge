@@ -1241,6 +1241,163 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["eine Figur und eine Variante mit anderem Schluss"],
     },
   },
+  {
+    id: "x-kadenz-moll",
+    stufe: 6,
+    begriff: "Die Metal-Kadenz",
+    erklaerung:
+      "In E-Moll: C5, D5, E5 — sechste, siebte, erste Stufe, also ♭VI ♭VII i. Die zwei Powerchords laufen in Ganztönen auf den Grundton zu und kommen dort an, ohne dass ein Dur-Akkord die Stimmung aufhellt. Das ist die Fortschreitung hinter unzähligen Refrains, gerade weil sie so wenig erklären muss.",
+    frage: {
+      art: "auswahl",
+      text: "C5 – D5 – E5 in E-Moll: welche Stufen sind das?",
+      auswahl: ["♭VI – ♭VII – i", "IV – V – I", "ii – iii – i", "♭III – IV – i"],
+      richtig: ["♭VI – ♭VII – i"],
+    },
+    technique: "power-chords",
+  },
+  {
+    id: "x-terzen-zweistimmig",
+    stufe: 6,
+    begriff: "Zweistimmig in Terzen",
+    erklaerung:
+      "Zwei Gitarren, dieselbe Melodie, die zweite eine Terz darüber — der Klang von Twin-Leads. Gespielt wird dabei die Terz, die in der Tonart liegt: über A in A-Moll ist das C, drei Halbtöne höher.",
+    frage: {
+      art: "griffbrett",
+      text: "Die erste Gitarre spielt A, tiefe E-Saite im 5. Bund, in A-Moll. Zeig die Terz darüber auf der A-Saite.",
+      gegeben: [griff(6, 5)],
+      richtig: positionsOfInterval(griff(6, 5), 3).filter((stelle) => stelle.saite === 5),
+    },
+  },
+  {
+    id: "x-terzen-wechsel",
+    stufe: 6,
+    begriff: "Warum man Terzen nicht parallel schiebt",
+    erklaerung:
+      "Die Tonleiter hat mal kleine, mal grosse Terzen: in A-Moll liegen über A, B, D und E kleine, über C, F und G grosse. Wer dieselbe Griffform einfach mitwandern lässt, landet nach zwei Tönen ausserhalb der Tonart — die zweite Stimme bleibt in der Leiter, nicht in der Form.",
+    frage: {
+      art: "auswahl",
+      text: "Warum klingt eine Terzstimme falsch, die man in fester Form mitschiebt?",
+      auswahl: [
+        "Die Tonleiter hat mal grosse, mal kleine Terzen",
+        "Terzen klingen verzerrt immer schief",
+        "Die zweite Gitarre ist zu laut",
+        "Terzen gehören nicht in Moll",
+      ],
+      richtig: ["Die Tonleiter hat mal grosse, mal kleine Terzen"],
+    },
+  },
+  {
+    id: "x-flageolett-12",
+    stufe: 6,
+    begriff: "Flageolett",
+    erklaerung:
+      "Die Saite nur berühren statt drücken, direkt über dem Bundstab: dann schwingt sie in Teilen, und es klingt ein Oberton. Über dem 12. Bund teilt der Finger sie genau in zwei Hälften — der Ton liegt eine Oktave über der Leersaite.",
+    frage: {
+      art: "eingabe",
+      text: "Über welchem Bund klingt das Flageolett genau eine Oktave über der Leersaite?",
+      richtig: ["12", "zwölf", "zwoelf"],
+    },
+  },
+  {
+    id: "x-flageolett-7",
+    stufe: 6,
+    begriff: "Flageolett am 7. Bund",
+    erklaerung:
+      "Über dem 7. Bund liegt fast genau ein Drittel der Saite. Sie schwingt dann in drei Teilen, und der Oberton klingt eine Oktave plus eine Quinte über der Leersaite. Über dem 5. Bund ist es ein Viertel — zwei Oktaven.",
+    frage: {
+      art: "auswahl",
+      text: "Wie hoch klingt das Flageolett über dem 7. Bund, gemessen an der Leersaite?",
+      auswahl: ["eine Oktave plus Quinte", "eine Oktave", "zwei Oktaven", "eine Quinte"],
+      richtig: ["eine Oktave plus Quinte"],
+    },
+  },
+  {
+    id: "x-pinch",
+    stufe: 6,
+    begriff: "Pinch Harmonic",
+    erklaerung:
+      "Der Daumen streift die Saite direkt nach dem Plektrum und löscht den Grundton aus — übrig bleibt ein Oberton, der quietscht. Wo die Anschlaghand dabei steht, entscheidet, welcher: ein paar Millimeter zum Hals oder zum Steg ergeben einen anderen Ton. Deshalb klingt es mal und mal nicht, und deshalb sucht man die Stelle mit dem Ohr, nicht mit dem Auge.",
+    frage: {
+      art: "auswahl",
+      text: "Was entscheidet, welcher Oberton beim Pinch Harmonic klingt?",
+      auswahl: [
+        "wo die Anschlaghand auf der Saite steht",
+        "wie fest die Greifhand drückt",
+        "wie viel Verzerrung eingestellt ist",
+        "ob ab- oder aufgeschlagen wird",
+      ],
+      richtig: ["wo die Anschlaghand auf der Saite steht"],
+    },
+  },
+  {
+    id: "x-drop-d-bund",
+    stufe: 6,
+    begriff: "Powerchords in Drop D",
+    erklaerung:
+      "In Drop D klingt die tiefste Saite leer D, die A-Saite darüber liegt eine Quinte höher. Ein Finger quer über beide Saiten im selben Bund greift deshalb einen Powerchord: Bund 3 ist F5, Bund 5 G5. Der Grundton liegt zwei Bünde höher als in Standardstimmung.",
+    frage: {
+      art: "eingabe",
+      text: "In Drop D: in welchem Bund greifst du F5 mit einem Finger auf den beiden tiefsten Saiten?",
+      richtig: ["3", "drei"],
+    },
+    technique: "power-chords",
+  },
+  {
+    id: "x-tiefer-stimmen",
+    stufe: 6,
+    begriff: "Alles einen Ganzton tiefer",
+    erklaerung:
+      "In D Standard sind alle sechs Saiten um zwei Halbtöne heruntergestimmt. Die Abstände zwischen ihnen bleiben, also bleiben auch alle Griffbilder: dieselbe Form, nur klingt sie einen Ganzton tiefer. Wer aus einer Tabulatur in D Standard spielt, greift einfach, was dasteht.",
+    frage: {
+      art: "auswahl",
+      text: "Du stimmst alle Saiten einen Ganzton tiefer. Was passiert mit den Griffbildern?",
+      auswahl: [
+        "Sie bleiben gleich und klingen tiefer",
+        "Sie rutschen zwei Bünde höher",
+        "Nur die Powerchords ändern sich",
+        "Die Abstände zwischen den Saiten ändern sich",
+      ],
+      richtig: ["Sie bleiben gleich und klingen tiefer"],
+    },
+  },
+  {
+    id: "x-spannung",
+    stufe: 6,
+    begriff: "Tiefer gestimmt, dickere Saiten",
+    erklaerung:
+      "Die Spannung einer Saite wächst mit dem Quadrat ihrer Tonhöhe. Einen Ganzton tiefer gestimmt verliert sie deshalb rund ein Fünftel ihrer Spannung, schlackert, schnarrt und verstimmt sich beim Anschlagen. Dickere Saiten holen die Spannung zurück — das ist der Grund für die Sätze mit 11er oder 12er.",
+    frage: {
+      art: "auswahl",
+      text: "Wie viel Spannung verliert eine Saite ungefähr, wenn du sie einen Ganzton tiefer stimmst?",
+      auswahl: ["etwa ein Fünftel", "etwa die Hälfte", "fast nichts", "etwa ein Zwanzigstel"],
+      richtig: ["etwa ein Fünftel"],
+    },
+  },
+  {
+    id: "x-vermindert-symmetrie",
+    stufe: 6,
+    begriff: "Der verminderte Septakkord",
+    erklaerung:
+      "Lauter kleine Terzen übereinander: 1 ♭3 ♭5 ♭♭7, je drei Halbtöne. Weil vier kleine Terzen genau eine Oktave füllen, ist der Akkord symmetrisch — drei Bünde höher ergibt dieselben vier Töne in anderer Reihenfolge. Das ist das Werkzeug der Neoklassik: eine Form, die man ohne Nachdenken über den ganzen Hals schieben kann.",
+    frage: {
+      art: "eingabe",
+      text: "Alle wie viele Bünde wiederholt sich ein verminderter Septakkord?",
+      richtig: ["3", "drei"],
+    },
+  },
+  {
+    id: "x-anschlaege-pro-sekunde",
+    stufe: 6,
+    begriff: "Was 180 BPM bedeuten",
+    erklaerung:
+      "Das Tempo zählt Schläge pro Minute, nicht Anschläge. Achtel bei 180 BPM heisst zwei Anschläge je Schlag, drei Schläge je Sekunde — sechs Anschläge in der Sekunde, und bei reinem Abschlag sechs volle Bewegungen der Hand. Wer das einmal ausrechnet, versteht, warum Downpicking eine Ausdauerfrage ist.",
+    frage: {
+      art: "eingabe",
+      text: "Achtel bei 180 BPM: wie viele Anschläge sind das pro Sekunde?",
+      richtig: ["6", "sechs"],
+    },
+    technique: "downpicking",
+  },
 ]
 
 
