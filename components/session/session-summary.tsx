@@ -15,6 +15,7 @@ import type { TheoryLog } from "@/lib/theory/types"
 import { AufnaeherKachel } from "@/components/session/merch-stand"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
+import { lastSynced } from "@/lib/sync/settings"
 import { sollErinnern } from "@/lib/backup-erinnerung"
 import { zuletztGesichert } from "@/lib/storage/lokal"
 import { MdAdd, MdFileDownload } from "react-icons/md"
@@ -95,6 +96,7 @@ export function SessionSummary({
       sollErinnern({
         eintraege: log.results.length,
         gesichert: zuletztGesichert(),
+        abgeglichen: lastSynced(),
         aeltester:
           log.results.length > 0
             ? new Date(Math.min(...log.results.map((r) => new Date(r.at).getTime())))

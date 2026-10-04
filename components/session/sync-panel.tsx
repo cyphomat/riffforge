@@ -25,7 +25,17 @@ function formatWhen(date: Date): string {
   return date.toLocaleDateString("de-DE")
 }
 
-export function SyncPanel({ onChanged }: { onChanged?: () => void }) {
+export function SyncPanel({
+  onChanged,
+  onConfigured,
+  kopf = true,
+}: {
+  onChanged?: () => void
+  /** Meldet, ob ein Datenrepo eingerichtet ist — die Seite stellt den Abgleich danach um. */
+  onConfigured?: (eingerichtet: boolean) => void
+  /** Ohne eigene Überschrift, wenn schon eine aufklappbare Zeile darüber steht. */
+  kopf?: boolean
+}) {
   const [settings, setSettings] = useState<SyncSettings>(EMPTY_SETTINGS)
   const [ready, setReady] = useState(false)
   const [draft, setDraft] = useState<SyncSettings>({ owner: "", repo: "riffforge-data", token: "" })
@@ -49,6 +59,7 @@ export function SyncPanel({ onChanged }: { onChanged?: () => void }) {
     setSettings(draft)
     setNotice(null)
     void repoIsPublic(draft).then(setPublicRepo)
+    onConfigured?.(true)
   }
 
   const disconnect = () => {
@@ -57,6 +68,7 @@ export function SyncPanel({ onChanged }: { onChanged?: () => void }) {
     setPublicRepo(null)
     setLast(null)
     setNotice(null)
+    onConfigured?.(false)
   }
 
   const sync = async () => {
@@ -85,7 +97,7 @@ export function SyncPanel({ onChanged }: { onChanged?: () => void }) {
   if (!isConfigured(settings)) {
     return (
       <section>
-        <h2 className="rule mb-1 mt-9">Abgleich</h2>
+        {kopf && <h2 className="rule mb-1 mt-9">Abgleich</h2>}
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Der Log liegt dann zusätzlich in einem <b className="text-muted">privaten</b> Repo, und
           iPhone und Mac ziehen sich gegenseitig nach. Es gewinnt keine Seite — beide Stände
@@ -162,7 +174,7 @@ export function SyncPanel({ onChanged }: { onChanged?: () => void }) {
 
   return (
     <section>
-      <h2 className="rule mb-1 mt-9">Abgleich</h2>
+      {kopf && <h2 className="rule mb-1 mt-8">Abgleich</h2>}
       <p className="mb-3 font-mono text-[12px] text-dim">
         {settings.owner}/{settings.repo}
         {last && ` · zuletzt ${formatWhen(last)}`}

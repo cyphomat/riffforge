@@ -214,10 +214,14 @@ Komponente.
   frei, heisst Rot wirklich noch etwas.
 - **Lokal ist der Normalfall, der Abgleich die Ausnahme.** Die App läuft
   vollständig ohne Datenrepo: alles liegt in `localStorage`, mitgenommen wird
-  über eine Datei. Auf *Daten* steht deshalb zuerst Sichern, Einlesen und
-  Löschen; der GitHub-Abgleich sitzt zugeklappt darunter unter *Mehrere
-  Geräte*. Wer ihn nicht will, sieht von GitHub nie etwas — und `runSync`
-  liefert ohne eingerichtetes Repo still `ok: false` statt eines Fehlers.
+  über eine Datei. Auf *Daten* steht deshalb zuerst Sichern und Einlesen;
+  der GitHub-Abgleich sitzt zugeklappt darunter. Wer ihn nicht will, sieht
+  von GitHub nie etwas — und `runSync` liefert ohne eingerichtetes Repo still
+  `ok: false` statt eines Fehlers.
+  **Ist er eingerichtet, steht er oben und offen.** Zugeklappt unter
+  *Löschen* hielt Daniel ihn auf dem iPhone für verschwunden — wer ein
+  Datenrepo hat, benutzt es, und für den ist der Abgleich der Hauptweg und
+  die Datei der Nebenweg. *Löschen* bleibt in beiden Fällen das Letzte.
 - **Der Willkommens-Schirm kommt einmal und beantwortet drei Fragen.** Wo
   bleiben meine Daten, brauche ich ein Konto, wie komme ich wieder raus. Die
   dritte ist die, an der solche Apps scheitern: wer nicht weiss, dass sein
@@ -228,6 +232,11 @@ Komponente.
   zwölf Einträge und vierzehn Tage seit der letzten Sicherung. Ohne je
   gesicherte Datei zählt die Zeit ab dem ältesten Eintrag, sonst bekäme
   jemand, der seit einem Jahr übt und nie exportiert hat, nie einen Hinweis.
+  Ein erfolgreicher Abgleich **zählt als Sicherung** (`letzteKopie` nimmt den
+  jüngeren Zeitpunkt): die Warnung sagt, dass Aufräumen den Log mitnimmt, und
+  ein privates Repo überlebt das wie eine Datei. Vorher las, wer täglich
+  abglich, trotzdem „Noch nie gesichert" — und eine Warnung, die nachweislich
+  nicht stimmt, glaubt man auch dann nicht mehr, wenn sie stimmt.
   Eine Erinnerung, die zu früh oder grundlos kommt, wird weggeklickt und
   danach nie wieder gelesen — deshalb steht sie an genau zwei Stellen: über
   dem Exportknopf und am Abschluss einer Session, also dort, wo man ohnehin

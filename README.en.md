@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-753%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-756%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -432,6 +432,10 @@ date — automatically after every session, or by hand.
 
 Neither side wins. On a write conflict it re-reads, merges again and writes once
 more; the same union as on import. A sync with no news produces no commit.
+
+Once a data repo is set up, sync sits at the top of **Daten** and counts as a
+backup: the export reminder only returns once the last successful sync is two
+weeks old as well.
 
 Two files live there: `uebungen.json` and `theorie.json`. Separate for a
 concrete reason — a device on an older build does not know a newer field, strips

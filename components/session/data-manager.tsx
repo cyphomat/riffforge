@@ -23,7 +23,8 @@ import { SyncPanel } from "@/components/session/sync-panel"
 import { UpdatePanel } from "@/components/session/update-panel"
 import { InstallPanel } from "@/components/session/install-panel"
 import { clearLokal, merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
-import { sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
+import { letzteKopie, sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
+import { isConfigured, lastSynced, loadSettings } from "@/lib/sync/settings"
 import { MdFileDownload, MdFileUpload } from "react-icons/md"
 
 type Notice = { tone: "ok" | "err"; text: string } | null
@@ -38,6 +39,11 @@ export function DataManager() {
   // trotzdem angehen, sonst kommt man an genau diese Daten nicht mehr heran.
   const [stored, setStored] = useState(false)
   const [gesichert, setGesichert] = useState<Date | null>(null)
+  const [abgeglichen, setAbgeglichen] = useState<Date | null>(null)
+  // Wer ein Datenrepo eingerichtet hat, benutzt es — dann steht der Abgleich
+  // oben und offen, nicht zugeklappt unter „Löschen", wo man ihn für
+  // verschwunden hielt.
+  const [eingerichtet, setEingerichtet] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -45,7 +51,25 @@ export function DataManager() {
     setTheorie(loadTheoryLog())
     setStored(hasStoredLog() || hasStoredTheoryLog())
     setGesichert(zuletztGesichert())
+    setAbgeglichen(lastSynced())
+    setEingerichtet(isConfigured(loadSettings()))
   }, [])
+
+  const nachAbgleich = () => {
+    setLog(loadLog())
+    setTheorie(loadTheoryLog())
+    setAbgeglichen(lastSynced())
+  }
+  const kopie = letzteKopie({ gesichert, abgeglichen })
+  const erinnern = sollErinnern({
+    eintraege: log.results.length,
+    gesichert,
+    abgeglichen,
+    aeltester:
+      log.results.length > 0
+        ? new Date(Math.min(...log.results.map((r) => new Date(r.at).getTime())))
+        : null,
+  })
 
   const days = practiceDays(log)
 
@@ -59,8 +83,8 @@ export function DataManager() {
     link.click()
     // Erst freigeben, wenn der Browser den Download übernommen hat.
     setTimeout(() => URL.revokeObjectURL(url), 1000)
-    // Ab jetzt gibt es eine Datei. Das ist die einzige Stelle, an der das
-    // stimmt — der Abgleich zählt nicht, er liegt auf demselben Konto.
+    // Ab jetzt gibt es eine Datei. Der Abgleich merkt sich seinen eigenen
+    // Zeitpunkt; die Erinnerung nimmt den jüngeren von beiden.
     merkeSicherung()
     setGesichert(new Date())
     const eintraege = `${log.results.length} ${log.results.length === 1 ? "Eintrag" : "Einträge"}`
@@ -142,8 +166,12 @@ export function DataManager() {
       </div>
 
       <div className="spalte">
+      {eingerichtet && (
+        <SyncPanel onChanged={nachAbgleich} onConfigured={setEingerichtet} />
+      )}
+
       <section>
-        <h2 className="rule mb-1 mt-8">Sichern</h2>
+        <h2 className={`rule mb-1 ${eingerichtet ? "mt-9" : "mt-8"}`}>Sichern</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Eine JSON-Datei mit allem — Übungs-Log und beantwortete Wissensfragen. Leg sie
           irgendwohin, wo sie einen Browserwechsel überlebt.
@@ -153,25 +181,25 @@ export function DataManager() {
             die App: hier ist sie handlungsnah, anderswo wäre sie Nörgeln.
             Und sie kommt erst, wenn es wirklich etwas zu verlieren gibt —
             siehe `backup-erinnerung.ts`. */}
-        {sollErinnern({
-          eintraege: log.results.length,
-          gesichert,
-          aeltester: log.results.length > 0
-            ? new Date(Math.min(...log.results.map((r) => new Date(r.at).getTime())))
-            : null,
-        }) && (
+        {erinnern && (
           <>
             <div className="warnstreifen mb-2" aria-hidden />
             <p className="mb-3 text-[13.5px] leading-relaxed text-rost">
-              {gesichert
-                ? `Zuletzt vor ${tageSeit(gesichert)} Tagen gesichert.`
+              {kopie
+                ? `Zuletzt vor ${tageSeit(kopie)} Tagen gesichert.`
                 : "Noch nie gesichert."}{" "}
               Der Log liegt nur in diesem Browser — wer ihn aufräumt, räumt ihn mit auf.
             </p>
           </>
         )}
 
-        <button onClick={download} disabled={log.results.length === 0} className="btn w-full">
+        {/* Mit eingerichtetem Abgleich ist der der Hauptweg; die Datei wird
+            erst wieder Bernstein, wenn auch er lange her ist. */}
+        <button
+          onClick={download}
+          disabled={log.results.length === 0}
+          className={`btn w-full ${eingerichtet && !erinnern ? "btn-ghost" : ""}`}
+        >
           <MdFileDownload className="h-[18px] w-[18px]" /> Exportieren
         </button>
         {gesichert && (
@@ -182,7 +210,7 @@ export function DataManager() {
       </section>
 
       <section>
-        <h2 className="rule mb-1">Einlesen</h2>
+        <h2 className="rule mb-1 mt-9">Einlesen</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Wird <b className="text-muted">dazugelegt</b>, nicht ersetzt. Was hier schon steht,
           bleibt — auch wenn die Datei älter ist.
@@ -237,6 +265,23 @@ export function DataManager() {
         </p>
       )}
 
+      {/* Der Abgleich ist die Ausnahme, nicht der Weg. Die App läuft
+          vollständig ohne ihn: alles liegt lokal, und mitgenommen wird über
+          die Datei oben. Wer zwei Geräte hat, klappt hier auf — alle anderen
+          sehen von GitHub nie etwas. Ist er eingerichtet, steht er oben. */}
+      {!eingerichtet && (
+        <details className="info mt-9">
+          <summary>Abgleich über GitHub</summary>
+          <div className="border-t border-line px-[15px] py-[15px]">
+            <p className="mb-3 text-[13px] leading-relaxed text-dim">
+              Optional. Wer auf Handy und Rechner übt, kann beide Stände über ein eigenes,
+              privates GitHub-Repo abgleichen. Ohne das läuft alles Übrige unverändert.
+            </p>
+            <SyncPanel onChanged={nachAbgleich} onConfigured={setEingerichtet} kopf={false} />
+          </div>
+        </details>
+      )}
+
       <section>
         <h2 className="rule mb-1 mt-9">Löschen</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
@@ -278,20 +323,6 @@ export function DataManager() {
         )}
       </section>
 
-      {/* Der Abgleich ist die Ausnahme, nicht der Weg. Die App läuft
-          vollständig ohne ihn: alles liegt lokal, und mitgenommen wird über
-          die Datei oben. Wer zwei Geräte hat, klappt hier auf — alle anderen
-          sehen von GitHub nie etwas. */}
-      <details className="info mt-9">
-        <summary>Mehrere Geräte · Abgleich über GitHub</summary>
-        <div className="border-t border-line px-[15px] py-[15px]">
-          <p className="mb-3 text-[13px] leading-relaxed text-dim">
-            Optional. Wer auf Handy und Rechner übt, kann beide Stände über ein eigenes,
-            privates GitHub-Repo abgleichen. Ohne das läuft alles Übrige unverändert.
-          </p>
-          <SyncPanel onChanged={() => setLog(loadLog())} />
-        </div>
-      </details>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import {
   EINTRAEGE_MINDESTENS,
   TAGE_MINDESTENS,
+  letzteKopie,
   sollErinnern,
   tageSeit,
 } from "../backup-erinnerung"
@@ -65,6 +66,42 @@ describe("sollErinnern", () => {
     expect(
       sollErinnern({ eintraege: 50, gesichert: null, aeltester: vorTagen(2), now: NOW }),
     ).toBe(false)
+  })
+})
+
+describe("Der Abgleich ist auch eine Kopie", () => {
+  it("schweigt, wenn kürzlich abgeglichen wurde, auch ohne je eine Datei", () => {
+    // Der Anlass: wer ins private Datenrepo abgleicht, las trotzdem „Noch nie
+    // gesichert" — eine Warnung, die nicht stimmt, liest danach keiner mehr.
+    expect(
+      sollErinnern({
+        eintraege: 500,
+        gesichert: null,
+        abgeglichen: vorTagen(1),
+        aeltester: vorTagen(400),
+        now: NOW,
+      }),
+    ).toBe(false)
+  })
+
+  it("meldet sich, wenn auch der Abgleich lange her ist", () => {
+    // Ein Abgleich, der seit Wochen scheitert, schützt nichts.
+    expect(
+      sollErinnern({
+        eintraege: 500,
+        gesichert: vorTagen(90),
+        abgeglichen: vorTagen(TAGE_MINDESTENS),
+        aeltester: vorTagen(400),
+        now: NOW,
+      }),
+    ).toBe(true)
+  })
+
+  it("nimmt die jüngere der beiden Kopien", () => {
+    expect(letzteKopie({ gesichert: vorTagen(30), abgeglichen: vorTagen(2) })).toEqual(vorTagen(2))
+    expect(letzteKopie({ gesichert: vorTagen(2), abgeglichen: vorTagen(30) })).toEqual(vorTagen(2))
+    expect(letzteKopie({ gesichert: null, abgeglichen: null })).toBeNull()
+    expect(letzteKopie({ gesichert: vorTagen(5) })).toEqual(vorTagen(5))
   })
 })
 

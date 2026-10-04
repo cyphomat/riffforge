@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-753%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-756%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -440,6 +440,10 @@ gegenseitig nach — nach jeder Session automatisch, oder von Hand.
 Es gewinnt dabei keine Seite. Beim Schreibkonflikt wird neu gelesen, erneut
 verschmolzen und noch einmal geschrieben; dieselbe Vereinigung wie beim Import.
 Ein Abgleich ohne Neuigkeiten erzeugt keinen Commit.
+
+Ist ein Datenrepo eingerichtet, steht der Abgleich auf **Daten** ganz oben,
+und er zählt als Sicherung: die Erinnerung ans Exportieren meldet sich erst
+wieder, wenn auch der letzte gelungene Abgleich zwei Wochen her ist.
 
 Zwei Dateien liegen dort: `uebungen.json` und `theorie.json`. Getrennt aus
 einem konkreten Grund — ein Gerät mit älterem Stand kennt ein neueres Feld

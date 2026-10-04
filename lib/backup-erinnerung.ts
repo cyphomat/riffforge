@@ -20,6 +20,11 @@ export interface ErinnerungsLage {
   eintraege: number
   /** Wann zuletzt gesichert wurde — null heisst: noch nie. */
   gesichert: Date | null
+  /**
+   * Wann zuletzt erfolgreich ins Datenrepo abgeglichen wurde. Das ist auch
+   * eine Kopie ausserhalb dieses Browsers — wer aufräumt, holt sie zurück.
+   */
+  abgeglichen?: Date | null
   /** Der älteste Eintrag im Log; ohne Sicherung zählt ab hier die Zeit. */
   aeltester: Date | null
   now?: Date
@@ -36,11 +41,26 @@ export function sollErinnern(lage: ErinnerungsLage): boolean {
   if (lage.eintraege < EINTRAEGE_MINDESTENS) return false
 
   const now = lage.now ?? new Date()
-  const seit = lage.gesichert ?? lage.aeltester
+  const seit = letzteKopie(lage) ?? lage.aeltester
   if (!seit) return false
 
   const tage = (now.getTime() - seit.getTime()) / (24 * 3600 * 1000)
   return tage >= TAGE_MINDESTENS
+}
+
+/**
+ * Die jüngste Kopie ausserhalb des Browsers: Datei oder Datenrepo.
+ *
+ * Der Abgleich zählt mit. Die Erinnerung warnt davor, dass ein Aufräumen den
+ * Log mitnimmt — und ein privates Repo überlebt das genauso wie eine Datei.
+ * Wer abgleicht und trotzdem „Noch nie gesichert" liest, glaubt der Warnung
+ * danach nichts mehr, auch dann nicht, wenn sie stimmt.
+ */
+export function letzteKopie(lage: Pick<ErinnerungsLage, "gesichert" | "abgeglichen">): Date | null {
+  const { gesichert, abgeglichen } = lage
+  if (!gesichert) return abgeglichen ?? null
+  if (!abgeglichen) return gesichert
+  return gesichert.getTime() >= abgeglichen.getTime() ? gesichert : abgeglichen
 }
 
 /** Wie viele Tage her, gerundet — für den Text der Erinnerung. */
