@@ -313,7 +313,11 @@ Komponente.
   Gerät nicht hat (eine Siebensaitige), fehlt auf der Kutte, statt als
   verfehlt dazustehen. Neu Verdientes ist die Differenz zweier voller Läufe,
   vorher und nachher, damit die zweite Session am selben Tag nichts doppelt
-  feiert.
+  feiert. Der Eingang, die Rang-Zeile, steht auf *Heute* unter den
+  Nebenwegen in der **linken** Spalte. Zuerst stand er rechts unter *Bisher*
+  — und `.zwei-spalten` stapelt die rechte Spalte auf dem Handy unter den
+  Kalender: über tausend Pixel tief, und Daniel hat ihn dort nicht gefunden.
+  Was auf dem Handy gesehen werden soll, gehört in die linke Spalte.
 - **Die Serie zählt Wochen.** In Tagen riss sie nach einem verpassten Abend,
   und wer einmal gerissen ist, hat einen Grund weniger, morgen anzufangen.
   `streakWeeks` zählt Wochen mit mindestens einer Session; die laufende Woche

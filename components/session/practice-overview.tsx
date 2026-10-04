@@ -193,6 +193,24 @@ export function PracticeOverview() {
         </Link>
       </div>
 
+      {/* Der Eingang zum Merch-Stand: eine Zeile unter den Nebenwegen, kein
+          zweites Plakat. Er stand zuerst in der rechten Spalte unter *Bisher*
+          — auf dem Handy stapelt die sich unter den Kalender, und die Zeile
+          lag über tausend Pixel tief, wo niemand hinscrollt. Hier steht sie
+          in beiden Breiten gleich nah am Startknopf. */}
+      {hasHistory && merch && (
+        <Link
+          href="/merch"
+          className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="kicker text-dim">Rang</span>
+            <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
+          </span>
+          <span className="ziffern text-[12px] text-muted">{merch.aufnaeher} Aufnäher ›</span>
+        </Link>
+      )}
+
         {hasHistory && (
           <>
             <h2 className="rule mb-3 mt-9">Übungstage</h2>
@@ -211,23 +229,6 @@ export function PracticeOverview() {
             <Stat value={log.results.length} label="Blöcke" sub="gespielt" />
           </div>
 
-          {/* Der Eingang zum Merch-Stand: eine Zeile, kein zweites Plakat.
-              Der Rang ändert sich in Wochen, nicht täglich — er braucht hier
-              keinen grösseren Platz. */}
-          {merch && (
-            <Link
-              href="/merch"
-              className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
-            >
-              <span className="flex items-baseline gap-2">
-                <span className="kicker text-dim">Rang</span>
-                <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
-              </span>
-              <span className="ziffern text-[12px] text-muted">
-                {merch.aufnaeher} Aufnäher ›
-              </span>
-            </Link>
-          )}
 
           {tracked.length > 0 && (
             <>
