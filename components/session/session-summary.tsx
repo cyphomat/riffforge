@@ -5,7 +5,14 @@ import Link from "next/link"
 // Über beide Kataloge: im Log steht eine Nummer, und der Sieben-Saiter-Modus
 // schreibt in denselben Log. Ohne das stünde hier die nackte Nummer.
 import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
-import { progressFor, streakDays } from "@/lib/session/progress"
+import { nextBpm, progressFor, streakWeeks } from "@/lib/session/progress"
+import { SITZT_AB } from "@/lib/session/lead"
+import { aufnaeher, neueAufnaeher, type Aufnaeher } from "@/lib/session/merch"
+import { loadProfile } from "@/lib/storage/profile"
+import { loadTheoryLog } from "@/lib/storage/theory-log"
+import { THEORY_CARDS } from "@/lib/theory/cards"
+import type { TheoryLog } from "@/lib/theory/types"
+import { AufnaeherKachel } from "@/components/session/merch-stand"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
 import { sollErinnern } from "@/lib/backup-erinnerung"
@@ -19,6 +26,11 @@ export interface SessionSummaryProps {
   log: PracticeLog
   /** Wie viele Wissensfragen unterwegs beantwortet wurden. */
   fragen?: number
+  /**
+   * Der Antwort-Log vom Beginn der Session. Ohne ihn zählten Wissens-
+   * Aufnäher, die in den Fragepausen verdient wurden, nicht als neu.
+   */
+  previousTheory?: TheoryLog
   onExtend: () => void
 }
 
@@ -43,10 +55,19 @@ function gainsFrom(results: DrillResult[], previousLog: PracticeLog): Gain[] {
   })
 }
 
-export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend }: SessionSummaryProps) {
+export function SessionSummary({
+  results,
+  previousLog,
+  log,
+  fragen = 0,
+  previousTheory,
+  onExtend,
+}: SessionSummaryProps) {
   const minutes = Math.max(1, Math.round(results.reduce((sum, r) => sum + r.seconds, 0) / 60))
-  const streak = streakDays(log)
+  const streak = streakWeeks(log)
   const gains = gainsFrom(results, previousLog)
+  const jetzt = new Date()
+  const heute = `${jetzt.getDate()}.${jetzt.getMonth() + 1}.${jetzt.getFullYear()}`
 
   // Der Abschluss ist die einzige Stelle, an der jemand freiwillig stehen
   // bleibt — und der Moment, in dem gerade etwas entstanden ist, das
@@ -54,6 +75,21 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
   // Dieselbe Regel wie auf „Daten": erst wenn es wirklich etwas zu verlieren
   // gibt und lange nichts gesichert wurde.
   const [sichern, setSichern] = useState(false)
+
+  // Was diese Session an Aufnähern gebracht hat — als Differenz zweier voller
+  // Läufe, damit eine zweite Session am selben Tag nichts doppelt feiert.
+  const [neu, setNeu] = useState<Aufnaeher[]>([])
+  const [profil, setProfil] = useState<ReturnType<typeof loadProfile>>(null)
+  useEffect(() => {
+    const theorie = loadTheoryLog()
+    setNeu(
+      neueAufnaeher(
+        aufnaeher(previousLog, previousTheory ?? theorie, THEORY_CARDS),
+        aufnaeher(log, theorie, THEORY_CARDS),
+      ),
+    )
+    setProfil(loadProfile())
+  }, [previousLog, log, previousTheory])
   useEffect(() => {
     setSichern(
       sollErinnern({
@@ -84,7 +120,7 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
           {minutes === 1 ? "1 Minute" : `${minutes} Minuten`} ·{" "}
           {results.length === 1 ? "1 Block" : `${results.length} Blöcke`}
           {fragen > 0 && ` · ${fragen === 1 ? "1 Frage" : `${fragen} Fragen`}`}
-          {streak > 1 && ` · ${streak} Tage in Folge`}
+          {streak > 1 && ` · ${streak} Wochen in Folge`}
         </p>
 
         {gains.length > 0 && (
@@ -105,29 +141,44 @@ export function SessionSummary({ results, previousLog, log, fragen = 0, onExtend
         )}
       </section>
 
-      <h2 className="rule mb-3 mt-8">Was du gespielt hast</h2>
-      <div className="flex flex-col gap-[9px]">
-        {results.map((result, index) => {
-          const drill = ALLE_DRILLS_BY_ID[result.drillId]
-          return (
-            <div
-              key={`${result.drillId}-${index}`}
-              className="flex items-baseline justify-between gap-3 border border-line bg-panel px-[15px] py-3"
-            >
-              <span className="display text-[17px] text-fg">{drill?.title ?? result.drillId}</span>
-              <span className="ziffern flex-none text-[13px]">
-                {result.timing && (
-                  <span className="text-dim">
-                    Timing <span className="text-stahl">{result.timing.score}</span> · ±
-                    {result.timing.spreadMs} ms{" "}
-                  </span>
-                )}
-                <span className="text-akzent">{result.bpm} BPM</span>
-              </span>
-            </div>
-          )
-        })}
+      {/* Die Setlist als Zettel — abgeschaut bei Setlist, und hier wörtlich
+          eine: die Songs dieses Abends. Sauber gespielt ist durchgestrichen;
+          was zäh oder wackelig war, bekommt den Stempel und kommt wieder. */}
+      <div className="zettel mt-8">
+        <p className="kicker">Setlist · {heute}</p>
+        <ol className="mt-2">
+          {results.map((result, index) => {
+            const drill = ALLE_DRILLS_BY_ID[result.drillId]
+            const sauber = result.rating >= SITZT_AB
+            const weiter = drill ? nextBpm(drill, progressFor(log, drill.id), profil) : null
+            return (
+              <li key={`${result.drillId}-${index}`} className={sauber ? "sauber" : ""}>
+                <span className="song">{drill?.title ?? result.drillId}</span>
+                {!sauber && <span className="nochmal">nochmal</span>}
+                <span className="tempo">
+                  {result.bpm} BPM
+                  {weiter !== null && weiter !== result.bpm && ` → nächstes Mal ${weiter}`}
+                  {result.timing && ` · Timing ${result.timing.score}, ±${result.timing.spreadMs} ms`}
+                </span>
+              </li>
+            )
+          })}
+        </ol>
       </div>
+
+      {neu.length > 0 && (
+        <>
+          <h2 className="rule mb-3 mt-9">Neu auf der Kutte</h2>
+          <div className="grid grid-cols-2 gap-[9px]">
+            {neu.map((a) => (
+              <AufnaeherKachel key={a.id} a={a} />
+            ))}
+          </div>
+          <Link href="/merch" className="btn btn-ghost btn-small mt-[9px] w-full py-3">
+            Zum Merch-Stand ›
+          </Link>
+        </>
+      )}
 
       <div className="mt-6 flex flex-wrap gap-[9px]">
         <Link href="/" className="btn flex-1">

@@ -6,7 +6,7 @@ import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/
 import { lickBox, lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
-import { buildDrillSession, buildSession, nextExtraBlock } from "@/lib/session/builder"
+import { buildDrillSession, buildSession, nextExtraBlock, tagesZufall } from "@/lib/session/builder"
 import {
   FRAGEN_JE_PORTION,
   theorieEinschuebe,
@@ -16,6 +16,7 @@ import { appendResults, loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
+import type { TheoryLog } from "@/lib/theory/types"
 import { pickCards } from "@/lib/theory/progress"
 import { EMPTY_LOG, type DrillResult, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 
@@ -30,6 +31,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
    * einen Moment steht der falsche Drill auf dem Schirm.
    */
   const [startingLog, setStartingLog] = useState<PracticeLog | null>(null)
+  const [startingTheory, setStartingTheory] = useState<TheoryLog | undefined>(undefined)
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [blocks, setBlocks] = useState<SessionBlock[] | null>(null)
 
@@ -54,8 +56,10 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     const profile = loadProfile()
     const single = drillId ? buildDrillSession(initial, drillId, { minutes, profile }) : null
     setStartingLog(initial)
+    setStartingTheory(loadTheoryLog())
     setLog(initial)
-    const plan = (single ?? buildSession(initial, { minutes, profile })).blocks
+    // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
+    const plan = (single ?? buildSession(initial, { minutes, profile, random: tagesZufall() })).blocks
     setBlocks(plan)
     setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
   }, [drillId, minutes])
@@ -187,6 +191,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
         previousLog={startingLog}
         log={log}
         fragen={beantworteteFragen}
+        previousTheory={startingTheory}
         onExtend={extend}
       />
     )

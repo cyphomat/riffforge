@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
-import { buildSession, nextExtraBlock, priorityOf } from "../builder"
+import { buildSession, nextExtraBlock, priorityOf, tagesZufall } from "../builder"
 import { bpmStepFor } from "../progress"
 import { DRILLS, DRILLS_BY_ID } from "../drills"
-import type { DrillResult, PracticeLog } from "../types"
+import { EMPTY_LOG, type DrillResult, type PracticeLog } from "../types"
 
 const NOW = new Date("2026-03-10T21:00:00")
 /** No jitter, so ranking is deterministic under test. */
@@ -195,5 +195,28 @@ describe("interleaving", () => {
       expect(block.round).toBeGreaterThanOrEqual(1)
       expect(block.round).toBeLessThanOrEqual(block.rounds)
     }
+  })
+})
+
+describe("tagesZufall", () => {
+  it("gibt am selben Tag denselben Plan — Heute und Session sehen dasselbe", () => {
+    const morgens = new Date("2026-03-10T08:00:00")
+    const abends = new Date("2026-03-10T21:30:00")
+    const a = buildSession(EMPTY_LOG, { random: tagesZufall(morgens), now: morgens })
+    const b = buildSession(EMPTY_LOG, { random: tagesZufall(abends), now: abends })
+    expect(b.blocks.map((block) => block.drill.id)).toEqual(a.blocks.map((block) => block.drill.id))
+  })
+
+  it("wechselt über die Tage, statt jeden Tag dasselbe zu zeigen", () => {
+    const plaene = new Set(
+      Array.from({ length: 14 }, (_, i) => {
+        const tag = new Date("2026-03-01T12:00:00")
+        tag.setDate(tag.getDate() + i)
+        return buildSession(EMPTY_LOG, { random: tagesZufall(tag), now: tag })
+          .blocks.map((block) => block.drill.id)
+          .join(",")
+      }),
+    )
+    expect(plaene.size).toBeGreaterThan(1)
   })
 })

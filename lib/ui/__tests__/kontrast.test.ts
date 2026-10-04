@@ -60,6 +60,16 @@ describe("Farbkontrast", () => {
     expect(auf("muted") - auf("dim")).toBeGreaterThan(1.5)
   })
 
+  it.each(["tinte", "tinte-blass", "stempel"])(
+    "%s ist auf dem Setlist-Zettel lesbar",
+    (ton) => {
+      // Der Zettel ist Papier: heller Grund, dunkle Tinte — der umgekehrte
+      // Fall zum Rest der App, und deshalb eigens nachgerechnet.
+      const wert = kontrast(farbe(ton), farbe("papier"))
+      expect(wert, `--${ton} auf --papier: ${wert.toFixed(2)}`).toBeGreaterThanOrEqual(AA_TEXT)
+    },
+  )
+
   it("hält die Trennlinie sichtbar, ohne sie als Text zu verlangen", () => {
     // `--line` ist ein Strich, kein Text. Drei zu eins wäre die Schwelle für
     // ein Bedienelement; eine Trennlinie darf leiser sein, aber sichtbar.

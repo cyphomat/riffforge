@@ -55,17 +55,27 @@ describe("briefingFor", () => {
   })
 
   it("goes hard once a streak is running and nothing wobbled", () => {
+    // Drei Wochen in Folge, je einmal — gezählt wird Regelmässigkeit.
+    const briefing = briefingFor(
+      log(on("2026-02-25"), on("2026-03-04"), on("2026-03-10", "tech-gallop", 3, 120)),
+      NOW,
+    )
+    expect(briefing.tone).toBe("hart")
+    expect(briefing.reason).toContain("3 Wochen in Folge")
+  })
+
+  it("does not go hard on three days in one week", () => {
+    // Drei Abende am Stück sind ein Wochenende, noch keine Gewohnheit.
     const briefing = briefingFor(
       log(on("2026-03-08"), on("2026-03-09"), on("2026-03-10", "tech-gallop", 3, 120)),
       NOW,
     )
-    expect(briefing.tone).toBe("hart")
-    expect(briefing.reason).toContain("3 Tage in Folge")
+    expect(briefing.tone).toBe("solide")
   })
 
   it("does not go hard on a streak that had a bad block", () => {
     const briefing = briefingFor(
-      log(on("2026-03-08"), on("2026-03-09"), on("2026-03-10", "tech-gallop", 1)),
+      log(on("2026-02-25"), on("2026-03-04"), on("2026-03-10", "tech-gallop", 1)),
       NOW,
     )
     expect(briefing.tone).toBe("technik")

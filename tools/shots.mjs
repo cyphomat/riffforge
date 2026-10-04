@@ -190,6 +190,38 @@ await wide.waitForTimeout(2000)
 await wide.screenshot({ path: `${OUT}/session-desktop.png` })
 console.log(`${OUT}/session-desktop.png`)
 
+// 7b — Der Merch-Stand. Eigener Kontext mit einem längeren Log: nach zwei
+// Wochen Beispieldaten hinge an der Kutte nur das Debüt, und das zeigt nicht,
+// wie sie aussieht. Vierzehn Wochen, zwei bis drei Abende je Woche, ein paar
+// gemessene Blöcke und ein abgehaktes Lick.
+const merchKontext = await browser.newContext({ viewport: PHONE, deviceScaleFactor: 2 })
+await merchKontext.addInitScript(() => {
+  const tag = (back) => {
+    const d = new Date()
+    d.setDate(d.getDate() - back)
+    d.setHours(20, 0, 0, 0)
+    return d.toISOString()
+  }
+  const results = []
+  for (let woche = 13; woche >= 0; woche -= 1) {
+    for (const abend of [1, 3, 5].slice(0, woche % 3 === 0 ? 3 : 2)) {
+      const back = woche * 7 + abend
+      const timing = { hits: 46, expected: 48, spreadMs: 11, offsetMs: 28, score: 88, trend: 'steady' }
+      results.push({ drillId: 'warmup-chromatic', technique: 'warmup', bpm: 90, rating: 3, seconds: 120, at: tag(back) })
+      results.push({ drillId: 'tech-gallop', technique: 'gallop', bpm: 90 + (13 - woche) * 4, rating: 3, seconds: 180, at: tag(back), timing })
+      results.push({ drillId: 'riff-ironclad', technique: 'gallop', bpm: 80 + (13 - woche) * 3, rating: 3, seconds: 180, at: tag(back) })
+    }
+  }
+  results.push({ drillId: 'riff-lead-pentatonik', technique: 'pentatonic', bpm: 60, rating: 3, seconds: 180, at: tag(4) })
+  localStorage.setItem('mga.practice-log.v1', JSON.stringify({ version: 1, results }))
+})
+const merchSeite = await merchKontext.newPage()
+await merchSeite.goto(`${BASE}/merch/`, { waitUntil: 'networkidle' })
+await merchSeite.waitForTimeout(700)
+await merchSeite.screenshot({ path: `${OUT}/merch.png` })
+console.log(`${OUT}/merch.png`)
+await merchKontext.close()
+
 // 8 — Wissen: eine aufgelöste Frage auf dem Griffbrett. Eigener Kontext mit
 // vorbelegtem Antwort-Log, damit die Griffbrett-Karte zuerst drankommt statt
 // der ersten Karte des Katalogs.

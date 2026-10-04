@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-723%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-753%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -115,9 +115,18 @@ today — from the log, not from a hunch.
   distributed repetition is retained measurably better than one long block, even
   though it feels worse. A **new** drill gets its block in one piece — when you
   are still acquiring a movement, that is the better order.
+- **Today is a poster.** The word for the day stands huge and in its colour,
+  one sentence under it — and then what comes next, with tempos, and the start
+  button in the same card. The plan is rolled once per day: what the poster
+  announces is exactly what the session plays.
+- **The streak counts weeks, not days.** A week with at least one session keeps
+  it alive. A missed evening breaks nothing — regularity is rewarded, not an
+  unbroken chain.
 - **The achievement first, the report second.** New personal bests sit at the
-  top after a session.
-- **The practice calendar** shows sixteen weeks at once. Deliberately just
+  top after a session. Below, the session is taped up as a **setlist note**:
+  what went clean is crossed out, what was rough carries the stamp *again*, and
+  next to each song stands the tempo it continues at next time.
+- **The practice calendar** grows with the log, up to sixteen weeks. Deliberately just
   practised or not, with no shading by minutes: a session is around a quarter of
   an hour by construction, so showing the minutes as a colour ramp would be
   dressing up noise as signal. What matters here are streaks and gaps.
@@ -236,6 +245,41 @@ own id and its own tempo curve. Only the catalogs are separate, and only for
 picking: in the *Drills* library they sit at the bottom on their own and can be
 started individually. No knowledge questions here — this is a craft mode, and
 what there is to know about the low string sits on the drill itself.
+
+## The merch stand
+
+<p align="center">
+  <img src="assets/screens/merch.png" alt="The merch stand: rank and battle vest with patches" width="300">
+</p>
+
+A little bit of game, borrowed from [Setlist](https://github.com/cyphomat/setlist) —
+with the same guiding rule: **regularity and quality are rewarded, never
+quantity.** Everything is computed from the log and stored nowhere; whoever
+imports their data gets the same vest back. Reached through the rank line on
+*Today*.
+
+- **The rank** — from garage band through rehearsal room, opening act, support,
+  headliner and festival up to the hall of fame. It counts weeks with at least
+  one session, not sessions: practising seven times in a week does not climb
+  faster. **The rank never drops.**
+- **The vest** — patches with the day they were earned. Each row shows only the
+  next missing one as an outline, not a vest full of empty circles:
+
+  | Row | Patches |
+  |---|---|
+  | Stage | Debut · 10 to 250 gigs (days, not blocks) · streaks from 4 to 52 weeks · comeback after a two-week break |
+  | Craft | *Tight*: ten days with only clean blocks · *On the dot*: ten blocks with measured timing of 85 or better · *Target tempo*: one, three, ten drills clean at target |
+  | Lead | *Guitar solo*: the first lick checked off · 10 and 25 licks |
+  | Seven strings | *The Seventh* · *Low End* — only visible once you have practised on seven strings |
+  | Knowledge | 10 to 100 cards that hold for a week · *Sense of time*: the first played question answered right |
+
+- **Tour shirts** — every quarter with practice is a tour with a fixed name,
+  the tour dates printed on the back.
+
+What the app cannot measure is not rewarded either: it does not know whether the
+notes were right, so there is no patch for that. What a device lacks — a
+seven-string — is missing from the vest instead of showing up as a failure.
+After a session, newly earned patches appear right under the note.
 
 ## Knowledge
 

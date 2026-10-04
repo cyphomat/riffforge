@@ -1,5 +1,5 @@
 import { DRILLS_BY_ID } from "./drills"
-import { dayKey, daysSince, progressFor, streakDays } from "./progress"
+import { dayKey, daysSince, progressFor, streakWeeks } from "./progress"
 import type { DrillResult, PracticeLog } from "./types"
 
 /**
@@ -21,7 +21,11 @@ export interface Briefing {
 
 /** Ab hier zählt eine Pause als Pause. */
 const BREAK_DAYS = 7
-/** Ab hier darf es wehtun. */
+/**
+ * Ab hier darf es wehtun: drei Wochen in Folge geübt. In Wochen gezählt,
+ * wie die Serie überall in der App — drei Tage am Stück waren ein Wochenende,
+ * drei Wochen sind eine Gewohnheit.
+ */
 const STREAK_FOR_HARD = 3
 
 function lastSessionResults(log: PracticeLog): DrillResult[] {
@@ -70,7 +74,7 @@ export function briefingFor(log: PracticeLog, now: Date = new Date()): Briefing 
     }
   }
 
-  const streak = streakDays(log, now)
+  const streak = streakWeeks(log, now)
   if (streak >= STREAK_FOR_HARD) {
     // Den Drill nennen, der am weitesten ist — das ist die Zahl, auf die man
     // stolz sein kann.
@@ -83,10 +87,10 @@ export function briefingFor(log: PracticeLog, now: Date = new Date()): Briefing 
       tone: "hart",
       line: "Läuft — heute darf es wehtun",
       reason: best
-        ? `${streak} Tage in Folge. ${best.drill!.title} steht bei ${
+        ? `${streak} Wochen in Folge. ${best.drill!.title} steht bei ${
             progressFor(log, best.result.drillId).bestBpm ?? best.result.bpm
           } von ${best.drill!.targetBpm} BPM.`
-        : `${streak} Tage in Folge.`,
+        : `${streak} Wochen in Folge.`,
     }
   }
 

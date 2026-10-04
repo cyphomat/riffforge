@@ -9,7 +9,8 @@ import {
   masteryOf,
   nextBpm,
   progressFor,
-  streakDays,
+  streakWeeks,
+  weekKey,
 } from "../progress"
 import { drillResultSchema, type DrillResult, type PracticeLog, type Rating } from "../types"
 
@@ -167,28 +168,42 @@ describe("masteryOf", () => {
   })
 })
 
-describe("streakDays", () => {
+describe("streakWeeks", () => {
+  // Dienstag. Die Woche davor beginnt am Montag, dem 2. März.
   const now = new Date("2026-03-10T21:00:00")
   const on = (day: string) => result({ at: new Date(`${day}T20:00:00`).toISOString() })
 
   it("is 0 with no history", () => {
-    expect(streakDays(log(), now)).toBe(0)
+    expect(streakWeeks(log(), now)).toBe(0)
   })
 
-  it("counts consecutive days ending today", () => {
-    expect(streakDays(log(on("2026-03-08"), on("2026-03-09"), on("2026-03-10")), now)).toBe(3)
+  it("puts Monday and Sunday into the same week", () => {
+    expect(weekKey(new Date("2026-03-09T08:00:00"))).toBe("2026-03-09")
+    expect(weekKey(new Date("2026-03-15T23:30:00"))).toBe("2026-03-09")
+    expect(weekKey(new Date("2026-03-16T00:30:00"))).toBe("2026-03-16")
   })
 
-  it("still counts a streak that ends yesterday", () => {
-    expect(streakDays(log(on("2026-03-08"), on("2026-03-09")), now)).toBe(2)
+  it("counts consecutive weeks with practice, ending this week", () => {
+    expect(streakWeeks(log(on("2026-02-24"), on("2026-03-04"), on("2026-03-10")), now)).toBe(3)
   })
 
-  it("breaks once a day is missed", () => {
-    expect(streakDays(log(on("2026-03-06"), on("2026-03-07")), now)).toBe(0)
+  it("does not break on a missed day — that was the point", () => {
+    // Montag und Donnerstag der einen, Dienstag der anderen Woche: in Tagen
+    // gezählt wäre das zweimal gerissen.
+    expect(streakWeeks(log(on("2026-03-02"), on("2026-03-05"), on("2026-03-10")), now)).toBe(2)
   })
 
-  it("counts a day once no matter how many blocks it holds", () => {
-    expect(streakDays(log(on("2026-03-10"), on("2026-03-10"), on("2026-03-10")), now)).toBe(1)
+  it("does not write off this week before it is over", () => {
+    // Diese Woche noch nichts — die Serie der Vorwochen steht trotzdem.
+    expect(streakWeeks(log(on("2026-02-24"), on("2026-03-03")), now)).toBe(2)
+  })
+
+  it("breaks once a whole week is missed", () => {
+    expect(streakWeeks(log(on("2026-02-17"), on("2026-02-24")), now)).toBe(0)
+  })
+
+  it("counts a week once no matter how much it holds", () => {
+    expect(streakWeeks(log(on("2026-03-09"), on("2026-03-10"), on("2026-03-10")), now)).toBe(1)
   })
 })
 

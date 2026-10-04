@@ -149,24 +149,38 @@ export function practiceDays(log: PracticeLog): string[] {
   return [...days].sort()
 }
 
+/** The Monday of the week a date falls in, as a local YYYY-MM-DD key. */
+export function weekKey(date: Date): string {
+  const monday = new Date(date)
+  monday.setHours(12, 0, 0, 0)
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7))
+  return dayKey(monday)
+}
+
 /**
- * Consecutive days practised, counting back from today. Yesterday still counts
- * as an unbroken streak so the day is not written off before it is over.
+ * Die Serie, in Wochen gezählt — wie bei Setlist.
+ *
+ * Gezählt werden Wochen mit mindestens einer Übung, nicht Tage. Eine Serie in
+ * Tagen riss nach einem einzigen verpassten Abend, und wer einmal gerissen
+ * ist, hat einen Grund weniger, morgen wieder anzufangen. Belohnt wird
+ * Regelmässigkeit, nicht Lückenlosigkeit.
+ *
+ * Die laufende Woche zählt, sobald in ihr geübt wurde. Solange noch nicht,
+ * ist sie nicht verloren — sie ist nur noch nicht vorbei; gezählt wird dann
+ * ab der Woche davor.
  */
-export function streakDays(log: PracticeLog, now: Date = new Date()): number {
-  const days = new Set(practiceDays(log))
-  if (days.size === 0) return 0
+export function streakWeeks(log: PracticeLog, now: Date = new Date()): number {
+  const weeks = new Set(log.results.map((r) => weekKey(new Date(r.at))))
+  if (weeks.size === 0) return 0
 
   const cursor = new Date(now)
-  if (!days.has(dayKey(cursor))) {
-    cursor.setDate(cursor.getDate() - 1)
-    if (!days.has(dayKey(cursor))) return 0
-  }
+  cursor.setHours(12, 0, 0, 0)
+  if (!weeks.has(weekKey(cursor))) cursor.setDate(cursor.getDate() - 7)
 
   let streak = 0
-  while (days.has(dayKey(cursor))) {
+  while (weeks.has(weekKey(cursor))) {
     streak += 1
-    cursor.setDate(cursor.getDate() - 1)
+    cursor.setDate(cursor.getDate() - 7)
   }
   return streak
 }

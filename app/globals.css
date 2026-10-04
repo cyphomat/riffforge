@@ -45,6 +45,17 @@
 
     --halo: rgba(232, 162, 61, 0.05);
 
+    /* Der Setlist-Zettel ist Papier — in jeder Fassung hell, mit dunkler
+       Tinte. Der Stempel ist Rost, weil „nochmal" in dieser App „nicht ganz"
+       heisst und nicht „kaputt"; auf Papier braucht er aber eine dunklere
+       Tinte als `--rost` auf dem dunklen Grund. Alle drei rechnet der
+       Kontrasttest gegen `--papier` nach. */
+    --papier: #f1ebdd;
+    --tinte: #1d1a16;
+    --tinte-blass: #4d463c;
+    --stempel: #8f3d12;
+    --gaffa: rgba(52, 50, 48, 0.86);
+
     /* ── Der Grund ist matt ──────────────────────────────────────────
        Hier lag bis Oktober ein ganzer Hals als Hintergrund: Saiten, Bünde
        und Einlagen, gekachelt aus den Massen von `lib/theory/hals.ts`. Er
@@ -364,6 +375,104 @@
     flex: 1;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--line));
+  }
+
+  /* ── Merch-Stand ─────────────────────────────────────────────────
+     Ein Aufnäher ist ein Stück Stoff mit Steppnaht: harter Rand aussen,
+     gestrichelte Naht innen. Verdient trägt er Bernstein, noch offen nur
+     den Umriss — gestrichelt, ohne Fläche, damit eine Lücke nach Lücke
+     aussieht und nicht nach einem zweiten, blassen Aufnäher. */
+  .aufnaeher {
+    @apply relative border-2 border-line bg-panel px-[14px] py-3;
+  }
+  .aufnaeher::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px dashed var(--line);
+    pointer-events: none;
+  }
+  .aufnaeher.verdient {
+    border-color: var(--akzent);
+  }
+  .aufnaeher.verdient::after {
+    border-color: var(--tint-akzent-stark);
+  }
+  .aufnaeher.offen {
+    @apply border-dashed bg-transparent;
+  }
+  .aufnaeher.offen::after {
+    display: none;
+  }
+
+  /* Der Setlist-Zettel am Abschluss — mit Gaffa-Tape an die Bühne
+     geklebt. Gespielt und sauber ist durchgestrichen, wie auf einem echten
+     Zettel am Monitor; was zäh war, bekommt den Stempel „nochmal". */
+  .zettel {
+    @apply relative px-[18px] pb-4 pt-5;
+    margin: 22px 6px 6px;
+    background: var(--papier);
+    color: var(--tinte);
+    transform: rotate(-0.6deg);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+  .zettel::before,
+  .zettel::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    width: 62px;
+    height: 20px;
+    background: var(--gaffa);
+  }
+  .zettel::before {
+    left: -8px;
+    transform: rotate(-32deg);
+  }
+  .zettel::after {
+    right: -8px;
+    transform: rotate(30deg);
+  }
+  .zettel .kicker {
+    color: var(--tinte-blass);
+  }
+  .zettel li {
+    @apply flex flex-wrap items-baseline gap-x-[10px] gap-y-[2px] py-[6px];
+    border-bottom: 1px solid rgba(29, 26, 22, 0.14);
+  }
+  .zettel li:last-child {
+    border-bottom: 0;
+  }
+  .zettel .song {
+    @apply display text-[20px] leading-tight;
+  }
+  .zettel li.sauber .song {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--tinte);
+  }
+  .zettel .tempo {
+    @apply basis-full font-mono text-[13px];
+    color: var(--tinte-blass);
+  }
+  .zettel .nochmal {
+    @apply border-2 px-[5px] font-mono text-[11.5px] font-bold uppercase tracking-[0.12em];
+    color: var(--stempel);
+    border-color: var(--stempel);
+    transform: rotate(-3deg);
+  }
+
+  /* Die Rangleiter: ein Segment je Rang. Gefüllt, was erreicht ist. */
+  .rangleiter {
+    @apply grid gap-[5px];
+  }
+  .rangleiter > i {
+    @apply block h-[6px] border border-line;
+    background: var(--sunken);
+  }
+  .rangleiter > i.an {
+    border-color: var(--akzent);
+    background: var(--akzent);
   }
 
   /* Aufklappbares Wissen — die Theorie am Drill. */

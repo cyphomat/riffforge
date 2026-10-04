@@ -16,6 +16,33 @@ const MIN_ROUND_SECONDS = 90
  */
 const FIRST_ROUND_SHARE = 0.55
 
+/**
+ * Der Zufall eines Tages — derselbe, sooft man ihn fragt.
+ *
+ * Der Scheduler mischt gleichwertige Drills mit etwas Zufall, damit sie sich
+ * abwechseln. Seit *Heute* zeigt, was gleich drankommt, muss dieser Zufall
+ * stehen: sonst kündigte der Startbildschirm Gallop an und die Session
+ * begänne mit Palm Muting. Deshalb wird er aus dem Kalendertag gerechnet —
+ * gleicher Tag und gleicher Log heissen gleicher Plan, auf jedem Gerät.
+ * Morgen ist ein anderer Tag, und die Abwechslung bleibt.
+ */
+export function tagesZufall(now: Date = new Date()): () => number {
+  const tag = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+  // FNV-1a als Startwert, dann mulberry32.
+  let a = 2166136261
+  for (let i = 0; i < tag.length; i += 1) {
+    a ^= tag.charCodeAt(i)
+    a = Math.imul(a, 16777619)
+  }
+  a >>>= 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
 export interface BuildOptions {
   minutes?: number
   now?: Date

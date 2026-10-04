@@ -64,6 +64,8 @@ Verschiedenes.
 | `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |
 | `components/session/lick-runner.tsx` | Der zweite Eingang: ein Lick allein, ohne Session |
 | `components/session/sieben-runner.tsx` | Der dritte Eingang: zehn Minuten Siebensaitige |
+| `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
+| `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
@@ -146,7 +148,7 @@ Komponente.
 - **Vier Bauteile tragen den Metal-Twist, und jedes hat eine Grenze.**
   `.winkel` sind die Eckwinkel am Road-Case — **höchstens zwei je Bildschirm**,
   und nur auf dem, was gerade dran ist: die Ansage auf *Heute*, der laufende
-  Block, der Wissens-Kopf. Ein Winkel an jeder Fläche wäre Dekoration.
+  Block, der Wissens-Kopf, der Rang im Merch-Stand. Ein Winkel an jeder Fläche wäre Dekoration.
   `.platte` ist das eingelassene Blech mit Skalenstrichen und Glimmen, und es
   trägt **die** Zahl, auf die es auf dem jeweiligen Bildschirm ankommt: das
   Tempo im Block, die drei Zahlen unter *Bisher*. Nicht jede Zahl — dann wäre
@@ -298,6 +300,37 @@ Komponente.
   behaupten, rechnet `lib/theory/sieben.ts` nach — dieselbe Regel wie beim
   Griffbrett, und dieselbe Begründung: eine Tabelle mit Zahlen lügt
   irgendwann unbemerkt.
+- **Gespielt wird um Regelmässigkeit, nicht um Menge.** Der Merch-Stand ist
+  bei Setlist abgeschaut, samt seiner Leitregel. Der Rang zählt **Wochen** mit
+  mindestens einer Session, nicht Sessions, und fällt nie; Gigs sind Tage,
+  nicht Blöcke; es gibt keinen Aufnäher für Minuten. Belohnt wird nur, was die
+  App wirklich misst — eigene Bewertung, Tempo gegen Zieltempo, gemessenes
+  Timing, Kartenstand aus FSRS —, und nichts dafür, ob die Töne sassen.
+  `AUF_DEN_PUNKT_AB` ist dieselbe Schwelle, ab der `suggestRating` *Locker*
+  vorschlägt; der Test hält beide zusammen. Alles wird aus den Logs berechnet
+  und nirgends gespeichert, und ein verdienter Aufnäher bleibt verdient, auch
+  wenn die Karte später wieder wackelt — er sagt, was erreicht wurde. Was ein
+  Gerät nicht hat (eine Siebensaitige), fehlt auf der Kutte, statt als
+  verfehlt dazustehen. Neu Verdientes ist die Differenz zweier voller Läufe,
+  vorher und nachher, damit die zweite Session am selben Tag nichts doppelt
+  feiert.
+- **Die Serie zählt Wochen.** In Tagen riss sie nach einem verpassten Abend,
+  und wer einmal gerissen ist, hat einen Grund weniger, morgen anzufangen.
+  `streakWeeks` zählt Wochen mit mindestens einer Session; die laufende Woche
+  ist nicht verloren, solange sie nicht vorbei ist. Dieselbe Serie trägt die
+  Ansage (*Hart* ab drei Wochen), *Heute*, den Abschluss und die Aufnäher.
+- **Heute ist ein Plakat, und das Plakat sagt die Wahrheit.** Das Tageswort
+  steht riesig in seiner Farbe, darunter ein Satz und *Als Nächstes* — die
+  Drills mit Tempo, der Startknopf in derselben Karte. Damit die Vorschau
+  stimmt, würfelt der Scheduler nicht mehr frei, sondern mit `tagesZufall`:
+  gleicher Kalendertag und gleicher Log heissen gleicher Plan, auf *Heute* wie
+  in der Session. Morgen ist ein anderer Tag, und die Abwechslung bleibt.
+- **Der Abschluss ist ein Zettel.** Die Session klebt als Setlist mit
+  Gaffa-Tape da: Sauberes durchgestrichen, Zähes mit Stempel *nochmal*, und
+  daneben das Tempo fürs nächste Mal. Papier ist hell mit dunkler Tinte, also
+  der umgekehrte Fall zum Rest der App — `--papier`, `--tinte`,
+  `--tinte-blass` und `--stempel` stehen deshalb eigens im Kontrasttest. Der
+  Stempel ist Rost, nicht Rot: „nochmal" heisst „nicht ganz".
 - **Der Startwert wird durchgerührt, bevor er gewürfelt wird.** Mulberry32
   liefert bei kleinen, *fortlaufenden* Startwerten korrelierte erste Werte —
   und genau dort fängt jeder an, weil die Licks ab eins durchgezählt werden.

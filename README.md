@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-723%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-753%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -111,9 +111,19 @@ heutigen Tag — aus dem Log, nicht aus dem Bauch.
   verteilte Wiederholung behält sich messbar besser als eine lange am Stück,
   obwohl sie sich schlechter anfühlt. Ein **neuer** Drill bekommt seinen Block
   am Stück — beim Erlernen einer Bewegung ist das die bessere Reihenfolge.
+- **Heute ist ein Plakat.** Das Tageswort steht riesig und in seiner Farbe da,
+  darunter ein Satz — und dann, was gleich drankommt, mit Tempo, und der
+  Startknopf in derselben Karte. Der Plan wird je Tag fest gewürfelt: was das
+  Plakat ankündigt, ist genau das, was die Session spielt.
+- **Die Serie zählt Wochen, nicht Tage.** Eine Woche mit mindestens einer
+  Session hält sie am Leben. Ein verpasster Abend reisst nichts — belohnt wird
+  Regelmässigkeit, nicht Lückenlosigkeit.
 - **Erst das Geschaffte, dann der Bericht.** Neue Bestwerte stehen nach der
-  Session ganz oben.
-- **Der Übungskalender** zeigt sechzehn Wochen am Stück. Bewusst nur geübt oder
+  Session ganz oben. Darunter klebt die Session als **Setlist-Zettel** mit
+  Gaffa-Tape: sauber Gespieltes ist durchgestrichen, was zäh war, trägt den
+  Stempel *nochmal*, und neben jedem Song steht, mit welchem Tempo es nächstes
+  Mal weitergeht.
+- **Der Übungskalender** wächst mit dem Log, bis zu sechzehn Wochen. Bewusst nur geübt oder
   nicht, ohne Abstufung nach Minuten: eine Session ist per Konstruktion rund
   eine Viertelstunde: die Minuten pro Tag als Farbverlauf zu zeigen hiesse,
   Rauschen als Signal auszugeben. Was hier zählt, sind Serien und Lücken.
@@ -233,6 +243,42 @@ zwar für die Auswahl: im *Drills*-Verzeichnis stehen sie unten für sich und
 lassen sich einzeln antippen. Wissensfragen gibt es hier keine — das ist ein
 Handwerks-Modus, und was es über die tiefe Saite zu wissen gibt, steht am
 Drill.
+
+## Der Merch-Stand
+
+<p align="center">
+  <img src="assets/screens/merch.png" alt="Der Merch-Stand: Rang und Kutte mit Aufnähern" width="300">
+</p>
+
+Ein bisschen Spiel, abgeschaut bei [Setlist](https://github.com/cyphomat/setlist) —
+mit derselben Leitregel: **belohnt wird Regelmässigkeit und Qualität, nie
+Menge.** Alles wird aus dem Log berechnet und nirgends gespeichert; wer seinen
+Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
+*Heute*.
+
+- **Der Rang** — von der Garagenband über Proberaum, Vorband, Support,
+  Headliner und Festival bis zur Hall of Fame. Gezählt werden Wochen mit
+  mindestens einer Session, nicht Sessions: wer in einer Woche siebenmal übt,
+  steigt nicht schneller. **Der Rang fällt nie.**
+- **Die Kutte** — Aufnäher mit dem Tag, an dem sie verdient wurden. Je Reihe
+  steht nur der nächste fehlende als Umriss da, keine Weste voller leerer
+  Kreise:
+
+  | Reihe | Aufnäher |
+  |---|---|
+  | Bühne | Debüt · 10 bis 250 Gigs (Tage, nicht Blöcke) · Serien von 4 bis 52 Wochen · Comeback nach zwei Wochen Pause |
+  | Handwerk | *Tight*: zehn Tage mit lauter sauberen Blöcken · *Auf den Punkt*: zehn Blöcke mit gemessenem Timing ab 85 · *Zieltempo*: ein, drei, zehn Drills sauber im Ziel |
+  | Lead | *Gitarrensolo*: das erste abgehakte Lick · 10 und 25 Licks |
+  | Sieben Saiten | *Die Siebte* · *Low End* — nur sichtbar, wenn je auf sieben Saiten geübt wurde |
+  | Wissen | 10 bis 100 Karten, die eine Woche halten · *Taktgefühl*: die erste gespielte Frage richtig |
+
+- **Tourshirts** — jedes Quartal mit Übung ist eine Tour mit festem Namen,
+  auf dem Rücken die Tourdaten.
+
+Was die App nicht messen kann, wird auch nicht belohnt: ob die Töne sassen,
+weiss sie nicht, und dafür gibt es keinen Aufnäher. Was ein Gerät nicht hat —
+eine Siebensaitige —, fehlt auf der Kutte, statt als verfehlt dazustehen. Nach
+einer Session stehen neu verdiente Aufnäher direkt unter dem Zettel.
 
 ## Wissen
 

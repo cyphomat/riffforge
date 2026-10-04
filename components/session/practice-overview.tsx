@@ -3,13 +3,17 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { DRILLS } from "@/lib/session/drills"
+import { buildSession, tagesZufall } from "@/lib/session/builder"
+import { aufnaeher, rang as berechneRang, type Rang } from "@/lib/session/merch"
+import { loadTheoryLog } from "@/lib/storage/theory-log"
+import { THEORY_CARDS } from "@/lib/theory/cards"
 import { SIEBEN_DRILLS } from "@/lib/session/drills-sieben"
 import { briefingFor, TONE_CLASS, TONE_LABEL } from "@/lib/session/briefing"
 import {
   daysPractisedInLast,
   masteryOf,
   progressFor,
-  streakDays,
+  streakWeeks,
   totalMinutes,
 } from "@/lib/session/progress"
 import { loadLog } from "@/lib/storage/practice-log"
@@ -19,10 +23,24 @@ import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
 import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
-import { EMPTY_LOG, TECHNIQUE_LABELS, type PracticeLog } from "@/lib/session/types"
+import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 import { MdLinearScale, MdMusicNote } from "react-icons/md"
 
 const EXTRA_LENGTHS = [10, 25]
+
+const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
+const ART: Record<BlockKind, string> = { warmup: "Aufwärmen", technique: "Technik", riff: "Riff" }
+
+/** Ein Drill je Zeile, mit seinen Runden — der Plan, wie man ihn liest. */
+function alsSetlist(blocks: SessionBlock[]) {
+  const zeilen: Array<{ block: SessionBlock; runden: number }> = []
+  for (const block of blocks) {
+    const schon = zeilen.find((z) => z.block.drill.id === block.drill.id)
+    if (schon) schon.runden += 1
+    else zeilen.push({ block, runden: 1 })
+  }
+  return zeilen
+}
 
 function Stat({ value, label, sub }: { value: string | number; label: string; sub?: string }) {
   return (
@@ -41,6 +59,8 @@ export function PracticeOverview() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loaded, setLoaded] = useState(false)
   const [willkommen, setWillkommen] = useState(false)
+  const [plan, setPlan] = useState<SessionBlock[] | null>(null)
+  const [merch, setMerch] = useState<{ rang: Rang; aufnaeher: number } | null>(null)
 
   useEffect(() => {
     const gelesen = loadLog()
@@ -50,6 +70,13 @@ export function PracticeOverview() {
     // Wer schon einen Log hat — etwa nach einem Import — hat die Antworten
     // längst und würde nur aufgehalten.
     setWillkommen(!willkommenGesehen() && gelesen.results.length === 0)
+    // Derselbe Plan, den die Session gleich baut: gleicher Log, gleicher
+    // Zufall des Tages. Sonst kündigte das Plakat etwas anderes an.
+    setPlan(buildSession(gelesen, { minutes: 15, profile: loadProfile(), random: tagesZufall() }).blocks)
+    setMerch({
+      rang: berechneRang(gelesen),
+      aufnaeher: aufnaeher(gelesen, loadTheoryLog(), THEORY_CARDS).filter((a) => a.verdient).length,
+    })
     setLoaded(true)
   }, [])
 
@@ -73,6 +100,8 @@ export function PracticeOverview() {
   }
 
   const briefing = briefingFor(log)
+  const jetzt = new Date()
+  const heuteKopf = `${WOCHENTAGE[jetzt.getDay()]} ${`${jetzt.getDate()}`.padStart(2, "0")}.${`${jetzt.getMonth() + 1}`.padStart(2, "0")}.`
   const hasHistory = loaded && log.results.length > 0
 
   // Beide Kataloge: der Sieben-Saiter schreibt in denselben Log, und was
@@ -90,29 +119,57 @@ export function PracticeOverview() {
   return (
     <div className="huelle-breit zwei-spalten">
       <div className="spalte">
-      {/* Die Ansage: was heute ansteht, und woran das festgemacht ist. */}
+      {/* Das Plakat — abgeschaut bei Setlist. Ein Wort für den Tag, riesig und
+          in seiner Farbe; ein Satz dazu; darunter, was gleich drankommt, und
+          der Startknopf in derselben Karte. Vorher stand das Tageswort als
+          kleines Etikett da, und was heute gespielt wird, sah man erst nach
+          dem Start. */}
       <section className="card winkel mt-6">
         <div className="flex items-center gap-3">
           {/* Kontrolllampe in der Farbe des Tonfalls — dieselbe Auskunft wie
-              das Wort daneben, nur als Lampe. `aria-hidden`, weil sie nichts
-              sagt, was daneben nicht schon steht. */}
+              das Wort darunter, nur als Lampe. */}
           <span className={`jewel ${TONE_CLASS[briefing.tone]}`} aria-hidden />
-          <span className={`kicker border border-current px-2 py-[3px] ${TONE_CLASS[briefing.tone]}`}>
-            {TONE_LABEL[briefing.tone]}
+          <span className="kicker text-dim">
+            {heuteKopf}
+            {hasHistory && ` · ${streakWeeks(log)} ${streakWeeks(log) === 1 ? "Woche" : "Wochen"} in Folge`}
           </span>
-          {hasHistory && (
-            <span className="kicker text-dim">
-              {streakDays(log)} {streakDays(log) === 1 ? "Tag" : "Tage"} in Folge
-            </span>
-          )}
         </div>
-        <h1 className="display mt-2 text-[34px] text-fg sm:text-[38px]">{briefing.line}</h1>
-        <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{briefing.reason}</p>
-      </section>
+        <h1 className={`display mt-2 text-[64px] leading-[0.95] sm:text-[72px] ${TONE_CLASS[briefing.tone]}`}>
+          {TONE_LABEL[briefing.tone]}
+        </h1>
+        <p className="mt-2 text-[19px] font-semibold leading-snug text-fg">{briefing.line}</p>
+        <p className="mt-1 text-[14.5px] leading-relaxed text-muted">{briefing.reason}</p>
 
-      <Link href="/session?minutes=15" className="btn mt-4 w-full py-5 text-[15px]">
-        Session starten · 15 Min
-      </Link>
+        {plan && (
+          <div className="mt-5 border-t border-line pt-4">
+            <span className="kicker text-dim">Als Nächstes</span>
+            <ul className="mt-2">
+              {alsSetlist(plan).map(({ block, runden }) => (
+                <li
+                  key={block.drill.id}
+                  className="flex items-baseline gap-3 border-b border-line py-[9px] last:border-b-0"
+                >
+                  <span className="w-[76px] flex-none font-mono text-[11.5px] uppercase tracking-[0.1em] text-dim">
+                    {ART[block.drill.kind]}
+                  </span>
+                  <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">
+                    {block.drill.title}
+                    {runden > 1 && <span className="text-dim"> · {runden} Runden</span>}
+                  </span>
+                  <span className="ziffern flex-none text-[15px] font-bold text-akzent">
+                    {block.bpm}
+                    <span className="text-[11.5px] font-normal text-dim"> BPM</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <Link href="/session?minutes=15" className="btn mt-5 w-full py-5 text-[15px]">
+          Session starten · 15 Min
+        </Link>
+      </section>
 
       <div className="mt-3 flex items-center gap-2">
         <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">oder</span>
@@ -153,6 +210,24 @@ export function PracticeOverview() {
             <Stat value={totalMinutes(log)} label="Minuten" sub="insgesamt" />
             <Stat value={log.results.length} label="Blöcke" sub="gespielt" />
           </div>
+
+          {/* Der Eingang zum Merch-Stand: eine Zeile, kein zweites Plakat.
+              Der Rang ändert sich in Wochen, nicht täglich — er braucht hier
+              keinen grösseren Platz. */}
+          {merch && (
+            <Link
+              href="/merch"
+              className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+            >
+              <span className="flex items-baseline gap-2">
+                <span className="kicker text-dim">Rang</span>
+                <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
+              </span>
+              <span className="ziffern text-[12px] text-muted">
+                {merch.aufnaeher} Aufnäher ›
+              </span>
+            </Link>
+          )}
 
           {tracked.length > 0 && (
             <>
