@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { MdArrowBack, MdMusicNote } from "react-icons/md"
+import { MdArrowBack, MdMusicNote, MdTune } from "react-icons/md"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { SessionSummary } from "@/components/session/session-summary"
 import { STIMMUNG, buildSiebenSession, naechsterSiebenBlock } from "@/lib/session/sieben"
@@ -91,6 +91,13 @@ export function SiebenRunner() {
             Quarte unter der tiefen E. Im fünften Bund der neuen Saite liegt genau der Ton, den
             deine bisher tiefste Leersaite gibt. Alle Griffbilder gelten unverändert weiter.
           </p>
+          {/* Wer die Gitarre gerade aus dem Koffer holt, stimmt zuerst. */}
+          <Link
+            href="/stimmen?saiten=7"
+            className="mt-3 inline-flex items-center gap-1 font-mono text-[12.5px] text-stahl underline-offset-4 hover:underline"
+          >
+            <MdTune className="h-[15px] w-[15px]" /> Erst stimmen ›
+          </Link>
         </section>
 
         <button onClick={starten} className="btn mt-7 w-full py-5 text-[15px]">

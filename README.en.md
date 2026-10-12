@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-791%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -431,6 +431,27 @@ Afterwards it proposes the self-assessment itself. You can overrule it.
 Nothing is recorded and nothing is uploaded — only the moment of each attack is
 evaluated.
 
+## Tuning
+
+The tuner sits on *Heute* next to *Ein Lick* and *Sieben Saiten*, and the
+seven-string mode offers *Erst stimmen* with B standard preselected. Strike a
+string and let it ring: the needle shows cents, the lamp next to it *sitzt*
+(in tune), *zu tief* or *zu hoch*, and a string counts as tuned once it stays
+in tune for a moment.
+
+Here the app hears **pitch** — with YIN, which looks for the period rather than
+the loudest partial, because a distorted guitar puts more energy into the
+octave than into the fundamental. Measured on synthetic plucked strings from B1
+to E6: every single note right to the semitone, clean and high-gain alike, and
+a tuned open string within two cents.
+
+**In a block it still only judges the rhythm.** When the previous note of a lick
+is still ringing, two notes go through the distortion together, and their
+common period lies below both — YIN then lands an octave or a twelfth too low.
+Measured: clean 98 % right, crunch 97 %, high-gain **70 %**. An app that says
+"wrong note" on every third distorted note is lying; so it says nothing about
+it. A test pins this limit down and turns red once it falls.
+
 ---
 
 ## Installing it as an app
@@ -540,7 +561,9 @@ the original — the latter only in a fork.
 
 The microphone does not leave the machine: the audio thread reports **timestamps
 and a level value**, nothing else. No audio is recorded, stored or sent, and the
-capture is released again after every block.
+capture is released again after every block. When tuning, pitch is added —
+computed in the browser from the last 85 milliseconds, which are then
+overwritten.
 
 Since GitHub Pages serves no headers of its own, the Content Security Policy
 sits in the page as a meta tag. The part that matters is `connect-src`: requests
@@ -609,8 +632,6 @@ tabs, no audio from copyrighted recordings.
 
 ## What is still coming
 
-- **A tuner.** Autocorrelation is enough for it, and you need one before every
-  session anyway.
 - **The iOS ringer switch.** There is a known trick for making Web Audio sound
   despite the mute switch. Untested, so not in yet.
 

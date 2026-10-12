@@ -25,7 +25,7 @@ import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
 import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type SessionBlock } from "@/lib/session/types"
-import { MdLinearScale, MdMusicNote } from "react-icons/md"
+import { MdLinearScale, MdMusicNote, MdTune } from "react-icons/md"
 
 const EXTRA_LENGTHS = [10, 25]
 
@@ -190,12 +190,18 @@ export function PracticeOverview() {
           Siebensaitige. Bewusst beide in Grau und nebeneinander — die
           Viertelstunde bleibt das Produkt, und ein zweiter Knopf in Bernstein
           hätte zwei Hauptwege gemacht. */}
-      <div className="mt-[9px] grid grid-cols-2 gap-[9px]">
-        <Link href="/lick" className="btn btn-ghost w-full py-4">
+      {/* Dazu das Stimmgerät — man braucht es vor der Viertelstunde, nicht
+          in ihr. Drei schmale Knöpfe, Symbol über dem Wort, damit sie auch
+          auf 320 px nebeneinander passen. */}
+      <div className="mt-[9px] grid grid-cols-3 gap-[9px]">
+        <Link href="/lick" className="btn btn-ghost w-full flex-col gap-1 px-1 py-3">
           <MdMusicNote className="h-[18px] w-[18px]" /> Ein Lick
         </Link>
-        <Link href="/sieben" className="btn btn-ghost w-full py-4">
+        <Link href="/sieben" className="btn btn-ghost w-full flex-col gap-1 px-1 py-3">
           <MdLinearScale className="h-[18px] w-[18px]" /> Sieben Saiten
+        </Link>
+        <Link href="/stimmen" className="btn btn-ghost w-full flex-col gap-1 px-1 py-3">
+          <MdTune className="h-[18px] w-[18px]" /> Stimmen
         </Link>
       </div>
 

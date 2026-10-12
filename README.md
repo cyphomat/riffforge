@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-791%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -437,6 +437,28 @@ Danach schlägt sie die Einschätzung selbst vor. Du kannst sie überstimmen.
 Es wird nichts aufgenommen und nichts hochgeladen — nur der Zeitpunkt jedes
 Anschlags ausgewertet.
 
+## Stimmen
+
+Das Stimmgerät liegt auf *Heute* neben *Ein Lick* und *Sieben Saiten*, und im
+Sieben-Saiter-Modus steht *Erst stimmen* mit B Standard vorgewählt. Eine Saite
+anschlagen, klingen lassen: die Nadel zeigt Cent, die Lampe daneben *sitzt*,
+*zu tief* oder *zu hoch*, und eine Saite gilt als gestimmt, wenn sie eine
+Weile im Ton bleibt.
+
+Hier hört die App **Tonhöhe** — mit YIN, das nach der Periode sucht statt nach
+dem lautesten Teilton, weil eine verzerrte Gitarre mehr Energie in der Oktave
+hat als im Grundton. Gemessen an synthetischen gezupften Saiten von B1 bis E6:
+jeder Einzelton auf den Halbton richtig, sauber wie mit High-Gain, und eine
+gestimmte offene Saite auf unter zwei Cent genau.
+
+**Im Block bewertet sie trotzdem weiter nur den Rhythmus.** Klingt in einem
+Lick der vorige Ton nach, gehen zwei Töne zusammen durch die Verzerrung, und
+die gemeinsame Periode liegt tiefer als beide — YIN findet dann eine Oktave
+oder eine Duodezime zu tief. Gemessen: sauber 98 % richtig, Crunch 97 %,
+High-Gain **70 %**. Eine App, die bei jedem dritten verzerrten Ton „falscher
+Ton" sagt, lügt; also sagt sie dazu nichts. Ein Test hält die Grenze fest und
+wird rot, sobald sie fällt.
+
 ---
 
 ## Als App installieren
@@ -554,7 +576,8 @@ Original — Letzteres nur in einem Fork.
 Das Mikrofon verlässt den Rechner nicht: der Audio-Thread meldet ausschliesslich
 **Zeitstempel und einen Pegelwert** nach vorne, kein Ton wird aufgenommen,
 gespeichert oder verschickt. Nach jedem Block wird die Aufnahme wieder
-freigegeben.
+freigegeben. Beim Stimmen kommt die Tonhöhe dazu — gerechnet im Browser aus den
+letzten 85 Millisekunden, die danach überschrieben werden.
 
 Weil auf GitHub Pages keine eigenen Kopfzeilen gehen, steht die
 Content-Security-Policy als Meta-Tag in der Seite. Der wichtige Teil ist
@@ -624,8 +647,6 @@ abgeschriebenen Tabs, kein Audio urheberrechtlich geschützter Aufnahmen.
 
 ## Was noch kommt
 
-- **Stimmgerät.** Autokorrelation reicht dafür, und man braucht es vor jeder
-  Session ohnehin.
 - **Der iOS-Klingelschalter.** Es gibt einen bekannten Kniff, um Web-Audio
   trotz Stummschaltung klingen zu lassen. Ungetestet, deshalb noch nicht drin.
 

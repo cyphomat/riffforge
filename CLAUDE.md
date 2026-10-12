@@ -39,6 +39,10 @@ Verschiedenes.
 | `lib/audio/einmessen.ts` | Die Latenz einmal messen: Auswertung, rein, getestet |
 | `lib/audio/einmess-lauf.ts` | Der Lauf dazu — Klicks raus, Anschläge rein, auf der einen Uhr |
 | `components/session/einmessen-panel.tsx` | *Mikrofon einmessen* auf *Daten* |
+| `lib/audio/tonhoehe.ts` | YIN: Tonhöhe aus einem Stück Audio. Rein, gemessen. |
+| `lib/audio/stimmen.ts` | Das Stimmgerät als Rechnung: Saite, Cent, Glättung |
+| `lib/audio/stimmgeraet.ts` | Mikrofon → AnalyserNode, für das Stimmgerät |
+| `components/session/stimmgeraet.tsx` | Der vierte Eingang: das Stimmgerät, `/stimmen` |
 | `lib/session/types.ts` | Domänen-Typen + Zod-Schemas für alles Persistierte |
 | `lib/session/drills.ts` | Der Übungs-Katalog (reine Daten) |
 | `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery |
@@ -314,6 +318,18 @@ Komponente.
   Kontur, und der Anlauf sucht sich die Seite, auf der noch Töne liegen. Seit
   dem ist beides null, gemessen über 1500 Licks in allen sechzig Boxen, und
   `lick.test.ts` prüft es auch in allen sechzig statt nur in A-Moll Lage 1.
+- **Das Stimmgerät läuft nicht im Audio-Thread.** Ein Stimmgerät will ein
+  paar ruhige Werte je Sekunde, keinen Zeitstempel auf die Millisekunde:
+  ein `AnalyserNode` hält die letzten 85 ms, und der Hauptthread holt sie
+  alle 80 ms ab (YIN kostet dafür rund 1,5 ms). Der Audio-Thread ist auf dem
+  Handy die eine Stelle, die nie stocken darf. Die Nadel ist der Median aus
+  fünf Schätzungen, Schätzungen unter 0,85 Sicherheit stimmen nicht mit —
+  sonst springt sie beim Anschlag. Eine Saite gilt als gestimmt, wenn sie
+  600 ms im Ton bleibt, nicht bei einem Durchgang der Nadel durch die Mitte.
+  Die Saiten kommen aus `LEERSAITEN_SIEBEN`, nicht aus einer zweiten Tabelle,
+  und zugeordnet wird nach Cent, nicht nach Hertz. Im Browser geprüft mit
+  einem Sägezahn in bekannter Höhe als „Mikrofon": +6, 0, −14 Cent und das
+  tiefe B kamen genau so an.
 - **Der zweite Eingang ist ein Nebenweg, kein zweiter Hauptweg.**
   `/lick` gibt drei Minuten Lead ohne Session drumherum — für den, der
   gerade Lust darauf hat. Er schreibt in denselben Log und unter dieselbe
@@ -426,10 +442,26 @@ Komponente.
   Takte zerlegt, beide gleich lang. Und eine Bindung rutscht nie an einen
   Zeilenanfang: `|p5` behauptet einen Pull-off von einem Ton, der in dieser
   Zeile gar nicht steht.
-- **Das Mikrofon hört beim Lick nur den Rhythmus.** Anschläge, keine
-  Tonhöhen — ob die *Töne* sassen, kann die App nicht wissen und behauptet es
-  auch nicht. Gemessen wird wie überall Streuung und Versatz, der Rest ist
-  Selbsteinschätzung. Das ändert sich erst mit einer Tonhöhen-Erkennung.
+- **Das Mikrofon hört beim Lick nur den Rhythmus — auch jetzt, wo es Tonhöhe
+  kann.** Anschläge, keine Tonhöhen: ob die *Töne* sassen, behauptet die App
+  nicht. Die Tonhöhen-Erkennung gibt es inzwischen (`lib/audio/tonhoehe.ts`,
+  YIN), und gemessen *bevor* sie irgendwo eingebaut wurde: ein Einzelton ist
+  von B1 bis E6 auch mit High-Gain auf den Halbton richtig, eine offene Saite
+  auf unter zwei Cent. Aber im Lick klingt der vorige Ton nach, zwei Töne
+  gehen zusammen durch die Verzerrung, und ihre gemeinsame Periode liegt
+  tiefer als beide — liegt der vorige eine Quarte höher, findet YIN eine
+  Oktave oder Duodezime zu tief. Sauber 98 %, Crunch 97 %, High-Gain **70 %**
+  (beim Tonnamen 75 %). Das trennt nicht, also wird es nicht gemessen; die
+  Erkennung trägt nur das Stimmgerät, wo eine Saite allein klingt.
+  `tonhoehe.test.ts` hält die Grenze als Test fest und wird rot, sobald sie
+  fällt — dann ist die Entscheidung neu zu treffen.
+  Eine Lehre aus dem Messen: der erste Testlauf hielt YIN für leichtgläubig,
+  weil es in „Rauschen" sicher einen Ton fand. Das Rauschen kam aus
+  `(s * 1103515245 + 12345) % 2 ** 31` — das überschreitet die Genauigkeit
+  einer JavaScript-Zahl und wiederholt sich nach 220 Werten, und eine Folge
+  mit Periode 220 *ist* ein Ton von 218 Hz. YIN hatte recht. Testzufall
+  kommt aus Mulberry32 mit `Math.imul`; auch die ersten Messzahlen stammten
+  aus dem kaputten Generator und sind mit dem richtigen neu erhoben.
 - **Die Ansage behauptet nichts.** Jede Zeile in `briefing.ts` muss aus dem Log
   ableitbar sein, sonst gehört sie da nicht hin.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut
@@ -706,6 +738,8 @@ weiss erst, wer es ausprobiert.
 
 ## Wo es weitergeht
 
-- **Tonhöhen-Erkennung** für Skalen und Licks — sauber gespielt machbar
-  (Autokorrelation/YIN), mit High-Gain deutlich unzuverlässiger.
+- **Tonprüfung im Lick** — erst, wenn `tonhoehe.test.ts` an der festgehaltenen
+  Grenze rot wird. Ansatz wäre, den Nachklang des vorigen Tons vor der
+  Schätzung herauszurechnen; bis dahin bleibt es beim Rhythmus.
+- **Stimmgerät mit echter Gitarre ausprobieren**, clean und verzerrt.
 - **Einmessen auf dem iPhone ausprobieren** — siehe *Timing-Messung*.

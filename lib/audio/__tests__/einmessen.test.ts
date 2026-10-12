@@ -2,13 +2,23 @@ import { describe, expect, it } from "vitest"
 import { EINMESS_KLICKS, EINMESS_VORLAUF, auswerten } from "../einmessen"
 import { analyseTiming } from "../timing"
 
+/** Mulberry32, −1 bis 1 — siehe `tonhoehe.test.ts`, warum kein einfacher LCG. */
+function zufallsquelle(seed: number) {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return (((t ^ (t >>> 14)) >>> 0) / 4294967296) * 2 - 1
+  }
+}
+
 /** Klicks wie beim Einmessen: 80 BPM, ab Sekunde 1. */
 const KLICKS = Array.from({ length: EINMESS_KLICKS }, (_, i) => 1 + i * 0.75)
 
 /** Ein Spieler oder Lautsprecher mit fester Latenz und etwas Rauschen. */
 function gehoert(latenzMs: number, streuungMs: number, seed = 7): number[] {
-  let s = seed
-  const zufall = () => ((s = (s * 1103515245 + 12345) % 2 ** 31) / 2 ** 31) * 2 - 1
+  const zufall = zufallsquelle(seed)
   return KLICKS.map((k) => k + (latenzMs + zufall() * streuungMs) / 1000)
 }
 
@@ -74,8 +84,8 @@ describe("Der Versatz mit und ohne Einmessung", () => {
   const abstand = 60 / 190 / 2
   const klicks = Array.from({ length: 64 }, (_, i) => 1 + i * abstand)
   const toleranz = abstand * 0.4
-  let s = 3
-  const rauschen = () => ((s = (s * 1103515245 + 12345) % 2 ** 31) / 2 ** 31 - 0.5) * 0.012
+  const zufall = zufallsquelle(3)
+  const rauschen = () => zufall() * 0.006
   const spiel = (latenzMs: number, lageMs = 0) => klicks.map((k) => k + (latenzMs + lageMs) / 1000 + rauschen())
 
   it("weiss ohne Einmessung, dass er bei diesem Tempo nicht eindeutig ist", () => {
