@@ -579,6 +579,10 @@ Komponente.
   Actions hängen an Commit-Hashes mit der Fassung als Kommentar — ein Tag
   lässt sich nachträglich verschieben. Wer eine Action hebt, holt den Hash
   der neuen Fassung, statt auf den Tag zurückzufallen.
+  Beim Heben die Eingaben alt gegen neu vergleichen, nicht nur die
+  Versionsnummer: `upload-pages-artifact` v5 lässt versteckte Dateien weg,
+  also auch die `.nojekyll`, an der `_next` hängen könnte — deshalb steht
+  dort `include-hidden-files: true`.
 
 ## Beim Veröffentlichen
 
