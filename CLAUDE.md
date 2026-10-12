@@ -546,9 +546,13 @@ Komponente.
   Session-Runner sammelt die Spielzeit und schreibt nach der letzten Runde.
 - **`pnpm audit` bleibt leer.** Die Werkzeugkette schleppt DoS-Meldungen in
   ihren Transitiven mit — nichts davon geht an einen Besucher, es läuft kein
-  Server, aber `next dev` läuft auf diesem Rechner. Die geflickten Fassungen
-  stehen als `pnpm.overrides` in `package.json`. Wer eine Abhängigkeit hebt,
-  schaut danach in `pnpm audit` und räumt Overrides weg, die ins Leere zeigen.
+  Server, aber `next dev` läuft auf diesem Rechner. Wo eine Transitive hängt,
+  kommt die geflickte Fassung als `pnpm.overrides` in `package.json`. Im
+  Moment sind es **null**: nach dem Sprung auf Next 16, Tailwind 4 und
+  Vitest 5 waren alle elf früheren Overrides überflüssig — geprüft ohne
+  jeden Override und mit frisch aufgelöster Lockfile. Wer eine Abhängigkeit
+  hebt, schaut danach in `pnpm audit` und räumt Overrides weg, die ins Leere
+  zeigen.
   Die einzige Ausnahme steht in `pnpm.auditConfig.ignoreGhsas`:
   GHSA-vfj7-8cjw-p6xm in `braces`, für das es **keine** geflickte Fassung gibt
   und das nur über den Linter hereinkommt (`eslint-config-next` → `fast-glob`
@@ -557,6 +561,18 @@ Komponente.
   raus. Geprüft wird wöchentlich von `audit.yml`, weil neue Meldungen mit der
   Zeit kommen, nicht mit Commits — und bewusst nicht im Deploy, damit eine
   fremde Meldung keinen eiligen Fix aufhält.
+  Zwei weitere Einträge in `pnpm` halten die Installation warnungsfrei, damit
+  eine *neue* Warnung auffällt: `peerDependencyRules` erlaubt ESLint 10 für
+  die drei Plugins aus eslint-config-next, die ihre Peer-Angabe noch nicht
+  nachgezogen haben (sie laufen damit ohne Befund), und
+  `ignoredBuiltDependencies` hält fest, dass die Installationsskripte von
+  `msw` (über Vitest) und `unrs-resolver` (über den Linter) nicht laufen —
+  pnpm 10 blockiert sie ohnehin, gebraucht werden sie nicht.
+- **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
+  keine JavaScript-Schnittstelle; `typescript-eslint` (über
+  eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
+  Bauen die Schnittstelle auf. Der Sprung auf 7 kommt, wenn beide so weit
+  sind — nicht vorher.
 - **Der Bau hat keine Schreibrechte.** Im Deploy-Workflow gelten `pages:
   write` und `id-token: write` nur für den Deploy-Job; der Build-Job führt
   mit `pnpm install` fremden Code aus und bekommt nur `contents: read`.

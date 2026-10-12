@@ -17,40 +17,38 @@
     "next": "16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-icons": "^5.4.0",
+    "react-icons": "^5.7.0",
     "zod": "^4.6.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^22.20.1",
+    "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.12.0",
     "eslint-config-next": "16.4.0",
-    "postcss": "^8.5.27",
+    "postcss": "^8.5.29",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3",
-    "vite": "^8.2.2",
-    "vitest": "^4.1.11"
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
   },
   "pnpm": {
-    "overrides": {
-      "brace-expansion": "^2.1.7",
-      "browserslist": "^4.28.7",
-      "glob": "^10.5.0",
-      "minimatch": "^9.0.7",
-      "nanoid": "^3.3.18",
-      "picomatch": "^2.3.2",
-      "postcss": "^8.5.27",
-      "postcss-selector-parser": "^7.1.6",
-      "sharp": "^0.35.5",
-      "source-map-js": "^1.2.2",
-      "yaml": "^2.8.3"
-    },
     "auditConfig": {
       "ignoreGhsas": [
         "GHSA-vfj7-8cjw-p6xm"
       ]
-    }
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint-plugin-import>eslint": "10",
+        "eslint-plugin-jsx-a11y>eslint": "10",
+        "eslint-plugin-react>eslint": "10"
+      }
+    },
+    "ignoredBuiltDependencies": [
+      "msw",
+      "unrs-resolver"
+    ]
   }
 }
