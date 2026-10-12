@@ -409,8 +409,9 @@ ordinary websites after seven days without a visit. Home-screen apps are exempt
 - **The ringer switch has to be on.** iOS mutes Web Audio when the device is
   silenced — the metronome then stays quiet, with no error message. That is an
   iOS behaviour, not a fault of the app.
-- **The microphone needs iOS 14.3 or newer.** Before that, Safari gave no
-  microphone access in home-screen mode.
+- **The app needs iOS 16.4 or newer.** The styling relies on CSS features
+  Safari only gained with that release; on older devices the layout falls
+  apart. Every iPhone from the 8 onwards gets 16.4.
 - **The installed app has its own storage.** What lives in Safari — log,
   profile, a configured sync — is invisible to the app on the home screen, and
   the other way round. If you practised in the browser before, carry it over

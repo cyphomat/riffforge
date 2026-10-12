@@ -187,9 +187,9 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
                   onClick={() => rate(option.value)}
                   className={`border p-[14px] text-left transition-colors ${
                     rau
-                      ? "border-rost bg-[--tint-rost]"
+                      ? "border-rost bg-(--tint-rost)"
                       : isSuggested
-                        ? "border-akzent bg-[--tint-akzent] hover:bg-[--tint-akzent-stark]"
+                        ? "border-akzent bg-(--tint-akzent) hover:bg-(--tint-akzent-stark)"
                         : "border-line bg-panel hover:border-stahl"
                   }`}
                 >

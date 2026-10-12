@@ -43,12 +43,12 @@ export function PracticeCalendar({ log, weeks }: { log: PracticeLog; weeks?: num
             } — ${day.minutes > 0 ? `${day.minutes} Min` : "nicht geübt"}`}
             className={`aspect-square border ${
               day.minutes > 0 ? "border-akzent bg-akzent" : "border-line bg-sunken"
-            } ${day.isFuture ? "opacity-25" : ""} ${day.isToday ? "outline outline-1 outline-offset-1 outline-fg" : ""}`}
+            } ${day.isFuture ? "opacity-25" : ""} ${day.isToday ? "outline-solid outline-1 outline-offset-1 outline-fg" : ""}`}
           />
         ))}
       </div>
 
-      <div className="mt-[11px] flex flex-wrap items-center gap-3 font-mono text-[11.5px] uppercase tracking-[0.1em] text-muted">
+      <div className="mt-[11px] flex flex-wrap items-center gap-3 font-mono text-[11.5px] uppercase tracking-widest text-muted">
         <span className="flex items-center gap-1.5">
           <i className="inline-block h-[9px] w-[9px] bg-akzent" /> geübt
         </span>

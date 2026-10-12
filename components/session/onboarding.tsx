@@ -21,7 +21,7 @@ function Choice({
       aria-pressed={active}
       className={`border p-[14px] text-left transition-colors ${
         active
-          ? "border-akzent bg-[--tint-akzent]"
+          ? "border-akzent bg-(--tint-akzent)"
           : "border-line bg-panel hover:border-stahl"
       }`}
     >

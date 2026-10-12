@@ -21,7 +21,7 @@ export interface BoxPickerProps {
 export function BoxPicker({ box, onChange }: BoxPickerProps) {
   const feld = (aktiv: boolean) =>
     `border px-0 py-[9px] text-center font-mono text-[13px] tabular-nums transition-colors ${
-      aktiv ? "border-akzent bg-[--tint-akzent] text-akzent" : "border-line bg-sunken text-muted"
+      aktiv ? "border-akzent bg-(--tint-akzent) text-akzent" : "border-line bg-sunken text-muted"
     }`
 
   return (

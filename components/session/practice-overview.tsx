@@ -149,7 +149,7 @@ export function PracticeOverview() {
                   key={block.drill.id}
                   className="flex items-baseline gap-3 border-b border-line py-[9px] last:border-b-0"
                 >
-                  <span className="w-[76px] flex-none font-mono text-[11.5px] uppercase tracking-[0.1em] text-dim">
+                  <span className="w-[76px] flex-none font-mono text-[11.5px] uppercase tracking-widest text-dim">
                     {ART[block.drill.kind]}
                   </span>
                   <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">

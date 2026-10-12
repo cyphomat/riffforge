@@ -1,6 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tailwind 4 liest seine Werte aus CSS statt aus tailwind.config.ts. Was dort
+   stand, steht jetzt hier — dieselben Namen, damit die Klassen im Markup
+   gleich bleiben. Die Farben selbst stehen weiter als Variablen unten in
+   :root; das Theme verweist nur darauf. */
+@theme {
+  /* Wie bei Setlist: unter 900 px ist die schmale Spalte richtig, darüber
+     wird daraus sonst eine Handy-App mit Leere daneben. */
+  --breakpoint-wide: 900px;
+
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-sunken: var(--sunken);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+  --color-line: var(--line);
+  --color-akzent: var(--akzent);
+  --color-stahl: var(--stahl);
+  --color-gruen: var(--gruen);
+  --color-rost: var(--rost);
+  --color-rot: var(--rot);
+
+  /* next/font legt die Schriften als --font-oswald und --font-anton ab. Sie
+     heissen bewusst anders als die Theme-Werte: --font-display ist unter
+     Tailwind 4 selbst einer, und gleich benannt verwiese er auf sich selbst
+     — die Anzeigeschrift fiele still auf Helvetica zurück. */
+  --font-display: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-marke: var(--font-anton), var(--font-oswald), "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  /* Die Fliesstextschrift ist die des Systems. Tailwind 4.3 hat seine
+     Standardliste umgestellt; hier steht die bisherige ausdrücklich, damit
+     ein Versionssprung die Schrift nicht still austauscht. */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* Road-Case, kein HUD: eine Kante, kein Radius. */
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+}
+
+/* Zwei Voreinstellungen von Tailwind 3, die Tailwind 4 nicht mehr setzt.
+   Ohne Farbangabe nimmt ein Rahmen jetzt die Textfarbe statt eines hellen
+   Graus, und Knöpfe zeigen keine Hand mehr. Beides ist hier ausdrücklich
+   zurückgeholt, damit der Wechsel nichts am Bild ändert; wer einen Rahmen
+   setzt, gibt ohnehin eine Farbe aus der Palette an. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #e5e7eb;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
 
 /* ── Riffforge ── Backline.
    Die Design-Sprache kommt aus Setlist: kein Neon, ein Röhrenamp glimmt.
@@ -168,15 +228,12 @@
     @apply mx-auto max-w-[640px] px-4 pb-16;
   }
   .huelle-breit {
-    @apply huelle wide:max-w-[1080px];
+    /* Tailwind 4 kann @apply nur auf Utilities, nicht auf eigene Klassen —
+       deshalb steht `.huelle` hier ausgeschrieben. */
+    @apply mx-auto max-w-[640px] px-4 pb-16 wide:max-w-[1080px];
   }
   .zwei-spalten {
     @apply wide:grid wide:grid-cols-2 wide:items-start wide:gap-x-[26px];
-  }
-  /* Erste Überschrift einer Spalte braucht oben keinen Abstand, sonst
-     hängen die Spalten auf verschiedenen Höhen an. */
-  .spalte > :first-child {
-    @apply wide:mt-0;
   }
 
   .kicker {
@@ -186,7 +243,7 @@
   /* Die Wortmarke, und sonst nichts. Anton ist für engen Satz gezeichnet —
      gesperrt sieht sie aus wie eine Grotesk, die sich verlaufen hat. */
   .marke {
-    font-family: var(--font-marke), var(--font-display), "Helvetica Neue", Helvetica, sans-serif;
+    font-family: var(--font-anton), var(--font-oswald), "Helvetica Neue", Helvetica, sans-serif;
     @apply uppercase leading-none tracking-[-0.01em];
   }
 
@@ -204,7 +261,7 @@
 
   /* Grosse Zahlen und Namen: Oswald, versal, eng geführt. */
   .display {
-    font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
     @apply font-semibold uppercase leading-[1.05] tracking-[0.01em];
   }
 
@@ -223,7 +280,7 @@
 
   .btn {
     @apply inline-flex cursor-pointer items-center justify-center gap-2 border border-akzent
-           bg-[--tint-akzent] px-5 py-4 font-mono text-[13px] font-extrabold uppercase
+           bg-(--tint-akzent) px-5 py-4 font-mono text-[13px] font-extrabold uppercase
            tracking-[0.14em] text-akzent transition-colors;
   }
   .btn:hover:not(:disabled) {
@@ -264,7 +321,10 @@
     @apply font-mono text-[11.5px] uppercase tracking-[0.12em] text-muted;
   }
   .stat .v {
-    @apply display glimmt mt-0.5 text-[28px] text-akzent;
+    /* `.display` und `.glimmt`, ausgeschrieben — siehe `.huelle-breit`. */
+    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    @apply mt-0.5 text-[28px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
+    text-shadow: 0 0 13px rgba(232, 162, 61, 0.22);
     font-variant-numeric: tabular-nums;
   }
 
@@ -365,7 +425,8 @@
   /* Abschnittsbruch mit umgekehrter Linie: die Regel läuft von links auf
      die Überschrift zu statt von ihr weg. Markiert, wo etwas aufhört. */
   .rule-backstage {
-    @apply rule text-akzent tracking-[0.3em];
+    /* `.rule`, ausgeschrieben — siehe `.huelle-breit`. */
+    @apply flex items-center gap-[10px] font-mono text-[12px] font-bold uppercase text-akzent tracking-[0.3em];
   }
   .rule-backstage::after {
     display: none;
@@ -444,7 +505,8 @@
     border-bottom: 0;
   }
   .zettel .song {
-    @apply display text-[20px] leading-tight;
+    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    @apply font-semibold uppercase tracking-[0.01em] text-[20px] leading-tight;
   }
   .zettel li.sauber .song {
     text-decoration: line-through;
@@ -497,5 +559,19 @@
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
+  }
+}
+
+/* Erste Überschrift einer Spalte braucht oben keinen Abstand, sonst hängen
+   die Spalten auf verschiedenen Höhen an.
+
+   Die Regel steht ausserhalb von `@layer components`, und zwar mit Absicht:
+   sie muss ein `mt-8` am selben Element überstimmen. Unter Tailwind 3 tat sie
+   das über die Spezifität. Tailwind 4 legt echte Kaskaden-Ebenen an, und dort
+   gewinnt die Utility-Ebene immer, egal wie spezifisch die Komponente ist —
+   die linke Spalte rutschte auf dem breiten Schirm um 32 px nach unten. */
+@layer utilities {
+  .spalte > :first-child {
+    @apply wide:mt-0;
   }
 }

@@ -122,7 +122,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
             x={RAND_LINKS - 9}
             y={y(saite) + 4}
             textAnchor="end"
-            className="fill-[--dim] font-mono text-[13px]"
+            className="fill-(--dim) font-mono text-[13px]"
           >
             {SAITENNAMEN[saite - 1]}
           </text>
@@ -134,7 +134,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
             x={x(bund)}
             y={hoehe - 2}
             textAnchor="middle"
-            className="fill-[--dim] font-mono text-[13px]"
+            className="fill-(--dim) font-mono text-[13px]"
           >
             {bund}
           </text>
@@ -179,10 +179,10 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
                         textAnchor="middle"
                         className={`font-mono text-[12px] ${
                           istGegeben
-                            ? "fill-[--bg] font-bold"
+                            ? "fill-(--bg) font-bold"
                             : istLoesung
-                              ? "fill-[--gruen]"
-                              : "fill-[--stahl]"
+                              ? "fill-(--gruen)"
+                              : "fill-(--stahl)"
                         }`}
                       >
                         {noteAt(griff)}

@@ -131,7 +131,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
           autoCorrect="off"
           spellCheck={false}
           placeholder="Antwort"
-          className="w-full border border-line bg-sunken px-3 py-3 font-mono text-[16px] text-fg outline-none focus:border-akzent disabled:text-muted"
+          className="w-full border border-line bg-sunken px-3 py-3 font-mono text-[16px] text-fg outline-hidden focus:border-akzent disabled:text-muted"
         />
       )}
 
@@ -142,7 +142,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
             const istLoesung = (loesungen as string[]).includes(option)
             const rahmen = aufgeloest
               ? istLoesung
-                ? "border-gruen bg-[--tint-gruen] text-gruen"
+                ? "border-gruen bg-(--tint-gruen) text-gruen"
                 : gewaehlt
                   ? "border-rot text-rot"
                   : "border-line text-dim"
@@ -241,7 +241,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                     key={note.value}
                     onClick={() => onAnswer(note.value as Grade, richtig)}
                     className={`border p-[14px] text-left transition-colors ${
-                      empfohlen ? "border-akzent bg-[--tint-akzent]" : "border-line"
+                      empfohlen ? "border-akzent bg-(--tint-akzent)" : "border-line"
                     }`}
                   >
                     <span className="display block text-[17px] text-fg">{note.label}</span>

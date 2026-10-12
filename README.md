@@ -416,8 +416,9 @@ sie wirklich installierst.
 - **Der Klingelschalter muss an sein.** iOS schaltet Web-Audio stumm, wenn das
   Gerät auf lautlos steht — das Metronom bleibt still, ohne Fehlermeldung. Das
   ist eine iOS-Eigenheit, kein Fehler der App.
-- **Mikrofon braucht iOS 14.3 oder neuer.** Davor gab Safari im
-  Home-Screen-Modus keinen Mikrofonzugriff frei.
+- **Die App braucht iOS 16.4 oder neuer.** Die Darstellung baut auf
+  CSS-Funktionen, die Safari erst ab dieser Fassung kann; auf älteren Geräten
+  zerfällt das Layout. Jedes iPhone ab dem 8 bekommt 16.4.
 - **Die installierte App hat einen eigenen Speicher.** Was in Safari liegt —
   Log, Profil, ein eingerichteter Abgleich —, sieht die App auf dem
   Home-Bildschirm nicht, und umgekehrt. Wer vorher im Browser geübt hat,

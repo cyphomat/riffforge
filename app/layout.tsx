@@ -9,12 +9,12 @@ import { asset } from "@/lib/base-path"
 // Kondensiert und versal — trägt Tempi, Zahlen und Drill-Namen.
 // next/font lädt sie beim Build herunter und liefert sie selbst aus, damit
 // die App offline genauso aussieht wie online.
-const oswald = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-display" })
+const oswald = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-oswald" })
 
 // Nur für die Wortmarke, sonst nirgends. Schwer, schmal, plakathaft — ein
 // Aufdruck, kein Fliesstext. Überschriften und Zahlen bleiben Oswald, damit
 // die App nicht überall schreit.
-const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-marke" })
+const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton" })
 
 /**
  * Content-Security-Policy als Meta-Tag.

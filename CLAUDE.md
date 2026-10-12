@@ -206,14 +206,32 @@ Komponente.
   wäre; und ein Trennzeichen, weil „Riff · Forge" sich wie zwei Produkte
   liest. Mehr als ein Haar sind übrigens auch falsch: bei 0,09 em zerfiel der
   Name in zwei Wörter.
-- **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton als
-  `--font-marke`, ausschliesslich auf `.marke`. Überschriften, Zahlen und
-  Tempo bleiben Oswald, damit die App nicht überall schreit.
+- **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton,
+  ausschliesslich auf `.marke`. Überschriften, Zahlen und Tempo bleiben
+  Oswald, damit die App nicht überall schreit. `next/font` legt beide als
+  `--font-anton` und `--font-oswald` ab, das Theme baut daraus
+  `--font-marke` und `--font-display` — die Namen müssen verschieden sein,
+  sonst verweist der Theme-Wert unter Tailwind 4 auf sich selbst.
 - **`.num` gibt nur `tabular-nums`, `.ziffern` gibt die Monospace.** Beide
   stehen in `@layer components`, und `font-mono` in `.num` stach früher die
   Anzeigeschrift von `.display` aus — Timer und Tempo rendern dann in der
   System-Monospace. Wer eine grosse Zahl setzt, nimmt `display num`; die
   Monospace ist für Tabs und Log-Zeilen da.
+- **Tailwind 4 hat echte Kaskaden-Ebenen, und die Utility-Ebene gewinnt
+  immer.** Unter Tailwind 3 war `@layer` nur eine Sortierung, und eine
+  Komponenten-Regel wie `.spalte > :first-child` überstimmte ein `mt-8` am
+  selben Element über die Spezifität. Unter 4 verliert sie, egal wie
+  spezifisch — beim Umstieg rutschte so die linke Spalte auf jedem breiten
+  Bildschirm um 32 px nach unten. Was ein Utility überstimmen *muss*, steht
+  deshalb in `@layer utilities`. Zwei weitere Grenzen: `@apply` geht nur auf
+  Utilities, nicht auf eigene Klassen (`.huelle`, `.display`, `.rule` stehen
+  dort ausgeschrieben), und das Theme steht als `@theme` in `globals.css`,
+  nicht mehr in einer `tailwind.config.ts`. Das offizielle Upgrade-Werkzeug
+  hat beim Umzug zusammengesetzte Selektoren zerlegt (`details.info` und
+  `.zettel li.sauber` wurden zu kaputten Utilities); `globals.css` ist von
+  Hand umgestellt, Seite für Seite pixelgleich gegen den Stand davor
+  verglichen. Tailwind 4 verlangt Safari 16.4 — die Untergrenze für iOS steht
+  in beiden READMEs.
 - **Rost ist „nicht ganz", Rot ist „kaputt".** `--rost` trägt die zähe
   Bewertung, die überfällige Karte, die fehlende Bedingung. Bleibt Rot dafür
   frei, heisst Rot wirklich noch etwas.

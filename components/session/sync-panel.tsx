@@ -115,7 +115,7 @@ export function SyncPanel({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-none focus:border-akzent"
+              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-hidden focus:border-akzent"
             />
           </label>
           <label className="block">
@@ -127,7 +127,7 @@ export function SyncPanel({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-none focus:border-akzent"
+              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-hidden focus:border-akzent"
             />
           </label>
           <label className="block">
@@ -138,7 +138,7 @@ export function SyncPanel({
               onChange={(e) => setDraft({ ...draft, token: e.target.value })}
               placeholder="github_pat_…"
               autoComplete="off"
-              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-none focus:border-akzent"
+              className="mt-1 w-full border border-line bg-sunken px-3 py-2.5 font-mono text-[14px] text-fg outline-hidden focus:border-akzent"
             />
           </label>
         </div>

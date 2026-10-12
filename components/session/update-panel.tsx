@@ -122,7 +122,7 @@ export function UpdatePanel() {
       </p>
 
       {isFork(running) && running && (
-        <div className="mt-4 border-l-2 border-stahl bg-[--tint-stahl] py-3 pl-3 pr-3">
+        <div className="mt-4 border-l-2 border-stahl bg-(--tint-stahl) py-3 pl-3 pr-3">
           <p className="kicker mb-1 text-stahl">Fork</p>
           <p className="text-[13.5px] leading-relaxed text-muted">
             Diese Auslieferung läuft aus <b className="font-mono text-fg">{running.repo}</b>, nicht

@@ -34,7 +34,7 @@ export function BeatIndicator({ beatInBar, beatsPerBar }: { beatInBar: number; b
               active
                 ? eins
                   ? "border-akzent bg-akzent font-bold text-bg"
-                  : "border-akzent bg-[--tint-akzent-stark] text-akzent"
+                  : "border-akzent bg-(--tint-akzent-stark) text-akzent"
                 : eins
                   ? "border-stahl bg-sunken text-muted"
                   : "border-line bg-sunken text-dim"
