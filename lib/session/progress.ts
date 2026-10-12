@@ -16,6 +16,13 @@ export interface DrillProgress {
 const MIN_BPM = 40
 
 /**
+ * Ab welcher Bewertung ein Tempo als gespielt gilt — „sauber" oder besser.
+ * Bestwert, Wochenrückblick und alles, was ein Tempo als erreicht ausweist,
+ * nehmen diese eine Grenze.
+ */
+export const SAUBER_AB = 3
+
+/**
  * Was das Schema hergibt. Ein Ergebnis darüber fällt beim Lesen durch die
  * Prüfung — und legt dann nicht nur sich selbst, sondern den *ganzen* Log
  * beiseite. Deshalb steht die Grenze hier und nicht nur im Schema.
@@ -63,7 +70,7 @@ export function resultsFor(log: PracticeLog, drillId: string): DrillResult[] {
 
 export function progressFor(log: PracticeLog, drillId: string): DrillProgress {
   const results = resultsFor(log, drillId)
-  const clean = results.filter((r) => r.rating >= 3)
+  const clean = results.filter((r) => r.rating >= SAUBER_AB)
   const measured = results.filter((r) => r.timing !== undefined)
 
   return {

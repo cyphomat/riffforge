@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-764%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-777%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -280,6 +280,26 @@ What the app cannot measure is not rewarded either: it does not know whether the
 notes were right, so there is no patch for that. What a device lacks — a
 seven-string — is missing from the vest instead of showing up as a failure.
 After a session, newly earned patches appear right under the note.
+
+## The look back
+
+*Wo du stehst* shows your best value — a number that can only go up and so
+says nothing about whether things are moving right now. The look back shows
+the course of it, reached from the row under the rank on *Heute*:
+
+- **The weeks** — practice days per calendar week as columns, the current one
+  in amber, plus days, minutes and blocks against the week before. Weeks
+  without practice show up as empty weeks; hiding a break would be
+  flattering.
+- **Per drill** — two lines side by side: the highest tempo rated *clean* or
+  better that week, and the measured spread around the click (less is better).
+  Two charts rather than one with two axes, because everyone reads two scales
+  in one picture differently.
+
+It reaches back one quarter and grows with the log — three weeks of practice
+show three weeks. What is not in the log is not here either: a week without a
+clean tempo is a gap, not a zero, and without the microphone there is no
+spread. Every chart also comes as a table.
 
 ## Knowledge
 

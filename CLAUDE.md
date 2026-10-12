@@ -69,6 +69,8 @@ Verschiedenes.
 | `components/session/sieben-runner.tsx` | Der dritte Eingang: zehn Minuten Siebensaitige |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
+| `lib/session/rueckblick.ts` | Der Rückblick: Wochen, Tempo und Streuung je Drill — aus dem Log |
+| `components/session/rueckblick.tsx` | Säulen und Linien dazu, jede Grafik auch als Tabelle |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
@@ -350,6 +352,20 @@ Komponente.
   — und `.zwei-spalten` stapelt die rechte Spalte auf dem Handy unter den
   Kalender: über tausend Pixel tief, und Daniel hat ihn dort nicht gefunden.
   Was auf dem Handy gesehen werden soll, gehört in die linke Spalte.
+- **Der Rückblick zeigt Verlauf, nicht Bestwert, und erfindet nichts.**
+  `bestBpm` kann nur steigen und sagt deshalb nicht, ob es gerade vorangeht;
+  der Rückblick zeigt je Woche das höchste *sauber* gespielte Tempo
+  (`SAUBER_AB`, dieselbe Grenze wie der Bestwert) und den Median der
+  gemessenen Streuung. Eine Woche ohne Wert ist eine **Lücke**, keine Null und
+  keine Fortschreibung. Die Linie wird dort nur von einer blassen Haarlinie
+  überbrückt — ohne sie zerfiel ein Verlauf mit Lücken in Stücke, die wie
+  eine gestrichelte Prognose aussahen. Tempo und Streuung stehen als zwei
+  Grafiken nebeneinander, nie mit zwei Achsen in einer. Eine Richtung
+  („31 → 17 ms") steht nur da, wo es mindestens zwei Wochen mit Wert gibt.
+  Das Fenster wächst mit dem Log bis zu einem Quartal, aus demselben Grund
+  wie beim Kalender, und die Säulen haben eine feste Breite statt eines
+  Anteils der Fläche. Der Eingang steht auf *Heute* unter dem Rang, in der
+  linken Spalte.
 - **Die Serie zählt Wochen.** In Tagen riss sie nach einem verpassten Abend,
   und wer einmal gerissen ist, hat einen Grund weniger, morgen anzufangen.
   `streakWeeks` zählt Wochen mit mindestens einer Session; die laufende Woche

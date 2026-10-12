@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-764%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-777%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -279,6 +279,26 @@ Was die App nicht messen kann, wird auch nicht belohnt: ob die Töne sassen,
 weiss sie nicht, und dafür gibt es keinen Aufnäher. Was ein Gerät nicht hat —
 eine Siebensaitige —, fehlt auf der Kutte, statt als verfehlt dazustehen. Nach
 einer Session stehen neu verdiente Aufnäher direkt unter dem Zettel.
+
+## Der Rückblick
+
+*Wo du stehst* zeigt den Bestwert — eine Zahl, die nur steigen kann und
+deshalb nicht sagt, ob es gerade vorangeht. Der Rückblick zeigt den Verlauf,
+erreichbar über die Zeile unter dem Rang auf *Heute*:
+
+- **Die Wochen** — Übungstage je Kalenderwoche als Säulen, die laufende in
+  Bernstein, dazu Tage, Minuten und Blöcke gegen die Vorwoche. Wochen ohne
+  Übung stehen als leere Woche da; eine Pause zu verschweigen hiesse
+  beschönigen.
+- **Je Drill** — zwei Linien nebeneinander: das höchste Tempo, das in der
+  Woche *sauber* oder besser sass, und die gemessene Streuung um den Klick
+  (weniger ist besser). Zwei Grafiken statt einer mit zwei Achsen, weil zwei
+  Skalen in einem Bild jeder anders liest.
+
+Der Rückblick reicht ein Quartal zurück und wächst mit dem Log — wer seit drei
+Wochen übt, sieht drei Wochen. Was nicht im Log steht, steht auch hier nicht:
+eine Woche ohne sauberes Tempo ist eine Lücke, keine Null, und ohne Mikrofon
+gibt es keine Streuung. Jede Grafik gibt es auch als Tabelle.
 
 ## Wissen
 

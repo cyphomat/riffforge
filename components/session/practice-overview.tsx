@@ -5,6 +5,7 @@ import Link from "next/link"
 import { DRILLS } from "@/lib/session/drills"
 import { buildSession, tagesZufall } from "@/lib/session/builder"
 import { aufnaeher, rang as berechneRang, type Rang } from "@/lib/session/merch"
+import { kalenderwoche, wochen, type Woche } from "@/lib/session/rueckblick"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import { SIEBEN_DRILLS } from "@/lib/session/drills-sieben"
@@ -61,6 +62,8 @@ export function PracticeOverview() {
   const [willkommen, setWillkommen] = useState(false)
   const [plan, setPlan] = useState<SessionBlock[] | null>(null)
   const [merch, setMerch] = useState<{ rang: Rang; aufnaeher: number } | null>(null)
+  const [woche, setWoche] = useState<Woche | null>(null)
+  const [vorwoche, setVorwoche] = useState<Woche | null>(null)
 
   useEffect(() => {
     const gelesen = loadLog()
@@ -77,6 +80,9 @@ export function PracticeOverview() {
       rang: berechneRang(gelesen),
       aufnaeher: aufnaeher(gelesen, loadTheoryLog(), THEORY_CARDS).filter((a) => a.verdient).length,
     })
+    const fenster = wochen(gelesen)
+    setWoche(fenster.at(-1) ?? null)
+    setVorwoche(fenster.length > 1 ? fenster.at(-2)! : null)
     setLoaded(true)
   }, [])
 
@@ -208,6 +214,27 @@ export function PracticeOverview() {
             <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
           </span>
           <span className="ziffern text-[12px] text-muted">{merch.aufnaeher} Aufnäher ›</span>
+        </Link>
+      )}
+
+      {/* Der Rückblick, gleich darunter und aus demselben Grund in der
+          linken Spalte: was auf dem Handy gesehen werden soll, steht dort. */}
+      {hasHistory && woche && (
+        <Link
+          href="/rueckblick"
+          className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="kicker text-dim">Rückblick</span>
+            <span className="display text-[17px] text-fg">KW {kalenderwoche(woche.woche)}</span>
+          </span>
+          <span className="ziffern text-[12px] text-muted">
+            {/* Montags ist die neue Woche noch leer — dann die Zahl, die
+                schon etwas sagt, statt einer Null, die nur mahnt. */}
+            {woche.tage > 0 || !vorwoche
+              ? `${woche.tage} ${woche.tage === 1 ? "Tag" : "Tage"} diese Woche ›`
+              : `Vorwoche ${vorwoche.tage} ${vorwoche.tage === 1 ? "Tag" : "Tage"} ›`}
+          </span>
         </Link>
       )}
 
