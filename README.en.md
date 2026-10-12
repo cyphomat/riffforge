@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-756%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-760%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -404,13 +404,17 @@ Installing pays off for a less obvious reason too: Safari clears the storage of
 ordinary websites after seven days without a visit. Home-screen apps are exempt
 — so your practice log only survives if you actually install it.
 
-### Two iOS quirks
+### Three iOS quirks
 
 - **The ringer switch has to be on.** iOS mutes Web Audio when the device is
   silenced — the metronome then stays quiet, with no error message. That is an
   iOS behaviour, not a fault of the app.
 - **The microphone needs iOS 14.3 or newer.** Before that, Safari gave no
   microphone access in home-screen mode.
+- **The installed app has its own storage.** What lives in Safari — log,
+  profile, a configured sync — is invisible to the app on the home screen, and
+  the other way round. If you practised in the browser before, carry it over
+  via *Daten → Sichern* and *Einlesen*, or set up the sync once inside the app.
 
 ## Data
 
@@ -470,9 +474,16 @@ button press; the original's own deployment never makes it.
 
 ### Deleting means deleting
 
-**Alles löschen** under *Daten* clears the log, any set-aside copy of it and the
-two answers from the first launch. The app is then back to freshly installed.
-**Trennen** removes the account, repository and token from browser storage.
+**Alles löschen** under *Daten* clears the log, any set-aside copy of it, the
+answered knowledge questions, the two answers from the first launch — and a
+configured sync including its token. The app is then back to freshly installed
+in this browser; whatever sits in the data repository stays there. **Trennen**
+removes only the account, repository and token from browser storage.
+
+That nothing is left behind is a test, not an intention: it collects every
+storage key that appears in the source and demands an empty storage afterwards.
+The reason was a real bug — the token used to stay, and the next sync pulled
+the deleted log straight back.
 
 ### What the app does not do
 
@@ -490,6 +501,16 @@ Since GitHub Pages serves no headers of its own, the Content Security Policy
 sits in the page as a meta tag. The part that matters is `connect-src`: requests
 may only go to the site itself and to GitHub. If foreign script ever got into
 the page, it would have nowhere to send the token or the log.
+
+### Supply chain
+
+The site is built by GitHub Actions, and the build runs other people's code.
+So every action is pinned to a fixed commit instead of a movable tag, and only
+the deploy step may write to Pages, not the build. `pnpm audit` has to be
+empty; a separate run checks that once a week, because new advisories don't
+arrive with commits but with time. The one exception is recorded with its
+reason in `package.json`: a bug in `braces` with no patched release, affecting
+only the linter at build time — none of it reaches a visitor.
 
 ---
 

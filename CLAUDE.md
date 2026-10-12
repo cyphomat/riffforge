@@ -51,6 +51,9 @@ Verschiedenes.
 | `lib/theory/merge.ts` | Antwort-Logs verschmelzen — dieselbe Bauart wie der Übungs-Log |
 | `lib/backup.ts` | Die Sicherungsdatei: beide Logs in einem Dokument |
 | `lib/sync/github.ts` | GitHub-API als Ablageort, einziger Netz-Zugriff |
+| `lib/sync/settings.ts` | Konto, Repo, Token und letzter Abgleich — localStorage |
+| `lib/sync/run.ts` | Ein Abgleich beider Logs, von Hand oder im Hintergrund |
+| `lib/storage/loeschen.ts` | *Alles löschen* — die eine Liste, gegen den Quelltext getestet |
 | `components/session/*` | UI der Session |
 | `lib/theory/fsrs.ts` | FSRS-6, portiert aus der Referenz. Rein, gegengeprüft. |
 | `lib/theory/types.ts` | Karten, Fragen und der Antwort-Log |
@@ -80,6 +83,8 @@ Verschiedenes.
 | `lib/update/version.ts` | Bau-Stempel vergleichen: eigene Fassung, Server, Original |
 | `lib/update/check.ts` | Holt Stempel und Original-Commits, leert den Cache |
 | `tools/version.mjs` | Schreibt den Bau-Stempel — läuft vor jedem Build |
+| `tools/shots.mjs` | Die README-Bildschirme, aus echten Seiten mit Beispieldaten |
+| `.github/workflows/audit.yml` | `pnpm audit` einmal die Woche, unabhängig von Commits |
 | `lib/base-path.ts` | Präfix für Laufzeit-Pfade unter GitHub Pages |
 | `public/sw.js`, `public/manifest.json` | PWA: offline und installierbar |
 
@@ -495,8 +500,15 @@ Komponente.
   anders befüllt, macht sie blind. Der Service Worker muss `version.json`
   deshalb ungecacht durchlassen.
 - **Löschen heisst löschen.** Was die App speichert, muss der Löschen-Weg auch
-  wieder loswerden — Log, beiseitegelegte Kopie und Profil. Ein neuer
-  `localStorage`-Schlüssel gehört deshalb in dieselbe Liste wie sein Löschen.
+  wieder loswerden — Log, beiseitegelegte Kopie, Profil und **der Abgleich
+  samt Token**. Letzterer fehlte lange: *Alles löschen* versprach „wie frisch
+  installiert" und liess den Token im Speicher, den sich alle
+  `github.io`-Seiten teilen — und der nächste Hintergrund-Abgleich holte den
+  gelöschten Log zurück. Seitdem gibt es eine Funktion, `allesLoeschen`, und
+  `loeschen.test.ts` sammelt jeden `mga.*`-Schlüssel aus dem Quelltext ein und
+  verlangt danach einen leeren Speicher. Ein neuer Schlüssel ohne Löschweg
+  fällt dort auf, nicht erst bei jemandem, der sich auf das Löschen verlässt.
+  Das Datenrepo bleibt dabei unberührt: gelöscht wird dieser Browser.
 - **Kein dritter Host.** `api.github.com` ist die einzige fremde Adresse, und
   auch die nur zweimal: beim eingerichteten Abgleich, und auf Knopfdruck beim
   Blick zum Original — Letzteres ausschliesslich in einem Fork. Sonst spricht
@@ -519,6 +531,20 @@ Komponente.
   Server, aber `next dev` läuft auf diesem Rechner. Die geflickten Fassungen
   stehen als `pnpm.overrides` in `package.json`. Wer eine Abhängigkeit hebt,
   schaut danach in `pnpm audit` und räumt Overrides weg, die ins Leere zeigen.
+  Die einzige Ausnahme steht in `pnpm.auditConfig.ignoreGhsas`:
+  GHSA-vfj7-8cjw-p6xm in `braces`, für das es **keine** geflickte Fassung gibt
+  und das nur über den Linter hereinkommt (`eslint-config-next` → `fast-glob`
+  → `micromatch`). Die Muster dort stammen aus unserer eigenen Konfiguration,
+  nicht von einem Besucher. Sobald es einen Fix gibt, fliegt die Ausnahme
+  raus. Geprüft wird wöchentlich von `audit.yml`, weil neue Meldungen mit der
+  Zeit kommen, nicht mit Commits — und bewusst nicht im Deploy, damit eine
+  fremde Meldung keinen eiligen Fix aufhält.
+- **Der Bau hat keine Schreibrechte.** Im Deploy-Workflow gelten `pages:
+  write` und `id-token: write` nur für den Deploy-Job; der Build-Job führt
+  mit `pnpm install` fremden Code aus und bekommt nur `contents: read`.
+  Actions hängen an Commit-Hashes mit der Fassung als Kommentar — ein Tag
+  lässt sich nachträglich verschieben. Wer eine Action hebt, holt den Hash
+  der neuen Fassung, statt auf den Tag zurückzufallen.
 
 ## Beim Veröffentlichen
 

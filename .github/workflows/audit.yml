@@ -1,0 +1,27 @@
+name: Audit
+
+# `pnpm audit` bleibt leer — das ist eine Konvention, und eine Konvention, die
+# nur beim nächsten Commit geprüft wird, merkt nichts, solange niemand
+# committet. Neue Meldungen kommen aber nicht mit Commits, sondern mit der
+# Zeit. Deshalb einmal die Woche; scheitert der Lauf, meldet GitHub das per
+# Mail. Bewusst nicht im Deploy: eine fremde Meldung soll keinen Fix
+# aufhalten, der gerade raus muss.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      # Ohne install: audit liest nur die Lockfile.
+      - run: pnpm audit

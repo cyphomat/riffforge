@@ -4,15 +4,13 @@ import { useEffect, useRef, useState } from "react"
 import { buildBackup, previewBackup, type BackupPreview } from "@/lib/backup"
 import { dayKey, practiceDays, totalMinutes } from "@/lib/session/progress"
 import {
-  clearLog,
   exportFilename,
   hasStoredLog,
   importLog,
   loadLog,
 } from "@/lib/storage/practice-log"
-import { clearProfile } from "@/lib/storage/profile"
+import { allesLoeschen } from "@/lib/storage/loeschen"
 import {
-  clearTheoryLog,
   hasStoredTheoryLog,
   importTheoryLog,
   loadTheoryLog,
@@ -22,7 +20,7 @@ import { EMPTY_LOG, type PracticeLog } from "@/lib/session/types"
 import { SyncPanel } from "@/components/session/sync-panel"
 import { UpdatePanel } from "@/components/session/update-panel"
 import { InstallPanel } from "@/components/session/install-panel"
-import { clearLokal, merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
+import { merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
 import { letzteKopie, sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
 import { isConfigured, lastSynced, loadSettings } from "@/lib/sync/settings"
 import { MdFileDownload, MdFileUpload } from "react-icons/md"
@@ -286,18 +284,18 @@ export function DataManager() {
         <h2 className="rule mb-1 mt-9">Löschen</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Setzt alles zurück: Tempi, Serien, Bestwerte, die beantworteten
-          Wissensfragen — und die beiden Antworten vom ersten Start. Danach ist die App wieder wie frisch installiert. Vorher
-          exportieren.
+          Wissensfragen, die beiden Antworten vom ersten Start — und trennt einen
+          eingerichteten Abgleich samt Token. Was im Datenrepo liegt, bleibt dort. Danach
+          ist die App in diesem Browser wie frisch installiert. Vorher exportieren.
         </p>
         {confirmClear ? (
           <div className="flex gap-[9px]">
             <button
               onClick={() => {
-                clearLog()
-                clearProfile()
-                clearTheoryLog()
-                clearLokal()
+                allesLoeschen()
                 setGesichert(null)
+                setAbgeglichen(null)
+                setEingerichtet(false)
                 setTheorie(EMPTY_THEORY_LOG)
                 setLog(EMPTY_LOG)
                 setStored(false)

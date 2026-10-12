@@ -69,6 +69,16 @@ export function InstallPanel() {
           ))}
         </ol>
       )}
+
+      {/* Auf iOS startet die abgelegte App mit eigenem, leerem Speicher —
+          wer das erst danach merkt, hält seinen Stand für verloren. */}
+      {lage === "anleitung" && (
+        <p className="mt-3 text-[13px] leading-relaxed text-dim">
+          Die abgelegte App hat einen <b className="text-muted">eigenen Speicher</b> und
+          sieht nichts von dem, was hier im Browser liegt. Vorher sichern und in der App
+          einlesen — oder dort den Abgleich einrichten.
+        </p>
+      )}
     </section>
   )
 }

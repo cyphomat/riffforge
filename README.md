@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-756%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-760%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -411,13 +411,18 @@ den Speicher normaler Webseiten nach sieben Tagen ohne Besuch auf. Für
 Home-Screen-Apps gilt das nicht — dein Übungs-Log überlebt also nur, wenn du
 sie wirklich installierst.
 
-### Zwei iOS-Eigenheiten
+### Drei iOS-Eigenheiten
 
 - **Der Klingelschalter muss an sein.** iOS schaltet Web-Audio stumm, wenn das
   Gerät auf lautlos steht — das Metronom bleibt still, ohne Fehlermeldung. Das
   ist eine iOS-Eigenheit, kein Fehler der App.
 - **Mikrofon braucht iOS 14.3 oder neuer.** Davor gab Safari im
   Home-Screen-Modus keinen Mikrofonzugriff frei.
+- **Die installierte App hat einen eigenen Speicher.** Was in Safari liegt —
+  Log, Profil, ein eingerichteter Abgleich —, sieht die App auf dem
+  Home-Bildschirm nicht, und umgekehrt. Wer vorher im Browser geübt hat,
+  nimmt den Stand über *Daten → Sichern* und *Einlesen* mit oder richtet den
+  Abgleich in der App einmal neu ein.
 
 ## Daten
 
@@ -481,9 +486,15 @@ stellt sie nie.
 ### Löschen heisst löschen
 
 **Alles löschen** unter *Daten* räumt den Log, eine eventuell beiseitegelegte
-Kopie davon und die beiden Antworten vom ersten Start weg. Danach ist die App
-wieder wie frisch installiert. **Trennen** löscht Konto, Repo und Token aus dem
-Browser-Speicher.
+Kopie davon, die beantworteten Wissensfragen, die beiden Antworten vom ersten
+Start — und einen eingerichteten Abgleich samt Token. Danach ist die App in
+diesem Browser wie frisch installiert; was im Datenrepo liegt, bleibt dort.
+**Trennen** löscht nur Konto, Repo und Token aus dem Browser-Speicher.
+
+Dass dabei nichts liegen bleibt, ist eine Prüfung, kein Vorsatz: ein Test
+sammelt jeden Speicher-Schlüssel ein, der im Quelltext vorkommt, und verlangt
+danach einen leeren Speicher. Anlass war ein echter Fehler — der Token blieb
+früher stehen, und der nächste Abgleich holte den gelöschten Log zurück.
 
 ### Was die App nicht tut
 
@@ -504,6 +515,17 @@ Content-Security-Policy als Meta-Tag in der Seite. Der wichtige Teil ist
 `connect-src`: Anfragen dürfen nur an die eigene Adresse und an GitHub gehen.
 Käme über irgendeinen Weg fremdes Skript in die Seite, könnte es Token und Log
 nirgendwohin schicken.
+
+### Lieferkette
+
+Die Seite wird von GitHub Actions gebaut, und der Bau führt fremden Code aus.
+Deshalb hängen alle Actions an einem festen Commit statt an einem
+verschiebbaren Tag, und Schreibrecht auf Pages hat allein der Deploy-Schritt,
+nicht der Bau. `pnpm audit` muss leer sein; einmal die Woche prüft ein eigener
+Lauf das nach, weil neue Meldungen nicht mit Commits kommen, sondern mit der
+Zeit. Die einzige Ausnahme steht mit Begründung in `package.json`: ein Fehler
+in `braces`, für den es keine geflickte Fassung gibt und der nur den Linter
+beim Bauen betrifft — nichts davon erreicht einen Besucher.
 
 ---
 
