@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     apple: asset("/icons/icon-180.png"),
   },
   other: {
-    // Next 15 emits only the standard `mobile-web-app-capable`, which is the
+    // Next (15 and 16) emits only the standard `mobile-web-app-capable`, which is the
     // Chrome spelling. Safari on iOS before 16.4 reads the apple-prefixed one
     // and without it the home-screen icon opens in a browser view instead of
     // standalone.

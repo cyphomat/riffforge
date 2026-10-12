@@ -569,7 +569,7 @@ neue Inhalte dazukommen: bitte dabei bleiben.
 ```bash
 pnpm dev      # Entwicklung
 pnpm test     # Vitest (Logik in lib/session und lib/audio)
-pnpm check    # tsc --noEmit && vitest run && next lint
+pnpm check    # tsc --noEmit && vitest run && eslint .
 pnpm build    # statischer Export nach out/
 pnpm audit    # muss leer bleiben, siehe Konventionen
 ```
@@ -589,6 +589,18 @@ Laufzeitlogik, kein `next/image`-Optimizer.
 
 `next.config.mjs` unterdrückt **keine** Fehler mehr. TypeScript- und
 ESLint-Fehler brechen den Build — bitte so lassen.
+
+Seit Next 16 gibt es `next lint` nicht mehr, und `next build` lintet nicht
+mehr mit; der Linter läuft als `eslint .` in `pnpm check`, und der Workflow
+lässt nichts durch, was `pnpm check` reisst. Die Konfiguration steht flach in
+`eslint.config.mjs`. Drei Regeln aus `react-hooks` 7 sind dort bewusst aus:
+`refs`, `set-state-in-effect` und `immutability` prüfen, ob der Code zum
+React Compiler passt, und den benutzt die App nicht. Was sie anmahnen, sind
+gewollte Muster — Laden aus `localStorage` nach dem ersten Anstrich (beim
+statischen Export gibt es beim Bauen keinen Speicher), der jeweils neueste
+Callback in einer Ref, der einmal festgehaltene Lick-Startwert. Wer den
+Compiler einführt, schaltet sie wieder an und baut diese Stellen um — als
+eigene Änderung, nicht nebenbei.
 
 ## Timing-Messung
 
