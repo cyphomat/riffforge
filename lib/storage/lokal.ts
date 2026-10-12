@@ -1,5 +1,6 @@
 "use client"
 
+import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
 
 /**
@@ -19,9 +20,10 @@ const GESICHERT_KEY = "mga.zuletzt-gesichert.v1"
 const WILLKOMMEN_KEY = "mga.willkommen.v1"
 const LICK_KEY = "mga.lick-seed.v1"
 const BOX_KEY = "mga.lick-box.v1"
+const EINMESS_KEY = "mga.einmessung.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -108,6 +110,50 @@ export function lickBox(): LickBox {
 
 export function merkeLickBox(box: LickBox): void {
   schreiben(BOX_KEY, JSON.stringify(box))
+}
+
+/**
+ * Die eingemessene Latenz dieses Geräts.
+ *
+ * Gehört diesem Gerät und nur diesem — sie *ist* das Gerät: Lautsprecher,
+ * Mikrofon, Puffer. Ein Abgleich, der die Latenz vom Rechner aufs iPhone
+ * trüge, machte die Messung dort falsch statt besser. Deshalb weder im
+ * Datenrepo noch in der Sicherungsdatei.
+ *
+ * Kaputtes wird hier verworfen, nicht beiseitegelegt: eine Einmessung ist in
+ * zwanzig Sekunden neu gemacht, und eine falsche wäre schlimmer als keine.
+ */
+export const einmessungSchema = z.object({
+  ms: z.number().int().min(-200).max(600),
+  art: z.enum(["lautsprecher", "anschlag"]),
+  streuungMs: z.number().min(0),
+  at: z.string(),
+})
+
+export type Einmessung = z.infer<typeof einmessungSchema>
+
+export function einmessung(): Einmessung | null {
+  const roh = lesen(EINMESS_KEY)
+  if (!roh) return null
+  try {
+    const geprueft = einmessungSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : null
+  } catch {
+    return null
+  }
+}
+
+export function merkeEinmessung(wert: Einmessung): void {
+  schreiben(EINMESS_KEY, JSON.stringify(einmessungSchema.parse(wert)))
+}
+
+export function vergissEinmessung(): void {
+  if (typeof window === "undefined") return
+  try {
+    window.localStorage.removeItem(EINMESS_KEY)
+  } catch {
+    /* Nichts zu vergessen. */
+  }
 }
 
 export function clearLokal(): void {

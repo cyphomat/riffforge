@@ -1,3 +1,5 @@
+import type { ReactNode } from "react"
+import Link from "next/link"
 import type { TimingAnalysis } from "@/lib/audio/timing"
 
 const TREND_TEXT = {
@@ -7,16 +9,51 @@ const TREND_TEXT = {
 } as const
 
 /**
+ * What the offset says about the player — and what it cannot.
+ *
  * A positive offset is mostly signal-chain latency and cannot be held against
- * the player. A negative one cannot be: latency only ever pushes a note later,
- * so playing ahead of the click is something they actually did.
+ * the player. A negative one could only be the player's own doing — *if* the
+ * offset is pinned down. At fast clicks it is not: a chain slower than half a
+ * click wraps onto the previous click and reads as early. So "you play ahead"
+ * is only said when it is unambiguous, and a calibration is what makes it so.
  */
-function offsetText(offsetMs: number): string {
+function offsetText(analysis: TimingAnalysis): ReactNode {
+  const { offsetMs, lageMs, einmessung, versatzEindeutig } = analysis
+
+  if (einmessung === "passt-nicht") {
+    return (
+      <>
+        {/* Keine Zahl hier: passt die Einmessung nicht, ist der Versatz bei
+            dichten Klicks wieder nur bis auf ganze Klicks bestimmt — und
+            „−39 ms hinter dem Klick" stand so tatsächlich schon da. */}
+        Der Versatz passte diesmal nicht zu deiner Einmessung — andere Kopfhörer, ein anderes
+        Mikrofon? Dann unter <Link href="/daten" className="underline underline-offset-2">Daten</Link> neu einmessen.
+      </>
+    )
+  }
+  if (lageMs !== null) {
+    if (Math.abs(lageMs) <= 8) return `Laufzeit herausgerechnet: du lagst praktisch genau auf dem Klick.`
+    return lageMs < 0
+      ? `Laufzeit herausgerechnet: du lagst ${Math.abs(lageMs)} ms vor dem Klick.`
+      : `Laufzeit herausgerechnet: du lagst ${lageMs} ms hinter dem Klick.`
+  }
+  if (einmessung === "passt") {
+    return "Gemessen gegen deine Einmessung per Anschlag — sie enthält deine Gewohnheit schon, deshalb hier keine Lage zum Klick."
+  }
   if (Math.abs(offsetMs) <= 8) return "Deine Anschläge lagen praktisch genau auf dem Klick."
   if (offsetMs > 0) {
     return `Deine Anschläge lagen konstant ${offsetMs} ms hinter dem Klick — darin steckt die Laufzeit von der Saite bis ins Mikrofon, die nicht gegen dich zählen kann.`
   }
-  return `Deine Anschläge lagen konstant ${Math.abs(offsetMs)} ms vor dem Klick. Laufzeit kann einen Ton nur später machen, nie früher — du spielst also tatsächlich vorne.`
+  if (versatzEindeutig) {
+    return `Deine Anschläge lagen konstant ${Math.abs(offsetMs)} ms vor dem Klick. Laufzeit kann einen Ton nur später machen, nie früher — du spielst also tatsächlich vorne.`
+  }
+  return (
+    <>
+      Deine Anschläge lagen scheinbar {Math.abs(offsetMs)} ms vor dem Klick. Bei so dichten Klicks
+      kann das auch eine langsame Kette sein, die auf den vorigen Klick fällt.{" "}
+      <Link href="/daten" className="underline underline-offset-2">Einmessen</Link> macht es eindeutig.
+    </>
+  )
 }
 
 function Metric({ value, unit, label }: { value: string | number; unit?: string; label: string }) {
@@ -80,7 +117,7 @@ export function TimingReport({ analysis }: { analysis: TimingAnalysis }) {
       <div className="border-l-2 border-line pl-3">
         <p className="text-[14px] text-fg">{TREND_TEXT[analysis.trend]}.</p>
         <p className="mt-1 text-[12px] leading-relaxed text-dim">
-          Gemessen wird die Streuung, nicht der Versatz. {offsetText(analysis.offsetMs)}
+          Gemessen wird die Streuung, nicht der Versatz. {offsetText(analysis)}
         </p>
       </div>
     </div>

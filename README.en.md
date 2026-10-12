@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-777%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-791%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -395,9 +395,33 @@ The offset is estimated **before** matching. Without that step, Bluetooth
 headphones (150–300 ms of latency) make every note miss its click, and the
 measurement silently reads as "heard nothing".
 
-A **negative** offset, by the way, is not a latency artefact: travel time can
-only make a note later, never earlier. If you are ahead, you really are ahead —
-and the app says so.
+A **negative** offset is not really a latency artefact: travel time can only
+make a note later, never earlier. With one exception, and it was measured: with
+dense clicks the offset is only known up to whole clicks. Eighths at 190 BPM are
+158 ms apart; a chain with 80 ms of travel lands closer to the *previous* click
+and read as "72 ms ahead" although the player was right on it. The score is not
+affected, the statement is. So the app only says "you play ahead" when that is
+unambiguous — and otherwise that calibrating would make it so.
+
+### Calibration
+
+Under **Daten → Mikrofon einmessen** the app measures this device's travel time
+once and keeps it:
+
+- **Through the speaker** — the microphone hears sixteen clicks and measures how
+  long each one took. Pure machine, twenty seconds, nothing for you to do. Also
+  valid for wired headphones, which hang off the same output.
+- **With headphones** — for Bluetooth, where the microphone cannot hear the
+  click: you strike a muted string on every click. Your own habit is then part
+  of it, and the app measures against that afterwards.
+
+Once calibrated, the app looks for the offset around the measured travel time
+instead of around zero, and what is left over is your real position against the
+click: *"Travel time taken out: you were 12 ms ahead of the click."* If a block
+no longer fits the calibration — other headphones, another interface — it says
+so rather than giving a wrong number. The calibration belongs to the device: it
+goes neither into sync nor into the backup file, because the computer's travel
+time would be wrong on the iPhone.
 
 Afterwards it proposes the self-assessment itself. You can overrule it.
 
@@ -587,9 +611,6 @@ tabs, no audio from copyrighted recordings.
 
 - **A tuner.** Autocorrelation is enough for it, and you need one before every
   session anyway.
-- **Calibration**: measure the offset once and keep it, instead of estimating it
-  per block. `AudioContext.outputLatency` would do it — only Safari does not
-  expose it, neither on the Mac nor on the iPhone.
 - **The iOS ringer switch.** There is a known trick for making Web Audio sound
   despite the mute switch. Untested, so not in yet.
 

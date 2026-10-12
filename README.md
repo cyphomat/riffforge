@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-777%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-791%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
@@ -400,9 +400,34 @@ Der Versatz wird geschätzt, **bevor** zugeordnet wird. Ohne diesen Schritt
 verfehlt bei Bluetooth-Kopfhörern (150–300 ms Latenz) jeder Ton seinen Klick,
 und die Messung liest sich still als „nichts gehört".
 
-Ein **negativer** Versatz ist übrigens kein Latenz-Artefakt: Laufzeit kann einen
-Ton nur später machen, nie früher. Wer vorne liegt, spielt wirklich vorne — und
-das sagt sie dann auch so.
+Ein **negativer** Versatz ist eigentlich kein Latenz-Artefakt: Laufzeit kann
+einen Ton nur später machen, nie früher. Mit einer Ausnahme, und die ist
+nachgemessen: bei dichten Klicks ist der Versatz nur bis auf ganze Klicks
+bestimmt. Achtel bei 190 BPM liegen 158 ms auseinander; eine Kette mit 80 ms
+Laufzeit landet näher am *vorigen* Klick und las sich als „72 ms vorne", obwohl
+der Spieler genau auf dem Klick lag. Den Score betrifft das nicht, die Aussage
+schon. Deshalb sagt die App „du spielst vorne" nur noch, wenn es eindeutig ist
+— und sonst, dass es eindeutig würde, wenn man einmisst.
+
+### Einmessen
+
+Unter **Daten → Mikrofon einmessen** misst die App die Laufzeit dieses Geräts
+einmal und behält sie:
+
+- **Über Lautsprecher** — das Mikrofon hört sechzehn Klicks und misst, wie lange
+  jeder unterwegs war. Reine Maschine, zwanzig Sekunden, du tust nichts. Gilt
+  auch für Kabelkopfhörer, die hängen am selben Ausgang.
+- **Mit Kopfhörern** — für Bluetooth, wo das Mikrofon den Klick nicht hört: du
+  schlägst eine gedämpfte Saite auf jeden Klick an. Darin steckt dann auch deine
+  eigene Gewohnheit, und die App misst danach gegen sie.
+
+Eingemessen sucht die App den Versatz um die gemessene Laufzeit herum statt um
+null, und was übrig bleibt, ist deine echte Lage zum Klick: *„Laufzeit
+herausgerechnet: du lagst 12 ms vor dem Klick."* Passt ein Block nicht mehr zur
+Einmessung — andere Kopfhörer, anderes Interface —, sagt sie das, statt eine
+falsche Zahl zu nennen. Die Einmessung gehört dem Gerät: sie geht weder in den
+Abgleich noch in die Sicherungsdatei, denn die Laufzeit des Rechners wäre auf
+dem iPhone falsch.
 
 Danach schlägt sie die Einschätzung selbst vor. Du kannst sie überstimmen.
 
@@ -601,9 +626,6 @@ abgeschriebenen Tabs, kein Audio urheberrechtlich geschützter Aufnahmen.
 
 - **Stimmgerät.** Autokorrelation reicht dafür, und man braucht es vor jeder
   Session ohnehin.
-- **Kalibrierung**: den Versatz einmal messen und behalten, statt ihn pro Block
-  neu zu schätzen. `AudioContext.outputLatency` gäbe es dafür — nur Safari
-  liefert es nicht, weder auf dem Mac noch auf dem iPhone.
 - **Der iOS-Klingelschalter.** Es gibt einen bekannten Kniff, um Web-Audio
   trotz Stummschaltung klingen zu lassen. Ungetestet, deshalb noch nicht drin.
 

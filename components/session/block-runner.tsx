@@ -10,6 +10,7 @@ import { useCountdown } from "@/hooks/use-countdown"
 import { useMetronome } from "@/hooks/use-metronome"
 import { useOnsetMic } from "@/hooks/use-onset-mic"
 import { analyseTiming, suggestRating, type TimingAnalysis } from "@/lib/audio/timing"
+import { einmessung } from "@/lib/storage/lokal"
 import { RATINGS, TECHNIQUE_LABELS, type Rating, type SessionBlock, type TimingResult } from "@/lib/session/types"
 import { MdPause, MdPlayArrow, MdSkipNext } from "react-icons/md"
 
@@ -86,7 +87,14 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
       // Half a click is the widest a note can be off and still be that note;
       // 120 ms caps it so a slow tempo does not accept anything.
       const tolerance = Math.min(0.12, (60 / metronome.bpm / drill.subdivision) * 0.4)
-      const result = analyseTiming(heard, expected, { toleranceSeconds: tolerance })
+      // Die Einmessung dieses Geräts, falls es eine gibt — siehe
+      // lib/audio/einmessen.ts. Frisch gelesen, nicht beim Mounten: wer
+      // zwischen zwei Blöcken auf *Daten* neu einmisst, soll sie sofort haben.
+      const gemessen = einmessung()
+      const result = analyseTiming(heard, expected, {
+        toleranceSeconds: tolerance,
+        einmessung: gemessen ? { sekunden: gemessen.ms / 1000, art: gemessen.art } : undefined,
+      })
       setAnalysis(result)
       setSuggested(suggestRating(result))
     }

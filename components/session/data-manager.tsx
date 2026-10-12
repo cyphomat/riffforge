@@ -20,6 +20,7 @@ import { EMPTY_LOG, type PracticeLog } from "@/lib/session/types"
 import { SyncPanel } from "@/components/session/sync-panel"
 import { UpdatePanel } from "@/components/session/update-panel"
 import { InstallPanel } from "@/components/session/install-panel"
+import { EinmessenPanel } from "@/components/session/einmessen-panel"
 import { merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
 import { letzteKopie, sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
 import { isConfigured, lastSynced, loadSettings } from "@/lib/sync/settings"
@@ -42,6 +43,7 @@ export function DataManager() {
   // oben und offen, nicht zugeklappt unter „Löschen", wo man ihn für
   // verschwunden hielt.
   const [eingerichtet, setEingerichtet] = useState(false)
+  const [loeschRunde, setLoeschRunde] = useState(0)
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -160,6 +162,10 @@ export function DataManager() {
       <InstallPanel />
 
       <UpdatePanel />
+
+      {/* Nach „Alles löschen" neu einhängen — die Einmessung ist mitgelöscht,
+          und das Panel soll das auch zeigen. */}
+      <EinmessenPanel key={loeschRunde} />
 
       </div>
 
@@ -293,6 +299,7 @@ export function DataManager() {
             <button
               onClick={() => {
                 allesLoeschen()
+                setLoeschRunde((n) => n + 1)
                 setGesichert(null)
                 setAbgeglichen(null)
                 setEingerichtet(false)

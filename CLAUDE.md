@@ -36,6 +36,9 @@ Verschiedenes.
 | `lib/audio/onset-detector.ts` | Mikrofon → AudioWorklet → Anschlag-Zeitstempel |
 | `public/worklets/onset-processor.js` | Onset-Erkennung im Audio-Thread (2,7 ms Auflösung) |
 | `lib/audio/timing.ts` | Bewertet Gehörtes gegen Geklicktes. Rein, getestet. |
+| `lib/audio/einmessen.ts` | Die Latenz einmal messen: Auswertung, rein, getestet |
+| `lib/audio/einmess-lauf.ts` | Der Lauf dazu — Klicks raus, Anschläge rein, auf der einen Uhr |
+| `components/session/einmessen-panel.tsx` | *Mikrofon einmessen* auf *Daten* |
 | `lib/session/types.ts` | Domänen-Typen + Zod-Schemas für alles Persistierte |
 | `lib/session/drills.ts` | Der Übungs-Katalog (reine Daten) |
 | `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery |
@@ -672,13 +675,37 @@ Zwei Zahlen, die man nicht verwechseln darf:
   Spielqualität, und der Score baut darauf auf.
 
 Ein negativer Versatz ist kein Latenz-Artefakt: Laufzeit kann einen Ton nur
-später machen, nie früher. Wer vorne liegt, spielt wirklich vorne.
+später machen, nie früher. Wer vorne liegt, spielt wirklich vorne — **aber nur,
+wenn der Versatz eindeutig ist**, und das ist er bei dichten Klicks nicht. Die
+Suche läuft um einen halben Klick herum; eine Kette, die langsamer ist als das,
+landet beim *vorigen* Klick. Nachgemessen vor dem Bau: Achtel bei 190 BPM
+(158 ms Abstand) mit 80 ms Laufzeit meldeten −72 ms, und der Bericht sagte
+„du spielst also tatsächlich vorne" zu einem Spieler, der genau auf dem Klick
+lag. Score und Treffer betrifft das nicht — die Zuordnung bleibt richtig, nur
+um einen Klick verschoben —, die Aussage schon. `versatzEindeutig` hält fest,
+wann sie stimmt: wenn ein halber Klick länger ist als jede denkbare Laufzeit
+(300 ms), oder wenn eingemessen wurde.
+
+**Einmessen** misst die Laufzeit einmal (`lib/audio/einmessen.ts`). Über den
+Lautsprecher hört das Mikrofon die Klicks selbst — reine Maschine, deshalb ist
+alles, was ein Block darüber hinaus zeigt, der Spieler (`lageMs`). Per
+Anschlag, für Bluetooth-Kopfhörer, steckt die eigene Gewohnheit schon in der
+Messung, und eine Lage wird nicht behauptet. Mit Einmessung sucht
+`estimateOffset` um die gemessene Laufzeit statt um null. Liegt ein Block mehr
+als 45 ms daneben, gilt die Einmessung als veraltet (andere Kopfhörer), wird
+für diesen Block verworfen und der Bericht sagt es — **ohne Zahl**, denn dann
+ist der Versatz wieder mehrdeutig, und „−39 ms hinter dem Klick" stand so
+tatsächlich schon da. Die Einmessung gehört dem Gerät (`lib/storage/lokal.ts`),
+nicht dem Log: sie geht weder in den Abgleich noch in die Sicherungsdatei.
+Geprüft ist die ganze Kette im Browser mit einer künstlichen Rückführung —
+Metronom-Ausgang über eine Verzögerung zurück als Mikrofon —, und die Messung
+wandert mit der Verzögerung mit (0 → 21 ms, 150 → 172, 300 → 321; der Rest
+ist der Browser selbst). Auf einem echten iPhone ist sie **ungetestet**: ob
+Safari bei offenem Mikrofon auf den Hörer statt den Lautsprecher umschaltet,
+weiss erst, wer es ausprobiert.
 
 ## Wo es weitergeht
 
 - **Tonhöhen-Erkennung** für Skalen und Licks — sauber gespielt machbar
   (Autokorrelation/YIN), mit High-Gain deutlich unzuverlässiger.
-- **Kalibrierung**: den Versatz einmal messen und speichern, statt ihn pro
-  Block neu zu schätzen.
-- **Rückblick über Zeit**: Streuung pro Drill über Wochen, statt nur den
-  Bestwert.
+- **Einmessen auf dem iPhone ausprobieren** — siehe *Timing-Messung*.

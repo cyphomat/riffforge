@@ -27,6 +27,11 @@ export interface MetronomeOptions {
   /** Multiplier on the click rate: 1 = quarters, 2 = eighths. */
   subdivision?: number
   onTick?: (tick: MetronomeTick) => void
+  /**
+   * Multiplier on the click level. Only calibration raises it: there the
+   * microphone has to hear the click across the room, not the player.
+   */
+  lautstaerke?: number
 }
 
 /** How often the scheduler wakes up, in ms. */
@@ -45,6 +50,7 @@ export class Metronome {
   private beatsPerBar: number
   private subdivision: number
   private onTick?: (tick: MetronomeTick) => void
+  private lautstaerke: number
 
   /** Beats already scheduled but not yet heard, so the UI can fire in sync. */
   private pending: MetronomeTick[] = []
@@ -55,6 +61,7 @@ export class Metronome {
     this.beatsPerBar = options.beatsPerBar ?? 4
     this.subdivision = options.subdivision ?? 1
     this.onTick = options.onTick
+    this.lautstaerke = options.lautstaerke ?? 1
   }
 
   get isRunning(): boolean {
@@ -159,7 +166,7 @@ export class Metronome {
     gain.connect(this.ctx.destination)
 
     osc.frequency.value = accent ? 1200 : offbeat ? 600 : 880
-    const peak = accent ? 0.18 : offbeat ? 0.06 : 0.11
+    const peak = Math.min(0.9, (accent ? 0.18 : offbeat ? 0.06 : 0.11) * this.lautstaerke)
 
     gain.gain.setValueAtTime(0.0001, time)
     gain.gain.exponentialRampToValueAtTime(peak, time + 0.002)

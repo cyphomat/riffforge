@@ -40,6 +40,20 @@ export interface TimingAnalysis {
   trend: TimingTrend
   /** Per-hit deviations in ms, offset already removed. Negative = early. */
   deviationsMs: number[]
+  /**
+   * Whether the offset is pinned down. Without a calibration it is only known
+   * up to whole click periods: at fast clicks a slow signal chain wraps onto
+   * the previous click and reads as playing early. See `estimateOffset`.
+   */
+  versatzEindeutig: boolean
+  /**
+   * The player's own lead or lag against the click, in ms, with the measured
+   * latency taken out. Negative = ahead. Only set when a calibration was
+   * used and still fits this block.
+   */
+  lageMs: number | null
+  /** How the stored calibration fared against this block, if there was one. */
+  einmessung: "passt" | "passt-nicht" | null
 }
 
 export const EMPTY_TIMING: TimingAnalysis = {
@@ -51,6 +65,9 @@ export const EMPTY_TIMING: TimingAnalysis = {
   score: 0,
   trend: "steady",
   deviationsMs: [],
+  versatzEindeutig: false,
+  lageMs: null,
+  einmessung: null,
 }
 
 /** Spread at which the score halves. Roughly where sloppiness becomes audible. */
@@ -71,6 +88,13 @@ const MAX_OFFSET_SECONDS = 0.3
 const OFFSET_BIN_SECONDS = 0.005
 /** Minimum onsets before an estimated offset means anything. */
 const MIN_ONSETS_FOR_OFFSET = 4
+/**
+ * How far a block may sit from the calibrated latency before the calibration
+ * is taken to be stale (other headphones, another microphone) rather than
+ * the player being that far off. A steady lead or lag beyond this is rare;
+ * a changed signal chain is not.
+ */
+const EINMESSUNG_TOLERANZ_MS = 45
 
 export function median(values: number[]): number {
   if (values.length === 0) return 0
@@ -116,19 +140,23 @@ function nearestDistance(value: number, sorted: number[]): number {
  * than the median is what makes this survive gallops and triplets, where the
  * off-beat notes are the majority.
  */
-export function estimateOffset(onsets: number[], expected: number[]): number {
-  if (onsets.length < MIN_ONSETS_FOR_OFFSET || expected.length === 0) return 0
+export function estimateOffset(onsets: number[], expected: number[], mitte = 0): number {
+  if (onsets.length < MIN_ONSETS_FOR_OFFSET || expected.length === 0) return mitte
 
   const sorted = [...expected].sort((a, b) => a - b)
   const period = expected.length > 1 ? (sorted[sorted.length - 1] - sorted[0]) / (expected.length - 1) : Infinity
-  // Never search further than half a click, or the beat itself becomes ambiguous.
+  // Never search further than half a click, or the beat itself becomes
+  // ambiguous. That is also why the result is only known up to whole periods:
+  // a chain slower than half a click lands on the *previous* click and reads
+  // as early. A calibrated latency moves the search window there instead of
+  // around zero, which is the whole point of measuring it.
   const limit = Math.min(MAX_OFFSET_SECONDS, period / 2)
 
   const distances = onsets
-    .map((onset) => nearestDistance(onset, sorted))
+    .map((onset) => nearestDistance(onset - mitte, sorted))
     .filter((distance) => Math.abs(distance) <= limit)
 
-  if (distances.length < MIN_ONSETS_FOR_OFFSET) return 0
+  if (distances.length < MIN_ONSETS_FOR_OFFSET) return mitte
 
   const bins = new Map<number, number>()
   for (const distance of distances) {
@@ -150,7 +178,7 @@ export function estimateOffset(onsets: number[], expected: number[]): number {
   // Refine: the median of what actually fell in the peak, not the bin centre.
   const centre = bestBin * OFFSET_BIN_SECONDS
   const inPeak = distances.filter((distance) => Math.abs(distance - centre) <= OFFSET_BIN_SECONDS * 1.5)
-  return inPeak.length > 0 ? median(inPeak) : centre
+  return mitte + (inPeak.length > 0 ? median(inPeak) : centre)
 }
 
 function matchOnsets(
@@ -191,6 +219,13 @@ export interface AnalyseOptions {
   toleranceSeconds?: number
   /** Skip offset estimation and use this value instead. Mostly for tests. */
   offsetSeconds?: number
+  /**
+   * A latency measured once for this device (see `lib/audio/einmessen.ts`).
+   * `lautsprecher` means the microphone heard the clicks themselves, so what
+   * is left over is the player; `anschlag` means it was played in, so the
+   * player's habit is already part of it.
+   */
+  einmessung?: { sekunden: number; art: "lautsprecher" | "anschlag" }
 }
 
 export function analyseTiming(
@@ -202,14 +237,38 @@ export function analyseTiming(
 
   const tolerance = options.toleranceSeconds ?? 0.12
 
+  const sorted = [...expected].sort((a, b) => a - b)
+  const period = expected.length > 1 ? (sorted[sorted.length - 1] - sorted[0]) / (expected.length - 1) : Infinity
+
   // Take the constant lag out first. Matching before this would throw away
   // every note whenever the signal chain is slower than the tolerance window.
-  const offset = options.offsetSeconds ?? estimateOffset(onsets, expected)
+  // With a calibration the search starts at the measured latency; if the
+  // block lands too far from it, the calibration no longer describes this
+  // setup and is set aside rather than trusted.
+  const mitEinmessung =
+    options.einmessung && options.offsetSeconds === undefined
+      ? estimateOffset(onsets, expected, options.einmessung.sekunden)
+      : null
+  const abweichungMs =
+    mitEinmessung !== null ? (mitEinmessung - options.einmessung!.sekunden) * 1000 : null
+  const einmessung =
+    abweichungMs === null ? null : Math.abs(abweichungMs) <= EINMESSUNG_TOLERANZ_MS ? "passt" : "passt-nicht"
+  const offset =
+    options.offsetSeconds ?? (einmessung === "passt" ? mitEinmessung! : estimateOffset(onsets, expected))
+  const versatzEindeutig = einmessung === "passt" || period / 2 >= MAX_OFFSET_SECONDS
+  const lageMs =
+    einmessung === "passt" && options.einmessung!.art === "lautsprecher" ? Math.round(abweichungMs!) : null
   const aligned = onsets.map((onset) => onset - offset)
   const matches = matchOnsets(aligned, expected, tolerance)
 
   if (matches.length === 0) {
-    return { ...EMPTY_TIMING, expected: expected.length, offsetMs: Math.round(offset * 1000) }
+    return {
+      ...EMPTY_TIMING,
+      expected: expected.length,
+      offsetMs: Math.round(offset * 1000),
+      versatzEindeutig,
+      einmessung,
+    }
   }
 
   const corrected = matches.map((match) => match.deviation * 1000)
@@ -239,6 +298,9 @@ export function analyseTiming(
     score,
     trend,
     deviationsMs: corrected.map((deviation) => Math.round(deviation)),
+    versatzEindeutig,
+    lageMs,
+    einmessung,
   }
 }
 
