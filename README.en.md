@@ -5,8 +5,9 @@
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
-  <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-6-a7a3ab?style=for-the-badge&labelColor=17161b">
+  <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
 
 <p align="center">
@@ -634,6 +635,21 @@ tabs, no audio from copyrighted recordings.
 
 - **The iOS ringer switch.** There is a known trick for making Web Audio sound
   despite the mute switch. Untested, so not in yet.
+
+## Contributing
+
+Built by [@cyphomat](https://github.com/cyphomat). Found a bug, have a wish, an
+idea for a drill? An [issue](https://github.com/cyphomat/riffforge/issues) is
+welcome.
+
+Riffforge is under the [MIT licence](./LICENSE): **forking, adapting and adding
+your own drills is explicitly welcome.** A fork recognises the original by
+itself and tells you under *Daten → Fassung* when there is something new.
+Contributed drills follow the rule under *Content*: your own exercises in the
+style, no copied tabs.
+
+A practice tool, not a lesson, and without warranty. If your hand, wrist or
+forearm hurts: stop.
 
 ## Thanks
 

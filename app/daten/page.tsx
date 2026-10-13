@@ -1,4 +1,5 @@
 import { DataManager } from "@/components/session/data-manager"
+import { UeberPanel } from "@/components/session/ueber-panel"
 
 export const metadata = { title: "Daten · Riffforge" }
 
@@ -14,6 +15,11 @@ export default function DatenPage() {
         </p>
       </header>
       <DataManager />
+      {/* Unter beiden Spalten: auf dem Handy stünde es links sonst mitten
+          zwischen Fassung und Sichern. */}
+      <div className="wide:max-w-[527px]">
+        <UeberPanel />
+      </div>
     </div>
   )
 }

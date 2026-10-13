@@ -5,8 +5,9 @@
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
-  <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-6-a7a3ab?style=for-the-badge&labelColor=17161b">
+  <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
 </p>
 
 <p align="center">
@@ -649,6 +650,21 @@ abgeschriebenen Tabs, kein Audio urheberrechtlich geschützter Aufnahmen.
 
 - **Der iOS-Klingelschalter.** Es gibt einen bekannten Kniff, um Web-Audio
   trotz Stummschaltung klingen zu lassen. Ungetestet, deshalb noch nicht drin.
+
+## Mitmachen
+
+Gebaut von [@cyphomat](https://github.com/cyphomat). Fehler gefunden, ein
+Wunsch, eine Idee für eine Übung? Gern als
+[Issue](https://github.com/cyphomat/riffforge/issues).
+
+Riffforge steht unter der [MIT-Lizenz](./LICENSE): **forken, anpassen, eigene
+Übungen dazuschreiben ist ausdrücklich erwünscht.** Ein Fork erkennt das
+Original von selbst und sagt unter *Daten → Fassung* Bescheid, wenn es dort
+Neues gibt. Wer Übungen beisteuert, bleibt bei der Regel unter *Inhalte*:
+eigene Übungen im Stil, keine abgeschriebenen Tabs.
+
+Ein Übungswerkzeug, kein Unterricht, und ohne Gewähr. Wenn Hand, Handgelenk
+oder Unterarm schmerzen: aufhören.
 
 ## Danke
 

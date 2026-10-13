@@ -653,6 +653,15 @@ Alle Drills und Riffs sind **eigene** Übungen im jeweiligen Stil. Keine
 abgeschriebenen Tabs, kein Audio urheberrechtlich geschützter Aufnahmen. Wenn
 neue Inhalte dazukommen: bitte dabei bleiben.
 
+Der Code steht unter **MIT** (`LICENSE`), Autor ist **@cyphomat** — nur der
+GitHub-Name, kein Klarname und keine E-Mail-Adresse in App, READMEs oder
+Lizenz. Ohne Lizenzdatei hiess es bis Oktober 2026 rechtlich „alle Rechte
+vorbehalten": GitHub erlaubt den Fork-Knopf, aber anpassen und betreiben
+durfte niemand, und ein „gerne forken" wäre eine Einladung ohne Boden
+gewesen. Rückmeldungen gehen ans Original (Issues), der Quelltext-Link in
+der App zeigt auf das, was gerade läuft — in einem Fork also auf den Fork.
+Das steht in `components/session/ueber-panel.tsx`, am Ende von *Daten*.
+
 ## Befehle
 
 ```bash
