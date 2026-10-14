@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1039%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1043%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -273,6 +273,7 @@ imports their data gets the same vest back. Reached through the rank line on
   | Lead | *Guitar solo*: the first lick checked off · 10 and 25 licks |
   | Seven strings | *The Seventh* · *Low End* — only visible once you have practised on seven strings |
   | Knowledge | 10 to 100 cards that hold for a week · *Sense of time*: the first played question answered right |
+  | Fretboard | 12, 36 and all 72 places that hold for a week when finding · *In- und auswendig*: all 72 when naming too |
 
 - **Tour shirts** — every quarter with practice is a tour with a fixed name,
   the tour dates printed on the back.
@@ -432,7 +433,9 @@ neck shows what holds, what wobbles and what is still new.
 
 The answers go into the same log as the knowledge questions, so they sync,
 back up and delete like everything else. They do not count as knowledge
-cards: not in the card count, not in the hit rate, and not for the patches.
+cards: not in the card count, not in the hit rate, and not for their patches —
+the neck has a row of its own at the merch stand, and whatever a round earns
+there shows up right in its report.
 
 ## What the microphone hears
 

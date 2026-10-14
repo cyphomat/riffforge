@@ -4,7 +4,8 @@ import { LEAD_DRILL_ID, SITZT_AB } from "./lead"
 import { dayKey, weekKey } from "./progress"
 import type { DrillResult, PracticeLog } from "./types"
 import { newCard, review, type CardState } from "@/lib/theory/fsrs"
-import { istHalsAntwort } from "@/lib/theory/hals-id"
+import { HALS_PREFIX, istHalsAntwort } from "@/lib/theory/hals-id"
+import { HALS_STELLEN } from "@/lib/theory/hals-trainer"
 import { SITZT_AB_TAGEN } from "@/lib/theory/progress"
 import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 
@@ -30,7 +31,7 @@ import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 /** Ein Tag als `YYYY-MM-DD`, lokal. */
 type Tag = string
 
-export type Reihe = "buehne" | "handwerk" | "lead" | "sieben" | "wissen"
+export type Reihe = "buehne" | "handwerk" | "lead" | "sieben" | "wissen" | "hals"
 
 export const REIHEN: Array<{ id: Reihe; titel: string }> = [
   { id: "buehne", titel: "Bühne" },
@@ -38,6 +39,7 @@ export const REIHEN: Array<{ id: Reihe; titel: string }> = [
   { id: "lead", titel: "Lead" },
   { id: "sieben", titel: "Sieben Saiten" },
   { id: "wissen", titel: "Wissen" },
+  { id: "hals", titel: "Griffbrett" },
 ]
 
 export interface Aufnaeher {
@@ -62,6 +64,8 @@ export const SERIE_STUFEN = [4, 12, 26, 52]
 export const ZIELTEMPO_STUFEN = [1, 3, 10]
 export const LICK_STUFEN = [1, 10, 25]
 export const WISSEN_STUFEN = [10, 25, 50, 100]
+/** Stellen auf dem Hals, die beim Finden eine Woche halten. Die letzte Stufe ist der ganze Hals. */
+export const HALS_STUFEN = [12, 36, HALS_STELLEN.length]
 
 /** Ab so vielen Tagen ohne Übung ist ein Wiederanfang ein Comeback. */
 export const COMEBACK_PAUSE_TAGE = 14
@@ -180,6 +184,28 @@ export function katalog({ mitSieben }: { mitSieben: boolean }): Omit<Aufnaeher, 
     p(`wissen-${n}`, "wissen", "wissen", `${n} Karten sitzen`, `${n} Wissenskarten, die eine Woche halten.`)
   }
   p("taktgefuehl", "wissen", "taktgefuehl", "Taktgefühl", "Die erste gespielte Frage richtig beantwortet.")
+
+  // Der Griffbrett-Trainer: gezählt wird, was eine Woche hält, nicht was
+  // einmal getippt wurde — dieselbe Schwelle wie bei den Wissenskarten.
+  for (const n of HALS_STUFEN) {
+    const ganz = n === HALS_STELLEN.length
+    p(
+      `hals-${n}`,
+      "hals",
+      "hals",
+      ganz ? "Der ganze Hals" : `${n} Stellen`,
+      ganz
+        ? `Alle ${n} Stellen bis zum 12. Bund gefunden, jede hält eine Woche.`
+        : `${n} Stellen auf dem Hals, die beim Finden eine Woche halten.`,
+    )
+  }
+  p(
+    "hals-beide",
+    "hals",
+    "hals-beide",
+    "In- und auswendig",
+    `Alle ${HALS_STELLEN.length} Stellen in beiden Richtungen: finden und benennen.`,
+  )
   return out
 }
 
@@ -269,6 +295,26 @@ export function aufnaeher(
     if ((neu.stability ?? 0) >= SITZT_AB_TAGEN) sitzen.add(antwort.cardId)
     for (const n of WISSEN_STUFEN) if (sitzen.size >= n) setze(`wissen-${n}`, tag)
     if (antwort.correct && gespielt.has(antwort.cardId)) setze("taktgefuehl", tag)
+  }
+
+  // ── Griffbrett: dieselbe Wiederholung, eigene Zählung je Richtung
+  const halsStand = new Map<string, CardState>()
+  const halsSitzt = { finden: new Set<string>(), benennen: new Set<string>() }
+  const halsAntworten = [...theorie.answers]
+    .filter((a) => !Number.isNaN(Date.parse(a.at)) && istHalsAntwort(a))
+    .sort((a, b) => a.at.localeCompare(b.at))
+  for (const antwort of halsAntworten) {
+    const zeit = new Date(antwort.at)
+    const tag = dayKey(zeit)
+    const neu = review(halsStand.get(antwort.cardId) ?? newCard(zeit), antwort.grade, zeit)
+    halsStand.set(antwort.cardId, neu)
+    if ((neu.stability ?? 0) < SITZT_AB_TAGEN) continue
+    const richtung = antwort.cardId.startsWith(`${HALS_PREFIX}finden-`) ? "finden" : "benennen"
+    halsSitzt[richtung].add(antwort.cardId)
+    for (const n of HALS_STUFEN) if (halsSitzt.finden.size >= n) setze(`hals-${n}`, tag)
+    if (halsSitzt.finden.size >= HALS_STELLEN.length && halsSitzt.benennen.size >= HALS_STELLEN.length) {
+      setze("hals-beide", tag)
+    }
   }
 
   return kat.map((k) => ({ ...k, verdient: verdient[k.id] ?? null }))

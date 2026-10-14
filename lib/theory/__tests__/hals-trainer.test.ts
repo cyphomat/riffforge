@@ -156,3 +156,35 @@ describe("Der Hals zählt nicht als Wissen", () => {
     expect(theorieStand(THEORY_CARDS, log(hals), JETZT).trefferquote).toBeNull()
   })
 })
+
+describe("Der Hals auf der Kutte", () => {
+  const sitzt = (richtung: "finden" | "benennen", stellen: Griff[], tage = 1) =>
+    stellen.map((stelle) => antwort(halsId(richtung, stelle), 4, tage))
+  const verdient = (antworten: TheoryAnswer[]) =>
+    new Set(aufnaeher(EMPTY_LOG, log(antworten), THEORY_CARDS).filter((a) => a.verdient).map((a) => a.id))
+
+  it("zählt zwölf Stellen, die beim Finden eine Woche halten", () => {
+    expect(verdient(sitzt("finden", HALS_STELLEN.slice(0, 11))).has("hals-12")).toBe(false)
+    expect(verdient(sitzt("finden", HALS_STELLEN.slice(0, 12))).has("hals-12")).toBe(true)
+  })
+
+  it("zählt fürs Finden nur das Finden", () => {
+    expect(verdient(sitzt("benennen", HALS_STELLEN.slice(0, 20))).has("hals-12")).toBe(false)
+  })
+
+  it("verlangt für den Aufnäher nicht nur einen Treffer, sondern eine Woche Halt", () => {
+    // Richtig, aber zäh: Note 2 hält noch keine Woche.
+    const zaeh = HALS_STELLEN.slice(0, 12).map((stelle) => antwort(halsId("finden", stelle), 2, 1))
+    expect(verdient(zaeh).has("hals-12")).toBe(false)
+  })
+
+  it("gibt den ganzen Hals und „In- und auswendig“ erst mit allen Stellen", () => {
+    const finden = sitzt("finden", HALS_STELLEN)
+    const ohneBenennen = verdient(finden)
+    expect(ohneBenennen.has("hals-72")).toBe(true)
+    expect(ohneBenennen.has("hals-beide")).toBe(false)
+    expect(verdient([...finden, ...sitzt("benennen", HALS_STELLEN)]).has("hals-beide")).toBe(true)
+    // Und nichts davon wandert ins Wissen.
+    expect([...verdient([...finden, ...sitzt("benennen", HALS_STELLEN)])].some((id) => id.startsWith("wissen"))).toBe(false)
+  })
+})

@@ -601,7 +601,13 @@ Komponente.
   Lernreihenfolge (Stammtöne vor Kreuzen, tiefe Bünde zuerst), die Runde
   wird danach gemischt, sonst liefe sie den Hals hinauf und verriete die
   nächste Antwort. Falsches kommt am Ende der Runde noch einmal, ohne
-  Wertung. Auf *Heute* stehen die Nebenwege seitdem zwei mal zwei: vier
+  Wertung. Im Merch-Stand hat der Hals eine eigene Reihe *Griffbrett*
+  (12, 36, 72 Stellen beim Finden; *In- und auswendig* mit allen 72 in
+  beiden Richtungen), mit derselben Schwelle wie die Wissenskarten: eine
+  Woche Halt, nicht ein Treffer. Weil eine Runde keine Session ist und
+  keinen Abschluss hat, nennt der Rundenbericht neu Verdientes selbst —
+  dieselbe Vorher-nachher-Differenz wie der Abschluss.
+  Auf *Heute* stehen die Nebenwege seitdem zwei mal zwei: vier
   nebeneinander brachen die Wörter, auf 320 px und genauso in der linken
   Spalte am breiten Schirm.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie

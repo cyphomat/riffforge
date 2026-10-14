@@ -21,6 +21,9 @@ import {
   type HalsErgebnis,
   type HalsRichtung,
 } from "@/lib/theory/hals-trainer"
+import { aufnaeher, neueAufnaeher, type Aufnaeher } from "@/lib/session/merch"
+import { THEORY_CARDS } from "@/lib/theory/cards"
+import { loadLog } from "@/lib/storage/practice-log"
 import { appendAnswers, loadTheoryLog } from "@/lib/storage/theory-log"
 import { EMPTY_THEORY_LOG, type Griff, type TheoryLog } from "@/lib/theory/types"
 
@@ -64,6 +67,10 @@ export function HalsTrainer() {
   const [aufgeloest, setAufgeloest] = useState(false)
   const [ergebnisse, setErgebnisse] = useState<HalsErgebnis[]>([])
   const [bericht, setBericht] = useState<HalsBericht | null>(null)
+  // The patches before the round, to tell afterwards what it earned — the
+  // same before-and-after difference the session summary uses.
+  const vorher = useRef<Aufnaeher[]>([])
+  const [neueAufnaeherListe, setNeueAufnaeher] = useState<Aufnaeher[]>([])
   const seit = useRef(0)
 
   useEffect(() => {
@@ -77,6 +84,8 @@ export function HalsTrainer() {
   }, [fragen, index])
 
   const starten = () => {
+    vorher.current = aufnaeher(loadLog(), loadTheoryLog(), THEORY_CARDS)
+    setNeueAufnaeher([])
     const stellen = halsRunde(loadTheoryLog(), richtung, SAITEN_WAHL[wahl].saiten, RUNDE, {
       startwert: Date.now() % 2 ** 31,
     })
@@ -97,6 +106,7 @@ export function HalsTrainer() {
     else {
       setFragen(null)
       setBericht(halsBericht(neu))
+      setNeueAufnaeher(neueAufnaeher(vorher.current, aufnaeher(loadLog(), loadTheoryLog(), THEORY_CARDS)))
     }
   }
 
@@ -251,6 +261,11 @@ export function HalsTrainer() {
               {bericht.richtig} von {bericht.gesamt} richtig
               {bericht.medianMs !== null && <> · im Schnitt {sekunden(bericht.medianMs)}</>}
             </p>
+            {neueAufnaeherListe.map((a) => (
+              <p key={a.id} className="mt-1 font-mono text-[13px] text-akzent">
+                Neuer Aufnäher: {a.titel} — {a.text}
+              </p>
+            ))}
             {bericht.nochmal.length > 0 && (
               <p className="mt-1 text-[13.5px] leading-relaxed text-muted">
                 Noch nicht flüssig:{" "}

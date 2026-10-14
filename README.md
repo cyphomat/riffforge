@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1039%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1043%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -272,6 +272,7 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   | Lead | *Gitarrensolo*: das erste abgehakte Lick · 10 und 25 Licks |
   | Sieben Saiten | *Die Siebte* · *Low End* — nur sichtbar, wenn je auf sieben Saiten geübt wurde |
   | Wissen | 10 bis 100 Karten, die eine Woche halten · *Taktgefühl*: die erste gespielte Frage richtig |
+  | Griffbrett | 12, 36 und alle 72 Stellen, die beim Finden eine Woche halten · *In- und auswendig*: alle 72 auch beim Benennen |
 
 - **Tourshirts** — jedes Quartal mit Übung ist eine Tour mit festem Namen,
   auf dem Rücken die Tourdaten.
@@ -437,8 +438,9 @@ Runde zeigt eine Karte des Halses, was sitzt, was wackelt und was noch neu ist.
 
 Die Antworten landen im selben Log wie die Wissensfragen und werden damit
 abgeglichen, gesichert und gelöscht wie alles andere. Als Wissenskarten zählen
-sie nicht: weder im Kartenstand noch in der Trefferquote noch für die
-Aufnäher.
+sie nicht: weder im Kartenstand noch in der Trefferquote noch für deren
+Aufnäher — der Hals hat im Merch-Stand eine eigene Reihe, und was eine Runde
+dort einbringt, steht gleich im Bericht.
 
 ## Was das Mikrofon hört
 
