@@ -25,6 +25,27 @@
 
 ---
 
+## Loslegen
+
+<h3 align="center">
+  <a href="https://cyphomat.github.io/riffforge/">▶ Riffforge öffnen — cyphomat.github.io/riffforge</a>
+</h3>
+
+1. **Öffnen.** Den Link oben, im Browser. Kein Konto, keine Anmeldung, nichts
+   zu installieren.
+2. **Auf den Home-Bildschirm legen** — empfohlen. iPhone: in **Safari**
+   Teilen → *Zum Home-Bildschirm*. Mac und Android: *Installieren* in der
+   Adressleiste. Danach läuft sie offline, und Safari räumt den Übungs-Log
+   nicht nach sieben Tagen weg. [Mehr dazu](#als-app-installieren)
+3. **Spielen.** Beim ersten Start zwei Fragen, dann *Session starten*. Die
+   Gitarre reicht; das Mikrofon des Geräts ist freiwillig und misst, wenn du
+   es erlaubst, das Timing mit.
+
+Deine Daten bleiben in diesem Browser. Sichern und auf ein anderes Gerät
+mitnehmen geht unter *Daten*.
+
+---
+
 ## So sieht es aus
 
 <table>
