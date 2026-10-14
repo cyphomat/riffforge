@@ -1,5 +1,6 @@
 import { z } from "zod"
 import type { Technique } from "@/lib/session/types"
+import type { Richtung } from "./gehoer"
 
 /**
  * Die Wissensdatenbank: ein Begriff, eine Erklärung, mindestens eine Frage.
@@ -42,6 +43,12 @@ export type FrageArt =
    * Karteikartenprogramm.
    */
   | "gespielt"
+  /**
+   * Gehört und benannt. Die App spielt zwei Töne, gefragt ist der Abstand.
+   * Die Töne selbst wechseln bei jedem Zeigen — die Antwort ist das
+   * Intervall, und das soll man hören, nicht wiedererkennen.
+   */
+  | "gehoert"
 
 /** Eine Stelle auf dem Hals. Saite 1 ist die hohe e-Saite, 6 die tiefe E. */
 export interface Griff {
@@ -76,6 +83,8 @@ export interface Frage {
   woertlich?: boolean
   /** Nur bei "gespielt": welche Figur, wie schnell, wie lange. */
   rhythmus?: { figurId: string; bpm: number; takte: number }
+  /** Nur bei "gehoert": welcher Abstand, und ob der zweite Ton höher oder tiefer liegt. */
+  hoeren?: { halbtoene: number; richtung: Richtung }
 }
 
 export interface TheoryCard {

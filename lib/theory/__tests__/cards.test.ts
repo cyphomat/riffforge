@@ -129,6 +129,38 @@ describe("Jede Karte", () => {
  * wird nachgerechnet — ein falscher Bund im Fliesstext fällt sonst niemandem
  * auf, und Übungsmaterial, das lügt, ist schlimmer als keines.
  */
+describe("Hörfragen im Katalog", () => {
+  const gehoert = THEORY_CARDS.filter((card) => card.frage.art === "gehoert")
+
+  it("gibt es zu jedem Intervall aufwärts und abwärts", () => {
+    expect(gehoert).toHaveLength(24)
+    for (const richtung of ["auf", "ab"] as const) {
+      const halbtoene = gehoert.filter((c) => c.frage.hoeren!.richtung === richtung).map((c) => c.frage.hoeren!.halbtoene)
+      expect(new Set(halbtoene).size, richtung).toBe(12)
+    }
+  })
+
+  it.each(gehoert.map((card) => [card.id, card] as const))("%s nennt als Antwort genau das gespielte Intervall", (_id, card) => {
+    const { halbtoene } = card.frage.hoeren!
+    expect(card.frage.richtig).toEqual([INTERVALLE[halbtoene].name])
+    expect(card.frage.auswahl).toContain(INTERVALLE[halbtoene].name)
+    // Jede Hörkarte bietet dieselben zwölf Namen an — sonst verriete die
+    // Auswahl, welche Karte gerade dran ist.
+    expect(card.frage.auswahl).toEqual(gehoert[0].frage.auswahl)
+  })
+
+  it("nennt die Halbtonzahl in der Erklärung richtig", () => {
+    const zahlen = ["", "Ein Halbton", "Ein Ganzton", "Drei", "Vier", "Fünf", "Sechs", "Sieben", "Acht", "Neun", "Zehn", "Elf", "Zwölf"]
+    for (const card of gehoert) expect(card.erklaerung.startsWith(zahlen[card.frage.hoeren!.halbtoene]), card.id).toBe(true)
+  })
+
+  it("bringt aufwärts vor abwärts", () => {
+    const erstesAb = THEORY_CARDS.findIndex((c) => c.frage.hoeren?.richtung === "ab")
+    const letztesAuf = THEORY_CARDS.findLastIndex((c) => c.frage.hoeren?.richtung === "auf")
+    expect(letztesAuf).toBeLessThan(erstesAb)
+  })
+})
+
 describe("Gespielte Fragen", () => {
   const gespielt = THEORY_CARDS.filter((card) => card.frage.art === "gespielt")
 

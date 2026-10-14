@@ -1,5 +1,7 @@
 import { stufeInForm } from "./caged"
-import { positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
+import { dreiklangTon } from "./dreiklaenge"
+import { INTERVALLE, positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
+import { HOER_AUSWAHL, HOER_REIHENFOLGE, type Richtung } from "./gehoer"
 import type { Griff, TheoryCard } from "./types"
 
 /**
@@ -21,6 +23,51 @@ import type { Griff, TheoryCard } from "./types"
  */
 
 const griff = (saite: number, bund: number) => ({ saite, bund }) as Griff
+
+/**
+ * Woran man ein Intervall erkennt, wenn man es hört — je Halbtonzahl ein
+ * Satz. Die Hörkarten werden daraus erzeugt statt einzeln geschrieben: so
+ * können Name, Halbtonzahl und Erklärung nicht auseinanderlaufen.
+ */
+const HOER_CHARAKTER: Record<number, string> = {
+  1: "Ein Halbton — die engste Reibung, die es gibt. Nacheinander klingt sie wie ein Schritt, der nicht ganz ankommt. Im Metal ist sie der ♭2 aus Phrygisch, die Drohung direkt neben dem Grundton.",
+  2: "Ein Ganzton, der gewöhnliche Schritt einer Tonleiter. Er klingt nach Weitergehen, nicht nach Spannung — die meisten Melodien bestehen grösstenteils aus ihm.",
+  3: "Drei Halbtöne, der dunkle Kern von Moll. Schon zwei Töne für sich klingen nach Moll, und daran erkennt man sie am leichtesten.",
+  4: "Vier Halbtöne, der helle Kern von Dur. Sie klingt offen und freundlich — im Metal fällt sie gerade deshalb auf, wo sie vorkommt.",
+  5: "Fünf Halbtöne, der Abstand zweier benachbarter Leersaiten. Leer und offen, weder Dur noch Moll; wer nach Gehör stimmt, hört sie jedes Mal.",
+  6: "Sechs Halbtöne, die halbe Oktave. Unruhig und ungelöst, ohne Richtung, in die er sich auflösen will — der Klang, den Metal sucht, wenn es bedrohlich werden soll.",
+  7: "Sieben Halbtöne, der Abstand im Powerchord. Stabil und leer, beinahe ein einziger Ton mit mehr Körper — nach der Oktave das am leichtesten erkennbare Intervall.",
+  8: "Acht Halbtöne, die Umkehrung der grossen Terz. Weit und schwer, mit einem Zug zurück zur Quinte — die Farbe düsterer Moll-Melodien.",
+  9: "Neun Halbtöne, die Umkehrung der kleinen Terz. Weit und hell zugleich; sie klingt eher nach Aufbruch als nach Schwere.",
+  10: "Zehn Halbtöne, knapp unter der Oktave. Offen und ungelöst, ohne zu schneiden — als wäre die Oktave noch nicht ganz erreicht.",
+  11: "Elf Halbtöne, einen Halbton unter der Oktave. Sie reibt scharf und zieht hörbar weiter zur Oktave — der Leitton, nur weit auseinander.",
+  12: "Zwölf Halbtöne: derselbe Ton, eine Etage höher. Beide sind so verwandt, dass sie fast verschmelzen, und genau daran erkennt man sie.",
+}
+
+const RICHTUNG_SATZ: Record<Richtung, string> = {
+  auf: "",
+  ab: " Abwärts heisst das Intervall genauso — der Name misst den Abstand, nicht die Richtung. Schwerer ist es trotzdem, weil das Ohr den zweiten Ton am ersten misst und nach unten weniger Übung hat.",
+}
+
+/** Zwölf Hörkarten in einer Richtung, in der Reihenfolge, in der man sie lernen sollte. */
+function hoerKarten(richtung: Richtung): TheoryCard[] {
+  return HOER_REIHENFOLGE.map((halbtoene) => {
+    const name = INTERVALLE[halbtoene].name
+    return {
+      id: `g-${name.toLowerCase().replace(/\s+/g, "-")}-${richtung}`,
+      stufe: 2,
+      begriff: `Gehört: ${name} ${richtung === "auf" ? "aufwärts" : "abwärts"}`,
+      erklaerung: HOER_CHARAKTER[halbtoene] + RICHTUNG_SATZ[richtung],
+      frage: {
+        art: "gehoert",
+        text: `Zwei Töne nacheinander, der zweite ${richtung === "auf" ? "höher" : "tiefer"}. Welches Intervall hörst du?`,
+        auswahl: HOER_AUSWAHL,
+        richtig: [name],
+        hoeren: { halbtoene, richtung },
+      },
+    }
+  })
+}
 
 export const THEORY_CARDS: TheoryCard[] = [
   // ─────────────────────────────────────────────── Stufe 1: Das Material
@@ -638,6 +685,11 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["14", "vierzehn"],
     },
   },
+
+  // Hören statt zählen: aufwärts zuerst, abwärts erst danach — abwärts ist
+  // dasselbe Intervall, aber schwerer zu hören.
+  ...hoerKarten("auf"),
+  ...hoerKarten("ab"),
 
   // ─────────────────────────────────────────────────── Stufe 3: Tonleitern
   {
@@ -1466,6 +1518,103 @@ export const THEORY_CARDS: TheoryCard[] = [
       text: "Welche zwei Stufen machen aus dem Dur-Dreiklang die Dur-Pentatonik?",
       auswahl: ["2 und 6", "4 und 7", "2 und 4", "6 und 7"],
       richtig: ["2 und 6"],
+    },
+  },
+
+  {
+    id: "a-dreiklang-lagen",
+    stufe: 4,
+    begriff: "Dreiklänge auf drei Saiten",
+    erklaerung:
+      "Ein Dreiklang in enger Lage passt auf drei benachbarte Saiten: drei Töne, jeder der nächste Akkordton über dem darunter. Welcher unten liegt, ist die Umkehrung — Grundton, Terz oder Quinte. Damit gibt es auf jeder Saitengruppe genau drei Griffe je Akkord und Oktave — nur direkt am Sattel fehlt manchmal einer, weil er unter den leeren Saiten läge.",
+    frage: {
+      art: "auswahl",
+      text: "Ein Dur-Dreiklang in enger Lage auf drei benachbarten Saiten: wie viele verschiedene Griffe gibt es, bevor sich einer eine Oktave höher wiederholt?",
+      auswahl: ["drei", "zwei", "fünf", "sechs"],
+      richtig: ["drei"],
+    },
+  },
+  {
+    id: "a-dreiklang-grundstellung",
+    stufe: 4,
+    begriff: "Dreiklang in Grundstellung",
+    erklaerung:
+      "In Grundstellung liegt der Grundton unten, darüber Terz und Quinte. Auf G-, B- und e-Saite heisst das für C-Dur: C auf der G-Saite im 5. Bund, E auf der B-Saite im 5., G auf der e-Saite im 3. Drei Töne, ein Barré aus zwei Fingern und einer — der kleinste vollständige Dur-Akkord, den es auf dem Hals gibt.",
+    frage: {
+      art: "griffbrett",
+      text: "C-Dur auf G-, B- und e-Saite, Grundton unten auf der G-Saite im 5. Bund: tippe die Terz an.",
+      gegeben: [griff(3, 5)],
+      richtig: dreiklangTon("C", "dur", [3, 2, 1], 0, 4),
+    },
+  },
+  {
+    id: "a-dreiklang-erste",
+    stufe: 4,
+    begriff: "Dreiklang in erster Umkehrung",
+    erklaerung:
+      "In der ersten Umkehrung liegt die Terz unten, und der Grundton wandert nach oben. Für C-Dur auf G-, B- und e-Saite: E im 9. Bund der G-Saite, G im 8. der B-Saite, C im 8. der e-Saite. Der Grundton oben ist der Ton, den das Ohr als Melodie hört.",
+    frage: {
+      art: "griffbrett",
+      text: "C-Dur auf G-, B- und e-Saite, Terz unten auf der G-Saite im 9. Bund: tippe den Grundton an.",
+      gegeben: [griff(3, 9)],
+      richtig: dreiklangTon("C", "dur", [3, 2, 1], 1, 0),
+    },
+  },
+  {
+    id: "a-dreiklang-zweite",
+    stufe: 4,
+    begriff: "Dreiklang in zweiter Umkehrung",
+    erklaerung:
+      "In der zweiten Umkehrung liegt die Quinte unten, der Grundton in der Mitte, die Terz oben. Für G-Dur auf G-, B- und e-Saite: D im 7. Bund der G-Saite, G im 8. der B-Saite, B im 7. der e-Saite. Wer die drei Lagen eines Akkords kennt, findet ihn auf jeder Höhe des Halses, ohne die Hand weit zu bewegen.",
+    frage: {
+      art: "griffbrett",
+      text: "G-Dur auf G-, B- und e-Saite, Quinte unten auf der G-Saite im 7. Bund: tippe den Grundton an.",
+      gegeben: [griff(3, 7)],
+      richtig: dreiklangTon("G", "dur", [3, 2, 1], 2, 0),
+    },
+  },
+  {
+    id: "a-dreiklang-moll",
+    stufe: 4,
+    begriff: "Moll-Dreiklang auf drei Saiten",
+    erklaerung:
+      "Ein Moll-Dreiklang ist derselbe Griff mit der Terz einen Bund tiefer. A-Moll in Grundstellung auf D-, G- und B-Saite: A im 7. Bund der D-Saite, C im 5. der G-Saite, E im 5. der B-Saite. Die kleine Terz liegt dabei direkt neben dem Ton, an dem man Moll von Dur unterscheidet.",
+    frage: {
+      art: "griffbrett",
+      text: "A-Moll auf D-, G- und B-Saite, Grundton unten auf der D-Saite im 7. Bund: tippe die kleine Terz an.",
+      gegeben: [griff(4, 7)],
+      richtig: dreiklangTon("A", "moll", [4, 3, 2], 0, 3),
+    },
+  },
+  {
+    id: "a-dreiklang-oben",
+    stufe: 4,
+    begriff: "Was oben liegt",
+    erklaerung:
+      "In enger Lage folgen die Töne immer in derselben Runde aufeinander: Grundton, Terz, Quinte, Grundton. Liegt die Terz unten, ist also der Grundton oben; liegt die Quinte unten, ist es die Terz. Der oberste Ton ist der, den man als Melodie hört — wer Dreiklänge für eine Melodie auswählt, wählt sie nach ihm.",
+    frage: {
+      art: "auswahl",
+      text: "Dreiklang in enger Lage, erste Umkehrung: welcher Ton liegt oben?",
+      auswahl: ["der Grundton", "die Terz", "die Quinte", "die Septime"],
+      richtig: ["der Grundton"],
+    },
+  },
+  {
+    id: "a-dreiklang-caged",
+    stufe: 4,
+    begriff: "Dreiklänge in den CAGED-Formen",
+    erklaerung:
+      "Jeder Dur-Dreiklang auf G-, B- und e-Saite ist ein Ausschnitt aus einer der fünf CAGED-Formen: die Grundstellung von C-Dur aus der A-Form, die erste Umkehrung aus der E-Form, die zweite aus der C-Form. Wer die Formen kennt, hat die Dreiklänge also schon unter der Hand — und umgekehrt sind die Dreiklänge die handlichen Kerne der grossen Griffe.",
+    frage: {
+      art: "auswahl",
+      text: "Woher kennt die Hand die Dur-Dreiklänge auf G-, B- und e-Saite schon?",
+      auswahl: [
+        "sie sind Ausschnitte aus den CAGED-Formen",
+        "sie sind Teile der Powerchords",
+        "sie liegen alle in Pentatonik-Lage 1",
+        "gar nicht — sie sind eigene Muster",
+      ],
+      richtig: ["sie sind Ausschnitte aus den CAGED-Formen"],
     },
   },
 

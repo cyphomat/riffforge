@@ -68,6 +68,10 @@ Verschiedenes.
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
 | `lib/theory/hals.ts` | Die Maße des Halses — für das antippbare Griffbrett |
 | `lib/theory/caged.ts` | CAGED als Rechnung: fünf offene Griffe, in jede Tonart verschoben |
+| `lib/theory/dreiklaenge.ts` | Dreiklänge in enger Lage auf drei benachbarten Saiten |
+| `lib/theory/gehoer.ts` | Hörfragen: Reihenfolge, Auswahl, die gewürfelten Tonpaare |
+| `lib/audio/zupfen.ts` | Ein gezupfter Ton aus Obertönen — rein, auf den Cent gemessen |
+| `components/theory/intervall-hoeren.tsx` | Spielt die zwei Töne einer Hörfrage |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
@@ -559,6 +563,26 @@ Komponente.
   damit nicht antippbar. Aufgefallen ist es erst im Browser. Seitdem
   verlangt der Test mindestens eine richtige Stelle bis `BUENDE`, und
   Vorgaben (`gegeben`) ganz darauf. Was darüber liegt, wird getippt.
+- **Eine Hörfrage fragt den Abstand, nicht den Klang.** Die Töne werden bei
+  jedem Zeigen neu gewürfelt (`hoerPaar`), *Nochmal* spielt dasselbe Paar;
+  alle vierundzwanzig Karten bieten dieselben zwölf Namen an, damit die
+  Auswahl nicht verrät, welche Karte dran ist. Der Ton entsteht aus
+  Obertönen (`lib/audio/zupfen.ts`), nicht per Karplus-Strong: dessen
+  Periode ist eine ganze Zahl Samples, und das sind oben im Bereich bis zu
+  fünfzehn Cent — zwei Töne so daneben sind eine andere Frage als die auf
+  der Karte. `zupfen.test.ts` misst jeden Ton von A2 bis E5 mit dem YIN des
+  Stimmgeräts nach, unter zwei Cent. Abgespielt wird nur auf Tippen, aus
+  demselben Grund wie überall: kein AudioContext vor einer Nutzergeste.
+  Im Browser geprüft, indem die gespielten Puffer abgegriffen und ihre
+  Tonhöhe nachgerechnet wurde — Quinte aufwärts kam als F#3 → C#4 an.
+- **Dreiklänge sind gerechnet, und ihre Behauptungen sind eng gefasst.**
+  `dreiklaenge.ts` stapelt in enger Lage und lässt den Knick zur B-Saite aus
+  den Leersaiten fallen, ohne Sonderfall. Zwei Aussagen musste der Test
+  zurechtstutzen: „drei Griffe je Oktave" gilt erst ein Stück vom Sattel
+  weg, weil dort einer unter den Bund null fiele; und „jeder Dreiklang ist
+  ein Stück einer CAGED-Form" gilt auf G-, B- und e-Saite, auf den tiefen
+  Saiten nicht immer. Die Karten sagen deshalb genau das, und der Test hält
+  auch fest, dass die weitere Fassung falsch wäre.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-946%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1025%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -313,7 +313,7 @@ second screen to read. So here the **question is the normal state** and the text
 is what comes after it: retrieval is measurably better for retention than
 re-reading, and in music it is barely used.
 
-A hundred and sixty-eight concepts across six levels — from the semitone to how riffs
+A hundred and ninety-nine concepts across six levels — from the semitone to how riffs
 are put together. Each with two or three sentences and a question:
 
 - **Answer on the fretboard** where that is possible. Producing an answer beats
@@ -343,6 +343,12 @@ all twelve keys. That also shows what links the shapes to the pentatonic: each
 one sits entirely inside exactly one box of the minor pentatonic with the same
 notes, G shape in box 1 through A shape in box 5 — the same mapping in every
 key.
+
+Alongside them, **triads on three strings**: major and minor in close
+position, root position and both inversions, computed as well
+(`lib/theory/dreiklaenge.ts`). On the G, B and high e strings each one is a
+slice of a CAGED shape — on the low strings not always, so the card only
+claims it there.
 
 Notes are named the way tabs name them: the note above A is **B**. A German
 sheet-music habit of typing **H** for it gets that explained rather than a bare
@@ -393,6 +399,19 @@ sit inside that noise. So they are explained rather than measured.
 Without a microphone nothing is blocked: the explanation can be shown anyway.
 That counts as *not measured*, not as played wrong — at that point the app
 simply knows too little to judge.
+
+### A question you hear
+
+Twenty-four cards ask the ear: the app plays two notes one after the other and
+asks for the interval — every one from the minor second to the octave, up and
+down. Ascending comes first, in an order that starts with the easy-to-tell
+ones: octave, fifth, fourth, then the thirds.
+
+The notes change every time a card is shown. The answer is the distance, and
+that is what should be heard — not how the card sounded last time. They are
+built from harmonics rather than recorded or modelled as a string, so the
+pitch sits exactly where it should: measured with the same YIN the tuner uses,
+within two cents across the whole range from A2 to E5.
 
 ## What the microphone hears
 

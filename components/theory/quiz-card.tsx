@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Fretboard } from "@/components/theory/fretboard"
+import { IntervallHoeren } from "@/components/theory/intervall-hoeren"
 import { RhythmQuiz } from "@/components/theory/rhythm-quiz"
 import { DAEMPFUNG_MINDESTENS, figurById, type FigurBewertung } from "@/lib/theory/rhythm"
 import { GRADES, type Grade } from "@/lib/theory/fsrs"
@@ -135,8 +136,14 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
         />
       )}
 
-      {card.frage.art === "auswahl" && (
-        <div className="grid gap-[9px] sm:grid-cols-2">
+      {card.frage.art === "gehoert" && card.frage.hoeren && (
+        <IntervallHoeren halbtoene={card.frage.hoeren.halbtoene} richtung={card.frage.hoeren.richtung} />
+      )}
+
+      {(card.frage.art === "auswahl" || card.frage.art === "gehoert") && (
+        // Zwölf Intervallnamen untereinander wären auf dem Handy eine Liste
+        // zum Scrollen; zu zweit nebeneinander passen sie auf einen Blick.
+        <div className={`grid gap-[9px] ${card.frage.art === "gehoert" ? "grid-cols-2 sm:grid-cols-3" : "sm:grid-cols-2"}`}>
           {card.frage.auswahl?.map((option) => {
             const gewaehlt = text === option
             const istLoesung = (loesungen as string[]).includes(option)
@@ -154,7 +161,9 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                 key={option}
                 onClick={() => !aufgeloest && setText(option)}
                 disabled={aufgeloest}
-                className={`border p-[14px] text-left font-mono text-[14px] transition-colors ${rahmen}`}
+                className={`border text-left font-mono transition-colors ${
+                  card.frage.art === "gehoert" ? "p-[11px] text-[13px]" : "p-[14px] text-[14px]"
+                } ${rahmen}`}
               >
                 {option}
               </button>

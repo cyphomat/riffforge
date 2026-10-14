@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-946%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1025%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -312,7 +312,7 @@ ein zweiter Bildschirm zum Lesen ist. Deshalb ist hier die **Frage der
 Normalzustand** und der Text das, was danach kommt: Abfragen behält sich
 messbar besser als Nachlesen, und für Musik ist das kaum umgesetzt.
 
-Hundertachtundsechzig Begriffe in sechs Stufen — vom Halbton bis zum Riff-Bau.
+Hundertneunundneunzig Begriffe in sechs Stufen — vom Halbton bis zum Riff-Bau.
 Jeder mit zwei, drei Sätzen und einer Frage:
 
 - **Auf dem Griffbrett zeigen**, wo das geht. Antworten produzieren bringt mehr
@@ -344,6 +344,12 @@ Verschiebung, geprüft in allen zwölf Tonarten. Dabei fällt heraus, was die
 Formen mit der Pentatonik verbindet: jede liegt vollständig in genau einer Lage
 der Moll-Pentatonik mit denselben Tönen, G-Form in Lage 1 bis A-Form in Lage 5
 — in jeder Tonart dieselbe Zuordnung.
+
+Daneben die **Dreiklänge auf drei Saiten**: Dur und Moll in enger Lage, in
+Grundstellung und beiden Umkehrungen, ebenfalls gerechnet
+(`lib/theory/dreiklaenge.ts`). Auf G-, B- und e-Saite ist jeder davon ein
+Ausschnitt aus einer CAGED-Form — auf den tiefen Saiten nicht immer, und
+deshalb behauptet die Karte es auch nur dort.
 
 Die Töne stehen englisch, wie in jeder Tabulatur: der Ton über A heisst **B**,
 nicht H. Wer aus deutschen Noten kommt und trotzdem H tippt, bekommt genau
@@ -397,6 +403,20 @@ Rauschen. Deshalb werden sie erklärt und nicht gemessen.
 Ohne Mikrofon blockiert nichts: die Auflösung lässt sich auch so zeigen. Das
 gilt dann als *nicht gemessen*, nicht als danebengespielt — die App weiss an
 der Stelle schlicht zu wenig für ein Urteil.
+
+### Eine Frage, die man hört
+
+Vierundzwanzig Karten fragen nach dem Gehör: die App spielt zwei Töne
+nacheinander, und gefragt ist das Intervall — jedes von der kleinen Sekunde
+bis zur Oktave, aufwärts und abwärts. Aufwärts kommt zuerst, und in einer
+Reihenfolge, die mit den leicht unterscheidbaren anfängt: Oktave, Quinte,
+Quarte, dann die Terzen.
+
+Die Töne wechseln bei jedem Zeigen. Die Antwort ist der Abstand, und den soll
+man hören, nicht wiedererkennen, wie die Karte letztes Mal klang. Erzeugt
+werden sie aus Obertönen statt als Aufnahme oder Saitenmodell: so liegt die
+Tonhöhe genau dort, wo sie soll — nachgemessen mit demselben YIN wie im
+Stimmgerät, auf unter zwei Cent über den ganzen Bereich von A2 bis E5.
 
 ## Was das Mikrofon hört
 
