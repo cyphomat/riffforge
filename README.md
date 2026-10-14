@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-946%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -312,8 +312,8 @@ ein zweiter Bildschirm zum Lesen ist. Deshalb ist hier die **Frage der
 Normalzustand** und der Text das, was danach kommt: Abfragen behält sich
 messbar besser als Nachlesen, und für Musik ist das kaum umgesetzt.
 
-Hundertzehn Begriffe in sechs Stufen — vom Halbton bis zum Riff-Bau. Jeder
-mit zwei, drei Sätzen und einer Frage:
+Hundertachtundsechzig Begriffe in sechs Stufen — vom Halbton bis zum Riff-Bau.
+Jeder mit zwei, drei Sätzen und einer Frage:
 
 - **Auf dem Griffbrett zeigen**, wo das geht. Antworten produzieren bringt mehr
   als aus vier Kästchen wählen, und die Gitarre ist das Instrument, auf dem
@@ -329,6 +329,21 @@ mit zwei, drei Sätzen und einer Frage:
 - **Der Kartenstand wird abgespielt, nicht gespeichert.** Antworten sind
   unveränderlich; zwei Geräte verschmelzen ihre Antworten und kommen von selbst
   auf denselben Stand.
+
+Zu jeder Technik, die ein Drill spielt, gibt es Karten — Bending, Legato,
+Slides, Tremolo, Wechselschlag, Dead Notes. Ein Test hält das fest: die erste
+Portion einer Session fragt zu dem, was gleich gespielt wird, und ohne passende
+Karte fragte sie bis Oktober bei sechs Techniken an ihnen vorbei.
+
+**CAGED** steht als eigene Reihe in Stufe 4: die fünf offenen Dur-Griffe C, A,
+G, E und D, den Hals hinaufgeschoben, bis jeder Akkord überall unter der Hand
+liegt. Gefragt wird auf dem Griffbrett — wo in einer Form der Grundton liegt,
+wo die Terz, welche Form als nächste kommt. Die Formen sind gerechnet
+(`lib/theory/caged.ts`), nicht abgetippt: die offenen Griffe plus eine
+Verschiebung, geprüft in allen zwölf Tonarten. Dabei fällt heraus, was die
+Formen mit der Pentatonik verbindet: jede liegt vollständig in genau einer Lage
+der Moll-Pentatonik mit denselben Tönen, G-Form in Lage 1 bis A-Form in Lage 5
+— in jeder Tonart dieselbe Zuordnung.
 
 Die Töne stehen englisch, wie in jeder Tabulatur: der Ton über A heisst **B**,
 nicht H. Wer aus deutschen Noten kommt und trotzdem H tippt, bekommt genau

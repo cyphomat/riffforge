@@ -67,6 +67,7 @@ Verschiedenes.
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
 | `lib/theory/fretboard.ts` | Griffbrett als Rechnung: Töne, Intervalle, Lagen |
 | `lib/theory/hals.ts` | Die Maße des Halses — für das antippbare Griffbrett |
+| `lib/theory/caged.ts` | CAGED als Rechnung: fünf offene Griffe, in jede Tonart verschoben |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
@@ -533,6 +534,35 @@ Komponente.
   à zwei Fragen, mehr nicht — die Viertelstunde ist das Produkt. Wer keine
   Lust hat, überspringt; die Karten bleiben fällig. Ist nichts fällig, fällt
   die Portion lautlos aus statt einen leeren Bildschirm zu zeigen.
+- **Jede gespielte Technik hat Karten.** Die erste Portion grundiert auf den
+  nächsten Block — aber nur, wenn es zu dessen Technik eine Karte gibt. Bis
+  Oktober hatten sechs Techniken keine (Wechselschlag, Bending, Legato,
+  Slides, Tremolo, Dead Notes, wobei die Dead-Note-Karten an *Palm Mute*
+  hingen), und die Portion fragte dort still an ihnen vorbei. `cards.test.ts`
+  verlangt seitdem zu jeder Technik eines Nicht-Warm-up-Drills mindestens
+  eine Karte. Wer einen Drill mit neuer Technik hinzufügt, schreibt die Karte
+  gleich mit.
+- **CAGED ist gerechnet.** `lib/theory/caged.ts` hält nur die fünf offenen
+  Dur-Griffe; jede Form in jeder Tonart ist dieselbe Tabelle plus eine
+  Verschiebung, und der Test prüft die offenen Griffe gegen das Akkordbuch,
+  jede Form in allen zwölf Tonarten auf Grundton, grosse Terz und Quinte und
+  die Reihenfolge C A G E D am Hals. Moll ist keine zweite Tabelle, sondern
+  die Terz einen Bund tiefer — und das ist eine Frage, keine Rechnung.
+  Nachgerechnet und als Test festgehalten: jede Form liegt in genau einer
+  Lage der parallelen Moll-Pentatonik (G→1, E→2, D→3, C→4, A→5), in allen
+  zwölf Tonarten gleich.
+  Angeregt von einem Magazinartikel; übernommen ist nur die allgemein
+  bekannte Idee, Text und Fragen sind eigene.
+- **Das Griffbrett hat zwölf Bünde, und eine Antwort muss darauf liegen.**
+  Der Katalogtest liess Stellen bis zum 15. Bund zu, weil `positionsOf` so
+  weit rechnet; die Karte „Über dem 12. Bund" fragte nach dem 15. und war
+  damit nicht antippbar. Aufgefallen ist es erst im Browser. Seitdem
+  verlangt der Test mindestens eine richtige Stelle bis `BUENDE`, und
+  Vorgaben (`gegeben`) ganz darauf. Was darüber liegt, wird getippt.
+- **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
+  Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
+  viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest
+  beim ersten Lauf abgewiesen.
 - **Die Karten werden erst an der Stelle gewählt**, nicht beim Bauen des
   Plans. Sonst käme in der zweiten Portion wieder, was in der ersten schon
   beantwortet wurde.

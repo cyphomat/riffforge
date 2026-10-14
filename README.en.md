@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-803%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-946%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -313,8 +313,8 @@ second screen to read. So here the **question is the normal state** and the text
 is what comes after it: retrieval is measurably better for retention than
 re-reading, and in music it is barely used.
 
-A hundred and ten concepts across six levels — from the semitone to how riffs are put
-together. Each with two or three sentences and a question:
+A hundred and sixty-eight concepts across six levels — from the semitone to how riffs
+are put together. Each with two or three sentences and a question:
 
 - **Answer on the fretboard** where that is possible. Producing an answer beats
   picking one of four boxes, and the guitar is the instrument where theory can
@@ -328,6 +328,21 @@ together. Each with two or three sentences and a question:
   implementation and checked against 76 of its results, not reinvented.
 - **Card state is replayed, not stored.** Answers are immutable; two devices
   merge their answers and arrive at the same state on their own.
+
+Every technique a drill plays has cards — bending, legato, slides, tremolo,
+alternate picking, dead notes. A test holds that in place: the first batch of a
+session asks about what is about to be played, and without a matching card it
+missed six techniques until October.
+
+**CAGED** is its own series in level 4: the five open major shapes C, A, G, E
+and D, moved up the neck until every chord sits under the hand wherever it is.
+The questions are on the fretboard — where the root of a shape lies, where the
+third, which shape comes next. The shapes are computed
+(`lib/theory/caged.ts`), not typed in: the open chords plus a shift, checked in
+all twelve keys. That also shows what links the shapes to the pentatonic: each
+one sits entirely inside exactly one box of the minor pentatonic with the same
+notes, G shape in box 1 through A shape in box 5 — the same mapping in every
+key.
 
 Notes are named the way tabs name them: the note above A is **B**. A German
 sheet-music habit of typing **H** for it gets that explained rather than a bare

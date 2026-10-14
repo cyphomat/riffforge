@@ -1,3 +1,4 @@
+import { stufeInForm } from "./caged"
 import { positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
 import type { Griff, TheoryCard } from "./types"
 
@@ -261,6 +262,86 @@ export const THEORY_CARDS: TheoryCard[] = [
     },
   },
 
+  {
+    id: "m-g-saite",
+    stufe: 1,
+    begriff: "Töne auf der G-Saite",
+    erklaerung:
+      "Die G-Saite hat ihre eigenen Marken: 2. Bund A, 5. Bund C, 7. Bund D. Sie ist die Saite, auf der die meisten Bendings liegen — wer dort den Ton kennt, von dem er losgeht, weiss auch, wo er ankommen muss.",
+    frage: {
+      art: "griffbrett",
+      text: "Wo liegt C auf der G-Saite?",
+      richtig: positionsOf("C").filter((stelle) => stelle.saite === 3),
+    },
+  },
+  {
+    id: "m-b-saite",
+    stufe: 1,
+    begriff: "Töne auf der B-Saite",
+    erklaerung:
+      "Auf der B-Saite liegt im 1. Bund C, im 3. D und im 5. E — der 5. Bund klingt also wie die leere hohe e-Saite. Weil sie gegenüber der G-Saite um eine grosse Terz statt einer Quarte versetzt ist, stimmen hier die Marken der tieferen Saiten nicht mehr.",
+    frage: {
+      art: "griffbrett",
+      text: "Wo liegt D auf der B-Saite?",
+      richtig: positionsOf("D").filter((stelle) => stelle.saite === 2),
+    },
+  },
+  {
+    id: "m-tabulatur",
+    stufe: 1,
+    begriff: "Tabulatur lesen",
+    erklaerung:
+      "Eine Tabulatur hat eine Zeile je Saite, und die Zahl darauf ist der Bund. Oben steht die hohe e-Saite, unten die tiefe E — also umgekehrt dazu, wie man von oben auf die Gitarre schaut. Wer das einmal verdreht, spielt jedes Riff auf den falschen Saiten.",
+    frage: {
+      art: "auswahl",
+      text: "Welche Saite steht in einer Tabulatur ganz oben?",
+      auswahl: ["die hohe e-Saite", "die tiefe E-Saite", "die A-Saite", "kommt auf die Tabulatur an"],
+      richtig: ["die hohe e-Saite"],
+    },
+  },
+  {
+    id: "m-tab-null",
+    stufe: 1,
+    begriff: "Die Null in der Tabulatur",
+    erklaerung:
+      "Eine 0 heisst: die Saite leer anschlagen, ohne zu greifen. In Metal-Riffs ist sie die häufigste Zahl überhaupt, weil die leere tiefe Saite der Ton ist, auf den ein Riff immer wieder zurückfällt.",
+    frage: {
+      art: "auswahl",
+      text: "Was bedeutet eine 0 auf einer Zeile der Tabulatur?",
+      auswahl: [
+        "die Saite leer anschlagen",
+        "die Saite nicht spielen",
+        "die Saite abdämpfen",
+        "den Ton davor halten",
+      ],
+      richtig: ["die Saite leer anschlagen"],
+    },
+  },
+  {
+    id: "m-ueber-zwoelf",
+    stufe: 1,
+    begriff: "Über dem 12. Bund",
+    erklaerung:
+      "Ab dem 12. Bund wiederholt sich der Hals eine Oktave höher: was im 3. Bund liegt, liegt im 15. wieder. Man muss den oberen Teil also nicht neu lernen — zwölf dazuzählen genügt.",
+    frage: {
+      art: "eingabe",
+      text: "Auf der A-Saite im 3. Bund liegt C. In welchem Bund derselben Saite liegt das C eine Oktave höher?",
+      richtig: ["15", "fünfzehn", "fuenfzehn"],
+    },
+  },
+  {
+    id: "m-siebte-saite",
+    stufe: 1,
+    begriff: "Die siebte Saite",
+    erklaerung:
+      "Eine Siebensaitige in Standardstimmung bekommt unter der tiefen E-Saite eine B-Saite dazu, eine Quarte tiefer — derselbe Abstand wie zwischen allen tiefen Saiten. Die sechs übrigen bleiben, wie sie sind; alles, was man auf der Sechssaitigen kann, gilt weiter.",
+    frage: {
+      art: "eingabe",
+      text: "Wie heisst die tiefste Saite einer Siebensaitigen in Standardstimmung?",
+      richtig: ["B"],
+    },
+  },
+
   // ─────────────────────────────────────────────────── Stufe 2: Intervalle
   {
     id: "i-was",
@@ -481,6 +562,83 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["E"],
     },
   },
+  {
+    id: "i-grosse-sexte",
+    stufe: 2,
+    begriff: "Die grosse Sexte",
+    erklaerung:
+      "Neun Halbtöne über dem Grundton, die Umkehrung der kleinen Terz. In Moll ist sie der eine Ton, der Dorisch von natürlichem Moll trennt: mit grosser Sexte klingt Moll weniger schwer, beinahe trotzig.",
+    frage: {
+      art: "eingabe",
+      text: "Wie viele Halbtöne umfasst die grosse Sexte?",
+      richtig: ["9", "neun"],
+    },
+  },
+  {
+    id: "i-ganzton-saite",
+    stufe: 2,
+    begriff: "Die grosse Sekunde auf einer Saite",
+    erklaerung:
+      "Zwei Bünde auf derselben Saite sind eine grosse Sekunde, ein Ganzton. Es ist der Abstand, um den ein gewöhnliches Bending zieht, und der Schritt, aus dem die meisten Tonleitern grösstenteils bestehen.",
+    frage: {
+      art: "griffbrett",
+      text: "Der Grundton A liegt auf der tiefen E-Saite im 5. Bund. Zeig die grosse Sekunde auf derselben Saite.",
+      gegeben: [griff(6, 5)],
+      richtig: positionsOfInterval(griff(6, 5), 2).filter((stelle) => stelle.saite === 6),
+    },
+  },
+  {
+    id: "i-quartform",
+    stufe: 2,
+    begriff: "Die Quartform",
+    erklaerung:
+      "Eine Saite höher im selben Bund liegt die Quarte — weil die Saiten selbst eine Quarte auseinander gestimmt sind. Zwei Töne im selben Bund auf benachbarten Saiten sind deshalb ein Quartpowerchord, und über den Knick zur B-Saite gilt das nicht.",
+    frage: {
+      art: "griffbrett",
+      text: "Der Grundton A liegt auf der tiefen E-Saite im 5. Bund. Zeig die Quarte dazu auf der A-Saite.",
+      gegeben: [griff(6, 5)],
+      richtig: positionsOfInterval(griff(6, 5), 5).filter((stelle) => stelle.saite === 5),
+    },
+  },
+  {
+    id: "i-septime-form",
+    stufe: 2,
+    begriff: "Die kleine Septime auf dem Hals",
+    erklaerung:
+      "Zwei Saiten höher im selben Bund liegt die kleine Septime — zwei Quarten übereinander ergeben zehn Halbtöne. Von der tiefen E- und der A-Saite aus findet man sie so ohne Zählen; über die B-Saite hinweg verschiebt sie sich wie alles andere um einen Bund.",
+    frage: {
+      art: "griffbrett",
+      text: "Der Grundton A liegt auf der tiefen E-Saite im 5. Bund. Zeig die kleine Septime dazu auf der D-Saite.",
+      gegeben: [griff(6, 5)],
+      richtig: positionsOfInterval(griff(6, 5), 10).filter((stelle) => stelle.saite === 4),
+    },
+  },
+  {
+    id: "i-stapeln",
+    stufe: 2,
+    begriff: "Intervalle stapeln",
+    erklaerung:
+      "Intervalle lassen sich addieren: man zählt die Halbtöne zusammen. Quinte und Quarte übereinander ergeben zwölf, also eine Oktave — genau das greift die Hand beim Powerchord mit Oktave obendrauf.",
+    frage: {
+      art: "auswahl",
+      text: "Eine Quinte und darüber eine Quarte: welches Intervall umspannen sie zusammen?",
+      auswahl: ["Oktave", "grosse Septime", "kleine Sexte", "None"],
+      richtig: ["Oktave"],
+    },
+  },
+  {
+    id: "i-none",
+    stufe: 2,
+    begriff: "Über die Oktave hinaus",
+    erklaerung:
+      "Intervalle über der Oktave heissen weiter: die None ist eine Sekunde plus Oktave, die Undezime eine Quarte plus Oktave. Klanglich tragen sie dieselbe Farbe wie ihr kleiner Bruder, nur luftiger — deshalb reibt eine None im Akkord viel weniger als eine Sekunde.",
+    frage: {
+      art: "eingabe",
+      text: "Wie viele Halbtöne umfasst die grosse None?",
+      richtig: ["14", "vierzehn"],
+    },
+  },
+
   // ─────────────────────────────────────────────────── Stufe 3: Tonleitern
   {
     id: "s-dur",
@@ -739,6 +897,108 @@ export const THEORY_CARDS: TheoryCard[] = [
     },
   },
 
+  {
+    id: "s-dorisch",
+    stufe: 3,
+    begriff: "Dorisch",
+    erklaerung:
+      "1 2 ♭3 4 5 6 ♭7 — natürliches Moll mit grosser statt kleiner Sexte. Der eine Ton nimmt Moll die Schwere, ohne es hell zu machen; deshalb klingt Dorisch eher kämpferisch als traurig. Auf den weissen Tasten ist es die Leiter von D bis D.",
+    frage: {
+      art: "auswahl",
+      text: "Welche Stufe trennt Dorisch von natürlichem Moll?",
+      auswahl: ["die grosse Sexte", "die grosse Terz", "die kleine Sekunde", "die grosse Septime"],
+      richtig: ["die grosse Sexte"],
+    },
+  },
+  {
+    id: "s-lokrisch",
+    stufe: 3,
+    begriff: "Lokrisch",
+    erklaerung:
+      "1 ♭2 ♭3 4 ♭5 ♭6 ♭7 — der einzige Modus, dessen Quinte vermindert ist. Ohne reine Quinte findet der Grundton keine Ruhe, und ein Powerchord darauf ist ein Tritonus. Für fast alles ist das unbrauchbar, für die finstersten Ecken des Metal genau richtig.",
+    frage: {
+      art: "auswahl",
+      text: "Was macht Lokrisch als Tonart so instabil?",
+      auswahl: [
+        "die verminderte Quinte über dem Grundton",
+        "die grosse Terz über dem Grundton",
+        "es hat nur fünf Töne",
+        "die grosse Septime unter dem Grundton",
+      ],
+      richtig: ["die verminderte Quinte über dem Grundton"],
+    },
+  },
+  {
+    id: "s-e-pentatonik",
+    stufe: 3,
+    begriff: "E-Moll-Pentatonik",
+    erklaerung:
+      "Auf E gebaut ergibt 1 ♭3 4 5 ♭7 die Töne E G A B D. Weil E die tiefste Leersaite ist, liegt die erste Lage dieser Pentatonik ganz unten am Hals, mit vielen Leersaiten — der Grund, warum so viele Riffs in E-Moll stehen.",
+    frage: {
+      art: "eingabe",
+      text: "Welche fünf Töne hat die E-Moll-Pentatonik?",
+      richtig: ["E G A B D", "E G A H D"],
+    },
+    technique: "pentatonic",
+  },
+  {
+    id: "s-lage-terz",
+    stufe: 3,
+    begriff: "Die kleine Terz in der Lage",
+    erklaerung:
+      "Die kleine Terz ist der Ton, der Moll nach Moll klingen lässt. In Lage 1 von A-Moll liegt sie auf der tiefen und der hohen E-Saite im 8. Bund und auf der G-Saite im 5. — wer sie anspielt, sagt dem Ohr, welche Tonart gilt.",
+    frage: {
+      art: "griffbrett",
+      text: "A-Moll-Pentatonik, Lage 1 im 5. bis 8. Bund: tippe eine kleine Terz an.",
+      richtig: stufeInLage("A", 1, 3),
+    },
+    technique: "pentatonic",
+  },
+  {
+    id: "s-dur-pentatonik",
+    stufe: 3,
+    begriff: "Dur- und Moll-Pentatonik",
+    erklaerung:
+      "Die Dur-Pentatonik ist 1 2 3 5 6, und sie hat dieselben Töne wie die Moll-Pentatonik drei Halbtöne tiefer — wie bei Dur und Moll überhaupt. Die Griffmuster sind also schon bekannt, nur der Ton, auf dem man landet, ist ein anderer.",
+    frage: {
+      art: "auswahl",
+      text: "Welche Dur-Pentatonik hat dieselben Töne wie die A-Moll-Pentatonik?",
+      auswahl: ["C-Dur", "A-Dur", "E-Dur", "G-Dur"],
+      richtig: ["C-Dur"],
+    },
+    technique: "pentatonic",
+  },
+  {
+    id: "s-leitton",
+    stufe: 3,
+    begriff: "Der Leitton",
+    erklaerung:
+      "In harmonisch Moll liegt die siebte Stufe einen Halbton unter dem Grundton und zieht dorthin zurück. In A harmonisch Moll ist das G# — auf der tiefen E-Saite im 4. Bund, direkt unter dem A im 5. Dieser eine Bund Abstand ist der ganze neoklassische Effekt.",
+    frage: {
+      art: "griffbrett",
+      text: "A harmonisch Moll: zeig den Leitton auf der tiefen E-Saite.",
+      richtig: positionsOf("G#").filter((stelle) => stelle.saite === 6),
+    },
+  },
+  {
+    id: "s-grundton-hoeren",
+    stufe: 3,
+    begriff: "Den Grundton eines Riffs finden",
+    erklaerung:
+      "Der Grundton ist der Ton, auf dem ein Riff zur Ruhe kommt — nicht unbedingt der erste und nicht der tiefste. Meist ist es der, zu dem das Riff am Ende jeder Runde zurückfällt. Wer ihn gefunden hat, weiss, welche Pentatonik darüber passt.",
+    frage: {
+      art: "auswahl",
+      text: "Woran erkennst du den Grundton eines Riffs?",
+      auswahl: [
+        "an dem Ton, auf dem es zur Ruhe kommt",
+        "am ersten Ton",
+        "am höchsten Ton",
+        "an der dicksten Saite",
+      ],
+      richtig: ["an dem Ton, auf dem es zur Ruhe kommt"],
+    },
+  },
+
   // ───────────────────────────────────────────────────── Stufe 4: Akkorde
   {
     id: "a-dreiklang",
@@ -987,6 +1247,226 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["der obere Ton wandert einen Bund höher"],
     },
     technique: "power-chords",
+  },
+
+  {
+    id: "a-sus",
+    stufe: 4,
+    begriff: "sus2 und sus4",
+    erklaerung:
+      "Bei einem sus-Akkord ist die Terz ersetzt — durch die Sekunde (sus2) oder durch die Quarte (sus4). Damit ist er wie der Powerchord weder Dur noch Moll, hat aber eine Reibung, die nach Auflösung verlangt. Im Riff ist das ein Powerchord mit Spannung.",
+    frage: {
+      art: "auswahl",
+      text: "Was ersetzt in einem sus4-Akkord die Terz?",
+      auswahl: ["die Quarte", "die Quinte", "die Sekunde", "die Septime"],
+      richtig: ["die Quarte"],
+    },
+  },
+  {
+    id: "a-powerchord-oktave",
+    stufe: 4,
+    begriff: "Der Powerchord mit Oktave",
+    erklaerung:
+      "Zu Grundton und Quinte kommt der Grundton eine Oktave höher — auf der Saite über der Quinte, im selben Bund wie sie. Der Akkord wird dadurch voller, aber nicht matschiger, weil kein neuer Ton dazukommt.",
+    frage: {
+      art: "griffbrett",
+      text: "G5: Grundton auf der tiefen E-Saite im 3. Bund. Zeig die Oktave dazu auf der D-Saite.",
+      gegeben: [griff(6, 3)],
+      richtig: positionsOfInterval(griff(6, 3), 12).filter((stelle) => stelle.saite === 4),
+    },
+    technique: "power-chords",
+  },
+  {
+    id: "a-powerchord-name",
+    stufe: 4,
+    begriff: "Einen Powerchord benennen",
+    erklaerung:
+      "Ein Powerchord heisst nach seinem tiefsten Ton, dem Grundton, mit einer 5 dahinter. Liegt der Zeigefinger auf der A-Saite im 7. Bund, ist das E — der Akkord heisst also E5. Wer die Töne auf E- und A-Saite kennt, kann jeden Powerchord sofort benennen.",
+    frage: {
+      art: "eingabe",
+      text: "Zeigefinger auf der A-Saite im 7. Bund, Ringfinger zwei Bünde weiter auf der D-Saite: wie heisst der Powerchord?",
+      richtig: ["E5", "E"],
+    },
+    technique: "power-chords",
+  },
+  {
+    id: "a-dominante-moll",
+    stufe: 4,
+    begriff: "Die Dominante in harmonisch Moll",
+    erklaerung:
+      "In natürlichem Moll ist der Akkord auf der fünften Stufe selbst Moll und zieht kaum zurück. Harmonisch Moll erhöht die Septime, und dadurch wird genau dieser Akkord Dur: in A-Moll aus e-Moll ein E-Dur, mit dem G# als Leitton darin. Erst dann kommt die Rückkehr zum Grundton wirklich an.",
+    frage: {
+      art: "auswahl",
+      text: "Welcher Akkord liegt in A harmonisch Moll auf der fünften Stufe?",
+      auswahl: ["E-Dur", "e-Moll", "G-Dur", "d-Moll"],
+      richtig: ["E-Dur"],
+    },
+  },
+  {
+    id: "a-weglassen",
+    stufe: 4,
+    begriff: "Was man im Akkord weglassen kann",
+    erklaerung:
+      "Wenn nicht alle Töne Platz haben, fällt zuerst die Quinte: sie färbt kaum und steckt als Oberton ohnehin im Grundton. Die Terz dagegen entscheidet über Dur oder Moll und darf nur weg, wenn man genau das offen lassen will — wie beim Powerchord.",
+    frage: {
+      art: "auswahl",
+      text: "Welchen Ton eines Septakkords lässt man am ehesten weg?",
+      auswahl: ["die Quinte", "die Terz", "die Septime", "den Grundton"],
+      richtig: ["die Quinte"],
+    },
+  },
+  {
+    id: "a-stufen-e-saite",
+    stufe: 4,
+    begriff: "Die Stufen auf der E-Saite",
+    erklaerung:
+      "In E-Moll liegen die Powerchords der Tonart alle auf der tiefen E-Saite nebeneinander: leer E, 2. Bund F#, 3. G, 5. A, 7. B, 8. C, 10. D. Die ♭VI ist also das C im 8. Bund — dort, wo die Metal-Kadenz anfängt.",
+    frage: {
+      art: "griffbrett",
+      text: "E-Moll: zeig den Grundton des Powerchords auf der ♭VI. Stufe, auf der tiefen E-Saite.",
+      richtig: positionsOf("C").filter((stelle) => stelle.saite === 6),
+    },
+    technique: "power-chords",
+  },
+
+  {
+    id: "a-caged-reihenfolge",
+    stufe: 4,
+    begriff: "CAGED: die Reihenfolge",
+    erklaerung:
+      "Wer mit einem Akkord den Hals hinaufgeht, trifft die Formen immer in derselben Reihenfolge: C, A, G, E, D, und danach wieder C, eine Oktave höher. Bei C-Dur liegt die C-Form offen, die A-Form im 3. Bund, die G-Form ab dem 5., die E-Form im 8. und die D-Form ab dem 10. Bei einem anderen Akkord beginnt man nur an einer anderen Stelle im Kreis.",
+    frage: {
+      art: "auswahl",
+      text: "C-Dur, ab der offenen C-Form den Hals hinauf: welche Form kommt als nächste?",
+      auswahl: ["die A-Form", "die G-Form", "die E-Form", "die D-Form"],
+      richtig: ["die A-Form"],
+    },
+  },
+  {
+    id: "a-caged-a-form",
+    stufe: 4,
+    begriff: "CAGED: die A-Form",
+    erklaerung:
+      "Die A-Form ist der offene A-Dur-Griff, mit dem Zeigefinger als Sattel nach oben geschoben. Ihr tiefster Grundton liegt auf der A-Saite, der zweite zwei Saiten höher auf der G-Saite, zwei Bünde weiter — die Oktavform. Für C-Dur sitzt sie im 3. Bund.",
+    frage: {
+      art: "griffbrett",
+      text: "C-Dur in der A-Form, ab dem 3. Bund: tippe einen Grundton an.",
+      richtig: stufeInForm("A", "C", 0),
+    },
+  },
+  {
+    id: "a-caged-g-form",
+    stufe: 4,
+    begriff: "CAGED: Nachbarn teilen sich Töne",
+    erklaerung:
+      "Die G-Form folgt auf die A-Form und übernimmt deren oberen Grundton: bei C-Dur liegt er für beide auf der G-Saite im 5. Bund. Dazu kommen zwei weitere C auf der tiefen und der hohen E-Saite im 8. Bund. Genau diese geteilten Töne machen aus fünf Griffen eine Karte des Halses statt fünf einzelner Muster.",
+    frage: {
+      art: "griffbrett",
+      text: "C-Dur in der G-Form, im 5. bis 8. Bund: tippe einen Grundton an.",
+      richtig: stufeInForm("G", "C", 0),
+    },
+  },
+  {
+    id: "a-caged-d-form",
+    stufe: 4,
+    begriff: "CAGED: die D-Form",
+    erklaerung:
+      "Die D-Form spielt nur auf den vier hohen Saiten, ihr tiefster Grundton liegt auf der D-Saite. Für E-Dur sitzt sie zwei Bünde hoch: E auf der D-Saite im 2. Bund und noch einmal auf der B-Saite im 5. Sie ist die kleinste der fünf und die, die man im Lead am häufigsten unter der Hand hat.",
+    frage: {
+      art: "griffbrett",
+      text: "E-Dur in der D-Form: tippe einen Grundton an.",
+      richtig: stufeInForm("D", "E", 0),
+    },
+  },
+  {
+    id: "a-caged-terz",
+    stufe: 4,
+    begriff: "CAGED: die Terz in der Form",
+    erklaerung:
+      "Eine Form zu kennen heisst zu wissen, welcher Finger welchen Ton hält. In der E-Form liegt die Terz auf der G-Saite, einen Bund über dem Barré — bei G-Dur im 3. Bund also das B im 4. Bund. Das ist der Ton, den man für Moll einen Bund tiefer greift.",
+    frage: {
+      art: "griffbrett",
+      text: "G-Dur als Barré in der E-Form, Grundton im 3. Bund: tippe die Terz an.",
+      gegeben: [griff(6, 3)],
+      richtig: stufeInForm("E", "G", 4),
+    },
+  },
+  {
+    id: "a-caged-anker",
+    stufe: 4,
+    begriff: "CAGED: woran die Formen hängen",
+    erklaerung:
+      "Jede Form hängt an einem Grundton auf einer bestimmten Saite. E-Form und G-Form haben ihren tiefsten Grundton auf der tiefen E-Saite, A-Form und C-Form auf der A-Saite, die D-Form auf der D-Saite. Wer die Töne auf diesen drei Saiten kennt, findet jede Form, ohne zu zählen.",
+    frage: {
+      art: "auswahl",
+      text: "Bei welchen beiden Formen liegt der tiefste Grundton auf der tiefen E-Saite?",
+      auswahl: ["E-Form und G-Form", "A-Form und C-Form", "C-Form und D-Form", "E-Form und A-Form"],
+      richtig: ["E-Form und G-Form"],
+    },
+  },
+  {
+    id: "a-caged-moll",
+    stufe: 4,
+    begriff: "CAGED in Moll",
+    erklaerung:
+      "Jede der fünf Formen wird zu Moll, wenn man ihre Terz einen Bund tiefer greift — Grundton und Quinte bleiben, wo sie sind. Bei der E-Form heisst das: der Finger auf der G-Saite fällt weg und das Barré übernimmt den Ton. Zehn Griffe sind es also nicht, sondern fünf und eine Regel.",
+    frage: {
+      art: "auswahl",
+      text: "Wie wird aus einer Dur-Form eine Moll-Form?",
+      auswahl: [
+        "die Terz einen Bund tiefer greifen",
+        "die Quinte einen Bund tiefer greifen",
+        "den Grundton einen Bund höher greifen",
+        "die ganze Form einen Bund tiefer schieben",
+      ],
+      richtig: ["die Terz einen Bund tiefer greifen"],
+    },
+  },
+
+  {
+    id: "a-caged-pentatonik",
+    stufe: 4,
+    begriff: "CAGED und die Pentatonik-Lagen",
+    erklaerung:
+      "Jede CAGED-Form eines Dur-Akkords liegt vollständig in einer Lage der Moll-Pentatonik mit denselben Tönen — bei C-Dur also A-Moll. Die Zuordnung ist immer dieselbe: G-Form in Lage 1, E-Form in Lage 2, D-Form in Lage 3, C-Form in Lage 4, A-Form in Lage 5. Wer die Lage spielt, hat den Akkord schon unter den Fingern, und umgekehrt.",
+    frage: {
+      art: "auswahl",
+      text: "C-Dur in der G-Form, im 5. bis 8. Bund: in welcher Lage der A-Moll-Pentatonik liegt sie?",
+      auswahl: ["Lage 1", "Lage 2", "Lage 4", "Lage 5"],
+      richtig: ["Lage 1"],
+    },
+    technique: "pentatonic",
+  },
+  {
+    id: "a-harmonisiert",
+    stufe: 4,
+    begriff: "Die harmonisierte Dur-Tonleiter",
+    erklaerung:
+      "Baut man auf jeder Stufe der Dur-Tonleiter einen Dreiklang aus ihren eigenen Tönen, kommt in jeder Tonart dieselbe Folge heraus: Dur, Moll, Moll, Dur, Dur, Moll, vermindert. Geschrieben I ii iii IV V vi vii°. Wer die Folge kennt, weiss in jeder Tonart, welche Akkorde dazugehören, ohne einen einzigen nachzuschlagen.",
+    frage: {
+      art: "auswahl",
+      text: "Welche Akkordarten liegen auf den sieben Stufen einer Dur-Tonleiter, der Reihe nach?",
+      auswahl: [
+        "Dur, Moll, Moll, Dur, Dur, Moll, vermindert",
+        "Dur, Moll, Dur, Moll, Dur, Moll, vermindert",
+        "Moll, vermindert, Dur, Moll, Moll, Dur, Dur",
+        "Dur, Dur, Moll, Moll, Dur, Moll, vermindert",
+      ],
+      richtig: ["Dur, Moll, Moll, Dur, Dur, Moll, vermindert"],
+    },
+  },
+  {
+    id: "s-dreiklang-tonleiter",
+    stufe: 3,
+    begriff: "Vom Dreiklang zur Tonleiter",
+    erklaerung:
+      "Der Dur-Dreiklang ist 1 3 5. Kommen 2 und 6 dazu, entsteht die Dur-Pentatonik 1 2 3 5 6; kommen danach 4 und 7 dazu, die vollständige Dur-Tonleiter. Die drei sind also keine getrennten Dinge, sondern dasselbe Gerüst in drei Ausbaustufen — und die zwei zuletzt dazugekommenen Töne sind genau die, an denen man sich am leichtesten vergreift.",
+    frage: {
+      art: "auswahl",
+      text: "Welche zwei Stufen machen aus dem Dur-Dreiklang die Dur-Pentatonik?",
+      auswahl: ["2 und 6", "4 und 7", "2 und 4", "6 und 7"],
+      richtig: ["2 und 6"],
+    },
   },
 
   // ──────────────────────────────────────────────────── Stufe 5: Rhythmus
@@ -1262,7 +1742,7 @@ export const THEORY_CARDS: TheoryCard[] = [
       ],
       richtig: ["die Greifhand liegt lose auf den Saiten"],
     },
-    technique: "palm-mute",
+    technique: "dead-notes",
   },
   {
     id: "r-dead-note-gespielt",
@@ -1276,7 +1756,7 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["dead-notes"],
       rhythmus: { figurId: "dead-notes", bpm: 80, takte: 2 },
     },
-    technique: "palm-mute",
+    technique: "dead-notes",
   },
   {
     id: "r-synkope-gespielt",
@@ -1303,6 +1783,130 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["triole"],
       rhythmus: { figurId: "triole", bpm: 90, takte: 2 },
     },
+  },
+
+  {
+    id: "r-half-time",
+    stufe: 5,
+    begriff: "Half-Time",
+    erklaerung:
+      "Beim Half-Time-Feel bleibt das Tempo, aber die Betonung kommt halb so oft: die Snare liegt auf der Drei statt auf Zwei und Vier. Das Riff wirkt plötzlich doppelt so schwer, obwohl kein Schlag langsamer geworden ist — der übliche Trick vor einem Breakdown.",
+    frage: {
+      art: "auswahl",
+      text: "Was ändert sich beim Half-Time-Feel?",
+      auswahl: [
+        "die Betonung kommt halb so oft, das Tempo bleibt",
+        "das Metronom läuft halb so schnell",
+        "jede Note wird doppelt angeschlagen",
+        "der Takt wird zum Dreiertakt",
+      ],
+      richtig: ["die Betonung kommt halb so oft, das Tempo bleibt"],
+    },
+  },
+  {
+    id: "r-tremolo-gezaehlt",
+    stufe: 5,
+    begriff: "Tremolo wird gezählt",
+    erklaerung:
+      "Tremolo klingt wie eine Fläche, ist aber ein Raster: meistens Sechzehntel, bei schnellen Stücken Zweiunddreissigstel. Sechzehntel bei 150 BPM sind vier Anschläge je Schlag, zweieinhalb Schläge je Sekunde — zehn Anschläge in der Sekunde. Wer nicht zählt, wird schneller oder langsamer, ohne es zu merken.",
+    frage: {
+      art: "eingabe",
+      text: "Sechzehntel bei 150 BPM: wie viele Anschläge sind das pro Sekunde?",
+      richtig: ["10", "zehn"],
+    },
+    technique: "tremolo",
+  },
+  {
+    id: "r-zweiunddreissigstel",
+    stufe: 5,
+    begriff: "Zweiunddreissigstel",
+    erklaerung:
+      "Halbiert man ein Sechzehntel, entsteht ein Zweiunddreissigstel — acht davon auf einen Schlag. Im Tremolo ist das der Wechsel, an dem das Riff aufhört, eine Figur zu sein, und zur Fläche wird: einzelne Anschläge hört man dort nicht mehr.",
+    frage: {
+      art: "auswahl",
+      text: "Wie viele Zweiunddreissigstel passen auf einen Schlag?",
+      auswahl: ["8", "6", "4", "16"],
+      richtig: ["8"],
+    },
+    technique: "tremolo",
+  },
+  {
+    id: "r-blast",
+    stufe: 5,
+    begriff: "Über dem Blast Beat",
+    erklaerung:
+      "Beim Blast Beat wechseln Bassdrum und Snare in hohem Tempo, oft auf jedem Achtel oder Sechzehntel. Darüber hat ein einzelner Gitarrenanschlag keinen Platz mehr, und die Gitarre spielt Tremolo: die Tonhöhe trägt das Riff, das Schlagzeug den Rhythmus.",
+    frage: {
+      art: "auswahl",
+      text: "Was spielt die Gitarre typischerweise über einem Blast Beat?",
+      auswahl: ["Tremolo-Picking", "einzelne ausklingende Akkorde", "Gallops", "Legato-Läufe"],
+      richtig: ["Tremolo-Picking"],
+    },
+    technique: "tremolo",
+  },
+  {
+    id: "r-sieben-achtel",
+    stufe: 5,
+    begriff: "Ungerade Takte",
+    erklaerung:
+      "Ein 7/8-Takt wird nicht als sieben gleiche Schläge gezählt, sondern in Gruppen aus Zweien und Dreien, etwa 2+2+3. Die Gruppen geben dem Takt seinen Gang — derselbe 7/8 als 3+2+2 fühlt sich ganz anders an, obwohl gleich viele Achtel darin stehen.",
+    frage: {
+      art: "auswahl",
+      text: "Wie zählt man einen 7/8-Takt meistens?",
+      auswahl: [
+        "in Gruppen aus Zweien und Dreien",
+        "sieben gleich betonte Schläge",
+        "wie einen 4/4-Takt mit einer Pause",
+        "als zwei Dreiergruppen und einen Auftakt",
+      ],
+      richtig: ["in Gruppen aus Zweien und Dreien"],
+    },
+  },
+  {
+    id: "r-sechs-achtel",
+    stufe: 5,
+    begriff: "6/8",
+    erklaerung:
+      "Sechs Achtel in zwei Gruppen zu drei: man fühlt zwei Schläge, die jeweils in drei geteilt sind. Deshalb ist 6/8 kein Dreiertakt und auch nicht dasselbe wie 3/4, obwohl beide sechs Achtel lang sind — 3/4 sind drei Schläge zu zwei.",
+    frage: {
+      art: "auswahl",
+      text: "Wie viele Schläge fühlt man in einem 6/8-Takt?",
+      auswahl: ["zwei", "drei", "sechs", "vier"],
+      richtig: ["zwei"],
+    },
+  },
+  {
+    id: "r-wechselschlag-sechzehntel",
+    stufe: 5,
+    begriff: "Wechselschlag im Raster",
+    erklaerung:
+      "Bei Sechzehnteln im Wechselschlag gehen vier Anschläge auf einen Schlag — eine gerade Zahl, also landet jeder Schlag wieder auf einem Abschlag. Die Hand wird damit selbst zum Metronom: ab auf dem Schlag, auf dazwischen. Wer das einmal hat, verliert die Eins nicht mehr.",
+    frage: {
+      art: "auswahl",
+      text: "Sechzehntel im Wechselschlag: womit wird jeder Schlag angeschlagen?",
+      auswahl: ["immer mit einem Abschlag", "immer mit einem Aufschlag", "abwechselnd", "das ist egal"],
+      richtig: ["immer mit einem Abschlag"],
+    },
+    technique: "alternate-picking",
+  },
+  {
+    id: "r-wechselschlag-triole",
+    stufe: 5,
+    begriff: "Triolen im Wechselschlag",
+    erklaerung:
+      "Drei Anschläge je Schlag sind eine ungerade Zahl: im Wechselschlag beginnt der nächste Schlag deshalb mit dem Aufschlag. Ab und auf wechseln sich auf dem Schlag ab, und genau daran hängt das Gefühl, Triolen seien schwerer — die Hand verliert ihren Anker.",
+    frage: {
+      art: "auswahl",
+      text: "Achteltriolen im Wechselschlag: womit wird jeder Schlag angeschlagen?",
+      auswahl: [
+        "abwechselnd mit Ab- und Aufschlag",
+        "immer mit einem Abschlag",
+        "immer mit einem Aufschlag",
+        "mit zwei Abschlägen hintereinander",
+      ],
+      richtig: ["abwechselnd mit Ab- und Aufschlag"],
+    },
+    technique: "alternate-picking",
   },
 
   // ──────────────────────────────────────── Stufe 6: Metal im Besonderen
@@ -1548,6 +2152,255 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["6", "sechs"],
     },
     technique: "downpicking",
+  },
+  {
+    id: "x-bending-ziel",
+    stufe: 6,
+    begriff: "Wo ein Bending ankommt",
+    erklaerung:
+      "Ein Ganzton-Bending muss genau auf dem Ton landen, der zwei Bünde höher gegriffen liegt. Von D auf der G-Saite im 7. Bund aus ist das E im 9. Bund. Der gegriffene Ton ist der Massstab — ein Bending dazwischen ist nicht ausdrucksvoll, sondern verstimmt.",
+    frage: {
+      art: "griffbrett",
+      text: "Du ziehst die G-Saite im 7. Bund einen Ganzton. Zeig, wo dieser Zielton auf derselben Saite gegriffen liegt.",
+      gegeben: [griff(3, 7)],
+      richtig: positionsOfInterval(griff(3, 7), 2).filter((stelle) => stelle.saite === 3),
+    },
+    technique: "bending",
+  },
+  {
+    id: "x-bending-pruefen",
+    stufe: 6,
+    begriff: "Ein Bending prüfen",
+    erklaerung:
+      "Erst den Zielton gegriffen anschlagen, dann den Ausgangston ziehen, bis beide gleich klingen. Das Ohr vergleicht zwei Töne viel genauer, als es einen allein beurteilt — und nach ein paar Wochen weiss die Hand, wie weit sie ziehen muss.",
+    frage: {
+      art: "auswahl",
+      text: "Wie prüfst du, ob ein Bending hoch genug ist?",
+      auswahl: [
+        "den Zielton vorher gegriffen spielen und vergleichen",
+        "so weit ziehen, wie die Saite nachgibt",
+        "auf das Stimmgerät schauen, während ich ziehe",
+        "zählen, wie viele Millimeter die Saite wandert",
+      ],
+      richtig: ["den Zielton vorher gegriffen spielen und vergleichen"],
+    },
+    technique: "bending",
+  },
+  {
+    id: "x-bending-pentatonik",
+    stufe: 6,
+    begriff: "Bendings in der Pentatonik",
+    erklaerung:
+      "In der Moll-Pentatonik zieht man am liebsten so, dass man auf einem Ton der Tonleiter ankommt: die Quarte einen Ganzton hoch ergibt die Quinte, die kleine Septime einen Ganzton hoch den Grundton. Beide Ziele sind stabil, und deshalb klingen diese Bendings wie ein Schlusspunkt.",
+    frage: {
+      art: "auswahl",
+      text: "A-Moll-Pentatonik: du ziehst die Quarte D einen Ganzton. Welcher Ton kommt an?",
+      auswahl: ["E, die Quinte", "F, die kleine Sexte", "C, die kleine Terz", "A, der Grundton"],
+      richtig: ["E, die Quinte"],
+    },
+    technique: "bending",
+  },
+  {
+    id: "x-vibrato",
+    stufe: 6,
+    begriff: "Vibrato",
+    erklaerung:
+      "Ein Vibrato ist ein kleines, wiederholtes Bending: die Saite wird gezogen und losgelassen, immer wieder. Weil Ziehen eine Saite nur höher machen kann, schwankt der Ton zwischen dem gegriffenen und einem etwas höheren — nie darunter. Gleichmässig in Breite und Tempo ist es das, was einen gehaltenen Ton singen lässt.",
+    frage: {
+      art: "auswahl",
+      text: "In welche Richtung schwankt ein Vibrato, das durch Ziehen der Saite entsteht?",
+      auswahl: [
+        "nur nach oben, über den gegriffenen Ton",
+        "gleich weit nach oben und unten",
+        "nur nach unten, unter den gegriffenen Ton",
+        "gar nicht, nur die Lautstärke schwankt",
+      ],
+      richtig: ["nur nach oben, über den gegriffenen Ton"],
+    },
+    technique: "bending",
+  },
+  {
+    id: "x-legato-tab",
+    stufe: 6,
+    begriff: "Legato in der Tabulatur",
+    erklaerung:
+      "Ein h zwischen zwei Bundzahlen ist ein Hammer-on, ein p ein Pull-off. Angeschlagen wird nur der erste Ton; der zweite entsteht, weil ein Finger auf die schwingende Saite schlägt oder von ihr abzieht. 5h7 heisst also: 5. Bund anschlagen, 7. Bund aufschlagen.",
+    frage: {
+      art: "auswahl",
+      text: "Was bedeutet 5h7 in einer Tabulatur?",
+      auswahl: [
+        "5. Bund anschlagen, 7. Bund aufschlagen",
+        "beide Bünde einzeln anschlagen",
+        "vom 5. zum 7. Bund rutschen",
+        "den 5. Bund zum Klang des 7. ziehen",
+      ],
+      richtig: ["5. Bund anschlagen, 7. Bund aufschlagen"],
+    },
+    technique: "legato",
+  },
+  {
+    id: "x-pull-off",
+    stufe: 6,
+    begriff: "Der Pull-off ist ein Zupfen",
+    erklaerung:
+      "Hebt man den Finger beim Pull-off einfach ab, bleibt vom nächsten Ton kaum etwas übrig. Der Finger zieht die Saite deshalb ein wenig seitlich mit und lässt sie dann los — ein kleines Zupfen mit der Greifhand, das die Saite neu anregt.",
+    frage: {
+      art: "auswahl",
+      text: "Warum zieht der Finger beim Pull-off die Saite leicht zur Seite?",
+      auswahl: [
+        "damit die Saite neu angeregt wird und laut bleibt",
+        "damit der Ton höher klingt",
+        "damit die anderen Saiten gedämpft werden",
+        "damit der Finger schneller wieder frei ist",
+      ],
+      richtig: ["damit die Saite neu angeregt wird und laut bleibt"],
+    },
+    technique: "legato",
+  },
+  {
+    id: "x-slide-tab",
+    stufe: 6,
+    begriff: "Slides in der Tabulatur",
+    erklaerung:
+      "Ein Schrägstrich zwischen zwei Bundzahlen ist ein Slide: 5/7 rutscht vom 5. hinauf zum 7. Bund, 7\\5 wieder hinunter. Angeschlagen wird nur der erste Ton; der Finger bleibt die ganze Strecke auf der Saite.",
+    frage: {
+      art: "auswahl",
+      text: "Was bedeutet 5/7 in einer Tabulatur?",
+      auswahl: [
+        "vom 5. zum 7. Bund rutschen",
+        "5. und 7. Bund gleichzeitig greifen",
+        "5. Bund anschlagen, 7. Bund aufschlagen",
+        "der 5. Bund im 7/8-Takt",
+      ],
+      richtig: ["vom 5. zum 7. Bund rutschen"],
+    },
+    technique: "slides",
+  },
+  {
+    id: "x-slide-druck",
+    stufe: 6,
+    begriff: "Ein Slide, der ankommt",
+    erklaerung:
+      "Ein Slide klingt nur durch, solange der Finger fest auf der Saite bleibt — lässt der Druck unterwegs nach, stirbt der Ton. Und er hört am Zielbund auf, nicht kurz davor oder danach: das Ziel ist der Ton, die Strecke nur der Weg dorthin.",
+    frage: {
+      art: "auswahl",
+      text: "Woran hängt es, dass ein Slide sauber durchklingt?",
+      auswahl: [
+        "der Druck bleibt, bis der Zielbund erreicht ist",
+        "der Finger hebt kurz vor dem Ziel ab",
+        "die Saite wird am Ziel neu angeschlagen",
+        "möglichst schnell rutschen, egal wohin",
+      ],
+      richtig: ["der Druck bleibt, bis der Zielbund erreicht ist"],
+    },
+    technique: "slides",
+  },
+  {
+    id: "x-palm-mute-stelle",
+    stufe: 6,
+    begriff: "Wo der Handballen liegt",
+    erklaerung:
+      "Beim Palm Mute liegt die Kante der Anschlaghand auf den Saiten, direkt vor dem Steg. Wenige Millimeter entscheiden: zu weit zum Hals hin erstickt der Ton zum Klacken, zu weit auf dem Steg wird er gar nicht gedämpft.",
+    frage: {
+      art: "auswahl",
+      text: "Wo liegt die Hand beim Palm Mute?",
+      auswahl: [
+        "auf den Saiten, direkt vor dem Steg",
+        "auf den Saiten über dem Hals",
+        "neben den Saiten auf dem Korpus",
+        "auf dem Tonabnehmer am Hals",
+      ],
+      richtig: ["auf den Saiten, direkt vor dem Steg"],
+    },
+    technique: "palm-mute",
+  },
+  {
+    id: "x-dead-note-tab",
+    stufe: 6,
+    begriff: "Dead Notes in der Tabulatur",
+    erklaerung:
+      "Wo in der Tabulatur ein x statt einer Bundzahl steht, wird die Saite angeschlagen, aber nicht gegriffen — die Greifhand liegt nur lose darauf. Heraus kommt ein Klacken ohne Ton, das den Rhythmus trägt.",
+    frage: {
+      art: "eingabe",
+      text: "Welches Zeichen steht in einer Tabulatur für eine Dead Note?",
+      richtig: ["x"],
+    },
+    technique: "dead-notes",
+  },
+  {
+    id: "x-inside-picking",
+    stufe: 6,
+    begriff: "Saitenwechsel im Wechselschlag",
+    erklaerung:
+      "Wechselt der Ton auf eine Nachbarsaite, kommt es darauf an, in welche Richtung der letzte Anschlag ging. Beim Inside Picking schlägt das Plektrum zwischen den beiden Saiten an, beim Outside Picking muss es von aussen um beide herum. Welche Variante sich leichter anfühlt, ist von Hand zu Hand verschieden — gerade deshalb lohnt es sich, beide bewusst zu üben.",
+    frage: {
+      art: "auswahl",
+      text: "Was heisst Inside Picking beim Saitenwechsel?",
+      auswahl: [
+        "das Plektrum schlägt zwischen den beiden Saiten an",
+        "das Plektrum geht von aussen um beide Saiten herum",
+        "auf beiden Saiten nur Abschläge",
+        "die Saite wird mit der Greifhand angeschlagen",
+      ],
+      richtig: ["das Plektrum schlägt zwischen den beiden Saiten an"],
+    },
+    technique: "alternate-picking",
+  },
+  {
+    id: "x-sieben-stimmen",
+    stufe: 6,
+    begriff: "Die siebte Saite stimmen",
+    erklaerung:
+      "Die tiefe B-Saite liegt eine Quarte unter der E-Saite, wie alle tiefen Saiten zueinander. Im 5. Bund klingt sie deshalb wie die leere tiefe E-Saite — dieselbe Regel wie beim Stimmen nach Gehör, nur eine Saite weiter unten.",
+    frage: {
+      art: "eingabe",
+      text: "In welchem Bund der tiefen B-Saite klingt derselbe Ton wie die leere tiefe E-Saite?",
+      richtig: ["5", "fünf", "fuenf"],
+    },
+  },
+  {
+    id: "x-drop-c",
+    stufe: 6,
+    begriff: "Drop C",
+    erklaerung:
+      "Drop C ist Drop D einen Ganzton tiefer: alle Saiten zwei Halbtöne runter, die tiefste noch einmal zwei. Von tief nach hoch C G C F A D. Die Griffe bleiben die aus Drop D, nur klingt alles tiefer — und die Saiten müssen dicker werden, damit sie nicht schlackern.",
+    frage: {
+      art: "auswahl",
+      text: "Welche Töne hat Drop C, von der tiefsten zur höchsten Saite?",
+      auswahl: ["C G C F A D", "C A D G B E", "D A D G B E", "C F Bb Eb G C"],
+      richtig: ["C G C F A D"],
+    },
+  },
+  {
+    id: "x-breakdown",
+    stufe: 6,
+    begriff: "Breakdown",
+    erklaerung:
+      "Ein Breakdown nimmt die Melodie weg und lässt den Rhythmus übrig: tiefe, gedämpfte Anschläge auf der Leersaite, Pausen, die genauso zählen wie die Töne, und oft ein Half-Time-Feel darunter. Er wirkt langsamer, obwohl das Tempo oft dasselbe bleibt.",
+    frage: {
+      art: "auswahl",
+      text: "Was macht einen Breakdown aus?",
+      auswahl: [
+        "der Rhythmus tritt vor, die Melodie zurück",
+        "ein schnelles Solo über dem Riff",
+        "ein Tonartwechsel nach oben",
+        "das Schlagzeug setzt aus",
+      ],
+      richtig: ["der Rhythmus tritt vor, die Melodie zurück"],
+    },
+    technique: "palm-mute",
+  },
+  {
+    id: "x-tritonus-e",
+    stufe: 6,
+    begriff: "Der Tritonus über E",
+    erklaerung:
+      "Sechs Halbtöne über E liegt A#, gleichbedeutend Bb — auf der tiefen E-Saite im 6. Bund. Ein Riff, das von der leeren E-Saite dorthin springt und wieder zurück, ist eines der ältesten Mittel, im Metal Bedrohung herzustellen.",
+    frage: {
+      art: "eingabe",
+      text: "Grundton E: welcher Ton liegt einen Tritonus darüber?",
+      richtig: ["A#", "Bb"],
+    },
   },
 ]
 
