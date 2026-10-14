@@ -1,4 +1,5 @@
 import { isDue, newCard, review, retrievability, type CardState } from "./fsrs"
+import { istHalsAntwort } from "./hals-id"
 import type { TheoryAnswer, TheoryCard, TheoryLog } from "./types"
 
 /**
@@ -118,13 +119,16 @@ export function theorieStand(
     (card) => (stand.get(card.id)!.stability ?? 0) >= SITZT_AB_TAGEN,
   ).length
   const faellig = bekannt.filter((card) => isDue(stand.get(card.id)!, now)).length
-  const richtig = log.answers.filter((antwort) => antwort.correct).length
+  // Only knowledge cards: the fretboard trainer answers into the same log,
+  // and a hundred quick taps on the E string would bury the hit rate.
+  const karten = log.answers.filter((antwort) => !istHalsAntwort(antwort))
+  const richtig = karten.filter((antwort) => antwort.correct).length
 
   return {
     angefangen: bekannt.length,
     sitzen,
     faellig,
-    trefferquote: log.answers.length === 0 ? null : richtig / log.answers.length,
+    trefferquote: karten.length === 0 ? null : richtig / karten.length,
   }
 }
 

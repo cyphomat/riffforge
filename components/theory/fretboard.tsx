@@ -44,9 +44,20 @@ export interface FretboardProps {
   loesung?: Griff[]
   /** Null schaltet das Antippen ab — nach dem Auflösen. */
   onPick?: ((griff: Griff) => void) | null
+  /**
+   * Eine Stelle, nach deren Namen gefragt wird. Sie trägt ein Fragezeichen,
+   * keinen Namen — sonst stünde die Antwort auf der Frage.
+   */
+  frage?: Griff | null
+  /**
+   * Der Stand je Stelle, als kleiner Punkt unter allem anderen: grün hält
+   * eine Woche, Rost wackelt noch, ohne Punkt ist sie neu. Schlüssel ist
+   * `saite-bund`.
+   */
+  karte?: Map<string, "neu" | "wackelt" | "sitzt">
 }
 
-export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: FretboardProps) {
+export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, karte }: FretboardProps) {
   const breite = RAND_LINKS + BUENDE * BREITE + 12
   const hoehe = RAND_OBEN + 6 * HOEHE + 6
 
@@ -139,6 +150,38 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick }: Fretboard
             {bund}
           </text>
         ))}
+
+        {karte &&
+          [1, 2, 3, 4, 5, 6].map((saite) =>
+            Array.from({ length: BUENDE }, (_, i) => i + 1).map((bund) => {
+              const zustand = karte.get(`${saite}-${bund}`)
+              if (!zustand || zustand === "neu") return null
+              return (
+                <circle
+                  key={`k-${saite}-${bund}`}
+                  cx={x(bund)}
+                  cy={y(saite)}
+                  r={6}
+                  fill={zustand === "sitzt" ? "var(--gruen)" : "var(--rost)"}
+                />
+              )
+            }),
+          )}
+
+        {frage && (
+          <g>
+            <circle cx={x(frage.bund)} cy={y(frage.saite)} r={15} fill="var(--akzent)" />
+            {/* Nach dem Auflösen steht der Name drin, vorher die Frage. */}
+            <text
+              x={x(frage.bund)}
+              y={y(frage.saite) + 4}
+              textAnchor="middle"
+              className="fill-(--bg) font-mono text-[12px] font-bold"
+            >
+              {aufgeloest ? noteAt(frage) : "?"}
+            </text>
+          </g>
+        )}
 
         {/* Trefferflächen: gross genug für einen Daumen, unsichtbar. */}
         {[1, 2, 3, 4, 5, 6].map((saite) =>

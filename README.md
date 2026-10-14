@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1025%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1039%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -418,6 +418,28 @@ werden sie aus Obertönen statt als Aufnahme oder Saitenmodell: so liegt die
 Tonhöhe genau dort, wo sie soll — nachgemessen mit demselben YIN wie im
 Stimmgerät, auf unter zwei Cent über den ganzen Bereich von A2 bis E5.
 
+### Den Hals lernen
+
+Unter *Griffbrett* — auf *Heute* bei den Nebenwegen und auf *Wissen* — liegt
+ein eigener Trainer für das, was jede Theorie auf der Gitarre voraussetzt: zu
+wissen, wo welcher Ton liegt. Zwei Richtungen, weil es zwei Fähigkeiten sind:
+**Ton finden** (F# auf der A-Saite — tippen) und **Ton benennen** (eine Stelle
+leuchtet — welcher Ton?). Eine Runde sind zwölf Stellen, rund zwei Minuten, auf
+einer Saite, auf E und A oder auf allen.
+
+Jede der zweiundsiebzig Stellen ist in jeder Richtung eine eigene Karte mit
+eigener Wiederholung, nach demselben FSRS wie die Wissenskarten. Was hakt,
+kommt früher wieder; Neues kommt in einer sinnvollen Reihenfolge, Stammtöne
+und tiefe Bünde zuerst. Gezählt wird auch die Zeit: unter zweieinhalb Sekunden
+ist eine Stelle flink, über sechs zäh — wer suchen muss, kennt sie noch nicht
+ganz, und eine zähe Antwort kommt früher wieder als eine flinke. Unter der
+Runde zeigt eine Karte des Halses, was sitzt, was wackelt und was noch neu ist.
+
+Die Antworten landen im selben Log wie die Wissensfragen und werden damit
+abgeglichen, gesichert und gelöscht wie alles andere. Als Wissenskarten zählen
+sie nicht: weder im Kartenstand noch in der Trefferquote noch für die
+Aufnäher.
+
 ## Was das Mikrofon hört
 
 Zuschaltbar in jedem Block. Sie hört **Anschläge, keine Tonhöhen** — bei
@@ -475,7 +497,7 @@ Anschlags ausgewertet.
 
 ## Stimmen
 
-Das Stimmgerät liegt auf *Heute* neben *Ein Lick* und *Sieben Saiten*, und im
+Das Stimmgerät liegt auf *Heute* neben *Ein Lick*, *Sieben Saiten* und *Griffbrett*, und im
 Sieben-Saiter-Modus steht *Erst stimmen* mit B Standard vorgewählt. Eine Saite
 anschlagen, klingen lassen: die Nadel zeigt Cent, die Lampe daneben *sitzt*,
 *zu tief* oder *zu hoch*, und eine Saite gilt als gestimmt, wenn sie eine

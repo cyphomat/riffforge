@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1025%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1039%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -413,6 +413,27 @@ built from harmonics rather than recorded or modelled as a string, so the
 pitch sits exactly where it should: measured with the same YIN the tuner uses,
 within two cents across the whole range from A2 to E5.
 
+### Learning the neck
+
+Under *Griffbrett* — among the side paths on *Heute* and on *Wissen* — there is
+a trainer of its own for what every bit of guitar theory takes for granted:
+knowing where each note is. Two directions, because they are two skills:
+**Ton finden** (F# on the A string — tap it) and **Ton benennen** (a spot
+lights up — which note?). A round is twelve places, about two minutes, on one
+string, on E and A, or on all of them.
+
+Each of the seventy-two places is a card of its own in each direction, with
+its own repetition from the same FSRS as the knowledge cards. What snags comes
+back sooner; new places arrive in a sensible order, natural notes and low
+frets first. Time counts too: under two and a half seconds a place is quick,
+over six it is slow — whoever has to search does not quite know it yet, and a
+slow answer comes back sooner than a quick one. Below the round, a map of the
+neck shows what holds, what wobbles and what is still new.
+
+The answers go into the same log as the knowledge questions, so they sync,
+back up and delete like everything else. They do not count as knowledge
+cards: not in the card count, not in the hit rate, and not for the patches.
+
 ## What the microphone hears
 
 Switchable on in any block. It listens for **attacks, not pitches** — with a
@@ -468,7 +489,7 @@ evaluated.
 
 ## Tuning
 
-The tuner sits on *Heute* next to *Ein Lick* and *Sieben Saiten*, and the
+The tuner sits on *Heute* next to *Ein Lick*, *Sieben Saiten* and *Griffbrett*, and the
 seven-string mode offers *Erst stimmen* with B standard preselected. Strike a
 string and let it ring: the needle shows cents, the lamp next to it *sitzt*
 (in tune), *zu tief* or *zu hoch*, and a string counts as tuned once it stays

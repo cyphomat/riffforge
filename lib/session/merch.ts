@@ -4,6 +4,7 @@ import { LEAD_DRILL_ID, SITZT_AB } from "./lead"
 import { dayKey, weekKey } from "./progress"
 import type { DrillResult, PracticeLog } from "./types"
 import { newCard, review, type CardState } from "@/lib/theory/fsrs"
+import { istHalsAntwort } from "@/lib/theory/hals-id"
 import { SITZT_AB_TAGEN } from "@/lib/theory/progress"
 import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 
@@ -255,8 +256,10 @@ export function aufnaeher(
   const gespielt = new Set(karten.filter((k) => k.frage.art === "gespielt").map((k) => k.id))
   const stand = new Map<string, CardState>()
   const sitzen = new Set<string>()
+  // Places on the neck from the fretboard trainer share the log but are not
+  // knowledge cards — "100 Karten sitzen" is not earned by finding F.
   const antworten = [...theorie.answers]
-    .filter((a) => !Number.isNaN(Date.parse(a.at)))
+    .filter((a) => !Number.isNaN(Date.parse(a.at)) && !istHalsAntwort(a))
     .sort((a, b) => a.at.localeCompare(b.at))
   for (const antwort of antworten) {
     const zeit = new Date(antwort.at)

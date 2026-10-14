@@ -72,6 +72,9 @@ Verschiedenes.
 | `lib/theory/gehoer.ts` | Hörfragen: Reihenfolge, Auswahl, die gewürfelten Tonpaare |
 | `lib/audio/zupfen.ts` | Ein gezupfter Ton aus Obertönen — rein, auf den Cent gemessen |
 | `components/theory/intervall-hoeren.tsx` | Spielt die zwei Töne einer Hörfrage |
+| `lib/theory/hals-trainer.ts` | Der Griffbrett-Trainer als Rechnung: 72 Stellen × 2 Richtungen, FSRS |
+| `lib/theory/hals-id.ts` | Das Präfix `hals-` — damit der Trainer nicht als Wissen zählt |
+| `components/theory/hals-trainer.tsx` | Der fünfte Eingang: Griffbrett-Trainer, `/griffbrett` |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
@@ -583,6 +586,24 @@ Komponente.
   ein Stück einer CAGED-Form" gilt auf G-, B- und e-Saite, auf den tiefen
   Saiten nicht immer. Die Karten sagen deshalb genau das, und der Test hält
   auch fest, dass die weitere Fassung falsch wäre.
+- **Der Griffbrett-Trainer schreibt in den Wissens-Log, zählt aber nicht als
+  Wissen.** Jede Stelle (Bund 1–12, sechs Saiten) ist in jeder Richtung —
+  *finden* und *benennen* — eine eigene FSRS-Karte. Im selben Log, weil
+  Abgleich, Sicherung und Löschen dann ohne einen neuen Schlüssel
+  mitkommen; der Preis ist, dass jede Zählung über den Theorie-Log die
+  Einträge mit `hals-` auslassen muss (`istHalsAntwort`). Ohne das hätten
+  dreissig gefundene Töne „10 Karten sitzen" verdient — `hals-trainer.test.ts`
+  macht genau diese Gegenprobe, für die Aufnäher und die Trefferquote. Wer
+  eine neue Zählung über `theorie.answers` schreibt, filtert dort auch.
+  Die Note kommt von der Uhr, nicht vom Spieler: falsch 1, über sechs
+  Sekunden 2, bis zweieinhalb 4, dazwischen 3 — eine Stelle, die man suchen
+  muss, kennt man noch nicht gut genug, um sie zu spielen. Neues kommt in
+  Lernreihenfolge (Stammtöne vor Kreuzen, tiefe Bünde zuerst), die Runde
+  wird danach gemischt, sonst liefe sie den Hals hinauf und verriete die
+  nächste Antwort. Falsches kommt am Ende der Runde noch einmal, ohne
+  Wertung. Auf *Heute* stehen die Nebenwege seitdem zwei mal zwei: vier
+  nebeneinander brachen die Wörter, auf 320 px und genauso in der linken
+  Spalte am breiten Schirm.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest

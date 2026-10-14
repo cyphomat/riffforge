@@ -113,6 +113,9 @@ export function KnowledgeOverview() {
               ? "Nichts fällig"
               : `${Math.min(RUNDE, faellig.length)} Fragen`}
           </button>
+          <Link href="/griffbrett" className="btn btn-ghost btn-small mt-[9px] w-full">
+            Griffbrett-Trainer — den Hals Stelle für Stelle
+          </Link>
         </section>
 
         <section>
