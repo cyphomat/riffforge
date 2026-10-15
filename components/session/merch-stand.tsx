@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdArrowBack } from "react-icons/md"
 import { asset } from "@/lib/base-path"
+import { SHIRT_GROESSE, shirtPixel } from "@/lib/session/shirt"
 import {
   type Aufnaeher,
   aufnaeher as berechneAufnaeher,
@@ -25,6 +26,28 @@ import { THEORY_CARDS } from "@/lib/theory/cards"
 export function datum(tag: string): string {
   const [jahr, monat, tagZahl] = tag.split("-").map(Number)
   return `${tagZahl}.${monat}.${jahr}`
+}
+
+/**
+ * Ein Tourshirt als Pixelbild. Gezeichnet als SVG aus Rechtecken: scharf in
+ * jeder Grösse, und die Rechnung dahinter steht in `lib/session/shirt.ts`.
+ */
+export function TourShirt({ name, groesse = 96 }: { name: string; groesse?: number }) {
+  return (
+    <svg
+      viewBox={`0 0 ${SHIRT_GROESSE} ${SHIRT_GROESSE}`}
+      width={groesse}
+      height={groesse}
+      shapeRendering="crispEdges"
+      role="img"
+      aria-label={`Tourshirt: ${name}`}
+      className="mx-auto block"
+    >
+      {shirtPixel(name).map((p, i) => (
+        <rect key={i} x={p.x} y={p.y} width={1} height={1} fill={p.farbe} />
+      ))}
+    </svg>
+  )
 }
 
 export function AufnaeherKachel({ a }: { a: Aufnaeher }) {
@@ -120,25 +143,31 @@ export function MerchStand() {
         {touren.length === 0 ? (
           <p className="text-[14px] text-dim">Die erste Tour beginnt mit der ersten Session.</p>
         ) : (
-          <div className="flex flex-col gap-[9px]">
+          <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
             {touren.map((tour) => (
-              <details key={`${tour.jahr}-${tour.quartal}`} className="info" open={tour.laufend}>
-                <summary>
-                  {tour.name} · Q{tour.quartal} {tour.jahr}
-                  {tour.laufend && " · läuft"}
-                </summary>
-                <div className="px-[15px] pb-4">
-                  <p className="ziffern text-[13px] text-muted">
-                    {tour.gigs.length} {tour.gigs.length === 1 ? "Gig" : "Gigs"} · {tour.minuten} Min
-                    {tour.siebenGigs > 0 && ` · ${tour.siebenGigs} auf sieben Saiten`}
-                    {tour.aufnaeher > 0 && ` · ${tour.aufnaeher} Aufnäher`}
-                  </p>
-                  {/* Der Rückendruck: die Tourdaten, wie auf einem echten Shirt. */}
-                  <p className="ziffern mt-2 text-[12px] leading-relaxed text-dim">
+              <div
+                key={`${tour.jahr}-${tour.quartal}`}
+                className={`border bg-panel p-3 ${tour.laufend ? "border-akzent" : "border-line"}`}
+              >
+                <TourShirt name={tour.name} />
+                <p className="display mt-2 text-[15px] leading-tight text-fg">{tour.name}</p>
+                <p className="kicker mt-1 text-dim">
+                  Q{tour.quartal} {tour.jahr}
+                  {tour.laufend && <span className="text-akzent"> · läuft</span>}
+                </p>
+                <p className="ziffern mt-2 text-[12px] text-muted">
+                  {tour.gigs.length} {tour.gigs.length === 1 ? "Gig" : "Gigs"} · {tour.minuten} Min
+                  {tour.siebenGigs > 0 && ` · ${tour.siebenGigs} auf sieben Saiten`}
+                  {tour.aufnaeher > 0 && ` · ${tour.aufnaeher} Aufnäher`}
+                </p>
+                {/* Der Rückendruck: die Tourdaten, wie auf einem echten Shirt. */}
+                <details className="mt-1">
+                  <summary className="cursor-pointer font-mono text-[11.5px] text-dim">Rückendruck</summary>
+                  <p className="ziffern mt-1 text-[11.5px] leading-relaxed text-dim">
                     {tour.gigs.map((tag) => datum(tag).replace(/\.\d{4}$/, "")).join(" · ")}
                   </p>
-                </div>
-              </details>
+                </details>
+              </div>
             ))}
           </div>
         )}

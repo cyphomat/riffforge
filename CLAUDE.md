@@ -626,6 +626,18 @@ Komponente.
   `minmax(0,1fr)`-Spalten. Nicht übernommen aus der Orga-App: Pixelfeuer,
   Ansager, Konsole und die Endgegner — Schmuck und HUD, und die vier
   Bauteile mit Grenze sind hier schon vergeben.
+  Die **Tourshirts** sind keine Dateien, sondern gerechnet
+  (`lib/session/shirt.ts`): ein 32 × 32 Schnitt, gespiegelt aus einer halben
+  Vorlage, Stofffarbe aus dem Adjektiv des Tournamens, 12 × 12 Druck aus dem
+  Nomen — zwölf mal zwölf Kombinationen wären 144 Bilder. Gezeichnet als SVG
+  aus Rechtecken (`TourShirt`), deshalb gilt die Ganzzahl-Regel dort nicht.
+  `shirt.test.ts` geht fünfzig Jahre Tournamen durch und verlangt, dass jeder
+  ohne Ausweichen auf Farbe und Motiv fällt — wer `ADJEKTIVE` oder `NOMEN` in
+  `merch.ts` erweitert, zeichnet das Motiv mit. Die Farben dort sind Stoff,
+  nicht App-Palette, und stehen deshalb als Hex-Werte im Bild.
+  Steigt eine Session den Rang, zeigt der Abschluss (`SessionSummary`, also
+  Session und Sieben-Saiter-Modus) die neue Bühne; `/lick` hat einen eigenen,
+  knappen Abschluss und zeigt sie nicht.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest

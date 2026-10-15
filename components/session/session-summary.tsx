@@ -7,7 +7,8 @@ import Link from "next/link"
 import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
 import { nextBpm, progressFor, streakWeeks } from "@/lib/session/progress"
 import { SITZT_AB } from "@/lib/session/lead"
-import { aufnaeher, neueAufnaeher, type Aufnaeher } from "@/lib/session/merch"
+import { aufnaeher, neueAufnaeher, rang, rangBild, type Aufnaeher, type Rang } from "@/lib/session/merch"
+import { asset } from "@/lib/base-path"
 import { loadProfile } from "@/lib/storage/profile"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
@@ -80,6 +81,9 @@ export function SessionSummary({
   // Was diese Session an Aufnähern gebracht hat — als Differenz zweier voller
   // Läufe, damit eine zweite Session am selben Tag nichts doppelt feiert.
   const [neu, setNeu] = useState<Aufnaeher[]>([])
+  // Ein neuer Rang ist seltener als ein Aufnäher — alle paar Monate — und
+  // bekommt deshalb seine Bühne zu sehen. Dieselbe Vorher-nachher-Rechnung.
+  const [aufstieg, setAufstieg] = useState<Rang | null>(null)
   const [profil, setProfil] = useState<ReturnType<typeof loadProfile>>(null)
   useEffect(() => {
     const theorie = loadTheoryLog()
@@ -89,6 +93,9 @@ export function SessionSummary({
         aufnaeher(log, theorie, THEORY_CARDS),
       ),
     )
+    const vorher = rang(previousLog)
+    const nachher = rang(log)
+    setAufstieg(nachher.stufe > vorher.stufe ? nachher : null)
     setProfil(loadProfile())
   }, [previousLog, log, previousTheory])
   useEffect(() => {
@@ -167,6 +174,26 @@ export function SessionSummary({
           })}
         </ol>
       </div>
+
+      {aufstieg && (
+        <>
+          <h2 className="rule mb-3 mt-9">Neuer Rang</h2>
+          <div className="border border-akzent bg-panel p-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+            <img
+              src={asset(rangBild(aufstieg.id))}
+              alt={`Bühne: ${aufstieg.titel}`}
+              width={288}
+              height={144}
+              className="pixel mx-auto block h-auto w-[288px] max-w-full"
+            />
+            <p className="display mt-3 text-center text-[28px] leading-none text-fg">{aufstieg.titel}</p>
+            <p className="mt-2 text-center text-[13.5px] text-muted">
+              {aufstieg.wochen} Wochen mit mindestens einer Session. Der Rang fällt nie.
+            </p>
+          </div>
+        </>
+      )}
 
       {neu.length > 0 && (
         <>

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1045%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1050%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -300,7 +300,12 @@ imports their data gets the same vest back. Reached through the rank line on
   | Fretboard | 12, 36 and all 72 places that hold for a week when finding · *In- und auswendig*: all 72 when naming too |
 
 - **Tour shirts** — every quarter with practice is a tour with a fixed name,
-  the tour dates printed on the back.
+  the tour dates printed on the back. Each shirt is a pixel picture: the colour
+  comes from the first word of the name, the print from the second —
+  *Molten Distortion Tour* is dark red with a lightning bolt, *Black Amps Tour*
+  black with a cabinet.
+
+When a session moves the rank up, the summary shows the new stage.
 
 What the app cannot measure is not rewarded either: it does not know whether the
 notes were right, so there is no patch for that. What a device lacks — a
