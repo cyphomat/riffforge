@@ -22,6 +22,10 @@ describe("Die Bilder am Merch-Stand", () => {
     }
   })
 
+  it("haben eine Szene für den Willkommens-Schirm, 96 × 48", () => {
+    expect(groesse(datei("/bilder/willkommen.png"))).toEqual([96, 48])
+  })
+
   it("haben für jeden Rang eine Szene, 96 × 48", () => {
     for (const rang of RAENGE) {
       const pfad = datei(rangBild(rang.id))

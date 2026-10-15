@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { TechnikZeichen } from "@/components/session/technik-zeichen"
 import { DRILLS } from "@/lib/session/drills"
 import { SIEBEN_DRILLS } from "@/lib/session/drills-sieben"
 import { masteryOf, nextBpm, progressFor } from "@/lib/session/progress"
@@ -64,9 +65,14 @@ function Karte({
       className="group block border border-line bg-panel px-[15px] py-[13px] transition-colors hover:border-akzent"
     >
       <div className="flex items-baseline justify-between gap-3">
-        <div className="min-w-0">
-          <div className="display text-[18px] text-fg group-hover:text-akzent">{drill.title}</div>
-          <div className="kicker mt-0.5 text-dim">{TECHNIQUE_LABELS[drill.technique]}</div>
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="mt-[3px] text-muted">
+            <TechnikZeichen technique={drill.technique} />
+          </span>
+          <div className="min-w-0">
+            <div className="display text-[18px] text-fg group-hover:text-akzent">{drill.title}</div>
+            <div className="kicker mt-0.5 text-dim">{TECHNIQUE_LABELS[drill.technique]}</div>
+          </div>
         </div>
         <div className="flex-none text-right">
           <div className="ziffern text-[15px] font-bold text-akzent">

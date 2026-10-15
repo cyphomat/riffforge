@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1050%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1054%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -81,6 +81,11 @@ gescrollt werden muss:
   <img src="assets/screens/erster-start.png" alt="Die zwei Fragen beim ersten Start" width="300">
 </p>
 
+Davor kommt einmal der Willkommens-Schirm, mit einer Übungsecke am Abend als
+Pixelbild — das Handy auf dem Notenständer zeigt 15 — und den drei Antworten,
+die man vor dem ersten Tippen haben sollte: kein Konto, alles bleibt auf dem
+Gerät, mitgenommen wird über eine Datei.
+
 Zwei Fragen, danach nie wieder: **wo du stehst** und **was dich zuerst
 interessiert**. Beide ändern etwas Echtes — die erste setzt die Starttempi
 aller Drills, die zweite gewichtet, was zuerst drankommt.
@@ -154,7 +159,8 @@ heutigen Tag — aus dem Log, nicht aus dem Bauch.
 
 Zwanzig Stück. Das Tempo rechts ist Start → Ziel; wo du tatsächlich anfängst,
 hängt an deiner Antwort beim ersten Start, und wie es weitergeht an dem, was du
-spielst.
+spielst. In der App trägt jede Technik ein eigenes Pixelzeichen — Flamme fürs
+Warm-up, Hand für Palm Mute, das X der Dead Note.
 
 **Warm-up**
 

@@ -29,6 +29,33 @@ export function datum(tag: string): string {
 }
 
 /**
+ * Ein neuer Rang, mit seiner Bühne. Kommt alle paar Monate einmal — am
+ * Abschluss einer Session und nach einem Lick, überall dort, wo der Log
+ * gerade gewachsen ist.
+ */
+export function RangAufstieg({ rang }: { rang: Rang }) {
+  return (
+    <>
+      <h2 className="rule mb-3 mt-9">Neuer Rang</h2>
+      <div className="border border-akzent bg-panel p-3">
+        {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+        <img
+          src={asset(rangBild(rang.id))}
+          alt={`Bühne: ${rang.titel}`}
+          width={288}
+          height={144}
+          className="pixel mx-auto block h-auto w-[288px] max-w-full"
+        />
+        <p className="display mt-3 text-center text-[28px] leading-none text-fg">{rang.titel}</p>
+        <p className="mt-2 text-center text-[13.5px] text-muted">
+          {rang.wochen} Wochen mit mindestens einer Session. Der Rang fällt nie.
+        </p>
+      </div>
+    </>
+  )
+}
+
+/**
  * Ein Tourshirt als Pixelbild. Gezeichnet als SVG aus Rechtecken: scharf in
  * jeder Grösse, und die Rechnung dahinter steht in `lib/session/shirt.ts`.
  */

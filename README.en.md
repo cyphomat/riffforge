@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1050%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1054%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -87,6 +87,11 @@ scrolled while you play:
   <img src="assets/screens/erster-start.png" alt="The two questions on first launch" width="300">
 </p>
 
+Before that comes the welcome screen, once, with a practice corner at night as
+a pixel picture — the phone on the music stand reads 15 — and the three answers
+worth having before the first tap: no account, everything stays on the device,
+and it moves via a file.
+
 Two questions, then never again: **where you are** and **what interests you
 first**. Both change something real — the first sets the starting tempo of every
 drill, the second weights what comes up first.
@@ -157,7 +162,8 @@ today — from the log, not from a hunch.
 
 Twenty of them. The tempo on the right is start → target; where you actually
 begin depends on your answer at first launch, and where it goes depends on what
-you play.
+you play. In the app every technique carries its own pixel sign — a flame for
+the warm-up, a hand for palm muting, the X of a dead note.
 
 **Warm-up**
 

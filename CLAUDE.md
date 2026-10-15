@@ -84,6 +84,9 @@ Verschiedenes.
 | `components/session/sieben-runner.tsx` | Der dritte Eingang: zehn Minuten Siebensaitige |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
+| `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |
+| `lib/session/technik-zeichen.ts` | Ein 16 × 16 Pixelzeichen je Technik, für die Drill-Liste |
+| `public/merch/`, `public/bilder/` | Pixelkunst: Rangszenen, Aufnäher, Willkommens-Szene |
 | `lib/session/rueckblick.ts` | Der Rückblick: Wochen, Tempo und Streuung je Drill — aus dem Log |
 | `components/session/rueckblick.tsx` | Säulen und Linien dazu, jede Grafik auch als Tabelle |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
@@ -635,9 +638,15 @@ Komponente.
   ohne Ausweichen auf Farbe und Motiv fällt — wer `ADJEKTIVE` oder `NOMEN` in
   `merch.ts` erweitert, zeichnet das Motiv mit. Die Farben dort sind Stoff,
   nicht App-Palette, und stehen deshalb als Hex-Werte im Bild.
-  Steigt eine Session den Rang, zeigt der Abschluss (`SessionSummary`, also
-  Session und Sieben-Saiter-Modus) die neue Bühne; `/lick` hat einen eigenen,
-  knappen Abschluss und zeigt sie nicht.
+  Steigt der Rang, zeigt `RangAufstieg` die neue Bühne — im Abschluss
+  (`SessionSummary`, also Session und Sieben-Saiter-Modus) und nach einem
+  Lick in `/lick`, beides als Vorher-nachher-Rechnung über den Log.
+  Die **Technik-Zeichen** in der Drill-Liste (`lib/session/technik-zeichen.ts`,
+  16 × 16) sind die eine Pixelkunst mit App-Farben statt eigener: Strich in
+  `currentColor`, Akzent in `--stahl` — sie stehen in einer Bedienzeile und
+  folgen ihr, statt ein Bild mitzubringen. Der Willkommens-Schirm hat eine
+  eigene Szene (`public/bilder/willkommen.png`, Übungsecke am Abend, auf dem
+  Notenständer eine 15), dazugezeichnet in der Palette der Rangszenen.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest

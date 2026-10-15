@@ -7,13 +7,12 @@ import Link from "next/link"
 import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
 import { nextBpm, progressFor, streakWeeks } from "@/lib/session/progress"
 import { SITZT_AB } from "@/lib/session/lead"
-import { aufnaeher, neueAufnaeher, rang, rangBild, type Aufnaeher, type Rang } from "@/lib/session/merch"
-import { asset } from "@/lib/base-path"
+import { aufnaeher, neueAufnaeher, rang, type Aufnaeher, type Rang } from "@/lib/session/merch"
 import { loadProfile } from "@/lib/storage/profile"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import type { TheoryLog } from "@/lib/theory/types"
-import { AufnaeherKachel } from "@/components/session/merch-stand"
+import { AufnaeherKachel, RangAufstieg } from "@/components/session/merch-stand"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
 import { lastSynced } from "@/lib/sync/settings"
@@ -175,25 +174,7 @@ export function SessionSummary({
         </ol>
       </div>
 
-      {aufstieg && (
-        <>
-          <h2 className="rule mb-3 mt-9">Neuer Rang</h2>
-          <div className="border border-akzent bg-panel p-3">
-            {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
-            <img
-              src={asset(rangBild(aufstieg.id))}
-              alt={`Bühne: ${aufstieg.titel}`}
-              width={288}
-              height={144}
-              className="pixel mx-auto block h-auto w-[288px] max-w-full"
-            />
-            <p className="display mt-3 text-center text-[28px] leading-none text-fg">{aufstieg.titel}</p>
-            <p className="mt-2 text-center text-[13.5px] text-muted">
-              {aufstieg.wochen} Wochen mit mindestens einer Session. Der Rang fällt nie.
-            </p>
-          </div>
-        </>
-      )}
+      {aufstieg && <RangAufstieg rang={aufstieg} />}
 
       {neu.length > 0 && (
         <>

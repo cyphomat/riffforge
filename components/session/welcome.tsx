@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { MdArrowForward, MdFileUpload } from "react-icons/md"
 import { InstallPanel } from "@/components/session/install-panel"
+import { asset } from "@/lib/base-path"
 
 /**
  * Der erste Bildschirm überhaupt — einmal, dann nie wieder.
@@ -55,6 +56,16 @@ export function Welcome({ onStart, onImport }: WelcomeProps) {
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Eine Übungs-App für Metal-Gitarre. Starten, üben, fertig — und morgen wieder.
         </p>
+        {/* Die Übungsecke am Abend, das Handy auf dem Notenständer zeigt 15.
+            Pixelkunst wie im Merch-Stand: ganzzahlig, 3× und ab sm 4×. */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+        <img
+          src={asset("/bilder/willkommen.png")}
+          alt="Eine Übungsecke am Abend: Gitarre im Ständer, ein kleiner Verstärker, auf dem Notenständer leuchtet eine 15."
+          width={288}
+          height={144}
+          className="pixel mt-4 block h-auto w-[288px] max-w-full border border-line sm:w-[384px]"
+        />
       </section>
 
       <ul className="mt-6 border-t border-line">

@@ -5,8 +5,10 @@ import Link from "next/link"
 import { MdArrowBack, MdRefresh } from "react-icons/md"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { BoxPicker } from "@/components/session/box-picker"
+import { RangAufstieg } from "@/components/session/merch-stand"
 import { DRILLS_BY_ID } from "@/lib/session/drills"
 import { LEAD_DRILL_ID, SITZT_AB, mitLick, naechsterSeed, type LickBox } from "@/lib/session/lead"
+import { rang as berechneRang, type Rang } from "@/lib/session/merch"
 import { nextBpm, progressFor } from "@/lib/session/progress"
 import { startBpmFor } from "@/lib/session/profile"
 import { appendResults, loadLog } from "@/lib/storage/practice-log"
@@ -38,6 +40,7 @@ export function LickRunner() {
   const [phase, setPhase] = useState<Phase>("waehlen")
   const [bpm, setBpm] = useState<number | null>(null)
   const [zuletzt, setZuletzt] = useState<DrillResult | null>(null)
+  const [aufstieg, setAufstieg] = useState<Rang | null>(null)
 
   useEffect(() => {
     setBox(lickBox())
@@ -72,7 +75,11 @@ export function LickRunner() {
       at: new Date().toISOString(),
       timing: outcome.timing,
     }
-    appendResults([result])
+    // Der Rang vor und nach dem Eintrag — dieselbe Rechnung wie im Abschluss
+    // einer Session, damit ein Aufstieg über ein Lick nicht still passiert.
+    const vorher = berechneRang(loadLog())
+    const nachher = berechneRang(appendResults([result]))
+    setAufstieg(nachher.stufe > vorher.stufe ? nachher : null)
     setZuletzt(result)
     // Dieselbe Regel wie in der Session: „sitzt" heisst nächstes Lick.
     if (outcome.rating >= SITZT_AB) {
@@ -122,6 +129,8 @@ export function LickRunner() {
           </p>
         </section>
       )}
+
+      {phase === "fertig" && aufstieg && <RangAufstieg rang={aufstieg} />}
 
       <section className="mt-7">
         <BoxPicker box={box} onChange={waehle} />
