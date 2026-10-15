@@ -345,6 +345,18 @@ export function neueAufnaeher(vorher: Aufnaeher[], nachher: Aufnaeher[]): Aufnae
   return nachher.filter((a) => a.verdient && !alt.has(a.id))
 }
 
+/* ─────────────────────────────── Bilder ─────────────────────────────── */
+
+/**
+ * Pixel art from `public/merch/`: a 24×24 patch per ladder, a 96×48 scene
+ * per rank. One picture per ladder, not per step — the step is in the title,
+ * and twelve variations of the same microphone would say less, not more.
+ * `merch-bilder.test.ts` checks that every ladder and every rank has its file,
+ * at the size it is drawn for.
+ */
+export const aufnaeherBild = (gruppe: string) => `/merch/aufnaeher-${gruppe}.png`
+export const rangBild = (rangId: string) => `/merch/rang-${rangId}.png`
+
 /* ─────────────────────────────── Der Rang ─────────────────────────────── */
 
 /**

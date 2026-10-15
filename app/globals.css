@@ -465,6 +465,16 @@
   .aufnaeher.offen::after {
     display: none;
   }
+  /* Pixelkunst: scharfe Kanten statt weichgezeichneter Treppen. Gezeichnet
+     wird sie nur in ganzzahligen Vielfachen. */
+  .pixel {
+    image-rendering: pixelated;
+  }
+  /* Ein offener Aufnäher ist ein Umriss: das Motiv ist da, aber ohne Farbe. */
+  .aufnaeher.offen .pixel {
+    filter: grayscale(1) brightness(0.45);
+    opacity: 0.75;
+  }
 
   /* Der Setlist-Zettel am Abschluss — mit Gaffa-Tape an die Bühne
      geklebt. Gespielt und sauber ist durchgestrichen, wie auf einem echten

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { DRILLS } from "@/lib/session/drills"
 import { buildSession, tagesZufall } from "@/lib/session/builder"
-import { aufnaeher, rang as berechneRang, type Rang } from "@/lib/session/merch"
+import { asset } from "@/lib/base-path"
+import { aufnaeher, rang as berechneRang, rangBild, type Rang } from "@/lib/session/merch"
 import { kalenderwoche, wochen, type Woche } from "@/lib/session/rueckblick"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
@@ -217,11 +218,16 @@ export function PracticeOverview() {
       {hasHistory && merch && (
         <Link
           href="/merch"
-          className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+          className="mt-[9px] flex items-center justify-between gap-3 border border-line bg-panel py-2 pl-2 pr-[15px] transition-colors hover:border-akzent"
         >
-          <span className="flex items-baseline gap-2">
-            <span className="kicker text-dim">Rang</span>
-            <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
+          <span className="flex items-center gap-3">
+            {/* Die Bühne zum Rang, in Originalgrösse — klein, aber ganzzahlig. */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+            <img src={asset(rangBild(merch.rang.id))} alt="" width={96} height={48} className="pixel shrink-0" />
+            <span className="flex flex-col">
+              <span className="kicker text-dim">Rang</span>
+              <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
+            </span>
           </span>
           <span className="ziffern text-[12px] text-muted">{merch.aufnaeher} Aufnäher ›</span>
         </Link>

@@ -171,7 +171,7 @@ export function SessionSummary({
       {neu.length > 0 && (
         <>
           <h2 className="rule mb-3 mt-9">Neu auf der Kutte</h2>
-          <div className="grid grid-cols-2 gap-[9px]">
+          <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
             {neu.map((a) => (
               <AufnaeherKachel key={a.id} a={a} />
             ))}

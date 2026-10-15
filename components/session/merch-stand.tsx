@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdArrowBack } from "react-icons/md"
+import { asset } from "@/lib/base-path"
 import {
-  RAENGE,
-  REIHEN,
-  aufnaeher as berechneAufnaeher,
-  kutte,
-  rang as berechneRang,
-  touren as berechneTouren,
   type Aufnaeher,
+  aufnaeher as berechneAufnaeher,
+  aufnaeherBild,
+  kutte,
+  touren as berechneTouren,
+  RAENGE,
   type Rang,
+  rang as berechneRang,
+  rangBild,
+  REIHEN,
   type Tour,
 } from "@/lib/session/merch"
 import { loadLog } from "@/lib/storage/practice-log"
@@ -26,13 +29,20 @@ export function datum(tag: string): string {
 
 export function AufnaeherKachel({ a }: { a: Aufnaeher }) {
   return (
-    <div className={`aufnaeher ${a.verdient ? "verdient" : "offen"}`}>
-      <div className={`display text-[17px] leading-tight ${a.verdient ? "text-fg" : "text-muted"}`}>
-        {a.titel}
+    <div className={`aufnaeher ${a.verdient ? "verdient" : "offen"} min-w-0`}>
+      {/* 24 Pixel, doppelt gezeichnet: ganzzahlig, damit kein Pixel verschwimmt.
+          Über dem Text statt daneben — daneben blieben auf 320 px zwei Spalten
+          mit kaum fünfzig Pixeln für „Gitarrensolo". */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+      <img src={asset(aufnaeherBild(a.gruppe))} alt="" width={48} height={48} className="pixel mb-2" />
+      <div className="[overflow-wrap:anywhere]">
+        <div className={`display text-[17px] leading-tight ${a.verdient ? "text-fg" : "text-muted"}`}>
+          {a.titel}
+        </div>
+        <p className={`mt-1 text-[13px] leading-snug ${a.verdient ? "text-muted" : "text-dim"}`}>
+          {a.verdient ? `seit ${datum(a.verdient)}` : a.text}
+        </p>
       </div>
-      <p className={`mt-1 text-[13px] leading-snug ${a.verdient ? "text-muted" : "text-dim"}`}>
-        {a.verdient ? `seit ${datum(a.verdient)}` : a.text}
-      </p>
     </div>
   )
 }
@@ -75,6 +85,17 @@ export function MerchStand() {
             {rang.wochen} {rang.wochen === 1 ? "Woche" : "Wochen"} auf Tour
           </span>
           <h2 className="display mt-1 text-[44px] leading-none text-fg">{rang.titel}</h2>
+
+          {/* Die Bühne zum Rang — 96 × 48 Pixel, dreifach gezeichnet, ab
+              breiterem Schirm vierfach: ganzzahlig, sonst verschwimmt Pixelkunst. */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+          <img
+            src={asset(rangBild(rang.id))}
+            alt={`Bühne: ${rang.titel}`}
+            width={288}
+            height={144}
+            className="pixel mt-4 block h-auto w-[288px] max-w-full border border-line sm:w-[384px]"
+          />
 
           <div className="rangleiter mt-4" style={{ gridTemplateColumns: `repeat(${RAENGE.length}, 1fr)` }}>
             {RAENGE.map((r, i) => (
@@ -138,7 +159,7 @@ export function MerchStand() {
           return (
             <div key={reihe.id}>
               <p className="kicker mb-2 mt-5 text-dim">{reihe.titel}</p>
-              <div className="grid grid-cols-2 gap-[9px]">
+              <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
                 {hier.map((a) => (
                   <AufnaeherKachel key={a.id} a={a} />
                 ))}

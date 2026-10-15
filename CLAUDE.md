@@ -610,6 +610,22 @@ Komponente.
   Auf *Heute* stehen die Nebenwege seitdem zwei mal zwei: vier
   nebeneinander brachen die Wörter, auf 320 px und genauso in der linken
   Spalte am breiten Schirm.
+- **Pixelkunst nur ganzzahlig.** Rangszenen (96 × 48) und Aufnäher (24 × 24)
+  liegen in `public/merch/` und stammen aus Daniels eigener Orga-App, wo sie
+  zuerst gezeichnet wurden; die Szene *Hall of Fame* fehlte dort und ist in
+  derselben Palette dazugezeichnet. Ein Bild je **Leiter**, nicht je Stufe —
+  die Stufe steht im Titel. Gezeichnet wird nur in ganzen Vielfachen
+  (Aufnäher 2×, Szene 3× und ab `sm` 4×, auf *Heute* 1×) mit
+  `image-rendering: pixelated` (`.pixel`); krumme Faktoren verschmieren
+  Pixelkunst. Ein offener Aufnäher ist dasselbe Motiv grau und gedimmt.
+  `merch-bilder.test.ts` verlangt für jede Leiter und jeden Rang die Datei in
+  der richtigen Grösse. Das Bild steht in der Kachel **über** dem Text: daneben
+  liess es auf 320 px kaum fünfzig Pixel für „Gitarrensolo", und die Seite lief
+  über — das tat sie dort übrigens schon vorher um 8 px, weil `grid-cols-2`
+  Spalten auf ihren längsten Inhalt aufbläst; die Kacheln stehen deshalb in
+  `minmax(0,1fr)`-Spalten. Nicht übernommen aus der Orga-App: Pixelfeuer,
+  Ansager, Konsole und die Endgegner — Schmuck und HUD, und die vier
+  Bauteile mit Grenze sind hier schon vergeben.
 - **Gerade Achtel sind nicht abfragbar**, aus demselben Grund wie
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest
