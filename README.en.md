@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1061%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1072%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -300,7 +300,8 @@ imports their data gets the same vest back. Reached through the rank line on
   | Row | Patches |
   |---|---|
   | Stage | Debut · 10 to 250 gigs (days, not blocks) · streaks from 4 to 52 weeks · comeback after a two-week break |
-  | Craft | *Tight*: ten days with only clean blocks · *On the dot*: ten blocks with measured timing of 85 or better · *Target tempo*: one, three, ten drills clean at target |
+  | Craft | *Tight*, *Eingespielt*, *Wie aus einem Guss*: 10, 25, 50 days with only clean blocks · *On the dot*, *Im Raster*, *Studioreif*: 10, 50, 150 blocks with measured timing of 85 or better · *Target tempo*: one, three, ten drills clean at target |
+  | Techniques | A shield per technique — *Stahlhand*, *Chug*, *Galopp*, *Wall of Sound*, *Blizzard* and six more: played clean on five different days. The next one is the one you are closest to, and it says how many days are missing |
   | Lead | *Guitar solo*: the first lick checked off · 10 and 25 licks |
   | Seven strings | *The Seventh* · *Low End* — only visible once you have practised on seven strings |
   | Knowledge | 10 to 100 cards that hold for a week · *Sense of time*: the first played question answered right |
@@ -311,8 +312,14 @@ imports their data gets the same vest back. Reached through the rank line on
   comes from the first word of the name, the print from the second —
   *Molten Distortion Tour* is dark red with a lightning bolt, *Black Amps Tour*
   black with a cabinet.
+- **Festival shirts** — one for each rank from the rehearsal room on, long
+  sleeve with a sleeve print: demo tape, microphone, backstage pass, spotlight,
+  devil horns, gold record. The rank is the slowest thing in the app; a step up
+  the ladder is worth something to wear.
 
-When a session moves the rank up, the summary shows the new stage.
+When a session moves the rank up, the summary shows the new stage and the
+festival shirt that comes with it. The technique shields are computed, not
+drawn: the same sign as in the drill list, embroidered on cloth.
 
 What the app cannot measure is not rewarded either: it does not know whether the
 notes were right, so there is no patch for that. What a device lacks — a

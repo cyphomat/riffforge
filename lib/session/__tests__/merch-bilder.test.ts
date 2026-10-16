@@ -14,7 +14,8 @@ const datei = (pfad: string) => join(process.cwd(), "public", pfad)
 
 describe("Die Bilder am Merch-Stand", () => {
   it("haben für jede Leiter einen Aufnäher, 24 × 24", () => {
-    const gruppen = new Set(katalog({ mitSieben: true }).map((a) => a.gruppe))
+    // Technik-Aufnäher sind gerechnet, nicht gezeichnet — sie prüft technik-zeichen.test.ts.
+    const gruppen = new Set(katalog({ mitSieben: true }).filter((a) => !a.technik).map((a) => a.gruppe))
     for (const gruppe of gruppen) {
       const pfad = datei(aufnaeherBild(gruppe))
       expect(existsSync(pfad), gruppe).toBe(true)

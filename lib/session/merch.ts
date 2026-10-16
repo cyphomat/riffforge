@@ -2,7 +2,7 @@ import { ALLE_DRILLS_BY_ID } from "./drills"
 import { SIEBEN_DRILLS_BY_ID } from "./drills-sieben"
 import { LEAD_DRILL_ID, SITZT_AB } from "./lead"
 import { dayKey, weekKey } from "./progress"
-import type { DrillResult, PracticeLog } from "./types"
+import { TECHNIQUE_LABELS, type DrillResult, type PracticeLog, type Technique } from "./types"
 import { newCard, review, type CardState } from "@/lib/theory/fsrs"
 import { HALS_PREFIX, istHalsAntwort } from "@/lib/theory/hals-id"
 import { HALS_STELLEN } from "@/lib/theory/hals-trainer"
@@ -31,11 +31,12 @@ import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 /** Ein Tag als `YYYY-MM-DD`, lokal. */
 type Tag = string
 
-export type Reihe = "buehne" | "handwerk" | "lead" | "sieben" | "wissen" | "hals"
+export type Reihe = "buehne" | "handwerk" | "technik" | "lead" | "sieben" | "wissen" | "hals"
 
 export const REIHEN: Array<{ id: Reihe; titel: string }> = [
   { id: "buehne", titel: "Bühne" },
   { id: "handwerk", titel: "Handwerk" },
+  { id: "technik", titel: "Techniken" },
   { id: "lead", titel: "Lead" },
   { id: "sieben", titel: "Sieben Saiten" },
   { id: "wissen", titel: "Wissen" },
@@ -55,6 +56,11 @@ export interface Aufnaeher {
   text: string
   /** Der Tag, an dem er verdient wurde. Null: noch nicht. */
   verdient: Tag | null
+  /**
+   * Nur in der Reihe *Techniken*: das Motiv ist das Zeichen der Technik,
+   * gerechnet statt gezeichnet — elf Bilder aus einem Raster.
+   */
+  technik?: Exclude<Technique, "warmup">
 }
 
 /* ───────────────────────────── Schwellen ───────────────────────────── */
@@ -70,8 +76,10 @@ export const HALS_STUFEN = [12, 36, HALS_STELLEN.length]
 /** Ab so vielen Tagen ohne Übung ist ein Wiederanfang ein Comeback. */
 export const COMEBACK_PAUSE_TAGE = 14
 
-/** Wie viele Tage mit lauter sauberen Blöcken es für „Tight" braucht. */
-export const TIGHT_N = 10
+/** Tage mit lauter sauberen Blöcken — „Tight", dann „Eingespielt", dann „Wie aus einem Guss". */
+export const TIGHT_STUFEN = [10, 25, 50]
+export const TIGHT_N = TIGHT_STUFEN[0]
+const TIGHT_TITEL = ["Tight", "Eingespielt", "Wie aus einem Guss"]
 
 /**
  * Ab welchem gemessenen Timing ein Block „auf den Punkt" war.
@@ -81,7 +89,34 @@ export const TIGHT_N = 10
  * Aussage liefen auseinander; ein Test hält sie zusammen.
  */
 export const AUF_DEN_PUNKT_AB = 85
-export const AUF_DEN_PUNKT_N = 10
+/** Gemessene Blöcke ab dieser Schwelle — „Auf den Punkt", „Im Raster", „Studioreif". */
+export const AUF_DEN_PUNKT_STUFEN = [10, 50, 150]
+export const AUF_DEN_PUNKT_N = AUF_DEN_PUNKT_STUFEN[0]
+const AUF_DEN_PUNKT_TITEL = ["Auf den Punkt", "Im Raster", "Studioreif"]
+
+/**
+ * Ein Aufnäher je Technik: an so vielen *verschiedenen* Tagen ein Drill
+ * dieser Technik, sauber gespielt. Tage statt Blöcke, damit es Regelmässigkeit
+ * misst und nicht einen langen Abend; sauber statt Zieltempo, weil das
+ * Zieltempo schon seine eigene Leiter hat und Monate weit weg liegen kann.
+ */
+export const TECHNIK_TAGE = 5
+
+/** Die Namen auf den Technik-Aufnähern. Das Warm-up hat keinen: es kommt in jeder Session. */
+export const TECHNIK_TITEL: Record<Exclude<Technique, "warmup">, string> = {
+  "power-chords": "Wall of Sound",
+  "palm-mute": "Chug",
+  downpicking: "Stahlhand",
+  gallop: "Galopp",
+  "alternate-picking": "Wechselschlag",
+  pentatonic: "Pentatonik",
+  bending: "Bendmeister",
+  legato: "Hammer & Pull",
+  slides: "Rutschpartie",
+  "dead-notes": "Dead Notes",
+  tremolo: "Blizzard",
+}
+const TECHNIKEN = Object.keys(TECHNIK_TITEL) as Array<keyof typeof TECHNIK_TITEL>
 
 /* ─────────────────────────────── Hilfen ─────────────────────────────── */
 
@@ -147,13 +182,24 @@ export function katalog({ mitSieben }: { mitSieben: boolean }): Omit<Aufnaeher, 
   }
   p("comeback", "buehne", "comeback", "Comeback", `Nach mindestens ${COMEBACK_PAUSE_TAGE} Tagen Pause wieder angefangen.`)
 
-  p("tight", "handwerk", "tight", "Tight", `${TIGHT_N} Tage, an denen jeder Block mindestens sauber lief.`)
-  p(
-    "auf-den-punkt",
-    "handwerk",
-    "auf-den-punkt",
-    "Auf den Punkt",
-    `${AUF_DEN_PUNKT_N} Blöcke mit gemessenem Timing ${AUF_DEN_PUNKT_AB} oder besser.`,
+  // Die erste Stufe behält ihre alte Nummer, damit nichts doppelt gefeiert wird.
+  TIGHT_STUFEN.forEach((n, i) =>
+    p(
+      i === 0 ? "tight" : `tight-${n}`,
+      "handwerk",
+      "tight",
+      TIGHT_TITEL[i],
+      `${n} Tage, an denen jeder Block mindestens sauber lief.`,
+    ),
+  )
+  AUF_DEN_PUNKT_STUFEN.forEach((n, i) =>
+    p(
+      i === 0 ? "auf-den-punkt" : `auf-den-punkt-${n}`,
+      "handwerk",
+      "auf-den-punkt",
+      AUF_DEN_PUNKT_TITEL[i],
+      `${n} Blöcke mit gemessenem Timing ${AUF_DEN_PUNKT_AB} oder besser.`,
+    ),
   )
   for (const n of ZIELTEMPO_STUFEN) {
     p(
@@ -163,6 +209,17 @@ export function katalog({ mitSieben }: { mitSieben: boolean }): Omit<Aufnaeher, 
       n === 1 ? "Zieltempo" : `Zieltempo × ${n}`,
       n === 1 ? "Ein Drill sauber im Zieltempo." : `${n} verschiedene Drills sauber im Zieltempo.`,
     )
+  }
+
+  for (const technik of TECHNIKEN) {
+    out.push({
+      id: `technik-${technik}`,
+      reihe: "technik",
+      gruppe: "technik",
+      titel: TECHNIK_TITEL[technik],
+      text: `An ${TECHNIK_TAGE} Tagen ${TECHNIQUE_LABELS[technik]} sauber gespielt.`,
+      technik,
+    })
   }
 
   for (const n of LICK_STUFEN) {
@@ -250,19 +307,34 @@ export function aufnaeher(
   for (const r of ergebnisse) jeTag.set(tagVon(r), [...(jeTag.get(tagVon(r)) ?? []), r])
   let tight = 0
   for (const tag of tage) {
-    if (jeTag.get(tag)!.every((r) => r.rating >= SITZT_AB) && ++tight >= TIGHT_N) setze("tight", tag)
+    if (!jeTag.get(tag)!.every((r) => r.rating >= SITZT_AB)) continue
+    tight += 1
+    TIGHT_STUFEN.forEach((n, i) => tight >= n && setze(i === 0 ? "tight" : `tight-${n}`, tag))
   }
 
   let punktgenau = 0
+  const technikTage = new Map<Technique, Set<Tag>>()
   const imZiel = new Set<string>()
   let licks = 0
   const siebenTage = new Set<Tag>()
   for (const r of ergebnisse) {
     const tag = tagVon(r)
-    if (r.timing && r.timing.score >= AUF_DEN_PUNKT_AB && ++punktgenau >= AUF_DEN_PUNKT_N) {
-      setze("auf-den-punkt", tag)
+    if (r.timing && r.timing.score >= AUF_DEN_PUNKT_AB) {
+      punktgenau += 1
+      AUF_DEN_PUNKT_STUFEN.forEach(
+        (n, i) => punktgenau >= n && setze(i === 0 ? "auf-den-punkt" : `auf-den-punkt-${n}`, tag),
+      )
     }
     const drill = ALLE_DRILLS_BY_ID[r.drillId]
+    // The catalogue knows the technique; the entry's own field is the
+    // fallback for a drill this device does not have yet.
+    const technik = (drill?.technique ?? r.technique) as Technique
+    if (technik in TECHNIK_TITEL && r.rating >= SITZT_AB) {
+      const tageHier = technikTage.get(technik) ?? new Set<Tag>()
+      tageHier.add(tag)
+      technikTage.set(technik, tageHier)
+      if (tageHier.size >= TECHNIK_TAGE) setze(`technik-${technik}`, tag)
+    }
     if (drill && r.rating >= SITZT_AB && r.bpm >= drill.targetBpm) {
       imZiel.add(r.drillId)
       for (const n of ZIELTEMPO_STUFEN) if (imZiel.size >= n) setze(`zieltempo-${n}`, tag)
@@ -317,7 +389,26 @@ export function aufnaeher(
     }
   }
 
-  return kat.map((k) => ({ ...k, verdient: verdient[k.id] ?? null }))
+  const liste = kat.map((k) => ({ ...k, verdient: verdient[k.id] ?? null }))
+  // Techniques form one ladder with no fixed order. The outline on the vest
+  // is the one closest to done, and it says how far it is — the next patch
+  // should be the one this player is actually working on.
+  const fehlt = (a: Aufnaeher) => TECHNIK_TAGE - (technikTage.get(a.technik!)?.size ?? 0)
+  const technikListe = liste
+    .filter((a) => a.technik)
+    .map((a) =>
+      a.verdient || fehlt(a) === TECHNIK_TAGE
+        ? a
+        : { ...a, text: `${a.text} Noch ${fehlt(a)} ${fehlt(a) === 1 ? "Tag" : "Tage"}.` },
+    )
+    .sort(
+      (a, b) =>
+        (a.verdient ? 0 : 1) - (b.verdient ? 0 : 1) ||
+        (a.verdient ?? "").localeCompare(b.verdient ?? "") ||
+        fehlt(a) - fehlt(b),
+    )
+  let t = 0
+  return liste.map((a) => (a.technik ? technikListe[t++] : a))
 }
 
 /** Was an die Kutte kommt: alles Verdiente, und je Leiter der nächste Schritt. */
@@ -400,6 +491,39 @@ export function rang(log: PracticeLog): Rang {
       : null,
     anteil: naechster ? (wochen - jetzt.wochen) / (naechster.wochen - jetzt.wochen) : 1,
   }
+}
+
+/* ──────────────────────────── Festival-Shirts ──────────────────────────── */
+
+export interface FestivalShirt {
+  /** The rank it belongs to — also the key of its print in `shirt.ts`. */
+  id: string
+  titel: string
+  wochen: number
+  /** The day of the session that reached the rank. Null: not yet. */
+  verdient: Tag | null
+}
+
+/**
+ * A shirt for every rank reached after the first. The rank is the slowest
+ * thing in the app — months between steps —, and the tour shirts come once a
+ * quarter; a step up the ladder is worth something to wear. Counted exactly
+ * like `rang`: the day of the first session in the n-th week with one.
+ */
+export function festivalShirts(log: PracticeLog): FestivalShirt[] {
+  const ersteJeWoche = new Map<string, Tag>()
+  for (const r of chronologisch(log)) {
+    const woche = weekKey(new Date(r.at))
+    if (!ersteJeWoche.has(woche)) ersteJeWoche.set(woche, tagVon(r))
+  }
+  const wochen = [...ersteJeWoche.keys()].sort()
+  return RAENGE.slice(1).map((r) => ({
+    id: r.id,
+    // Durchgekoppelt, wie es im Deutschen gehört: Hall-of-Fame-Shirt.
+    titel: `${r.titel.replace(/ /g, "-")}-Shirt`,
+    wochen: r.wochen,
+    verdient: wochen.length >= r.wochen ? ersteJeWoche.get(wochen[r.wochen - 1])! : null,
+  }))
 }
 
 /* ────────────────────────────── Tourshirts ────────────────────────────── */

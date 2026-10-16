@@ -86,7 +86,7 @@ Verschiedenes.
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |
-| `lib/session/technik-zeichen.ts` | Ein 16 × 16 Pixelzeichen je Technik, für die Drill-Liste |
+| `lib/session/technik-zeichen.ts` | Ein 16 × 16 Pixelzeichen je Technik — für die Drill-Liste und gestickt als Technik-Wappen |
 | `public/merch/`, `public/bilder/` | Pixelkunst: Rangszenen, Aufnäher, Willkommens-Szene |
 | `lib/session/rueckblick.ts` | Der Rückblick: Wochen, Tempo und Streuung je Drill — aus dem Log |
 | `components/session/rueckblick.tsx` | Säulen und Linien dazu, jede Grafik auch als Tabelle |
@@ -668,7 +668,25 @@ Komponente.
   ohne Ausweichen auf Farbe und Motiv fällt — wer `ADJEKTIVE` oder `NOMEN` in
   `merch.ts` erweitert, zeichnet das Motiv mit. Die Farben dort sind Stoff,
   nicht App-Palette, und stehen deshalb als Hex-Werte im Bild.
-  Steigt der Rang, zeigt `RangAufstieg` die neue Bühne — im Abschluss
+  **Festival-Shirts** sind derselbe Bau mit einem zweiten Schnitt: Langarm
+  mit Lücke unter dem Arm und Ärmeldruck, eins je Rang ab dem Proberaum
+  (`festivalShirts`, `FESTIVAL` in `shirt.ts`). Sie sind die Antwort auf
+  „ein Shirt im Quartal ist zu wenig", ohne die Tour zu verdünnen: ein
+  Monats-Shirt wäre die Monats-Tour aus Roadie, die bewusst nicht
+  übernommen ist. Datiert wird wie der Rang — der erste Übungstag der
+  n-ten Woche.
+  Die **Technik-Wappen** (Reihe *Techniken*, eins je Technik ausser dem
+  Warm-up) sind ebenfalls gerechnet: `technikAufnaeher` stickt das
+  Technik-Zeichen auf ein 24 × 24 Wappen, mit Rand, Goldnaht und eigenem
+  Tuch je Technik. Ein Test verlangt, dass Rand und Naht nichts vom Zeichen
+  abschneiden. Verdient an **fünf verschiedenen Tagen** sauber — Tage, damit
+  es Regelmässigkeit misst und nicht einen langen Abend, und *sauber* statt
+  Zieltempo, weil das Zieltempo seine eigene Leiter hat und Monate weit weg
+  liegen kann. Alle elf sind eine Leiter, deshalb steht nur einer als
+  Umriss da: der, dem man am nächsten ist, mit „Noch N Tage". *Tight* und
+  *Auf den Punkt* haben Stufen bekommen (10/25/50 Tage, 10/50/150 Blöcke);
+  die erste Stufe behält ihre alte Nummer.
+  Steigt der Rang, zeigt `RangAufstieg` die neue Bühne und das Festival-Shirt — im Abschluss
   (`SessionSummary`, also Session und Sieben-Saiter-Modus) und nach einem
   Lick in `/lick`, beides als Vorher-nachher-Rechnung über den Log.
   Die **Technik-Zeichen** in der Drill-Liste (`lib/session/technik-zeichen.ts`,

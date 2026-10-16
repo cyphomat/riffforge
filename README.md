@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1061%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1072%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -299,7 +299,8 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   | Reihe | Aufnäher |
   |---|---|
   | Bühne | Debüt · 10 bis 250 Gigs (Tage, nicht Blöcke) · Serien von 4 bis 52 Wochen · Comeback nach zwei Wochen Pause |
-  | Handwerk | *Tight*: zehn Tage mit lauter sauberen Blöcken · *Auf den Punkt*: zehn Blöcke mit gemessenem Timing ab 85 · *Zieltempo*: ein, drei, zehn Drills sauber im Ziel |
+  | Handwerk | *Tight*, *Eingespielt*, *Wie aus einem Guss*: 10, 25, 50 Tage mit lauter sauberen Blöcken · *Auf den Punkt*, *Im Raster*, *Studioreif*: 10, 50, 150 Blöcke mit gemessenem Timing ab 85 · *Zieltempo*: ein, drei, zehn Drills sauber im Ziel |
+  | Techniken | Ein Wappen je Technik — *Stahlhand*, *Chug*, *Galopp*, *Wall of Sound*, *Blizzard* und sechs weitere: an fünf verschiedenen Tagen sauber gespielt. Der nächste ist der, dem du am nächsten bist, und er sagt, wie viele Tage fehlen |
   | Lead | *Gitarrensolo*: das erste abgehakte Lick · 10 und 25 Licks |
   | Sieben Saiten | *Die Siebte* · *Low End* — nur sichtbar, wenn je auf sieben Saiten geübt wurde |
   | Wissen | 10 bis 100 Karten, die eine Woche halten · *Taktgefühl*: die erste gespielte Frage richtig |
@@ -309,8 +310,14 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   auf dem Rücken die Tourdaten. Jedes Shirt ist ein Pixelbild: die Farbe kommt
   vom ersten Wort des Namens, das Motiv vom zweiten — *Molten Distortion Tour*
   ist dunkelrot mit Blitz, *Black Amps Tour* schwarz mit Box.
+- **Festival-Shirts** — eins für jeden Rang ab dem Proberaum, als Langarm mit
+  Ärmeldruck: Demo-Tape, Mikrofon, Backstage-Pass, Scheinwerfer, Pommesgabel,
+  goldene Schallplatte. Der Rang ist das Langsamste in der App; ein Schritt
+  auf der Leiter ist etwas zum Anziehen wert.
 
-Steigt eine Session den Rang hoch, zeigt der Abschluss die neue Bühne.
+Steigt eine Session den Rang hoch, zeigt der Abschluss die neue Bühne und das
+Festival-Shirt dazu. Die Technik-Wappen sind nicht gezeichnet, sondern
+gerechnet: dasselbe Zeichen wie in der Drill-Liste, auf Tuch gestickt.
 
 Was die App nicht messen kann, wird auch nicht belohnt: ob die Töne sassen,
 weiss sie nicht, und dafür gibt es keinen Aufnäher. Was ein Gerät nicht hat —

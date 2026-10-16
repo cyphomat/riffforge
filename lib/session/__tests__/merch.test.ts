@@ -2,10 +2,15 @@ import { describe, expect, it } from "vitest"
 import {
   AUF_DEN_PUNKT_AB,
   AUF_DEN_PUNKT_N,
+  AUF_DEN_PUNKT_STUFEN,
   COMEBACK_PAUSE_TAGE,
   RAENGE,
+  TECHNIK_TAGE,
+  TECHNIK_TITEL,
   TIGHT_N,
+  TIGHT_STUFEN,
   aufnaeher,
+  festivalShirts,
   katalog,
   kutte,
   neueAufnaeher,
@@ -124,6 +129,46 @@ describe("Aufnäher", () => {
     expect(verdient(aufnaeher(log(...genau)), "auf-den-punkt")).not.toBeNull()
   })
 
+  it("stuft Tight und Auf den Punkt, und die erste Stufe behält ihre Nummer", () => {
+    const [, mitte, oben] = TIGHT_STUFEN
+    const sauber = tage("2026-01-01", mitte).map((t) => r(t))
+    const liste = aufnaeher(log(...sauber))
+    expect(verdient(liste, "tight")).toBe(tage("2026-01-01", TIGHT_N).at(-1))
+    expect(verdient(liste, `tight-${mitte}`)).toBe(tage("2026-01-01", mitte).at(-1))
+    expect(verdient(liste, `tight-${oben}`)).toBeNull()
+
+    const [, punktMitte] = AUF_DEN_PUNKT_STUFEN
+    const gemessen = tage("2026-01-01", punktMitte).map((t) => r(t, { score: AUF_DEN_PUNKT_AB }))
+    expect(verdient(aufnaeher(log(...gemessen)), `auf-den-punkt-${punktMitte}`)).toBe(
+      tage("2026-01-01", punktMitte).at(-1),
+    )
+    // Eine Leiter, ein Bild: alle Stufen hängen an derselben Gruppe.
+    expect(new Set(katalog({ mitSieben: false }).filter((a) => a.id.startsWith("tight")).map((a) => a.gruppe))).toEqual(
+      new Set(["tight"]),
+    )
+  })
+
+  it("gibt jeder Technik ihren Aufnäher — an verschiedenen Tagen sauber, nicht an einem langen Abend", () => {
+    const id = `technik-${TECH.technique}`
+    const fuenf = tage("2026-03-01", TECHNIK_TAGE).map((t) => r(t))
+    expect(verdient(aufnaeher(log(...fuenf)), id)).toBe(tage("2026-03-01", TECHNIK_TAGE).at(-1))
+
+    const einAbend = Array.from({ length: TECHNIK_TAGE * 2 }, () => r("2026-03-01"))
+    expect(verdient(aufnaeher(log(...einAbend)), id)).toBeNull()
+
+    const zaeh = tage("2026-03-01", TECHNIK_TAGE).map((t, i) => r(t, { rating: i === 0 ? 1 : 3 }))
+    expect(verdient(aufnaeher(log(...zaeh)), id)).toBeNull()
+  })
+
+  it("hat für jede gespielte Technik einen Aufnäher, nur fürs Warm-up nicht", () => {
+    const technik = katalog({ mitSieben: true }).filter((a) => a.technik)
+    expect(technik.map((a) => a.technik)).not.toContain("warmup")
+    for (const drill of [...DRILLS, ...SIEBEN_DRILLS].filter((d) => d.technique !== "warmup")) {
+      expect(technik.some((a) => a.technik === drill.technique), drill.id).toBe(true)
+    }
+    expect(new Set(Object.values(TECHNIK_TITEL)).size).toBe(Object.keys(TECHNIK_TITEL).length)
+  })
+
   it("zählt das Zieltempo nur sauber gespielt, und je Drill einmal", () => {
     const schnellAberZaeh = r("2026-03-02", { bpm: TECH.targetBpm, rating: 1 })
     expect(verdient(aufnaeher(log(schnellAberZaeh)), "zieltempo-1")).toBeNull()
@@ -201,6 +246,19 @@ describe("Kutte", () => {
     expect(new Set(naechste.map((a) => a.gruppe)).size).toBe(naechste.length)
   })
 
+  it("zeigt als nächsten Technik-Aufnäher den, der am nächsten ist, und sagt wie nah", () => {
+    const andere = DRILLS.find((d) => d.kind === "technique" && d.technique !== TECH.technique)!
+    const liste = aufnaeher(
+      log(
+        ...tage("2026-03-01", TECHNIK_TAGE - 1).map((t) => r(t)),
+        r("2026-03-01", { drillId: andere.id }),
+      ),
+    )
+    const naechster = kutte(liste).naechste.find((a) => a.gruppe === "technik")!
+    expect(naechster.technik).toBe(TECH.technique)
+    expect(naechster.text).toMatch(/Noch 1 Tag\.$/)
+  })
+
   it("feiert nach einer Session nur, was sie neu gebracht hat", () => {
     const vorher = aufnaeher(log(r("2026-03-02")))
     const nachher = aufnaeher(log(r("2026-03-02"), r("2026-03-02")))
@@ -231,6 +289,24 @@ describe("Rang", () => {
 
   it("hat aufsteigende Schwellen", () => {
     for (let i = 1; i < RAENGE.length; i += 1) expect(RAENGE[i].wochen).toBeGreaterThan(RAENGE[i - 1].wochen)
+  })
+})
+
+describe("Festival-Shirts", () => {
+  it("kommen mit dem Rang, am Tag der Session, die ihn erreicht hat", () => {
+    // Vier Wochen, je ein Montag und ein Donnerstag.
+    const tageListe = ["2026-03-02", "2026-03-05", "2026-03-09", "2026-03-12", "2026-03-16", "2026-03-19", "2026-03-23"]
+    const shirts = festivalShirts(log(...tageListe.map((t) => r(t))))
+    expect(shirts.map((s) => s.id)).toEqual(RAENGE.slice(1).map((r) => r.id))
+    expect(shirts[0]).toMatchObject({ id: "proberaum", titel: "Proberaum-Shirt", verdient: "2026-03-23" })
+    expect(shirts[1].verdient).toBeNull()
+    expect(rang(log(...tageListe.map((t) => r(t)))).id).toBe("proberaum")
+    expect(shirts.at(-1)!.titel).toBe("Hall-of-Fame-Shirt")
+  })
+
+  it("gibt es für die Garage nicht — die hat jeder", () => {
+    expect(festivalShirts(log()).every((s) => s.verdient === null)).toBe(true)
+    expect(festivalShirts(log()).map((s) => s.id)).not.toContain("garage")
   })
 })
 

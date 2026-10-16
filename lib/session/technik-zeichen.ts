@@ -242,3 +242,92 @@ export const TECHNIK_ZEICHEN: Record<Technique, string[]> = {
     "................",
   ],
 }
+
+/* ─────────────────────────── Als Aufnäher ─────────────────────────── */
+
+/** The patch is a 24 × 24 shield, the size of the drawn patches in `public/merch/`. */
+export const AUFNAEHER_GROESSE = 24
+
+/**
+ * Cloth by technique. Dark, as the drawn patches are, and different from one
+ * another — eleven patches in one colour would be one patch eleven times.
+ * Like the tour shirts these are the picture's own colours, not the app's.
+ */
+const TUCH: Record<Exclude<Technique, "warmup">, string> = {
+  "power-chords": "#4a1612",
+  "palm-mute": "#1c2d55",
+  downpicking: "#2a2a30",
+  gallop: "#3b2a1e",
+  "alternate-picking": "#133838",
+  pentatonic: "#2e2448",
+  bending: "#5a2210",
+  legato: "#1d3324",
+  slides: "#34404c",
+  "dead-notes": "#141416",
+  tremolo: "#262a44",
+}
+/** Thread, from the drawn patches: cream for the motif, gold for the stitching. */
+const RAND = "#0a0a0a"
+const GARN = "#f2e2a8"
+const GOLD = "#d8b44a"
+
+/** Half the width of the shield in each row: straight sides, a point at the bottom. */
+const halbeBreite = (y: number) => (y === 0 ? 11 : y <= 18 ? 12 : 12 - (y - 18) * 2)
+
+const imSchild = (x: number, y: number) => {
+  if (y < 0 || y >= AUFNAEHER_GROESSE) return false
+  const w = halbeBreite(y)
+  return x >= 12 - w && x < 12 + w
+}
+
+export interface PatchPixel {
+  x: number
+  y: number
+  farbe: string
+}
+
+/**
+ * The technique sign as an embroidered patch: a dark rim, gold stitching one
+ * pixel in, the cloth, and the sign in the middle — `a` in cream thread, the
+ * accent in gold. Computed rather than drawn, so the eleven patches cannot
+ * drift from the signs in the drill list.
+ */
+export function technikAufnaeher(technik: Exclude<Technique, "warmup">): PatchPixel[] {
+  const pixel: PatchPixel[] = []
+  // Centred across; one pixel high of centre, so the sign sits in the straight
+  // part of the shield and the point stays cloth.
+  const links = (AUFNAEHER_GROESSE - ZEICHEN_GROESSE) / 2
+  const oben = links - 1
+  for (let y = 0; y < AUFNAEHER_GROESSE; y += 1) {
+    for (let x = 0; x < AUFNAEHER_GROESSE; x += 1) {
+      if (!imSchild(x, y)) continue
+      const nachbarn = [
+        [x - 1, y],
+        [x + 1, y],
+        [x, y - 1],
+        [x, y + 1],
+      ]
+      const rand = nachbarn.some(([nx, ny]) => !imSchild(nx, ny))
+      // Stitching: every other pixel of the ring just inside the rim.
+      const zweiterRing =
+        !rand &&
+        [
+          [x - 2, y],
+          [x + 2, y],
+          [x, y - 2],
+          [x, y + 2],
+          [x - 1, y - 1],
+          [x + 1, y - 1],
+          [x - 1, y + 1],
+          [x + 1, y + 1],
+        ].some(([nx, ny]) => !imSchild(nx, ny))
+      if (rand) pixel.push({ x, y, farbe: RAND })
+      else if (zweiterRing && (x + y) % 2 === 0) pixel.push({ x, y, farbe: GOLD })
+      else {
+        const zeichen = TECHNIK_ZEICHEN[technik][y - oben]?.[x - links]
+        pixel.push({ x, y, farbe: zeichen === "a" ? GARN : zeichen === "b" ? GOLD : TUCH[technik] })
+      }
+    }
+  }
+  return pixel
+}

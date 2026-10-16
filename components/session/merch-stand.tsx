@@ -4,11 +4,14 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdArrowBack } from "react-icons/md"
 import { asset } from "@/lib/base-path"
-import { SHIRT_GROESSE, shirtPixel } from "@/lib/session/shirt"
+import { festivalPixel, type Pixel, SHIRT_GROESSE, shirtPixel } from "@/lib/session/shirt"
+import { AUFNAEHER_GROESSE, technikAufnaeher } from "@/lib/session/technik-zeichen"
 import {
   type Aufnaeher,
   aufnaeher as berechneAufnaeher,
   aufnaeherBild,
+  type FestivalShirt,
+  festivalShirts as berechneFestivalShirts,
   kutte,
   touren as berechneTouren,
   RAENGE,
@@ -34,6 +37,7 @@ export function datum(tag: string): string {
  * gerade gewachsen ist.
  */
 export function RangAufstieg({ rang }: { rang: Rang }) {
+  const shirt = `${rang.titel.replace(/ /g, "-")}-Shirt`
   return (
     <>
       <h2 className="rule mb-3 mt-9">Neuer Rang</h2>
@@ -50,6 +54,12 @@ export function RangAufstieg({ rang }: { rang: Rang }) {
         <p className="mt-2 text-center text-[13.5px] text-muted">
           {rang.wochen} Wochen mit mindestens einer Session. Der Rang fällt nie.
         </p>
+        <div className="mt-3 flex items-center justify-center gap-3 border-t border-line pt-3">
+          <FestivalShirtBild id={rang.id} name={shirt} groesse={64} />
+          <p className="text-[13.5px] text-muted">
+            Dazu das <span className="text-fg">{shirt}</span> — liegt jetzt am Merch-Stand.
+          </p>
+        </div>
       </div>
     </>
   )
@@ -60,17 +70,40 @@ export function RangAufstieg({ rang }: { rang: Rang }) {
  * jeder Grösse, und die Rechnung dahinter steht in `lib/session/shirt.ts`.
  */
 export function TourShirt({ name, groesse = 96 }: { name: string; groesse?: number }) {
+  return <PixelBild pixel={shirtPixel(name)} seite={SHIRT_GROESSE} groesse={groesse} label={`Tourshirt: ${name}`} />
+}
+
+/** Ein Festival-Shirt: Langarm, Druck zum Rang. Die Rechnung steht in `lib/session/shirt.ts`. */
+export function FestivalShirtBild({ id, name, groesse = 96 }: { id: string; name: string; groesse?: number }) {
+  return <PixelBild pixel={festivalPixel(id)} seite={SHIRT_GROESSE} groesse={groesse} label={name} />
+}
+
+/** Rechtecke statt einer Datei — scharf in jeder Grösse. */
+function PixelBild({
+  pixel,
+  seite,
+  groesse,
+  label,
+  className = "mx-auto block",
+}: {
+  pixel: Pixel[]
+  seite: number
+  groesse: number
+  label?: string
+  className?: string
+}) {
   return (
     <svg
-      viewBox={`0 0 ${SHIRT_GROESSE} ${SHIRT_GROESSE}`}
+      viewBox={`0 0 ${seite} ${seite}`}
       width={groesse}
       height={groesse}
       shapeRendering="crispEdges"
-      role="img"
-      aria-label={`Tourshirt: ${name}`}
-      className="mx-auto block"
+      role={label ? "img" : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+      className={className}
     >
-      {shirtPixel(name).map((p, i) => (
+      {pixel.map((p, i) => (
         <rect key={i} x={p.x} y={p.y} width={1} height={1} fill={p.farbe} />
       ))}
     </svg>
@@ -83,8 +116,18 @@ export function AufnaeherKachel({ a }: { a: Aufnaeher }) {
       {/* 24 Pixel, doppelt gezeichnet: ganzzahlig, damit kein Pixel verschwimmt.
           Über dem Text statt daneben — daneben blieben auf 320 px zwei Spalten
           mit kaum fünfzig Pixeln für „Gitarrensolo". */}
-      {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
-      <img src={asset(aufnaeherBild(a.gruppe))} alt="" width={48} height={48} className="pixel mb-2" />
+      {a.technik ? (
+        // Technik-Aufnäher sind gerechnet: das Zeichen aus der Drill-Liste, gestickt.
+        <PixelBild
+          pixel={technikAufnaeher(a.technik)}
+          seite={AUFNAEHER_GROESSE}
+          groesse={48}
+          className="pixel mb-2 block"
+        />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer
+        <img src={asset(aufnaeherBild(a.gruppe))} alt="" width={48} height={48} className="pixel mb-2" />
+      )}
       <div className="[overflow-wrap:anywhere]">
         <div className={`display text-[17px] leading-tight ${a.verdient ? "text-fg" : "text-muted"}`}>
           {a.titel}
@@ -105,16 +148,28 @@ export function AufnaeherKachel({ a }: { a: Aufnaeher }) {
  * könnte. Warum es so gebaut ist, steht in `lib/session/merch.ts`.
  */
 export function MerchStand() {
-  const [stand, setStand] = useState<{ rang: Rang; liste: Aufnaeher[]; touren: Tour[] } | null>(null)
+  const [stand, setStand] = useState<{
+    rang: Rang
+    liste: Aufnaeher[]
+    touren: Tour[]
+    festival: FestivalShirt[]
+  } | null>(null)
 
   useEffect(() => {
     const log = loadLog()
     const liste = berechneAufnaeher(log, loadTheoryLog(), THEORY_CARDS)
-    setStand({ rang: berechneRang(log), liste, touren: berechneTouren(log, liste) })
+    setStand({
+      rang: berechneRang(log),
+      liste,
+      touren: berechneTouren(log, liste),
+      festival: berechneFestivalShirts(log),
+    })
   }, [])
 
   if (!stand) return null
-  const { rang, liste, touren } = stand
+  const { rang, liste, touren, festival } = stand
+  // Verdiente und das nächste als Umriss — wie an der Kutte, keine Reihe leerer Bügel.
+  const festivalHier = [...festival.filter((f) => f.verdient), ...festival.filter((f) => !f.verdient).slice(0, 1)]
   const { verdient, naechste } = kutte(liste)
 
   return (
@@ -198,6 +253,32 @@ export function MerchStand() {
             ))}
           </div>
         )}
+
+        <h2 className="rule mb-1 mt-9">Festival-Shirts</h2>
+        <p className="mb-3 text-[12.5px] text-dim">
+          Eins für jeden Rang. Langarm, damit man sie von den Tourshirts unterscheidet.
+        </p>
+        <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
+          {festivalHier.map((f) => (
+            <div key={f.id} className={`aufnaeher ${f.verdient ? "verdient" : "offen"} min-w-0`}>
+              <div className="pixel">
+                <FestivalShirtBild id={f.id} name={f.titel} />
+              </div>
+              <p
+                className={`display mt-2 text-[15px] leading-tight [overflow-wrap:anywhere] ${
+                  f.verdient ? "text-fg" : "text-muted"
+                }`}
+              >
+                {f.titel}
+              </p>
+              <p className={`mt-1 text-[13px] leading-snug ${f.verdient ? "text-muted" : "text-dim"}`}>
+                {f.verdient
+                  ? `seit ${datum(f.verdient)}`
+                  : `Ab ${f.wochen} Wochen — noch ${f.wochen - rang.wochen}.`}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="spalte">

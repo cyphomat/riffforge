@@ -258,10 +258,25 @@ export function shirtTeile(name: string): { stoff: string; motiv: string } {
 /** The pixels of one shirt, ready to be drawn as rectangles. */
 export function shirtPixel(name: string): Pixel[] {
   const { stoff, motiv } = shirtTeile(name)
-  const grund = STOFF[stoff]
   const zweite = ZWEITE[(Object.keys(STOFF).indexOf(stoff) + Object.keys(MOTIVE).indexOf(motiv)) % ZWEITE.length]
+  return zeichne(SCHNITT, STOFF[stoff], MOTIVE[motiv], TINTE, zweite)
+}
+
+/**
+ * One shirt from its parts: a cut, a dye, a print and two inks. Tour shirts
+ * and festival shirts differ in all four, but not in how cloth, fold, neck
+ * and print are laid on top of one another.
+ */
+function zeichne(
+  schnitt: string[],
+  grund: string,
+  motiv: string[],
+  tinte: string,
+  zweite: string,
+  aermel = false,
+): Pixel[] {
   const pixel: Pixel[] = []
-  const istStoff = (x: number, y: number) => SCHNITT[y]?.[x] === "#"
+  const istStoff = (x: number, y: number) => schnitt[y]?.[x] === "#"
 
   for (let y = 0; y < SHIRT_GROESSE; y += 1) {
     for (let x = 0; x < SHIRT_GROESSE; x += 1) {
@@ -281,11 +296,169 @@ export function shirtPixel(name: string): Pixel[] {
   // The print, centred on the chest.
   const links = 10
   const oben = 12
-  MOTIVE[motiv].forEach((zeile, dy) => {
+  motiv.forEach((zeile, dy) => {
     ;[...zeile].forEach((zeichen, dx) => {
-      if (zeichen === "a") pixel.push({ x: links + dx, y: oben + dy, farbe: TINTE })
+      if (zeichen === "a") pixel.push({ x: links + dx, y: oben + dy, farbe: tinte })
       if (zeichen === "b") pixel.push({ x: links + dx, y: oben + dy, farbe: zweite })
     })
   })
+  // A festival shirt has a stripe printed down each sleeve, in the second ink.
+  if (aermel) {
+    for (let y = 14; y <= 22; y += 1) {
+      pixel.push({ x: 1, y, farbe: zweite }, { x: SHIRT_GROESSE - 2, y, farbe: zweite })
+    }
+  }
   return pixel
+}
+
+/* ─────────────────────────── Festival-Shirts ─────────────────────────── */
+
+/**
+ * The long-sleeve cut, as its left half like the tee: the sleeves hang down
+ * beside the body to the wrist, with a gap under the arm so the shape reads
+ * as a longsleeve at 48 px and not as a sack.
+ */
+const HALB_LANG = [
+  ...HALB.slice(0, 10),
+  "###.############",
+  "###..###########",
+  ...Array.from({ length: 14 }, () => "###...##########"),
+  ...Array.from({ length: 4 }, () => "......##########"),
+  "................",
+  "................",
+]
+const LANGARM = HALB_LANG.map((zeile) => zeile + [...zeile].reverse().join(""))
+
+/**
+ * One festival shirt per rank reached, the first at *Proberaum*. Each has its
+ * own dye, inks and a print about the rank — not the tour name's word game,
+ * because it marks a step, not a season.
+ */
+export const FESTIVAL: Record<string, { stoff: string; tinte: string; zweite: string; motiv: string[] }> = {
+  // A demo tape: what a band in the rehearsal room makes first.
+  proberaum: {
+    stoff: "#2f3320",
+    tinte: TINTE,
+    zweite: "#c8463a",
+    motiv: [
+      "............",
+      "aaaaaaaaaaaa",
+      "a..........a",
+      "a.bbbbbbbb.a",
+      "a..........a",
+      "a..a....a..a",
+      "a.a.abba.a.a",
+      "a..a....a..a",
+      "a..........a",
+      "a..aaaaaa..a",
+      "aaaaaaaaaaaa",
+      "............",
+    ],
+  },
+  // A microphone on its stand: the opening slot.
+  vorband: {
+    stoff: "#262a44",
+    tinte: TINTE,
+    zweite: "#c9a14a",
+    motiv: [
+      "....aaa.....",
+      "...aaaaa....",
+      "...ababa....",
+      "...aaaaa....",
+      "....aaa.....",
+      ".....a......",
+      ".....a......",
+      ".....a......",
+      ".....a......",
+      ".....a......",
+      "...aaaaa....",
+      "..a..a..a...",
+    ].map((zeile) => "." + zeile.slice(0, 11)),
+  },
+  // The laminate on its lanyard: on the tour, backstage.
+  support: {
+    stoff: "#3b2a1e",
+    tinte: TINTE,
+    zweite: "#7fa6c9",
+    motiv: [
+      "..a......a..",
+      "...a....a...",
+      "....a..a....",
+      ".....aa.....",
+      "..aaaaaaaa..",
+      "..a......a..",
+      "..a.bbbb.a..",
+      "..a......a..",
+      "..a.aaaa.a..",
+      "..a.aa...a..",
+      "..a......a..",
+      "..aaaaaaaa..",
+    ],
+  },
+  // The spotlight on an empty stage: it is yours now.
+  headliner: {
+    stoff: "#141416",
+    tinte: TINTE,
+    zweite: "#c9a14a",
+    motiv: [
+      "....aaaa....",
+      "...aaaaaa...",
+      "...abbbba...",
+      "....b..b....",
+      "...b....b...",
+      "...b....b...",
+      "..b......b..",
+      "..b......b..",
+      ".b........b.",
+      ".b........b.",
+      "b..........b",
+      "aaaaaaaaaaaa",
+    ],
+  },
+  // The horns, raised: a field full of them.
+  festival: {
+    stoff: "#4a1612",
+    tinte: TINTE,
+    zweite: "#c9a14a",
+    motiv: [
+      "..a......a..",
+      "..a......a..",
+      "..aa.....aa.",
+      "..aa.....aa.",
+      "..aa.....aa.",
+      "..aaaaaaaaa.",
+      "..aa.a.a.aa.",
+      ".aaaaaaaaaa.",
+      "..aaaaaaaaa.",
+      "...aaaaaaa..",
+      "....aaaaa...",
+      "....aaaaa...",
+    ],
+  },
+  // A gold record, in gold ink: the hall of fame.
+  halloffame: {
+    stoff: "#1c1c20",
+    tinte: "#c9a14a",
+    zweite: "#c8463a",
+    motiv: [
+      "....aaaa....",
+      "..aaaaaaaa..",
+      ".aaa....aaa.",
+      ".aa.aaaa.aa.",
+      "aa.aa..aa.aa",
+      "aa.a.bb.a.aa",
+      "aa.a.bb.a.aa",
+      "aa.aa..aa.aa",
+      ".aa.aaaa.aa.",
+      ".aaa....aaa.",
+      "..aaaaaaaa..",
+      "....aaaa....",
+    ],
+  },
+}
+
+/** The pixels of the festival shirt for a rank. */
+export function festivalPixel(rangId: string): Pixel[] {
+  const f = FESTIVAL[rangId] ?? FESTIVAL.proberaum
+  return zeichne(LANGARM, f.stoff, f.motiv, f.tinte, f.zweite, true)
 }
