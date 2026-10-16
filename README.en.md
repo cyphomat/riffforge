@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1054%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1060%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -152,7 +152,8 @@ today — from the log, not from a hunch.
 - **The achievement first, the report second.** New personal bests sit at the
   top after a session. Below, the session is taped up as a **setlist note**:
   what went clean is crossed out, what was rough carries the stamp *again*, and
-  next to each song stands the tempo it continues at next time.
+  next to each song stands the tempo it continues at next time. The titles are
+  in a marker hand — the only handwriting in the app, and only on paper.
 - **The practice calendar** grows with the log, up to sixteen weeks. Deliberately just
   practised or not, with no shading by minutes: a session is around a quarter of
   an hour by construction, so showing the minutes as a colour ramp would be
@@ -545,6 +546,16 @@ common period lies below both — YIN then lands an octave or a twelfth too low.
 Measured: clean 98 % right, crunch 97 %, high-gain **70 %**. An app that says
 "wrong note" on every third distorted note is lying; so it says nothing about
 it. A test pins this limit down and turns red once it falls.
+
+### Strings
+
+Below the tuner the app keeps when the strings were last changed — one button,
+*Heute neu aufgezogen* (put on new today), and it counts from there. Strings
+die of playing more than of time: after **25 practice days** from the log, or
+after **90 days** at the latest, *Heute* shows a line *Saiten · neue fällig*
+(strings due). Before that it shows nothing. The date belongs to the device,
+like the calibration — the guitar next to this computer, not the one at the
+rehearsal room — and goes neither into sync nor into the backup file.
 
 ---
 

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1054%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1060%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -149,7 +149,8 @@ heutigen Tag — aus dem Log, nicht aus dem Bauch.
   Session ganz oben. Darunter klebt die Session als **Setlist-Zettel** mit
   Gaffa-Tape: sauber Gespieltes ist durchgestrichen, was zäh war, trägt den
   Stempel *nochmal*, und neben jedem Song steht, mit welchem Tempo es nächstes
-  Mal weitergeht.
+  Mal weitergeht. Die Titel stehen in Edding-Schrift — die einzige
+  Handschrift in der App, und nur auf Papier.
 - **Der Übungskalender** wächst mit dem Log, bis zu sechzehn Wochen. Bewusst nur geübt oder
   nicht, ohne Abstufung nach Minuten: eine Session ist per Konstruktion rund
   eine Viertelstunde: die Minuten pro Tag als Farbverlauf zu zeigen hiesse,
@@ -552,6 +553,16 @@ oder eine Duodezime zu tief. Gemessen: sauber 98 % richtig, Crunch 97 %,
 High-Gain **70 %**. Eine App, die bei jedem dritten verzerrten Ton „falscher
 Ton" sagt, lügt; also sagt sie dazu nichts. Ein Test hält die Grenze fest und
 wird rot, sobald sie fällt.
+
+### Saiten
+
+Unter dem Stimmgerät steht, wann die Saiten zuletzt neu waren — ein Knopf,
+*Heute neu aufgezogen*, und ab da zählt die App mit. Saiten sterben am Spielen
+mehr als an der Zeit: nach **25 Übungstagen** aus dem Log, oder spätestens
+nach **90 Tagen**, steht auf *Heute* eine Zeile *Saiten · neue fällig*. Vorher
+steht dort nichts. Das Datum gehört dem Gerät wie die Einmessung — die
+Gitarre, die neben diesem Rechner steht, nicht die im Proberaum —, und geht
+weder in den Abgleich noch in die Sicherungsdatei.
 
 ---
 

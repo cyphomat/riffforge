@@ -21,9 +21,10 @@ const WILLKOMMEN_KEY = "mga.willkommen.v1"
 const LICK_KEY = "mga.lick-seed.v1"
 const BOX_KEY = "mga.lick-box.v1"
 const EINMESS_KEY = "mga.einmessung.v1"
+const SAITEN_KEY = "mga.saiten.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -110,6 +111,31 @@ export function lickBox(): LickBox {
 
 export function merkeLickBox(box: LickBox): void {
   schreiben(BOX_KEY, JSON.stringify(box))
+}
+
+
+/**
+ * Wann die Saiten zuletzt neu aufgezogen wurden, als `YYYY-MM-DD`.
+ *
+ * Gehört dem Gerät, nicht dem Log: ein Wartungsdatum ist keine Übung, und im
+ * Log würde es als Gig gezählt. Die Übungstage seither kommen trotzdem aus dem
+ * Log — `lib/session/saiten.ts` rechnet beides zusammen.
+ */
+const saitenSchema = z.object({ gewechselt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) })
+
+export function saitenGewechselt(): string | null {
+  const roh = lesen(SAITEN_KEY)
+  if (!roh) return null
+  try {
+    const geprueft = saitenSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data.gewechselt : null
+  } catch {
+    return null
+  }
+}
+
+export function merkeSaitenwechsel(tag: string): void {
+  schreiben(SAITEN_KEY, JSON.stringify({ gewechselt: tag }))
 }
 
 /**

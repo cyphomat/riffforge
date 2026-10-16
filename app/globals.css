@@ -514,14 +514,20 @@
   .zettel li:last-child {
     border-bottom: 0;
   }
+  /* Edding auf Papier: die eine Stelle mit Handschrift. Nur ein Schnitt —
+     fett gerechnet würde der Strich verschmieren. */
   .zettel .song {
-    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
-    @apply font-semibold uppercase tracking-[0.01em] text-[20px] leading-tight;
+    font-family: var(--font-edding), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    @apply font-normal uppercase tracking-[0.02em] text-[20px] leading-snug;
   }
+  /* Der Edding-Strich ist schon dick, und der Querstrich liegt genau auf
+     den Querbalken der Versalien — in derselben Tinte deckte er das Wort zu.
+     Blasser und dünner bleibt es lesbar; das Wort trägt den Kontrast, der
+     Strich nur die Auskunft „gespielt". */
   .zettel li.sauber .song {
     text-decoration: line-through;
-    text-decoration-thickness: 3px;
-    text-decoration-color: var(--tinte);
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--tinte-blass);
   }
   .zettel .tempo {
     @apply basis-full font-mono text-[13px];

@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Anton, Oswald } from "next/font/google"
+import { Anton, Oswald, Permanent_Marker } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ServiceWorker } from "@/components/service-worker"
@@ -15,6 +15,11 @@ const oswald = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], varia
 // Aufdruck, kein Fliesstext. Überschriften und Zahlen bleiben Oswald, damit
 // die App nicht überall schreit.
 const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton" })
+
+// Nur auf dem Setlist-Zettel am Abschluss: der Edding, mit dem eine Setlist
+// vor dem Gig geschrieben wird. Papier bekommt Handschrift, der Rest der App
+// bleibt gedruckt.
+const edding = Permanent_Marker({ subsets: ["latin"], weight: "400", variable: "--font-edding" })
 
 /**
  * Content-Security-Policy als Meta-Tag.
@@ -80,7 +85,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`dark ${oswald.variable} ${anton.variable}`}>
+    <html lang="de" className={`dark ${oswald.variable} ${anton.variable} ${edding.variable}`}>
       <head>
         <meta httpEquiv="Content-Security-Policy" content={CSP} />
       </head>

@@ -24,7 +24,8 @@ import type { Profile } from "@/lib/session/profile"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
-import { merkeWillkommen, willkommenGesehen } from "@/lib/storage/lokal"
+import { merkeWillkommen, saitenGewechselt, willkommenGesehen } from "@/lib/storage/lokal"
+import { saitenStand, type SaitenStand } from "@/lib/session/saiten"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 import { MdGridOn, MdLinearScale, MdMusicNote, MdTune } from "react-icons/md"
 
@@ -65,6 +66,7 @@ export function PracticeOverview() {
   const [merch, setMerch] = useState<{ rang: Rang; aufnaeher: number } | null>(null)
   const [woche, setWoche] = useState<Woche | null>(null)
   const [vorwoche, setVorwoche] = useState<Woche | null>(null)
+  const [saiten, setSaiten] = useState<SaitenStand | null>(null)
 
   useEffect(() => {
     const gelesen = loadLog()
@@ -84,6 +86,7 @@ export function PracticeOverview() {
     const fenster = wochen(gelesen)
     setWoche(fenster.at(-1) ?? null)
     setVorwoche(fenster.length > 1 ? fenster.at(-2)! : null)
+    setSaiten(saitenStand(gelesen, saitenGewechselt()))
     setLoaded(true)
   }, [])
 
@@ -250,6 +253,24 @@ export function PracticeOverview() {
             {woche.tage > 0 || !vorwoche
               ? `${woche.tage} ${woche.tage === 1 ? "Tag" : "Tage"} diese Woche ›`
               : `Vorwoche ${vorwoche.tage} ${vorwoche.tage === 1 ? "Tag" : "Tage"} ›`}
+          </span>
+        </Link>
+      )}
+
+      {/* Die Saiten — nur, wenn sie fällig sind. Eine Zeile, die jeden Tag
+          „noch 14 Tage" sagt, liest nach einer Woche niemand mehr. Rost, weil
+          es „nicht ganz" heisst, nicht „kaputt". */}
+      {saiten?.faellig && (
+        <Link
+          href="/stimmen"
+          className="mt-[9px] flex items-center justify-between gap-3 border border-rost bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="kicker text-dim">Saiten</span>
+            <span className="display text-[17px] text-rost">Neue fällig</span>
+          </span>
+          <span className="ziffern text-[12px] text-muted">
+            {saiten.grund === "gespielt" ? `${saiten.uebungstage} Übungstage drauf ›` : `${saiten.tage} Tage alt ›`}
           </span>
         </Link>
       )}

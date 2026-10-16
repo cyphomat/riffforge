@@ -43,6 +43,7 @@ Verschiedenes.
 | `lib/audio/stimmen.ts` | Das Stimmgerät als Rechnung: Saite, Cent, Glättung |
 | `lib/audio/stimmgeraet.ts` | Mikrofon → AnalyserNode, für das Stimmgerät |
 | `components/session/stimmgeraet.tsx` | Der vierte Eingang: das Stimmgerät, `/stimmen` |
+| `lib/session/saiten.ts` | Wann die Saiten fällig sind: Übungstage aus dem Log, Tage seit dem Wechsel |
 | `lib/session/types.ts` | Domänen-Typen + Zod-Schemas für alles Persistierte |
 | `lib/session/drills.ts` | Der Übungs-Katalog (reine Daten) |
 | `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery |
@@ -227,7 +228,9 @@ Komponente.
   liest. Mehr als ein Haar sind übrigens auch falsch: bei 0,09 em zerfiel der
   Name in zwei Wörter.
 - **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton,
-  ausschliesslich auf `.marke`. Überschriften, Zahlen und Tempo bleiben
+  ausschliesslich auf `.marke`. Die einzige weitere ist der Edding
+  (Permanent Marker, `--font-edding`) auf den Titeln des Setlist-Zettels —
+  Handschrift gehört auf Papier und nirgends sonst hin. Überschriften, Zahlen und Tempo bleiben
   Oswald, damit die App nicht überall schreit. `next/font` legt beide als
   `--font-anton` und `--font-oswald` ab, das Theme baut daraus
   `--font-marke` und `--font-display` — die Namen müssen verschieden sein,
@@ -341,6 +344,18 @@ Komponente.
   und zugeordnet wird nach Cent, nicht nach Hertz. Im Browser geprüft mit
   einem Sägezahn in bekannter Höhe als „Mikrofon": +6, 0, −14 Cent und das
   tiefe B kamen genau so an.
+- **Saiten zählen Übungstage, nicht Tage.** Unter dem Stimmgerät trägt man
+  ein, wann neue drauf kamen; fällig sind sie nach **25 Übungstagen** aus dem
+  Log oder spätestens nach **90 Kalendertagen**, und erst dann steht auf
+  *Heute* eine Zeile — vorher nichts, weil eine Erinnerung, die immer dasteht,
+  keine ist. Die 25 stammen aus Roadie, Daniels Orga-App, die dieselbe
+  Erinnerung aus demselben Log rechnete; jetzt rechnet sie die App, die den
+  Log aus erster Hand hat. Das Datum gehört **dem Gerät** (`lib/storage/lokal.ts`,
+  wie die Einmessung), nicht dem Log: ein Saitenwechsel ist kein Gig, und im
+  Log würde er als Eintrag ohne Drill den Kalender, die Serie und die
+  Aufnäher verfälschen. Deshalb geht er weder in den Abgleich noch in die
+  Sicherungsdatei — und das Format von `uebungen.json` bleibt, wie es ist,
+  denn Roadie liest es mit.
 - **Der zweite Eingang ist ein Nebenweg, kein zweiter Hauptweg.**
   `/lick` gibt drei Minuten Lead ohne Session drumherum — für den, der
   gerade Lust darauf hat. Er schreibt in denselben Log und unter dieselbe
@@ -412,7 +427,10 @@ Komponente.
   daneben das Tempo fürs nächste Mal. Papier ist hell mit dunkler Tinte, also
   der umgekehrte Fall zum Rest der App — `--papier`, `--tinte`,
   `--tinte-blass` und `--stempel` stehen deshalb eigens im Kontrasttest. Der
-  Stempel ist Rost, nicht Rot: „nochmal" heisst „nicht ganz".
+  Stempel ist Rost, nicht Rot: „nochmal" heisst „nicht ganz". Die Titel
+  stehen in Edding, und der Strich durch Gespieltes ist dünn und in
+  `--tinte-blass`: in derselben Tinte lag er genau auf den Querbalken der
+  Versalien und deckte das Wort zu.
 - **Der Startwert wird durchgerührt, bevor er gewürfelt wird.** Mulberry32
   liefert bei kleinen, *fortlaufenden* Startwerten korrelierte erste Werte —
   und genau dort fängt jeder an, weil die Licks ab eins durchgezählt werden.
