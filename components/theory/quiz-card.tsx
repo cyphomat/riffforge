@@ -221,7 +221,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                   {card.frage.art === "griffbrett"
                     ? `${noteAt((loesungen as Griff[])[0])} — ${(loesungen as Griff[])
                         .slice(0, 3)
-                        .map((stelle) => `Saite ${stelle.saite}, Bund ${stelle.bund}`)
+                        .map((stelle) => `Saite ${stelle.saite}, ${stelle.bund === 0 ? "leer" : `Bund ${stelle.bund}`}`)
                         .join(" oder ")}`
                     : (loesungen as string[])[0]}
                 </b>

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1060%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1061%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -464,8 +464,10 @@ its own repetition from the same FSRS as the knowledge cards. What snags comes
 back sooner; new places arrive in a sensible order, natural notes and low
 frets first. Time counts too: under two and a half seconds a place is quick,
 over six it is slow — whoever has to search does not quite know it yet, and a
-slow answer comes back sooner than a quick one. A hit stays up for a good
-second and a half, with the place and the time; tap it to move on sooner. The
+slow answer comes back sooner than a quick one. The open string counts: E on
+the E string is right open as well as at the 12th fret. A hit stays up for a
+good two seconds, with the place, the time and a bar running down; tap it to
+move on sooner. The
 clock for the next question only starts once it is shown. Below the round, a map of the
 neck shows what holds, what wobbles and what is still new.
 

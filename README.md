@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1060%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1061%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -468,9 +468,10 @@ eigener Wiederholung, nach demselben FSRS wie die Wissenskarten. Was hakt,
 kommt früher wieder; Neues kommt in einer sinnvollen Reihenfolge, Stammtöne
 und tiefe Bünde zuerst. Gezählt wird auch die Zeit: unter zweieinhalb Sekunden
 ist eine Stelle flink, über sechs zäh — wer suchen muss, kennt sie noch nicht
-ganz, und eine zähe Antwort kommt früher wieder als eine flinke. Ein Treffer
-bleibt gut anderthalb Sekunden stehen, mit Stelle und Zeit; wer schneller
-weiter will, tippt drauf. Die Uhr der nächsten Frage läuft erst, wenn sie da
+ganz, und eine zähe Antwort kommt früher wieder als eine flinke. Die leere
+Saite zählt mit: E auf der E-Saite ist leer genauso richtig wie im 12. Bund.
+Ein Treffer bleibt gut zwei Sekunden stehen, mit Stelle, Zeit und einem
+ablaufenden Balken; wer schneller weiter will, tippt drauf. Die Uhr der nächsten Frage läuft erst, wenn sie da
 ist. Unter der
 Runde zeigt eine Karte des Halses, was sitzt, was wackelt und was noch neu ist.
 

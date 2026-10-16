@@ -11,6 +11,8 @@ import {
   gefunden,
   halsBericht,
   halsId,
+  halsLoesungen,
+  bundWort,
   halskarte,
   halsNote,
   halsRunde,
@@ -34,9 +36,11 @@ const RUNDE = 12
  * 450 ms, which read as a flicker: the eyes are on the neck, and by the time
  * they came up the confirmation was gone. The pause costs nothing — the clock
  * for the next question starts only when it is shown — and a tap on the
- * confirmation skips it for anyone who wants to go faster.
+ * confirmation skips it for anyone who wants to go faster. 1.6 s still read
+ * as too quick in use, so it is 2.4 s now, with a bar running down beneath it:
+ * a pause that shows how long it lasts does not feel like a hang.
  */
-const TREFFER_MS = 1600
+const TREFFER_MS = 2400
 
 const saiteText = (saite: number) => (saite === 1 ? "hohen e-Saite" : `${SAITENNAMEN[saite - 1]}-Saite`)
 const tonText = (ton: Ton) => {
@@ -190,7 +194,7 @@ export function HalsTrainer() {
           <Fretboard
             gewaehlt={richtung === "finden" ? getippt : null}
             frage={richtung === "benennen" ? frage.stelle : null}
-            loesung={aufgeloest ? (richtung === "finden" ? [frage.stelle] : []) : undefined}
+            loesung={aufgeloest ? (richtung === "finden" ? halsLoesungen(frage.stelle) : []) : undefined}
             onPick={
               richtung === "finden" && !aufgeloest
                 ? (stelle) => {
@@ -236,7 +240,9 @@ export function HalsTrainer() {
             <p className="kicker text-rot">Daneben</p>
             <p className="mt-1 text-[15px] text-fg">
               {richtung === "finden"
-                ? `${tonText(ton)} liegt auf der ${saiteText(frage.stelle.saite)} im ${frage.stelle.bund}. Bund.`
+                ? `${tonText(ton)} liegt auf der ${saiteText(frage.stelle.saite)} ${halsLoesungen(frage.stelle)
+                    .map((stelle) => (stelle.bund === 0 ? "leer" : `im ${stelle.bund}. Bund`))
+                    .join(" und ")}.`
                 : `Das ist ${tonText(ton)} — ${saiteText(frage.stelle.saite)}, ${frage.stelle.bund}. Bund.`}{" "}
               Kommt am Ende der Runde noch einmal.
             </p>
@@ -254,13 +260,16 @@ export function HalsTrainer() {
               <MdCheck className="h-4 w-4" /> Sitzt
             </span>
             <span className="mt-1 block text-[15px] text-fg">
-              {tonText(ton)} auf der {saiteText(frage.stelle.saite)}, {frage.stelle.bund}. Bund
+              {tonText(ton)} auf der {saiteText(frage.stelle.saite)},{" "}
+              {bundWort(richtung === "finden" && getippt ? getippt.bund : frage.stelle.bund)}
             </span>
             <span className="mt-[2px] block font-mono text-[13px] text-muted">
               {frage.wiederholung
                 ? "zweiter Anlauf, ohne Wertung"
                 : `${sekunden(dauer)} · ${dauer <= FLINK_MS ? "flink" : dauer <= ZAEH_MS ? "gefunden" : "zäh — kommt bald wieder"}`}
             </span>
+            {/* Läuft ab, bis die nächste Frage kommt — antippen geht sofort weiter. */}
+            <span className="ablauf mt-2 mr-3 block h-[3px] bg-gruen" style={{ animationDuration: `${TREFFER_MS}ms` }} />
           </button>
         )}
 

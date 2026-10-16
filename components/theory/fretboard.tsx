@@ -25,10 +25,17 @@ import type { Griff } from "@/lib/theory/types"
  * gedrungenen Halses. Ein Vergreifen trifft dann den Nachbarbund, nicht die
  * Nachbarsaite — und die Saite ist die Auskunft, auf die es ankommt.
  */
-const RAND_LINKS = 20
+/**
+ * Links vom Sattel liegt die leere Saite: dort steht ihr Name, und dort
+ * tippt man sie an. Ohne diese Fläche war „E auf der E-Saite" nur im 12. Bund
+ * zu beantworten — auf der Gitarre greift man den Ton zuerst leer. Die Spalte
+ * ist schmaler als ein Bund, weil zwölf Bünde trotzdem aufs Handy müssen.
+ */
+const RAND_LINKS = 34
 const RAND_OBEN = 20
 
-const x = (bund: number) => RAND_LINKS + bundMitte(bund)
+const x = (bund: number) => (bund === 0 ? RAND_LINKS / 2 : RAND_LINKS + bundMitte(bund))
+const bundText = (bund: number) => (bund === 0 ? "leer" : `Bund ${bund}`)
 const y = (saite: number) => RAND_OBEN + saitenLage(saite)
 
 export interface FretboardProps {
@@ -84,7 +91,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
         viewBox={`0 0 ${breite} ${hoehe}`}
         className="block w-full"
         role="group"
-        aria-label="Griffbrett, erster bis zwölfter Bund"
+        aria-label="Griffbrett, leere Saiten bis zwölfter Bund"
       >
         {/* Einlagen zuerst, damit alles andere darüber liegt. */}
         {EINLAGEN.map((bund) => (
@@ -127,17 +134,20 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
           />
         ))}
 
-        {[1, 2, 3, 4, 5, 6].map((saite) => (
-          <text
-            key={saite}
-            x={RAND_LINKS - 9}
-            y={y(saite) + 4}
-            textAnchor="end"
-            className="fill-(--dim) font-mono text-[13px]"
-          >
-            {SAITENNAMEN[saite - 1]}
-          </text>
-        ))}
+        {[1, 2, 3, 4, 5, 6].map((saite) =>
+          // Liegt auf der leeren Saite eine Markierung, steht der Name darin.
+          trifft(gegeben, saite, 0) || (gewaehlt?.saite === saite && gewaehlt.bund === 0) || trifft(loesung, saite, 0) ? null : (
+            <text
+              key={saite}
+              x={x(0)}
+              y={y(saite) + 4}
+              textAnchor="middle"
+              className="fill-(--dim) font-mono text-[13px]"
+            >
+              {SAITENNAMEN[saite - 1]}
+            </text>
+          ),
+        )}
 
         {[...EINLAGEN, OKTAVBUND].map((bund) => (
           <text
@@ -185,7 +195,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
 
         {/* Trefferflächen: gross genug für einen Daumen, unsichtbar. */}
         {[1, 2, 3, 4, 5, 6].map((saite) =>
-          Array.from({ length: BUENDE }, (_, i) => i + 1).map((bund) => {
+          Array.from({ length: BUENDE + 1 }, (_, bund) => bund).map((bund) => {
             const griff = { saite, bund } as Griff
             const istGegeben = trifft(gegeben, saite, bund)
             const istGewaehlt = gewaehlt?.saite === saite && gewaehlt?.bund === bund
@@ -235,16 +245,16 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
                 )}
                 {onPick && (
                   <rect
-                    x={x(bund) - BREITE / 2}
+                    x={bund === 0 ? 0 : x(bund) - BREITE / 2}
                     y={y(saite) - HOEHE / 2}
-                    width={BREITE}
+                    width={bund === 0 ? RAND_LINKS : BREITE}
                     height={HOEHE}
                     fill="transparent"
                     className="cursor-pointer"
                     onClick={() => onPick(griff)}
                     role="button"
                     tabIndex={0}
-                    aria-label={`Saite ${SAITENNAMEN[saite - 1]}, Bund ${bund}`}
+                    aria-label={`Saite ${SAITENNAMEN[saite - 1]}, ${bundText(bund)}`}
                     onKeyDown={(event) => {
                       if (event.key === "Enter" || event.key === " ") {
                         event.preventDefault()

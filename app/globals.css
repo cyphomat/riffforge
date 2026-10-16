@@ -540,6 +540,20 @@
     transform: rotate(-3deg);
   }
 
+  /* Ein Balken, der bis zur nächsten Frage abläuft. Ohne Bewegung bleibt er
+     stehen — die Meldung schaltet trotzdem weiter. */
+  .ablauf {
+    transform-origin: left;
+    animation-name: ablauf;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ablauf {
+      animation: none;
+    }
+  }
+
   /* Die Rangleiter: ein Segment je Rang. Gefüllt, was erreicht ist. */
   .rangleiter {
     @apply grid gap-[5px];
@@ -589,5 +603,14 @@
 @layer utilities {
   .spalte > :first-child {
     @apply wide:mt-0;
+  }
+}
+
+@keyframes ablauf {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
   }
 }

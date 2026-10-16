@@ -127,6 +127,21 @@ export function gefunden(frage: Griff, getippt: Griff): boolean {
   return getippt.saite === frage.saite && noteAt(getippt) === noteAt(frage)
 }
 
+/**
+ * Every place on the asked string that holds the asked note, open string
+ * included. The question is "E on the low E string", not "fret 12": the card
+ * sits at 12 because an open string is not something to look for, but a
+ * player who reaches for the open string has found it.
+ */
+export function halsLoesungen(frage: Griff): Griff[] {
+  return Array.from({ length: BUENDE + 1 }, (_, bund) => ({ saite: frage.saite, bund }) as Griff).filter((stelle) =>
+    gefunden(frage, stelle),
+  )
+}
+
+/** Where a place is, in words: "leer" or "5. Bund". */
+export const bundWort = (bund: number) => (bund === 0 ? "leer" : `${bund}. Bund`)
+
 /** Whether a name answers a *benennen* question. Sharps and flats both count. */
 export function benannt(frage: Griff, ton: Ton): boolean {
   return noteAt(frage) === ton

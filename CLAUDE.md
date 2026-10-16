@@ -587,6 +587,12 @@ Komponente.
   damit nicht antippbar. Aufgefallen ist es erst im Browser. Seitdem
   verlangt der Test mindestens eine richtige Stelle bis `BUENDE`, und
   Vorgaben (`gegeben`) ganz darauf. Was darüber liegt, wird getippt.
+  Die **leere Saite** gehört dazu: links vom Sattel, wo ihr Name steht, ist
+  sie antippbar. Vorher war „E auf der E-Saite" im Trainer nur im 12. Bund
+  zu beantworten, und Daniel griff — wie jeder an der Gitarre — zuerst leer.
+  Die Karten des Trainers bleiben bei Bund 1–12 (eine leere Saite sucht
+  man nicht), aber `halsLoesungen` nimmt jede Stelle der gefragten Saite mit
+  dem Ton, und die Auflösung zeigt beide.
 - **Eine Hörfrage fragt den Abstand, nicht den Klang.** Die Töne werden bei
   jedem Zeigen neu gewürfelt (`hoerPaar`), *Nochmal* spielt dasselbe Paar;
   alle vierundzwanzig Karten bieten dieselben zwölf Namen an, damit die
@@ -622,9 +628,10 @@ Komponente.
   Lernreihenfolge (Stammtöne vor Kreuzen, tiefe Bünde zuerst), die Runde
   wird danach gemischt, sonst liefe sie den Hals hinauf und verriete die
   nächste Antwort. Falsches kommt am Ende der Runde noch einmal, ohne
-  Wertung. Ein Treffer bleibt 1,6 s stehen, mit Stelle, Zeit und Wertung,
-  und lässt sich wegtippen. Zuerst waren es 450 ms — ein Aufblitzen, das
-  verschwunden war, bevor der Blick vom Hals hochkam. Die Pause kostet
+  Wertung. Ein Treffer bleibt 2,4 s stehen, mit Stelle, Zeit, Wertung und
+  einem ablaufenden Balken, und lässt sich wegtippen. Zuerst waren es
+  450 ms — ein Aufblitzen, das verschwunden war, bevor der Blick vom Hals
+  hochkam —, dann 1,6 s, im Gebrauch immer noch zu knapp. Die Pause kostet
   nichts, weil die Uhr der nächsten Frage erst beim Zeigen startet; der
   Zeitgeber wird beim Abbrechen gestoppt, sonst schaltete er eine
   geschlossene Runde weiter. Im Merch-Stand hat der Hals eine eigene Reihe *Griffbrett*

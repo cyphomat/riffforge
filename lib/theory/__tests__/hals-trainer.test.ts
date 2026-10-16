@@ -6,12 +6,14 @@ import { noteAt } from "@/lib/theory/fretboard"
 import { BUENDE } from "@/lib/theory/hals"
 import {
   benannt,
+  bundWort,
   FLINK_MS,
   gefunden,
   HALS_PREFIX,
   HALS_STELLEN,
   halsBericht,
   halsId,
+  halsLoesungen,
   halskarte,
   halsNote,
   halsRunde,
@@ -82,6 +84,19 @@ describe("Bewertet über die Zeit", () => {
     expect(gefunden(g(5, 3), g(5, 4))).toBe(false)
     expect(benannt(g(6, 6), "A#")).toBe(true)
     expect(benannt(g(6, 6), "B")).toBe(false)
+  })
+
+  it("nimmt die leere Saite als Antwort, wo sie den Ton hat", () => {
+    // „E auf der E-Saite" fragt die Karte im 12. Bund — gegriffen wird es zuerst leer.
+    expect(gefunden(g(6, 12), g(6, 0))).toBe(true)
+    expect(halsLoesungen(g(6, 12))).toEqual([g(6, 0), g(6, 12)])
+    expect(halsLoesungen(g(2, 12))).toEqual([g(2, 0), g(2, 12)])
+    // Zwischen Sattel und Oktave liegt jeder andere Ton genau einmal.
+    for (const stelle of HALS_STELLEN.filter((s) => s.bund < 12)) {
+      expect(halsLoesungen(stelle)).toEqual([stelle])
+    }
+    expect(bundWort(0)).toBe("leer")
+    expect(bundWort(5)).toBe("5. Bund")
   })
 })
 
