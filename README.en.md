@@ -464,7 +464,9 @@ its own repetition from the same FSRS as the knowledge cards. What snags comes
 back sooner; new places arrive in a sensible order, natural notes and low
 frets first. Time counts too: under two and a half seconds a place is quick,
 over six it is slow — whoever has to search does not quite know it yet, and a
-slow answer comes back sooner than a quick one. Below the round, a map of the
+slow answer comes back sooner than a quick one. A hit stays up for a good
+second and a half, with the place and the time; tap it to move on sooner. The
+clock for the next question only starts once it is shown. Below the round, a map of the
 neck shows what holds, what wobbles and what is still new.
 
 The answers go into the same log as the knowledge questions, so they sync,

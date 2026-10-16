@@ -468,7 +468,10 @@ eigener Wiederholung, nach demselben FSRS wie die Wissenskarten. Was hakt,
 kommt früher wieder; Neues kommt in einer sinnvollen Reihenfolge, Stammtöne
 und tiefe Bünde zuerst. Gezählt wird auch die Zeit: unter zweieinhalb Sekunden
 ist eine Stelle flink, über sechs zäh — wer suchen muss, kennt sie noch nicht
-ganz, und eine zähe Antwort kommt früher wieder als eine flinke. Unter der
+ganz, und eine zähe Antwort kommt früher wieder als eine flinke. Ein Treffer
+bleibt gut anderthalb Sekunden stehen, mit Stelle und Zeit; wer schneller
+weiter will, tippt drauf. Die Uhr der nächsten Frage läuft erst, wenn sie da
+ist. Unter der
 Runde zeigt eine Karte des Halses, was sitzt, was wackelt und was noch neu ist.
 
 Die Antworten landen im selben Log wie die Wissensfragen und werden damit

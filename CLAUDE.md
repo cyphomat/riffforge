@@ -622,7 +622,12 @@ Komponente.
   Lernreihenfolge (Stammtöne vor Kreuzen, tiefe Bünde zuerst), die Runde
   wird danach gemischt, sonst liefe sie den Hals hinauf und verriete die
   nächste Antwort. Falsches kommt am Ende der Runde noch einmal, ohne
-  Wertung. Im Merch-Stand hat der Hals eine eigene Reihe *Griffbrett*
+  Wertung. Ein Treffer bleibt 1,6 s stehen, mit Stelle, Zeit und Wertung,
+  und lässt sich wegtippen. Zuerst waren es 450 ms — ein Aufblitzen, das
+  verschwunden war, bevor der Blick vom Hals hochkam. Die Pause kostet
+  nichts, weil die Uhr der nächsten Frage erst beim Zeigen startet; der
+  Zeitgeber wird beim Abbrechen gestoppt, sonst schaltete er eine
+  geschlossene Runde weiter. Im Merch-Stand hat der Hals eine eigene Reihe *Griffbrett*
   (12, 36, 72 Stellen beim Finden; *In- und auswendig* mit allen 72 in
   beiden Richtungen), mit derselben Schwelle wie die Wissenskarten: eine
   Woche Halt, nicht ein Treffer. Weil eine Runde keine Session ist und

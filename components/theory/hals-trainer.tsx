@@ -29,8 +29,14 @@ import { EMPTY_THEORY_LOG, type Griff, type TheoryLog } from "@/lib/theory/types
 
 /** Places per round — about two minutes, short enough to fit before a session. */
 const RUNDE = 12
-/** How long a right answer stays on screen before the next question. */
-const TREFFER_MS = 450
+/**
+ * How long a right answer stays on screen before the next question. It was
+ * 450 ms, which read as a flicker: the eyes are on the neck, and by the time
+ * they came up the confirmation was gone. The pause costs nothing — the clock
+ * for the next question starts only when it is shown — and a tap on the
+ * confirmation skips it for anyone who wants to go faster.
+ */
+const TREFFER_MS = 1600
 
 const saiteText = (saite: number) => (saite === 1 ? "hohen e-Saite" : `${SAITENNAMEN[saite - 1]}-Saite`)
 const tonText = (ton: Ton) => {
@@ -72,6 +78,14 @@ export function HalsTrainer() {
   const vorher = useRef<Aufnaeher[]>([])
   const [neueAufnaeherListe, setNeueAufnaeher] = useState<Aufnaeher[]>([])
   const seit = useRef(0)
+  const [dauer, setDauer] = useState(0)
+  const weiterTreffer = useRef<() => void>(() => {})
+  const weiterTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerStoppen = () => {
+    if (weiterTimer.current) clearTimeout(weiterTimer.current)
+    weiterTimer.current = null
+  }
+  useEffect(() => timerStoppen, [])
 
   useEffect(() => {
     setLog(loadTheoryLog())
@@ -99,6 +113,7 @@ export function HalsTrainer() {
   }
 
   const weiter = (liste: Frage[], neu: HalsErgebnis[]) => {
+    timerStoppen()
     setGetippt(null)
     setGenannt(null)
     setAufgeloest(false)
@@ -114,6 +129,7 @@ export function HalsTrainer() {
     if (!fragen || aufgeloest) return
     const frage = fragen[index]
     const ms = Math.round(performance.now() - seit.current)
+    setDauer(ms)
     setAufgeloest(true)
 
     let liste = fragen
@@ -135,7 +151,10 @@ export function HalsTrainer() {
       liste = [...fragen, { stelle: frage.stelle, wiederholung: true }]
       setFragen(liste)
     }
-    if (richtig) setTimeout(() => weiter(liste, neu), TREFFER_MS)
+    if (richtig) {
+      weiterTreffer.current = () => weiter(liste, neu)
+      weiterTimer.current = setTimeout(() => weiter(liste, neu), TREFFER_MS)
+    }
   }
 
   if (!geladen) return null
@@ -227,12 +246,29 @@ export function HalsTrainer() {
           </div>
         )}
         {aufgeloest && richtig && (
-          <p className="mt-4 flex items-center gap-2 font-mono text-[13px] text-gruen">
-            <MdCheck className="h-4 w-4" /> Sitzt.
-          </p>
+          <button
+            onClick={() => weiterTreffer.current()}
+            className="mt-4 block w-full border-l-2 border-gruen bg-(--tint-gruen) py-2 pl-3 text-left"
+          >
+            <span className="kicker flex items-center gap-[6px] text-gruen">
+              <MdCheck className="h-4 w-4" /> Sitzt
+            </span>
+            <span className="mt-1 block text-[15px] text-fg">
+              {tonText(ton)} auf der {saiteText(frage.stelle.saite)}, {frage.stelle.bund}. Bund
+            </span>
+            <span className="mt-[2px] block font-mono text-[13px] text-muted">
+              {frage.wiederholung
+                ? "zweiter Anlauf, ohne Wertung"
+                : `${sekunden(dauer)} · ${dauer <= FLINK_MS ? "flink" : dauer <= ZAEH_MS ? "gefunden" : "zäh — kommt bald wieder"}`}
+            </span>
+          </button>
         )}
 
-        <button onClick={() => setFragen(null)} className="btn btn-ghost btn-small mt-8 w-full">
+        <button
+          onClick={() => {
+            timerStoppen()
+            setFragen(null)
+          }} className="btn btn-ghost btn-small mt-8 w-full">
           Abbrechen
         </button>
       </div>
