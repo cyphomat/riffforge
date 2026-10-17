@@ -95,8 +95,10 @@ Verschiedenes.
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
-| `assets/logo/plektrum.svg` | Das Zeichen. Quelle für alle Icons. |
+| `assets/logo/plektrum.txt` | Das Zeichen als Pixelraster, 32 × 32. Quelle für alle Icons und den Banner. |
 | `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |
+| `tools/readme-bilder.mjs` | Banner, Rangleiter und Kutte der READMEs, aus derselben Pixelkunst |
+| `tools/pixel.mjs` | PNG lesen und schreiben, ganzzahlig vergrössern, SVG aus Rechtecken — ohne Browser |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |
 | `lib/storage/theory-log.ts` | localStorage, einziger Zugriffspunkt auf die Antworten |
@@ -214,10 +216,29 @@ Komponente.
   und zwar **alle an derselben Spalte**: bei 48 px überlebt nur eine fette,
   geschlossene Silhouette. Feine Linien zerfallen, dünne Formen werden
   Striche, mehrfarbige Bänder werden Candy Corn. Wer das Zeichen anfasst,
-  prüft es zuerst klein. Die Quelle ist `assets/logo/plektrum.svg`, und
+  prüft es zuerst klein. Die Quelle ist `assets/logo/plektrum.txt`, und
   `tools/icons.mjs` erzeugt daraus alle Grössen — samt einer **maskierbaren**
   Fassung, weil Android bis zu 20 % vom Rand wegschneidet und ein
   flächenfüllendes Zeichen dort seine Spitze verliert.
+  **Seit Oktober ist es Pixelkunst**, 20 × 20 auf einem 32er-Raster. Die App
+  war inzwischen aus Pixeln gebaut — Bühnen, Aufnäher, Shirts, Wappen —, und
+  das glatte Vektorzeichen stand daneben wie aus einer anderen App. Die
+  48-px-Regel hat dabei die Form entschieden: drei Konturen nebeneinander
+  geprüft, und die erste, eine Übersetzung des alten Pfads, las sich mit
+  runden Schultern als **Tropfen**, die breiteste als **Edelstein**. Ein
+  Plektrum braucht breite, flache Schultern und eine klare Spitze. Keine
+  Binnenzeichnung, nur Licht oben links und Schatten unten rechts — die
+  Stufen der Kante tragen den Pixel-Charakter. Vergrössert wird nur
+  ganzzahlig (180 bekommt 5× und Grund drumherum), und die Werkzeuge
+  brauchen keinen Browser mehr: `tools/pixel.mjs` schreibt PNG mit
+  `node:zlib`. In der Navigation steht das Zeichen vor der Wortmarke, als
+  SVG aus Rechtecken (`public/icons/plektrum.svg`) — und unter 360 px, wo
+  die Wortmarke weichen muss, steht es allein und bleibt der Weg nach Hause.
+  Der README-Banner ist dieselbe Sprache: Pixelschrift statt Anton, weil
+  ein SVG im README keine Schrift mitbringen kann, mit dem Haar Luft an der
+  Fuge als genau einem Pixel. GitHub kennt kein `pixelated`, deshalb sind
+  Rangszenen und Aufnäher dort vorher ganzzahlig vergrössert und werden in
+  genau dieser Grösse gezeigt.
 - **Die Wortfuge bekommt ein Haar Luft.** „Riff" + „forge" ergibt drei
   gleiche Buchstaben hintereinander — dasselbe Problem wie bei
   „Schifffahrt", und in versaler Anzeigeschrift liest man das als

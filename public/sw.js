@@ -1,7 +1,7 @@
 // Die App laeuft komplett im Browser: kein Server, keine API, der Uebungs-Log
 // liegt in localStorage. Sie kann also vollstaendig offline laufen — sobald
 // die Huelle einmal im Cache liegt, braucht eine Session kein Netz mehr.
-const CACHE = 'mga-2026-10-16.4'
+const CACHE = 'mga-2026-10-17.1'
 
 // Nur stabile URLs. Die JS-Chunks von Next tragen Hashes im Namen und koennen
 // hier nicht stehen — die kommen beim ersten Online-Besuch ueber den
@@ -14,8 +14,11 @@ const SHELL = [
   'daten/',
   'manifest.json',
   'worklets/onset-processor.js',
+  'icons/icon-32.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  // Steht in der Navigation auf jeder Seite — offline ohne es fehlte das Zeichen.
+  'icons/plektrum.svg',
 ]
 
 self.addEventListener('install', (event) => {

@@ -64,7 +64,12 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
   },
   icons: {
-    icon: asset("/icons/icon-192.png"),
+    // 32 px für den Tab — das Pixelraster selbst, Punkt für Punkt — und 192
+    // für alles, was grösser zeichnet.
+    icon: [
+      { url: asset("/icons/icon-32.png"), sizes: "32x32", type: "image/png" },
+      { url: asset("/icons/icon-192.png"), sizes: "192x192", type: "image/png" },
+    ],
     apple: asset("/icons/icon-180.png"),
   },
   other: {

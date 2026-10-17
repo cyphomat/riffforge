@@ -1,61 +1,78 @@
 #!/usr/bin/env node
 /**
- * Erzeugt public/icons/ aus assets/logo/plektrum.svg.
+ * Erzeugt public/icons/ aus assets/logo/plektrum.txt.
  *
- * Eine Quelle, vier Grössen, zwei Zwecke. Von Hand gepflegte Icons laufen
+ * Eine Quelle, alle Grössen, zwei Zwecke. Von Hand gepflegte Icons laufen
  * auseinander: irgendwann trägt das 192er ein anderes Zeichen als das 512er,
  * und niemand merkt es, weil man sie nie nebeneinander sieht.
  *
- * `maskable` ist der Grund, warum es nicht bei einer Skalierung bleibt:
- * Android schneidet das Icon in eine Form seiner Wahl — Kreis, Rundeck,
- * Tropfen — und schneidet dabei bis zu 20 % vom Rand weg. Ein Zeichen, das
- * die Fläche füllt, verliert dort seine Spitze. Die maskierbare Fassung sitzt
- * deshalb kleiner in der Mitte, mit Grund bis zum Rand.
+ * Das Zeichen ist Pixelkunst auf 32 × 32 und wird deshalb nur **ganzzahlig**
+ * vergrössert — wie alle Pixelkunst in der App. Wo die Grösse kein Vielfaches
+ * von 32 ist (180), bekommt es den nächstkleineren Faktor und Grund drumherum;
+ * ein krummer Faktor verschmiert die Stufen, an denen man es erkennt.
  *
- * Braucht Playwright und einen Chromium — wie tools/shots.mjs bewusst keine
- * Projekt-Abhängigkeit:
- *   CHROMIUM_PATH=/pfad/zu/chromium node tools/icons.mjs
+ * `maskable` sitzt kleiner in der Mitte: Android schneidet das Icon in eine
+ * Form seiner Wahl und dabei bis zu 20 % vom Rand weg. Ein Zeichen, das die
+ * Fläche füllt, verlöre dort seine Spitze.
+ *
+ *   node tools/icons.mjs
  */
-import { chromium } from "playwright"
-import { readFile, mkdir, writeFile } from "node:fs/promises"
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
+import { bild, malen, pngSchreiben, rasterLesen, svgRechtecke } from "./pixel.mjs"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
-const quelle = await readFile(join(root, "assets/logo/plektrum.svg"), "utf8")
-
-/** Die Sicherheitszone maskierbarer Icons: innen 80 %, also 10 % je Seite. */
-const MASKE = 0.72
+const zeichen = rasterLesen(join(root, "assets/logo/plektrum.txt"))
+const GRUND = zeichen.farben["."]
 
 const gewuenscht = [
+  // Der Tab im Browser: 32 px ist das Raster selbst, Punkt für Punkt.
+  { datei: "icon-32.png", groesse: 32 },
   { datei: "icon-180.png", groesse: 180 },
   { datei: "icon-192.png", groesse: 192 },
   { datei: "icon-512.png", groesse: 512 },
   { datei: "icon-1024.png", groesse: 1024 },
-  { datei: "icon-maskable-512.png", groesse: 512, maske: true },
+  // 10 × 32 = 320 von 512: gut 62 %, sicher innerhalb der 80 %, die Android stehen lässt.
+  { datei: "icon-maskable-512.png", groesse: 512, faktor: 10 },
 ]
 
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH })
-await mkdir(join(root, "public/icons"), { recursive: true })
-
-for (const { datei, groesse, maske } of gewuenscht) {
-  const page = await browser.newPage({ viewport: { width: groesse, height: groesse } })
-  // Das Zeichen schrumpft, der Grund nicht: sonst entstünde beim Maskieren
-  // ein heller Rand um einen zu kleinen Kasten.
-  const inhalt = maske
-    ? quelle.replace(
-        /<path /,
-        `<g transform="translate(${(1 - MASKE) * 256} ${(1 - MASKE) * 256}) scale(${MASKE})"><path `,
-      ).replace(/<\/svg>/, "</g></svg>")
-    : quelle
-  await page.setContent(
-    `<style>html,body{margin:0;background:#0c0c0e}svg{display:block;width:100%;height:100%}</style>${inhalt}`,
-  )
-  await page.waitForTimeout(80)
-  const bild = await page.screenshot({ omitBackground: false })
-  await writeFile(join(root, "public/icons", datei), bild)
-  await page.close()
-  console.log(`${datei} · ${groesse}px${maske ? " · maskierbar" : ""}`)
+mkdirSync(join(root, "public/icons"), { recursive: true })
+for (const { datei, groesse, faktor = Math.floor(groesse / zeichen.breite) } of gewuenscht) {
+  const icon = bild(groesse, groesse, GRUND)
+  const rand = Math.floor((groesse - zeichen.breite * faktor) / 2)
+  malen(icon, zeichen, rand, rand, faktor, ".")
+  writeFileSync(join(root, "public/icons", datei), pngSchreiben(icon))
+  console.log(`${datei} · ${groesse}px · ${faktor}×${faktor === 10 ? " · maskierbar" : ""}`)
 }
 
-await browser.close()
+// Das Zeichen allein, ohne Grund und auf seine 20 × 20 beschnitten: für die
+// Navigation neben der Wortmarke. Als SVG aus Rechtecken bleibt es in jeder
+// Grösse scharf, auch dort, wo der Browser ein PNG weichzeichnen würde.
+const zeilen = zeichen.raster.map((zeile, y) => [y, zeile]).filter(([, zeile]) => /[^.]/.test(zeile))
+const spalten = zeichen.raster.flatMap((zeile) => [...zeile].flatMap((p, x) => (p === "." ? [] : [x])))
+const oben = zeilen[0][0]
+const links = Math.min(...spalten)
+const hoehe = zeilen.length
+const breite = Math.max(...spalten) - links + 1
+const frei = bild(breite, hoehe, GRUND, false)
+malen(frei, zeichen, -links, -oben, 1, ".")
+writeFileSync(
+  join(root, "public/icons/plektrum.svg"),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${breite} ${hoehe}" width="${breite}" height="${hoehe}" shape-rendering="crispEdges">${svgRechtecke(frei)}</svg>\n`,
+)
+console.log(`plektrum.svg · ${breite}×${hoehe}, ohne Grund`)
+
+// Die Startseite liegt auf einer fremden Adresse und lädt nichts nach — das
+// Zeichen steht deshalb eingebettet darin, zwischen zwei Markierungen, damit
+// es nicht von Hand gepflegt auseinanderläuft.
+const landing = join(root, "landing/index.html")
+const seite = readFileSync(landing, "utf8")
+const eingebettet = `<svg viewBox="0 0 ${breite} ${hoehe}" shape-rendering="crispEdges" aria-hidden="true">${svgRechtecke(frei)}</svg>`
+const neu = seite.replace(
+  /(<!-- plektrum: von tools\/icons\.mjs eingesetzt -->)[\s\S]*?(<!-- \/plektrum -->)/,
+  `$1${eingebettet}$2`,
+)
+if (neu === seite && !seite.includes(eingebettet)) throw new Error("landing/index.html: Markierung für das Plektrum fehlt")
+writeFileSync(landing, neu)
+console.log("landing/index.html · Plektrum eingesetzt")

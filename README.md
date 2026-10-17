@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1072%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1076%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -285,6 +285,22 @@ Menge.** Alles wird aus dem Log berechnet und nirgends gespeichert; wer seinen
 Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
 *Heute*.
 
+<p align="center"><sub>Die Bühnen, von der Garage bis zur Hall of Fame — gezählt in Wochen, nicht Sessions</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="assets/readme/rang-garage.png" width="192" height="96" alt="Garagenband"><br><sub><b>Garagenband</b> · ab Woche 0</sub></td>
+<td align="center"><img src="assets/readme/rang-proberaum.png" width="192" height="96" alt="Proberaum"><br><sub><b>Proberaum</b> · ab 4 Wochen</sub></td>
+<td align="center"><img src="assets/readme/rang-vorband.png" width="192" height="96" alt="Vorband"><br><sub><b>Vorband</b> · ab 12 Wochen</sub></td>
+<td align="center"><img src="assets/readme/rang-support.png" width="192" height="96" alt="Support"><br><sub><b>Support</b> · ab 26 Wochen</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="assets/readme/rang-headliner.png" width="192" height="96" alt="Headliner"><br><sub><b>Headliner</b> · ab 52 Wochen</sub></td>
+<td align="center"><img src="assets/readme/rang-festival.png" width="192" height="96" alt="Festival"><br><sub><b>Festival</b> · ab 104 Wochen</sub></td>
+<td align="center"><img src="assets/readme/rang-halloffame.png" width="192" height="96" alt="Hall of Fame"><br><sub><b>Hall of Fame</b> · ab 208 Wochen</sub></td>
+</tr>
+</table>
+
 - **Der Rang** — von der Garagenband über Proberaum, Vorband, Support,
   Headliner und Festival bis zur Hall of Fame. Gezählt werden Wochen mit
   mindestens einer Session, nicht Sessions: wer in einer Woche siebenmal übt,
@@ -314,6 +330,10 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   Ärmeldruck: Demo-Tape, Mikrofon, Backstage-Pass, Scheinwerfer, Pommesgabel,
   goldene Schallplatte. Der Rang ist das Langsamste in der App; ein Schritt
   auf der Leiter ist etwas zum Anziehen wert.
+
+<p align="center">
+  <img src="assets/readme/kutte.png" width="720" height="48" alt="Die gezeichneten Aufnäher, eine je Leiter">
+</p>
 
 Steigt eine Session den Rang hoch, zeigt der Abschluss die neue Bühne und das
 Festival-Shirt dazu. Die Technik-Wappen sind nicht gezeichnet, sondern
@@ -579,13 +599,16 @@ weder in den Abgleich noch in die Sicherungsdatei.
 
 ## Als App installieren
 
+<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="Das App-Icon: ein Plektrum aus Pixeln"></p>
+
 **iPhone / iPad** — in **Safari** öffnen (Chrome auf iOS kann das nicht),
 Teilen → *Zum Home-Bildschirm*.
 
 **Mac** — Safari 17+: *Ablage → Zum Dock hinzufügen*. In Chrome: Symbol in der
 Adressleiste → *Installieren*.
 
-Danach startet sie ohne Browserleiste, hat ein eigenes Icon und **läuft
+Danach startet sie ohne Browserleiste, hat ein eigenes Icon — das Plektrum,
+in denselben Pixeln wie Bühnen und Aufnäher — und **läuft
 offline** — nach dem ersten Aufruf liegt alles im Cache, eine Session braucht
 kein Netz mehr.
 
@@ -741,6 +764,13 @@ Neue Bildschirme für diese Seite:
 ```bash
 pnpm build && (cd out && python3 -m http.server 3100 &)
 node tools/shots.mjs
+```
+
+Das Zeichen und die Bilder dieser Seite kommen aus Pixelrastern, ohne Browser:
+
+```bash
+node tools/icons.mjs         # public/icons/ aus assets/logo/plektrum.txt
+node tools/readme-bilder.mjs # Banner, Rangleiter, Kutte
 ```
 
 Architektur und Konventionen stehen in [CLAUDE.md](./CLAUDE.md).

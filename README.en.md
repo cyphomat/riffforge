@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1072%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1076%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -287,6 +287,22 @@ quantity.** Everything is computed from the log and stored nowhere; whoever
 imports their data gets the same vest back. Reached through the rank line on
 *Today*.
 
+<p align="center"><sub>The stages, from the garage to the hall of fame — counted in weeks, not sessions</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="assets/readme/rang-garage.png" width="192" height="96" alt="Garagenband"><br><sub><b>Garagenband</b> · from week 0</sub></td>
+<td align="center"><img src="assets/readme/rang-proberaum.png" width="192" height="96" alt="Proberaum"><br><sub><b>Proberaum</b> · from 4 weeks</sub></td>
+<td align="center"><img src="assets/readme/rang-vorband.png" width="192" height="96" alt="Vorband"><br><sub><b>Vorband</b> · from 12 weeks</sub></td>
+<td align="center"><img src="assets/readme/rang-support.png" width="192" height="96" alt="Support"><br><sub><b>Support</b> · from 26 weeks</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="assets/readme/rang-headliner.png" width="192" height="96" alt="Headliner"><br><sub><b>Headliner</b> · from 52 weeks</sub></td>
+<td align="center"><img src="assets/readme/rang-festival.png" width="192" height="96" alt="Festival"><br><sub><b>Festival</b> · from 104 weeks</sub></td>
+<td align="center"><img src="assets/readme/rang-halloffame.png" width="192" height="96" alt="Hall of Fame"><br><sub><b>Hall of Fame</b> · from 208 weeks</sub></td>
+</tr>
+</table>
+
 - **The rank** — from garage band through rehearsal room, opening act, support,
   headliner and festival up to the hall of fame. It counts weeks with at least
   one session, not sessions: practising seven times in a week does not climb
@@ -316,6 +332,10 @@ imports their data gets the same vest back. Reached through the rank line on
   sleeve with a sleeve print: demo tape, microphone, backstage pass, spotlight,
   devil horns, gold record. The rank is the slowest thing in the app; a step up
   the ladder is worth something to wear.
+
+<p align="center">
+  <img src="assets/readme/kutte.png" width="720" height="48" alt="The drawn patches, one per ladder">
+</p>
 
 When a session moves the rank up, the summary shows the new stage and the
 festival shirt that comes with it. The technique shields are computed, not
@@ -572,13 +592,16 @@ rehearsal room — and goes neither into sync nor into the backup file.
 
 ## Installing it as an app
 
+<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="The app icon: a pick made of pixels"></p>
+
 **iPhone / iPad** — open it in **Safari** (Chrome on iOS cannot do this),
 Share → *Add to Home Screen*.
 
 **Mac** — Safari 17+: *File → Add to Dock*. In Chrome: the icon in the address
 bar → *Install*.
 
-It then starts without browser chrome, has its own icon and **works offline** —
+It then starts without browser chrome, has its own icon — the pick, in the
+same pixels as the stages and patches — and **works offline** —
 after the first visit everything is cached and a session needs no network.
 
 Installing pays off for a less obvious reason too: Safari clears the storage of
@@ -725,6 +748,13 @@ New screenshots for this page:
 ```bash
 pnpm build && (cd out && python3 -m http.server 3100 &)
 node tools/shots.mjs
+```
+
+The sign and the pictures on this page come from pixel grids, without a browser:
+
+```bash
+node tools/icons.mjs         # public/icons/ from assets/logo/plektrum.txt
+node tools/readme-bilder.mjs # banner, rank ladder, vest
 ```
 
 Architecture and conventions are in [CLAUDE.md](./CLAUDE.md) — in German, like
