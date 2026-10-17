@@ -275,12 +275,6 @@ export function PracticeOverview() {
         </Link>
       )}
 
-        {hasHistory && (
-          <>
-            <h2 className="rule mb-3 mt-9">Übungstage</h2>
-            <PracticeCalendar log={log} />
-          </>
-        )}
       </div>
 
       <div className="spalte">
@@ -292,6 +286,12 @@ export function PracticeOverview() {
             <Stat value={totalMinutes(log)} label="Minuten" sub="insgesamt" />
             <Stat value={log.results.length} label="Blöcke" sub="gespielt" />
           </div>
+
+          {/* Unter den Zahlen, nicht am Ende der linken Spalte: der Kalender
+              ist dieselbe Auskunft über die Zeit, und dort stand er allein
+              unter dem Rückblick, weit weg von *Bisher*. */}
+          <h2 className="rule mb-3 mt-9">Übungstage</h2>
+          <PracticeCalendar log={log} />
 
 
           {tracked.length > 0 && (

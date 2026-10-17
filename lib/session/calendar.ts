@@ -103,3 +103,41 @@ export function practiceCalendar(log: PracticeLog, options: CalendarOptions = {}
 function mondayIndex(date: Date): number {
   return (date.getDay() + 6) % 7
 }
+
+export interface MonatsMarke {
+  /** The week column, from 0. */
+  spalte: number
+  /** 0 = January. */
+  monat: number
+}
+
+/** Columns closer than this would print one month name over the next. */
+const MARKEN_ABSTAND = 3
+
+/**
+ * Where the month names go above the grid: over the week that holds the
+ * first of a month. Without them the grid is a block of squares — you can
+ * see that something happened, but not when. The first column gets its
+ * month too, unless a new month starts so close that the names would
+ * collide.
+ */
+export function monatsMarken(days: CalendarDay[]): MonatsMarke[] {
+  const marken: MonatsMarke[] = []
+  for (let spalte = 0; spalte * 7 < days.length; spalte += 1) {
+    const ersterImMonat = days.slice(spalte * 7, spalte * 7 + 7).find((day) => day.date.getDate() === 1)
+    if (ersterImMonat) marken.push({ spalte, monat: ersterImMonat.date.getMonth() })
+  }
+  if (days.length > 0 && marken[0]?.spalte !== 0 && (marken[0]?.spalte ?? Infinity) >= MARKEN_ABSTAND) {
+    marken.unshift({ spalte: 0, monat: days[0].date.getMonth() })
+  }
+  return marken
+}
+
+/** Days since the last day with practice — 0 is today, null is never. */
+export function tageSeitZuletzt(log: PracticeLog, now = new Date()): number | null {
+  const tage = log.results.map((r) => new Date(r.at)).filter((d) => !Number.isNaN(d.getTime()))
+  if (tage.length === 0) return null
+  const letzter = dayKey(new Date(Math.max(...tage.map((d) => d.getTime()))))
+  const mittag = (key: string) => new Date(`${key}T12:00:00`).getTime()
+  return Math.max(0, Math.round((mittag(dayKey(now)) - mittag(letzter)) / (24 * 3600 * 1000)))
+}

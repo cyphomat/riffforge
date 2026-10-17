@@ -206,8 +206,17 @@ Komponente.
   und darunter „0 von 112 Tagen". `weeksFor` lässt ihn mit dem Log wachsen.
   Dabei die Falle, in die ich prompt gelaufen bin: weniger Wochen heissen
   weniger Spalten, und `1fr` bläst die Zellen auf — das Raster wurde
-  *grösser*. Die Zellgrösse ist deshalb gedeckelt und die Platte schrumpft
-  aufs Raster statt auf die Spalte.
+  *grösser*. Die Zellgrösse ist deshalb gedeckelt (32 px).
+  Danach stand er **verloren** da — Daniels Wort: ein Kasten ohne Achsen,
+  auf seine eigene Breite geschrumpft, allein am Ende der linken Spalte
+  unter dem Rückblick. Man sah, dass etwas war, aber nicht wann. Drei
+  Antworten: Wochentage (Mo, Mi, Fr) und Monate an den Achsen
+  (`monatsMarken`, über der Woche mit dem Ersten); daneben, was das Raster
+  sagt — *Geübt* N von M Tagen und *Zuletzt* (`tageSeitZuletzt`) —, auf
+  einem breiten Kasten nebeneinander, auf dem Handy darunter (eine
+  Container-Abfrage, keine Bildschirmbreite: dieselbe Komponente sitzt in
+  einer Spalte); und sein Platz ist **unter *Bisher***, in der rechten
+  Spalte, weil er dieselbe Auskunft über die Zeit ist wie die drei Zahlen.
 - **Das Zeichen ist ein Plektrum, und es wird bei 48 px entschieden.** Das
   alte Icon war ein Amboss mit einem Vierstrahl-Stern: „Forge" war drin,
   „Riff" nicht, der Funke las sich als KI-Glyph, und die liegende Silhouette

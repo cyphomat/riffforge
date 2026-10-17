@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1076%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1081%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -154,7 +154,9 @@ today — from the log, not from a hunch.
   what went clean is crossed out, what was rough carries the stamp *again*, and
   next to each song stands the tempo it continues at next time. The titles are
   in a marker hand — the only handwriting in the app, and only on paper.
-- **The practice calendar** grows with the log, up to sixteen weeks. Deliberately just
+- **The practice calendar** sits under *Bisher*, with weekdays and months along
+  its edges and, next to it, how many days it was and when you last played. It
+  grows with the log, up to sixteen weeks. Deliberately just
   practised or not, with no shading by minutes: a session is around a quarter of
   an hour by construction, so showing the minutes as a colour ramp would be
   dressing up noise as signal. What matters here are streaks and gaps.

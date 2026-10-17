@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { practiceCalendar, weeksFor } from "../calendar"
+import { monatsMarken, practiceCalendar, tageSeitZuletzt, weeksFor } from "../calendar"
 import type { DrillResult, PracticeLog } from "../types"
 
 /** Dienstag, 10. März 2026. */
@@ -108,5 +108,40 @@ describe("weeksFor", () => {
   it("zeigt dann auch nur die gewachsenen Kästchen", () => {
     const days = practiceCalendar(log(on("2026-03-09")), { now: NOW })
     expect(days).toHaveLength(4 * 7)
+  })
+})
+
+describe("monatsMarken", () => {
+  const marken = (weeks: number) => monatsMarken(practiceCalendar(log(), { weeks, now: NOW }))
+
+  it("setzt den Monat über die Woche, in der sein Erster liegt", () => {
+    // 1. Februar und 1. März 2026 sind Sonntage — sie stehen in der Woche davor.
+    expect(marken(8)).toEqual([
+      { spalte: 1, monat: 1 },
+      { spalte: 5, monat: 2 },
+    ])
+  })
+
+  it("benennt die erste Spalte nur, wenn der nächste Name nicht darüberliefe", () => {
+    expect(marken(6)).toEqual([
+      { spalte: 0, monat: 1 },
+      { spalte: 3, monat: 2 },
+    ])
+    expect(marken(4)).toEqual([{ spalte: 1, monat: 2 }])
+  })
+
+  it("nennt den Monat auch, wenn im Raster kein Erster liegt", () => {
+    expect(marken(2)).toEqual([{ spalte: 0, monat: 2 }])
+  })
+})
+
+describe("tageSeitZuletzt", () => {
+  it("zählt Kalendertage bis zum letzten Übungstag", () => {
+    expect(tageSeitZuletzt(log(on("2026-03-01"), on("2026-03-07")), NOW)).toBe(3)
+    expect(tageSeitZuletzt(log(on("2026-03-10")), NOW)).toBe(0)
+  })
+
+  it("sagt nichts, solange nichts im Log steht", () => {
+    expect(tageSeitZuletzt(log(), NOW)).toBeNull()
   })
 })
