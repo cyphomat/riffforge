@@ -711,8 +711,10 @@ Komponente.
   *Sieben Saiten*) in der aufklappbaren Liste darunter (`termine`).
   Ebenfalls aus Setlist: die **Gaffa-Etiketten** (`.tape`) als
   Überschriften im Merch-Stand — Edding auf Papierstreifen, mit derselben
-  Tinte wie der Zettel —, die **Bildleiste der Ränge** statt der Segmente,
-  und die Kutte als **eine Fläche** (`.card`). Die Anordnung folgt Setlist
+  Tinte wie der Zettel —, die **Bildleiste der Ränge** statt der Segmente
+  (erreichte Bühnen sind Knöpfe und holen ihre Szene mit dem Tag des
+  Aufstiegs, `rangTage`, gross nach oben; was noch kommt, bleibt dunkel und
+  stumm), und die Kutte als **eine Fläche** (`.card`). Die Anordnung folgt Setlist
   und der Handy-Regel: links Rang und Kutte, rechts die Shirts, weil
   mehrere bildschirmhohe Shirts die Kutte sonst unter sich begraben.
   Nicht übernommen: die Monats-Tour mit Endgegner (wie bei Roadie) und die
