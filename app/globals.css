@@ -570,7 +570,20 @@
   .tour-leiste .kommt img {
     filter: grayscale(1) brightness(0.45);
   }
-  .tour-leiste .jetzt img {
+  .tour-leiste figure > button,
+  .tour-leiste figure > div {
+    @apply flex w-full min-w-0 flex-col gap-1 bg-transparent p-0 text-left;
+  }
+  .tour-leiste figure > button {
+    @apply cursor-pointer;
+  }
+  .tour-leiste figure > button:focus-visible {
+    outline: 2px solid var(--akzent);
+    outline-offset: 2px;
+  }
+  /* Der Rahmen gehört der Bühne, die gross steht — die aktuelle, oder die
+     angetippte. Die aktuelle behält ihren Namen hell, auch wenn man zurückschaut. */
+  .tour-leiste .gezeigt img {
     border-color: var(--akzent);
     box-shadow: 0 0 0 1px var(--akzent);
   }

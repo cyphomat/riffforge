@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1086%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1087%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -312,7 +312,9 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
 - **Die Bühne** — jeder Rang hat eine eigene Pixelszene, von der Garage bis
   zur Hall of Fame; die aktuelle steht im Merch-Stand und klein auf *Heute*.
   Darunter die ganze Tour als Bildleiste: was man hinter sich hat, wo man
-  steht, und was noch dunkel ist.
+  steht, und was noch dunkel ist. Erreichte Bühnen lassen sich antippen —
+  dann steht der alte Proberaum wieder gross da, mit dem Tag, an dem du ihn
+  erreicht hast.
 - **Die Kutte** — Aufnäher mit dem Tag, an dem sie verdient wurden, jede
   Leiter mit eigenem gestickten Motiv. Je Reihe
   steht nur der nächste fehlende als Umriss da, keine Weste voller leerer

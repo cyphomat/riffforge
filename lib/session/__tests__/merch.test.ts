@@ -11,6 +11,7 @@ import {
   TIGHT_STUFEN,
   aufnaeher,
   festivalShirts,
+  rangTage,
   katalog,
   kutte,
   neueAufnaeher,
@@ -302,6 +303,16 @@ describe("Festival-Shirts", () => {
     expect(shirts[1].verdient).toBeNull()
     expect(rang(log(...tageListe.map((t) => r(t)))).id).toBe("proberaum")
     expect(shirts.at(-1)!.titel).toBe("Hall-of-Fame-Shirt")
+  })
+
+  it("datiert jeden erreichten Rang, die Garage auf die erste Session", () => {
+    const tageListe = ["2026-03-04", "2026-03-05", "2026-03-09", "2026-03-16", "2026-03-23"]
+    const tage = rangTage(log(...tageListe.map((t) => r(t))))
+    expect(tage).toHaveLength(RAENGE.length)
+    expect(tage[0]).toBe("2026-03-04")
+    expect(tage[1]).toBe("2026-03-23")
+    expect(tage.slice(2).every((t) => t === null)).toBe(true)
+    expect(rangTage(log()).every((t) => t === null)).toBe(true)
   })
 
   it("gibt es für die Garage nicht — die hat jeder", () => {

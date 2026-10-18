@@ -510,19 +510,31 @@ export interface FestivalShirt {
  * quarter; a step up the ladder is worth something to wear. Counted exactly
  * like `rang`: the day of the first session in the n-th week with one.
  */
-export function festivalShirts(log: PracticeLog): FestivalShirt[] {
+/**
+ * The day each rank was reached, in the order of `RAENGE` — null where it has
+ * not been yet. The garage is the first session; every later rank is the
+ * first session of its n-th week, counted exactly like `rang`.
+ */
+export function rangTage(log: PracticeLog): Array<Tag | null> {
   const ersteJeWoche = new Map<string, Tag>()
   for (const r of chronologisch(log)) {
     const woche = weekKey(new Date(r.at))
     if (!ersteJeWoche.has(woche)) ersteJeWoche.set(woche, tagVon(r))
   }
   const wochen = [...ersteJeWoche.keys()].sort()
-  return RAENGE.slice(1).map((r) => ({
+  return RAENGE.map((r) =>
+    wochen.length >= Math.max(1, r.wochen) ? ersteJeWoche.get(wochen[Math.max(1, r.wochen) - 1])! : null,
+  )
+}
+
+export function festivalShirts(log: PracticeLog): FestivalShirt[] {
+  const tage = rangTage(log)
+  return RAENGE.slice(1).map((r, i) => ({
     id: r.id,
     // Durchgekoppelt, wie es im Deutschen gehört: Hall-of-Fame-Shirt.
     titel: `${r.titel.replace(/ /g, "-")}-Shirt`,
     wochen: r.wochen,
-    verdient: wochen.length >= r.wochen ? ersteJeWoche.get(wochen[r.wochen - 1])! : null,
+    verdient: tage[i + 1],
   }))
 }
 

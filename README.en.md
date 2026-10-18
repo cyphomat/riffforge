@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1086%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1087%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -314,7 +314,9 @@ imports their data gets the same vest back. Reached through the rank line on
 - **The stage** — every rank has its own pixel scene, from the garage to the
   hall of fame; the current one sits at the merch stand and, small, on *Heute*.
   Below it the whole tour as a strip of pictures: what is behind you, where
-  you stand, and what is still dark.
+  you stand, and what is still dark. Stages you have reached can be tapped —
+  the old rehearsal room then fills the card again, with the day you got
+  there.
 - **The vest** — patches with the day they were earned, each ladder with its
   own embroidered motif. Each row shows only the
   next missing one as an outline, not a vest full of empty circles:

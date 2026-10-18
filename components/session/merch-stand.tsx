@@ -29,6 +29,7 @@ import {
   type Rang,
   rang as berechneRang,
   rangBild,
+  rangTage as berechneRangTage,
   REIHEN,
   type Tour,
 } from "@/lib/session/merch"
@@ -284,7 +285,10 @@ export function MerchStand() {
     liste: Aufnaeher[]
     touren: Tour[]
     festival: FestivalShirt[]
+    rangTage: Array<string | null>
   } | null>(null)
+  // Welche Bühne gross steht: die aktuelle, oder eine schon erreichte aus der Leiste.
+  const [gezeigt, setGezeigt] = useState<number | null>(null)
 
   useEffect(() => {
     const log = loadLog()
@@ -294,11 +298,15 @@ export function MerchStand() {
       liste,
       touren: berechneTouren(log, liste),
       festival: berechneFestivalShirts(log),
+      rangTage: berechneRangTage(log),
     })
   }, [])
 
   if (!stand) return null
-  const { rang, liste, touren, festival } = stand
+  const { rang, liste, touren, festival, rangTage } = stand
+  const stufe = gezeigt ?? rang.stufe
+  const buehne = RAENGE[stufe]
+  const frueher = stufe !== rang.stufe
   // Verdiente und das nächste als Umriss — wie an der Kutte, keine Reihe leerer Bügel.
   const festivalHier = [...festival.filter((f) => f.verdient), ...festival.filter((f) => !f.verdient).slice(0, 1)]
   const { verdient, naechste } = kutte(liste)
@@ -318,17 +326,21 @@ export function MerchStand() {
         {/* Der Rang ist die eine Auskunft dieses Bildschirms — deshalb die
             Winkel hier und nirgends sonst. */}
         <section className="card winkel @container">
-          <span className="kicker text-dim">
-            {rang.wochen} {rang.wochen === 1 ? "Woche" : "Wochen"} auf Tour
+          <span className="kicker text-dim" aria-live="polite">
+            {frueher
+              ? `Erreicht am ${datum(rangTage[stufe]!)}`
+              : `${rang.wochen} ${rang.wochen === 1 ? "Woche" : "Wochen"} auf Tour`}
           </span>
-          <h2 className="display mt-1 text-[44px] leading-none text-fg">{rang.titel}</h2>
+          <h2 className={`display mt-1 text-[44px] leading-none ${frueher ? "text-muted" : "text-fg"}`}>
+            {buehne.titel}
+          </h2>
 
           {/* Die Bühne zum Rang — 96 × 48 Pixel, dreifach gezeichnet, ab
               breiterem Schirm vierfach: ganzzahlig, sonst verschwimmt Pixelkunst. */}
           {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
           <img
-            src={asset(rangBild(rang.id))}
-            alt={`Bühne: ${rang.titel}`}
+            src={asset(rangBild(buehne.id))}
+            alt={`Bühne: ${buehne.titel}`}
             width={288}
             height={144}
             className="pixel mt-4 block h-auto w-[288px] max-w-full border border-line sm:w-[384px]"
@@ -336,19 +348,43 @@ export function MerchStand() {
 
           {/* Die ganze Tour als Bildleiste, aus Setlist: wo man war, wo man ist,
               was kommt. Verkleinert statt vergrössert — dafür gilt die
-              Ganzzahl-Regel nicht, weichgezeichnet wird hier nichts. */}
+              Ganzzahl-Regel nicht, weichgezeichnet wird hier nichts.
+              Erreichte Bühnen sind Knöpfe: man darf noch einmal in den
+              Proberaum schauen. Was noch kommt, bleibt dunkel und stumm. */}
           <div className="tour-leiste mt-3">
             {RAENGE.map((r, i) => {
               const zustand = i < rang.stufe ? "erreicht" : i === rang.stufe ? "jetzt" : "kommt"
-              return (
-                <figure key={r.id} className={zustand} title={i <= rang.stufe ? r.titel : `${r.titel} · ab ${r.wochen} Wochen`}>
+              const bild = (
+                <>
                   {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
                   <img src={asset(rangBild(r.id))} alt="" width={96} height={48} className="pixel" />
                   <figcaption>{r.titel}</figcaption>
+                </>
+              )
+              return (
+                <figure key={r.id} className={`${zustand} ${i === stufe ? "gezeigt" : ""}`}>
+                  {i <= rang.stufe ? (
+                    <button
+                      type="button"
+                      onClick={() => setGezeigt(i === rang.stufe ? null : i)}
+                      aria-pressed={i === stufe}
+                      aria-label={`Bühne ${r.titel} zeigen`}
+                      title={i === rang.stufe ? `${r.titel} · jetzt` : `${r.titel} · erreicht am ${datum(rangTage[i]!)}`}
+                    >
+                      {bild}
+                    </button>
+                  ) : (
+                    <div title={`${r.titel} · ab ${r.wochen} Wochen`}>{bild}</div>
+                  )}
                 </figure>
               )
             })}
           </div>
+          {frueher && (
+            <button type="button" className="shirt-wenden mt-3" onClick={() => setGezeigt(null)}>
+              Zurück zu {rang.titel} ↩
+            </button>
+          )}
           {rang.naechster && (
             <div className="bar mt-2 h-[4px]">
               <i style={{ width: `${Math.round(rang.anteil * 100)}%` }} />
