@@ -330,4 +330,27 @@ describe("Tourshirts", () => {
     expect(liste[1].gigs).toEqual(["2026-02-10", "2026-02-11"])
     expect(liste[1].minuten).toBe(9)
   })
+
+  it("sagt zu jedem Tourtag, was gespielt wurde", () => {
+    const [tour] = touren(
+      log(
+        r("2026-08-03"),
+        r("2026-08-04", { drillId: LEAD_DRILL_ID }),
+        r("2026-08-05", { drillId: SIEBEN_DRILLS[0].id }),
+        r("2026-08-05", { drillId: LEAD_DRILL_ID }),
+        // Ein Lick innerhalb der Session macht aus ihr keinen Lick-Abend.
+        r("2026-08-06"),
+        r("2026-08-06", { drillId: LEAD_DRILL_ID }),
+      ),
+      [],
+      new Date("2026-08-15T12:00:00"),
+    )
+    expect(tour.termine).toEqual([
+      { tag: "2026-08-03", arten: ["session"] },
+      { tag: "2026-08-04", arten: ["lick"] },
+      { tag: "2026-08-05", arten: ["lick", "sieben"] },
+      { tag: "2026-08-06", arten: ["session"] },
+    ])
+    expect(tour.termine.map((t) => t.tag)).toEqual(tour.gigs)
+  })
 })

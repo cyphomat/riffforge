@@ -554,17 +554,183 @@
     }
   }
 
-  /* Die Rangleiter: ein Segment je Rang. Gefüllt, was erreicht ist. */
-  .rangleiter {
-    @apply grid gap-[5px];
+  /* Die Tour als Bildleiste, aus Setlist: jede Bühne klein, die aktuelle
+     gerahmt, was noch kommt dunkel. Die Namen stehen nur, wo Platz ist —
+     die Karte ist ein Container, keine Bildschirmbreite. */
+  .tour-leiste {
+    @apply grid gap-1;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
   }
-  .rangleiter > i {
-    @apply block h-[6px] border border-line;
-    background: var(--sunken);
+  .tour-leiste figure {
+    @apply m-0 flex min-w-0 flex-col gap-1;
   }
-  .rangleiter > i.an {
+  .tour-leiste img {
+    @apply block h-auto w-full border border-line;
+  }
+  .tour-leiste .kommt img {
+    filter: grayscale(1) brightness(0.45);
+  }
+  .tour-leiste .jetzt img {
     border-color: var(--akzent);
+    box-shadow: 0 0 0 1px var(--akzent);
+  }
+  .tour-leiste figcaption {
+    @apply hidden text-center font-mono text-[11.5px] leading-tight text-muted [overflow-wrap:anywhere];
+  }
+  .tour-leiste .jetzt figcaption {
+    color: var(--fg);
+  }
+  @container (min-width: 34rem) {
+    .tour-leiste figcaption {
+      @apply block;
+    }
+  }
+
+  /* Überschriften im Merch-Stand als Streifen Gaffa mit Edding darauf, aus
+     Setlist: leicht schief geklebt, die Enden gerissen. Papier und Tinte wie
+     auf dem Zettel — dieselbe Handschrift auf demselben Grund. */
+  .tape {
+    @apply mb-[14px] mt-9 w-fit max-w-full px-[14px] pb-1 pt-[5px] uppercase [overflow-wrap:anywhere];
+    font-family: var(--font-edding), var(--font-oswald), "Helvetica Neue", sans-serif;
+    font-size: 17px;
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    color: var(--tinte);
+    background: var(--papier);
+    transform: rotate(-0.8deg);
+    clip-path: polygon(0 8%, 3% 0, 97% 4%, 100% 0, 99% 52%, 100% 100%, 96% 94%, 4% 100%, 0 92%, 1% 46%);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  }
+  .tape.schief {
+    transform: rotate(0.6deg);
+  }
+
+  /* ── Das Tourshirt, aus Setlist ──
+     Das Shirt ist ein SVG aus lib/session/shirt.ts, der Druck liegt als Text
+     darüber und wächst mit dem Shirt (cqw). Gewendet wird in 3D; wer
+     reduzierte Bewegung eingestellt hat, sieht die Rückseite ohne Drehung. */
+  .shirt-wand {
+    @apply grid gap-[14px];
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+  }
+  .tourshirt {
+    @apply flex min-w-0 flex-col gap-3 border border-line bg-panel px-[14px] pb-[10px] pt-4;
+  }
+  .tourshirt.laufend {
+    border-color: var(--akzent);
+  }
+  .shirt-buehne {
+    @apply mx-auto w-full;
+    max-width: 320px;
+    aspect-ratio: 64 / 60;
+    container-type: inline-size;
+    perspective: 900px;
+  }
+  .shirt-dreh {
+    @apply relative h-full w-full;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+  .tourshirt.gewendet .shirt-dreh {
+    transform: rotateY(180deg);
+  }
+  .shirt-seite {
+    @apply absolute inset-0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.45));
+  }
+  .shirt-seite > svg {
+    @apply block h-full w-full;
+  }
+  .shirt-seite.hinten {
+    transform: rotateY(180deg);
+  }
+  .druck {
+    @apply absolute flex flex-col items-center overflow-hidden text-center;
+    inset: 16% 25% 11% 25%;
+    color: var(--druck);
+  }
+  .druck .marke {
+    font-size: 8.5cqw;
+    line-height: 1;
+  }
+  .druck .emblem {
+    @apply flex-none;
+    width: 27cqw;
+    height: 27cqw;
+    margin: 2.5cqw 0 2cqw;
+  }
+  .druck .tname {
+    @apply font-semibold uppercase [overflow-wrap:anywhere];
+    font-family: var(--font-oswald), "Helvetica Neue", sans-serif;
+    font-size: 6.2cqw;
+    line-height: 1.02;
+    letter-spacing: 0.03em;
+  }
+  .druck .tzeit {
+    @apply font-mono uppercase;
+    margin-top: 2cqw;
+    font-size: 3.4cqw;
+    letter-spacing: 0.14em;
+  }
+  .hinten .druck {
+    inset: 11% 25% 8% 25%;
+    padding-top: 1.2cqw;
+  }
+  .hinten .tkopf {
+    @apply font-semibold uppercase;
+    font-family: var(--font-oswald), "Helvetica Neue", sans-serif;
+    font-size: 5.6cqw;
+    line-height: 1.35;
+    letter-spacing: 0.08em;
+    margin-bottom: 2cqw;
+  }
+  .hinten .daten {
+    @apply m-0 grid list-none p-0 font-mono;
+    grid-template-columns: repeat(3, auto);
+    gap: 0.5cqw 2.4cqw;
+    font-size: 3.3cqw;
+    line-height: 1.3;
+  }
+  .hinten .mehr {
+    @apply font-mono;
+    margin-top: 1.5cqw;
+    font-size: 3cqw;
+  }
+  .sticker {
+    @apply absolute font-bold uppercase;
+    right: 1%;
+    top: 13%;
+    transform: rotate(14deg);
+    padding: 0.8cqw 2.6cqw;
+    font-family: var(--font-oswald), "Helvetica Neue", sans-serif;
+    font-size: 4.6cqw;
+    letter-spacing: 0.08em;
+    color: var(--bg);
     background: var(--akzent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shirt-dreh {
+      transition: none;
+    }
+  }
+  .shirt-wenden {
+    @apply self-start border-0 border-b border-current bg-transparent py-1 font-mono text-[12px] tracking-[0.06em] text-akzent;
+  }
+  .shirt-wenden:focus-visible {
+    outline: 2px solid var(--akzent);
+    outline-offset: 3px;
+  }
+  .termine {
+    @apply mt-2 list-none p-0;
+    columns: 2 15ch;
+    column-gap: 18px;
+  }
+  .termine li {
+    @apply flex flex-wrap gap-x-2 py-[3px] text-[13px] leading-snug;
+    break-inside: avoid;
   }
 
   /* Aufklappbares Wissen — die Theorie am Drill. */

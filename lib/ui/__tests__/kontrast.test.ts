@@ -42,6 +42,11 @@ describe("Farbkontrast", () => {
     },
   )
 
+  it("trägt dunkle Schrift auf Bernstein — der Live-Sticker am Tourshirt", () => {
+    const wert = kontrast(farbe("bg"), farbe("akzent"))
+    expect(wert, `--bg auf --akzent: ${wert.toFixed(2)}`).toBeGreaterThanOrEqual(AA_TEXT)
+  })
+
   it("hält Rot als Rand und grosse Schrift lesbar", () => {
     // `--rot` steht nur als Rahmen und als kurzes Wort in Versalien da —
     // dafür gilt die kleinere Schwelle. Es als Fliesstext zu setzen wäre der

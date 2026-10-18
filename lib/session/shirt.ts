@@ -1,6 +1,7 @@
 /**
- * Tour shirts as pixel art: a 32 × 32 tee, coloured by the first word of the
- * tour name and printed with a motif for the second.
+ * Shirts as pixel art. A tour shirt is a 64 × 60 tee (`grossesShirt`),
+ * coloured by the first word of the tour name, with a 12 × 12 emblem for the
+ * second; a festival shirt is a 32 × 32 longsleeve with its print painted in.
  *
  * Drawn from grids rather than shipped as images: twelve colours times twelve
  * motifs would be 144 files, and a grid of characters can be checked by a
@@ -209,8 +210,9 @@ const TINTE = "#e6dcc4"
 const ZWEITE = ["#c9a14a", "#c8463a", "#7fa6c9"]
 
 /**
- * The silhouette of the tee, as its left half — the right is the mirror, so
- * the shirt cannot come out lopsided. `#` is cloth.
+ * The silhouette of the small tee, as its left half — the right is the
+ * mirror, so the shirt cannot come out lopsided. `#` is cloth. Only the
+ * longsleeve is built on it now; the tour shirt is the big cut below.
  */
 const HALB = [
   "................",
@@ -229,7 +231,6 @@ const HALB = [
   "................",
   "................",
 ]
-const SCHNITT = HALB.map((zeile) => zeile + [...zeile].reverse().join(""))
 
 export interface Pixel {
   x: number
@@ -255,18 +256,7 @@ export function shirtTeile(name: string): { stoff: string; motiv: string } {
   return { stoff, motiv: motiv in MOTIVE ? motiv : "Riffs" }
 }
 
-/** The pixels of one shirt, ready to be drawn as rectangles. */
-export function shirtPixel(name: string): Pixel[] {
-  const { stoff, motiv } = shirtTeile(name)
-  const zweite = ZWEITE[(Object.keys(STOFF).indexOf(stoff) + Object.keys(MOTIVE).indexOf(motiv)) % ZWEITE.length]
-  return zeichne(SCHNITT, STOFF[stoff], MOTIVE[motiv], TINTE, zweite)
-}
-
-/**
- * One shirt from its parts: a cut, a dye, a print and two inks. Tour shirts
- * and festival shirts differ in all four, but not in how cloth, fold, neck
- * and print are laid on top of one another.
- */
+/** A small shirt from its parts: a cut, a dye, a print painted in, two inks. */
 function zeichne(
   schnitt: string[],
   grund: string,
@@ -461,4 +451,96 @@ export const FESTIVAL: Record<string, { stoff: string; tinte: string; zweite: st
 export function festivalPixel(rangId: string): Pixel[] {
   const f = FESTIVAL[rangId] ?? FESTIVAL.proberaum
   return zeichne(LANGARM, f.stoff, f.motiv, f.tinte, f.zweite, true)
+}
+
+/* ──────────────────────────── Das grosse Shirt ──────────────────────────── */
+
+/**
+ * The tour shirt as it hangs at the merch stand: 64 × 60, laid flat —
+ * shoulders, sleeves, a ribbed collar, seams and a few folds. The front has
+ * a deep neckline, the back a shallow one, because the back is what you
+ * turn it round to read.
+ *
+ * The cut is Setlist's, computed the same way from the same outline, so the
+ * two apps hang the same shirt; the dye and the print are Riffforge's own.
+ * Unlike the small shirt the print is not painted in: it is laid over as
+ * text and an emblem, so the tour name stays readable and selectable.
+ */
+export const GROSS_BREITE = 64
+export const GROSS_HOEHE = 60
+
+const FORM: Array<[number, number]> = [
+  [23, 1], [41, 1], [52, 5], [63, 19], [56, 27], [49, 22], [50, 59], [13, 59], [14, 22], [7, 27], [0, 19], [11, 5],
+]
+
+function imPolygon(x: number, y: number): boolean {
+  let drin = false
+  for (let i = 0, j = FORM.length - 1; i < FORM.length; j = i, i += 1) {
+    const [xi, yi] = FORM[i]
+    const [xj, yj] = FORM[j]
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) drin = !drin
+  }
+  return drin
+}
+
+/** Distance from a point to the segment a–b — for seams and folds. */
+function zurStrecke(x: number, y: number, [ax, ay]: [number, number], [bx, by]: [number, number]): number {
+  const dx = bx - ax
+  const dy = by - ay
+  const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+  return Math.hypot(x - ax - t * dx, y - ay - t * dy)
+}
+
+/** Fold and seam factors stay below this, so the print always sits on cloth no lighter than this. */
+export const HELLSTER_STOFF = 1.08
+
+/** The pixels of the big shirt in a dye, front or back. */
+export function grossesShirt(stoff: string, hinten: boolean): Pixel[] {
+  const pixel: Pixel[] = []
+  const hals = (x: number, y: number) => ((x - 31.5) / 9.5) ** 2 + (y / (hinten ? 3.2 : 6.5)) ** 2 <= 1
+  // The outline is sampled on its left half and mirrored: Setlist's points sit
+  // half a pixel off the centre on the right, and a shirt with one sleeve a
+  // pixel longer looks drawn by hand in the wrong way.
+  const drin = (x: number, y: number) => {
+    if (x < 0 || y < 0 || x >= GROSS_BREITE || y >= GROSS_HOEHE) return false
+    const links = x < GROSS_BREITE / 2 ? x : GROSS_BREITE - 1 - x
+    return imPolygon(links + 0.5, y + 0.5) && !hals(x, y)
+  }
+
+  for (let y = 0; y < GROSS_HOEHE; y += 1) {
+    for (let x = 0; x < GROSS_BREITE; x += 1) {
+      if (!drin(x, y)) continue
+      if (!drin(x - 1, y) || !drin(x + 1, y) || !drin(x, y - 1) || !drin(x, y + 1)) {
+        pixel.push({ x, y, farbe: "#0a0a0a" })
+        continue
+      }
+      let f = 1
+      // The ribbed collar round the neckline is the one place lighter than the cloth.
+      if (((x - 31.5) / 11.5) ** 2 + (y / (hinten ? 5.2 : 8.5)) ** 2 <= 1) f = (x + y) % 2 ? 1.35 : 1.2
+      else if (zurStrecke(x, y, [63, 19], [56, 27]) < 2.6 || zurStrecke(x, y, [0, 19], [7, 27]) < 2.6) f = 0.78
+      else if (y >= 56) f = 0.78
+      else if (zurStrecke(x, y, [14, 22], [11, 6]) < 0.8 || zurStrecke(x, y, [49, 22], [52, 6]) < 0.8) f = 0.82
+      else if (zurStrecke(x, y, [19, 30], [24, 52]) < 0.6 || zurStrecke(x, y, [44, 34], [41, 50]) < 0.6) f = 0.86
+      // Light from the top left, shade to the bottom right — as diagonal bands,
+      // so their edges step like pixel art. Setlist lit two rectangles, and
+      // on a dark dye the bright one read as a patch sewn onto the shirt.
+      else if (x + y * 0.8 < 30) f = HELLSTER_STOFF
+      else if (x + y * 0.8 > 84) f = 0.9
+      pixel.push({ x, y, farbe: schattiere(stoff, f) })
+    }
+  }
+  return pixel
+}
+
+/** What goes on a tour's big shirt: the dye, the inks and the emblem, all from its name. */
+export function tourDruck(name: string): { stoff: string; tinte: string; zweite: string; motiv: string[] } {
+  const { stoff, motiv } = shirtTeile(name)
+  const zweite = ZWEITE[(Object.keys(STOFF).indexOf(stoff) + Object.keys(MOTIVE).indexOf(motiv)) % ZWEITE.length]
+  return { stoff: STOFF[stoff], tinte: TINTE, zweite, motiv: MOTIVE[motiv] }
+}
+
+/** Splits a tour name for the print: the dye word above, the rest below — "Palm Mutes" stays together. */
+export function tourZeilen(name: string): [string, string] {
+  const { stoff } = shirtTeile(name)
+  return [stoff, name.replace(/ Tour$/, "").slice(stoff.length + 1)]
 }

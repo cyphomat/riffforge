@@ -220,6 +220,17 @@ await merchSeite.goto(`${BASE}/merch/`, { waitUntil: 'networkidle' })
 await merchSeite.waitForTimeout(700)
 await merchSeite.screenshot({ path: `${OUT}/merch.png` })
 console.log(`${OUT}/merch.png`)
+
+// Das laufende Tourshirt, vorne und — nach dem Knopf — hinten. Ohne
+// Bewegung, sonst landet die halbe Drehung im Bild.
+await merchSeite.emulateMedia({ reducedMotion: 'reduce' })
+const shirt = merchSeite.locator('.tourshirt').first()
+await shirt.scrollIntoViewIfNeeded()
+await shirt.locator('.shirt-buehne').screenshot({ path: `${OUT}/tourshirt-vorne.png` })
+await shirt.getByRole('button', { name: /Rückseite zeigen/ }).click()
+await merchSeite.waitForTimeout(100)
+await shirt.locator('.shirt-buehne').screenshot({ path: `${OUT}/tourshirt-hinten.png` })
+console.log(`${OUT}/tourshirt-vorne.png, tourshirt-hinten.png`)
 await merchKontext.close()
 
 // 8 — Wissen: eine aufgelöste Frage auf dem Griffbrett. Eigener Kontext mit

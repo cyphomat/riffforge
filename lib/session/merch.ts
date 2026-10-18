@@ -553,6 +553,14 @@ export function tourName(jahr: number, quartal: number): string {
   return `${ADJEKTIVE[h % ADJEKTIVE.length]} ${NOMEN[(h >>> 8) % NOMEN.length]} Tour`
 }
 
+/** What a day on tour was: the daily session, a lick on its own, or the seven-string. */
+export type GigArt = "session" | "lick" | "sieben"
+
+export interface Termin {
+  tag: Tag
+  arten: GigArt[]
+}
+
 export interface Tour {
   jahr: number
   quartal: number
@@ -560,6 +568,8 @@ export interface Tour {
   laufend: boolean
   /** Die Tage, an denen geübt wurde — der Rückendruck. */
   gigs: Tag[]
+  /** Dieselben Tage mit dem, was gespielt wurde — die Liste unter dem Shirt. */
+  termine: Termin[]
   minuten: number
   /** Davon auf sieben Saiten. */
   siebenGigs: number
@@ -571,15 +581,20 @@ const quartalVon = (tag: Tag) => Math.floor((Number(tag.slice(5, 7)) - 1) / 3) +
 /** Jedes Quartal mit mindestens einem Gig ist eine Tour, die neueste zuerst. */
 export function touren(log: PracticeLog, liste: Aufnaeher[] = [], heute: Date = new Date()): Tour[] {
   const jetzt = dayKey(heute)
-  const map = new Map<string, { jahr: number; quartal: number; tage: Set<Tag>; sieben: Set<Tag>; sekunden: number }>()
+  const map = new Map<
+    string,
+    { jahr: number; quartal: number; tage: Set<Tag>; sieben: Set<Tag>; sekunden: number; arten: Map<Tag, Set<GigArt>> }
+  >()
   for (const r of chronologisch(log)) {
     const tag = tagVon(r)
     const jahr = Number(tag.slice(0, 4))
     const quartal = quartalVon(tag)
     const key = `${jahr}-Q${quartal}`
-    if (!map.has(key)) map.set(key, { jahr, quartal, tage: new Set(), sieben: new Set(), sekunden: 0 })
+    if (!map.has(key)) map.set(key, { jahr, quartal, tage: new Set(), sieben: new Set(), sekunden: 0, arten: new Map() })
     const t = map.get(key)!
     t.tage.add(tag)
+    const art: GigArt = istSieben(r) ? "sieben" : r.drillId === LEAD_DRILL_ID ? "lick" : "session"
+    t.arten.set(tag, (t.arten.get(tag) ?? new Set<GigArt>()).add(art))
     if (istSieben(r)) t.sieben.add(tag)
     t.sekunden += r.seconds
   }
@@ -589,6 +604,13 @@ export function touren(log: PracticeLog, liste: Aufnaeher[] = [], heute: Date = 
     name: tourName(t.jahr, t.quartal),
     laufend: Number(jetzt.slice(0, 4)) === t.jahr && quartalVon(jetzt) === t.quartal,
     gigs: [...t.tage].sort(),
+    termine: [...t.tage].sort().map((tag) => ({
+      tag,
+      // A session that included the lead drill was still a session, not a lick on its own.
+      arten: (["session", "lick", "sieben"] as const).filter(
+        (a) => t.arten.get(tag)!.has(a) && !(a === "lick" && t.arten.get(tag)!.has("session")),
+      ),
+    })),
     minuten: Math.round(t.sekunden / 60),
     siebenGigs: t.sieben.size,
     aufnaeher: liste.filter(

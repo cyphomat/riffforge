@@ -4,7 +4,17 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdArrowBack } from "react-icons/md"
 import { asset } from "@/lib/base-path"
-import { festivalPixel, type Pixel, SHIRT_GROESSE, shirtPixel } from "@/lib/session/shirt"
+import {
+  festivalPixel,
+  GROSS_BREITE,
+  GROSS_HOEHE,
+  grossesShirt,
+  MOTIV_GROESSE,
+  type Pixel,
+  SHIRT_GROESSE,
+  tourDruck,
+  tourZeilen,
+} from "@/lib/session/shirt"
 import { AUFNAEHER_GROESSE, technikAufnaeher } from "@/lib/session/technik-zeichen"
 import {
   type Aufnaeher,
@@ -12,6 +22,7 @@ import {
   aufnaeherBild,
   type FestivalShirt,
   festivalShirts as berechneFestivalShirts,
+  type GigArt,
   kutte,
   touren as berechneTouren,
   RAENGE,
@@ -69,8 +80,128 @@ export function RangAufstieg({ rang }: { rang: Rang }) {
  * Ein Tourshirt als Pixelbild. Gezeichnet als SVG aus Rechtecken: scharf in
  * jeder Grösse, und die Rechnung dahinter steht in `lib/session/shirt.ts`.
  */
-export function TourShirt({ name, groesse = 96 }: { name: string; groesse?: number }) {
-  return <PixelBild pixel={shirtPixel(name)} seite={SHIRT_GROESSE} groesse={groesse} label={`Tourshirt: ${name}`} />
+/** So viele Daten passen hinten aufs Shirt, in drei Spalten. Der Rest steht in der Liste darunter. */
+const SHIRT_DATEN = 33
+const GIG_ART: Record<GigArt, string> = { session: "Session", lick: "Lick", sieben: "Sieben Saiten" }
+const kurz = (tag: string) => datum(tag).replace(/\d{4}$/, "")
+
+/** Eine Seite des grossen Shirts, ohne Druck — der liegt als Text darüber. */
+function ShirtStoff({ stoff, hinten }: { stoff: string; hinten: boolean }) {
+  return (
+    <svg viewBox={`0 0 ${GROSS_BREITE} ${GROSS_HOEHE}`} shapeRendering="crispEdges" aria-hidden>
+      {grossesShirt(stoff, hinten).map((p, i) => (
+        <rect key={i} x={p.x} y={p.y} width={1} height={1} fill={p.farbe} />
+      ))}
+    </svg>
+  )
+}
+
+/** Das Emblem auf der Brust: das Motiv zum zweiten Wort des Tournamens, zweifarbig wie ein Siebdruck. */
+function Emblem({ motiv, tinte, zweite }: { motiv: string[]; tinte: string; zweite: string }) {
+  return (
+    <svg className="emblem" viewBox={`0 0 ${MOTIV_GROESSE} ${MOTIV_GROESSE}`} shapeRendering="crispEdges" aria-hidden>
+      {motiv.flatMap((zeile, y) =>
+        [...zeile].map((z, x) =>
+          z === "." ? null : <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={z === "a" ? tinte : zweite} />,
+        ),
+      )}
+    </svg>
+  )
+}
+
+/**
+ * Ein Tourshirt, wie es am Merch-Stand hängt — aus Setlist übernommen.
+ *
+ * Vorne Wortmarke, Emblem, Tourname und Quartal, die laufende Tour mit
+ * „Live"-Sticker; hinten die Tourdaten, wie auf jedem echten Tourshirt. Der
+ * Knopf dreht es um. Die volle Liste mit dem, was an jedem Tag gespielt
+ * wurde, steht darunter zum Aufklappen.
+ */
+export function TourShirtKarte({ tour }: { tour: Tour }) {
+  const [gewendet, setGewendet] = useState(false)
+  const druck = tourDruck(tour.name)
+  const [oben, unten] = tourZeilen(tour.name)
+  const zeit = `Q${tour.quartal} ${tour.jahr}`
+  const hinten = tour.gigs.slice(0, SHIRT_DATEN)
+  const rest = tour.gigs.length - hinten.length
+
+  return (
+    <article
+      className={`tourshirt ${gewendet ? "gewendet" : ""} ${tour.laufend ? "laufend" : ""}`}
+      // Die Tinte gehört zum Bild wie der Stoff — siehe lib/session/shirt.ts.
+      style={{ "--druck": druck.tinte } as React.CSSProperties}
+    >
+      <div className="shirt-buehne">
+        <div className="shirt-dreh">
+          <div className="shirt-seite vorne" role="img" aria-label={`Tourshirt ${tour.name}, ${zeit}`}>
+            <ShirtStoff stoff={druck.stoff} hinten={false} />
+            <div className="druck" aria-hidden>
+              <span className="marke">
+                Riff<span className="fuge">forge</span>
+              </span>
+              <Emblem motiv={druck.motiv} tinte={druck.tinte} zweite={druck.zweite} />
+              <span className="tname">
+                {oben}
+                <br />
+                {unten}
+              </span>
+              <span className="tzeit">Tour · {zeit}</span>
+            </div>
+            {tour.laufend && (
+              <span className="sticker" aria-hidden>
+                Live
+              </span>
+            )}
+          </div>
+          <div className="shirt-seite hinten" aria-hidden>
+            <ShirtStoff stoff={druck.stoff} hinten />
+            <div className="druck">
+              <span className="tkopf">Tourdaten</span>
+              <ol className="daten">
+                {hinten.map((tag) => (
+                  <li key={tag}>{kurz(tag)}</li>
+                ))}
+              </ol>
+              {rest > 0 && <span className="mehr">+ {rest} weitere</span>}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 flex-col gap-[2px]">
+        <b className="display text-[17px] leading-tight text-fg [overflow-wrap:anywhere]">{tour.name}</b>
+        <span className="text-[13px] text-muted">
+          {zeit}
+          {tour.laufend && <span className="text-akzent"> · läuft</span>}
+        </span>
+        <span className="text-[13px] text-muted">
+          {tour.gigs.length} {tour.gigs.length === 1 ? "Gig" : "Gigs"} · {tour.minuten} Min
+          {tour.siebenGigs > 0 && ` · ${tour.siebenGigs} auf sieben Saiten`}
+          {tour.aufnaeher > 0 && ` · ${tour.aufnaeher} Aufnäher`}
+        </span>
+        <button
+          type="button"
+          className="shirt-wenden mt-[6px]"
+          aria-pressed={gewendet}
+          onClick={() => setGewendet((w) => !w)}
+        >
+          {gewendet ? "Vorderseite zeigen" : "Rückseite zeigen"} ↻
+        </button>
+      </div>
+
+      <details>
+        <summary className="kicker cursor-pointer py-[6px] text-muted">Alle Termine</summary>
+        <ol className="termine">
+          {tour.termine.map((t) => (
+            <li key={t.tag}>
+              <span className="font-mono text-akzent">{kurz(t.tag)}</span>
+              <span className="text-fg">{t.arten.map((a) => GIG_ART[a]).join(" + ")}</span>
+            </li>
+          ))}
+        </ol>
+      </details>
+    </article>
+  )
 }
 
 /** Ein Festival-Shirt: Langarm, Druck zum Rang. Die Rechnung steht in `lib/session/shirt.ts`. */
@@ -183,9 +314,10 @@ export function MerchStand() {
           </p>
         </header>
 
+        <h2 className="tape">Rang</h2>
         {/* Der Rang ist die eine Auskunft dieses Bildschirms — deshalb die
             Winkel hier und nirgends sonst. */}
-        <section className="card winkel mt-6">
+        <section className="card winkel @container">
           <span className="kicker text-dim">
             {rang.wochen} {rang.wochen === 1 ? "Woche" : "Wochen"} auf Tour
           </span>
@@ -202,10 +334,20 @@ export function MerchStand() {
             className="pixel mt-4 block h-auto w-[288px] max-w-full border border-line sm:w-[384px]"
           />
 
-          <div className="rangleiter mt-4" style={{ gridTemplateColumns: `repeat(${RAENGE.length}, 1fr)` }}>
-            {RAENGE.map((r, i) => (
-              <i key={r.id} className={i <= rang.stufe ? "an" : ""} title={r.titel} />
-            ))}
+          {/* Die ganze Tour als Bildleiste, aus Setlist: wo man war, wo man ist,
+              was kommt. Verkleinert statt vergrössert — dafür gilt die
+              Ganzzahl-Regel nicht, weichgezeichnet wird hier nichts. */}
+          <div className="tour-leiste mt-3">
+            {RAENGE.map((r, i) => {
+              const zustand = i < rang.stufe ? "erreicht" : i === rang.stufe ? "jetzt" : "kommt"
+              return (
+                <figure key={r.id} className={zustand} title={i <= rang.stufe ? r.titel : `${r.titel} · ab ${r.wochen} Wochen`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+                  <img src={asset(rangBild(r.id))} alt="" width={96} height={48} className="pixel" />
+                  <figcaption>{r.titel}</figcaption>
+                </figure>
+              )
+            })}
           </div>
           {rang.naechster && (
             <div className="bar mt-2 h-[4px]">
@@ -221,40 +363,47 @@ export function MerchStand() {
           </p>
         </section>
 
-        <h2 className="rule mb-3 mt-9">Tourshirts</h2>
+        <h2 className="tape schief">Die Kutte</h2>
+        {/* Die Kutte als eine Fläche, wie in Setlist: Aufnäher gehören auf
+            Stoff, nicht auf den Seitengrund. */}
+        <section className="card">
+          <p className="mb-1 text-[12.5px] text-dim">
+            {verdient.length} Aufnäher verdient. Je Reihe steht der nächste als
+            Umriss da.
+          </p>
+          {REIHEN.map((reihe) => {
+            const hier = [
+              ...verdient.filter((a) => a.reihe === reihe.id),
+              ...naechste.filter((a) => a.reihe === reihe.id),
+            ]
+            if (hier.length === 0) return null
+            return (
+              <div key={reihe.id}>
+                <p className="kicker mb-2 mt-5 text-dim">{reihe.titel}</p>
+                <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
+                  {hier.map((a) => (
+                    <AufnaeherKachel key={a.id} a={a} />
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </section>
+      </div>
+
+      <div className="spalte">
+        <h2 className="tape schief">Tourshirts</h2>
         {touren.length === 0 ? (
           <p className="text-[14px] text-dim">Die erste Tour beginnt mit der ersten Session.</p>
         ) : (
-          <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
+          <div className="shirt-wand">
             {touren.map((tour) => (
-              <div
-                key={`${tour.jahr}-${tour.quartal}`}
-                className={`border bg-panel p-3 ${tour.laufend ? "border-akzent" : "border-line"}`}
-              >
-                <TourShirt name={tour.name} />
-                <p className="display mt-2 text-[15px] leading-tight text-fg">{tour.name}</p>
-                <p className="kicker mt-1 text-dim">
-                  Q{tour.quartal} {tour.jahr}
-                  {tour.laufend && <span className="text-akzent"> · läuft</span>}
-                </p>
-                <p className="ziffern mt-2 text-[12px] text-muted">
-                  {tour.gigs.length} {tour.gigs.length === 1 ? "Gig" : "Gigs"} · {tour.minuten} Min
-                  {tour.siebenGigs > 0 && ` · ${tour.siebenGigs} auf sieben Saiten`}
-                  {tour.aufnaeher > 0 && ` · ${tour.aufnaeher} Aufnäher`}
-                </p>
-                {/* Der Rückendruck: die Tourdaten, wie auf einem echten Shirt. */}
-                <details className="mt-1">
-                  <summary className="cursor-pointer font-mono text-[11.5px] text-dim">Rückendruck</summary>
-                  <p className="ziffern mt-1 text-[11.5px] leading-relaxed text-dim">
-                    {tour.gigs.map((tag) => datum(tag).replace(/\.\d{4}$/, "")).join(" · ")}
-                  </p>
-                </details>
-              </div>
+              <TourShirtKarte key={`${tour.jahr}-${tour.quartal}`} tour={tour} />
             ))}
           </div>
         )}
 
-        <h2 className="rule mb-1 mt-9">Festival-Shirts</h2>
+        <h2 className="tape">Festival-Shirts</h2>
         <p className="mb-3 text-[12.5px] text-dim">
           Eins für jeden Rang. Langarm, damit man sie von den Tourshirts unterscheidet.
         </p>
@@ -279,32 +428,6 @@ export function MerchStand() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="spalte">
-        <h2 className="rule mb-1 mt-9">Die Kutte</h2>
-        <p className="mb-3 text-[12.5px] text-dim">
-          {verdient.length} Aufnäher verdient. Je Reihe steht der nächste als
-          Umriss da.
-        </p>
-        {REIHEN.map((reihe) => {
-          const hier = [
-            ...verdient.filter((a) => a.reihe === reihe.id),
-            ...naechste.filter((a) => a.reihe === reihe.id),
-          ]
-          if (hier.length === 0) return null
-          return (
-            <div key={reihe.id}>
-              <p className="kicker mb-2 mt-5 text-dim">{reihe.titel}</p>
-              <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">
-                {hier.map((a) => (
-                  <AufnaeherKachel key={a.id} a={a} />
-                ))}
-              </div>
-            </div>
-          )
-        })}
-
         <Link href="/" className="btn btn-ghost btn-small mt-9 w-full py-3">
           <MdArrowBack className="h-[16px] w-[16px]" /> Zurück
         </Link>

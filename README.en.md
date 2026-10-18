@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1081%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1086%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -284,6 +284,8 @@ what there is to know about the low string sits on the drill itself.
 </p>
 
 A little bit of game, borrowed from [Setlist](https://github.com/cyphomat/setlist) —
+down to the design: headings as gaffa tape with marker, the shirt you can
+turn round, the strip of rank pictures —
 with the same guiding rule: **regularity and quality are rewarded, never
 quantity.** Everything is computed from the log and stored nowhere; whoever
 imports their data gets the same vest back. Reached through the rank line on
@@ -311,6 +313,8 @@ imports their data gets the same vest back. Reached through the rank line on
   faster. **The rank never drops.**
 - **The stage** — every rank has its own pixel scene, from the garage to the
   hall of fame; the current one sits at the merch stand and, small, on *Heute*.
+  Below it the whole tour as a strip of pictures: what is behind you, where
+  you stand, and what is still dark.
 - **The vest** — patches with the day they were earned, each ladder with its
   own embroidered motif. Each row shows only the
   next missing one as an outline, not a vest full of empty circles:
@@ -326,10 +330,13 @@ imports their data gets the same vest back. Reached through the rank line on
   | Fretboard | 12, 36 and all 72 places that hold for a week when finding · *In- und auswendig*: all 72 when naming too |
 
 - **Tour shirts** — every quarter with practice is a tour with a fixed name,
-  the tour dates printed on the back. Each shirt is a pixel picture: the colour
-  comes from the first word of the name, the print from the second —
-  *Molten Distortion Tour* is dark red with a lightning bolt, *Black Amps Tour*
-  black with a cabinet.
+  and each hangs at the stand as a big pixel shirt. The colour comes from the
+  first word of the name, the emblem from the second — *Molten Distortion Tour*
+  is dark red with a lightning bolt, *Black Amps Tour* black with a cabinet.
+  The front carries the print with Riffforge, emblem, tour name and quarter,
+  and the running tour wears a *Live* sticker. **Rückseite zeigen** (show the
+  back) turns the shirt round: on the back are the tour dates, as on any real
+  tour shirt. Below, all dates fold out with what was played that day.
 - **Festival shirts** — one for each rank from the rehearsal room on, long
   sleeve with a sleeve print: demo tape, microphone, backstage pass, spotlight,
   devil horns, gold record. The rank is the slowest thing in the app; a step up
@@ -338,6 +345,13 @@ imports their data gets the same vest back. Reached through the rank line on
 <p align="center">
   <img src="assets/readme/kutte.png" width="720" height="48" alt="The drawn patches, one per ladder">
 </p>
+
+<table>
+<tr>
+<td align="center"><img src="assets/screens/tourshirt-vorne.png" width="300" alt="The running tour shirt from the front, with the live sticker"><br><sub>Front: print and <i>Live</i> sticker</sub></td>
+<td align="center"><img src="assets/screens/tourshirt-hinten.png" width="300" alt="The same shirt turned round, with the tour dates"><br><sub>Turned round: the tour dates</sub></td>
+</tr>
+</table>
 
 When a session moves the rank up, the summary shows the new stage and the
 festival shirt that comes with it. The technique shields are computed, not

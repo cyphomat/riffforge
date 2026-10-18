@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1081%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1086%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -282,6 +282,8 @@ Drill.
 </p>
 
 Ein bisschen Spiel, abgeschaut bei [Setlist](https://github.com/cyphomat/setlist) —
+bis in die Gestaltung: Überschriften als Gaffa mit Edding, das Tourshirt zum
+Wenden, die Bildleiste der Ränge —
 mit derselben Leitregel: **belohnt wird Regelmässigkeit und Qualität, nie
 Menge.** Alles wird aus dem Log berechnet und nirgends gespeichert; wer seinen
 Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
@@ -309,6 +311,8 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   steigt nicht schneller. **Der Rang fällt nie.**
 - **Die Bühne** — jeder Rang hat eine eigene Pixelszene, von der Garage bis
   zur Hall of Fame; die aktuelle steht im Merch-Stand und klein auf *Heute*.
+  Darunter die ganze Tour als Bildleiste: was man hinter sich hat, wo man
+  steht, und was noch dunkel ist.
 - **Die Kutte** — Aufnäher mit dem Tag, an dem sie verdient wurden, jede
   Leiter mit eigenem gestickten Motiv. Je Reihe
   steht nur der nächste fehlende als Umriss da, keine Weste voller leerer
@@ -325,9 +329,13 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   | Griffbrett | 12, 36 und alle 72 Stellen, die beim Finden eine Woche halten · *In- und auswendig*: alle 72 auch beim Benennen |
 
 - **Tourshirts** — jedes Quartal mit Übung ist eine Tour mit festem Namen,
-  auf dem Rücken die Tourdaten. Jedes Shirt ist ein Pixelbild: die Farbe kommt
-  vom ersten Wort des Namens, das Motiv vom zweiten — *Molten Distortion Tour*
-  ist dunkelrot mit Blitz, *Black Amps Tour* schwarz mit Box.
+  und jede hängt als grosses Pixel-Shirt am Stand. Die Farbe kommt vom ersten
+  Wort des Namens, das Emblem vom zweiten — *Molten Distortion Tour* ist
+  dunkelrot mit Blitz, *Black Amps Tour* schwarz mit Box. Vorne steht der
+  Druck mit Riffforge, Emblem, Tourname und Quartal, die laufende Tour trägt
+  einen *Live*-Sticker. **Rückseite zeigen** dreht das Shirt um: hinten stehen
+  die Tourdaten, wie auf jedem echten Tourshirt. Darunter lassen sich alle
+  Termine aufklappen, mit dem, was an dem Tag gespielt wurde.
 - **Festival-Shirts** — eins für jeden Rang ab dem Proberaum, als Langarm mit
   Ärmeldruck: Demo-Tape, Mikrofon, Backstage-Pass, Scheinwerfer, Pommesgabel,
   goldene Schallplatte. Der Rang ist das Langsamste in der App; ein Schritt
@@ -336,6 +344,13 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
 <p align="center">
   <img src="assets/readme/kutte.png" width="720" height="48" alt="Die gezeichneten Aufnäher, eine je Leiter">
 </p>
+
+<table>
+<tr>
+<td align="center"><img src="assets/screens/tourshirt-vorne.png" width="300" alt="Das laufende Tourshirt von vorne, mit Live-Sticker"><br><sub>Vorne: Druck und <i>Live</i>-Sticker</sub></td>
+<td align="center"><img src="assets/screens/tourshirt-hinten.png" width="300" alt="Dasselbe Shirt gewendet, mit den Tourdaten"><br><sub>Gewendet: die Tourdaten</sub></td>
+</tr>
+</table>
 
 Steigt eine Session den Rang hoch, zeigt der Abschluss die neue Bühne und das
 Festival-Shirt dazu. Die Technik-Wappen sind nicht gezeichnet, sondern

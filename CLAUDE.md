@@ -259,8 +259,9 @@ Komponente.
   Name in zwei Wörter.
 - **Die Wortmarke hat eine eigene Schrift, sonst nichts.** Anton,
   ausschliesslich auf `.marke`. Die einzige weitere ist der Edding
-  (Permanent Marker, `--font-edding`) auf den Titeln des Setlist-Zettels —
-  Handschrift gehört auf Papier und nirgends sonst hin. Überschriften, Zahlen und Tempo bleiben
+  (Permanent Marker, `--font-edding`) auf den Titeln des Setlist-Zettels und
+  den Gaffa-Etiketten im Merch-Stand — Handschrift gehört auf Papier und
+  nirgends sonst hin. Überschriften, Zahlen und Tempo bleiben
   Oswald, damit die App nicht überall schreit. `next/font` legt beide als
   `--font-anton` und `--font-oswald` ab, das Theme baut daraus
   `--font-marke` und `--font-display` — die Namen müssen verschieden sein,
@@ -690,10 +691,32 @@ Komponente.
   Ansager, Konsole und die Endgegner — Schmuck und HUD, und die vier
   Bauteile mit Grenze sind hier schon vergeben.
   Die **Tourshirts** sind keine Dateien, sondern gerechnet
-  (`lib/session/shirt.ts`): ein 32 × 32 Schnitt, gespiegelt aus einer halben
-  Vorlage, Stofffarbe aus dem Adjektiv des Tournamens, 12 × 12 Druck aus dem
-  Nomen — zwölf mal zwölf Kombinationen wären 144 Bilder. Gezeichnet als SVG
-  aus Rechtecken (`TourShirt`), deshalb gilt die Ganzzahl-Regel dort nicht.
+  (`lib/session/shirt.ts`): Stofffarbe aus dem Adjektiv des Tournamens,
+  12 × 12 Emblem aus dem Nomen — zwölf mal zwölf Kombinationen wären 144
+  Bilder. Gezeichnet als SVG aus Rechtecken, deshalb gilt die Ganzzahl-Regel
+  dort nicht. **Seit Oktober hängen sie gross und lassen sich wenden**, aus
+  Setlist übernommen (`TourShirtKarte`): der Schnitt ist Setlists 64 × 60
+  (`grossesShirt`) mit Rippkragen, Nähten und Falten, vorne tiefer, hinten
+  flacher Ausschnitt. Zwei Abweichungen vom Original: der Umriss wird auf
+  der linken Hälfte abgetastet und gespiegelt, weil Setlists Punkte rechts
+  einen halben Pixel neben der Mitte liegen; und das Licht fällt in
+  **diagonalen Bändern** statt in zwei Rechtecken — auf dunklem Stoff las
+  sich das helle Rechteck wie ein aufgenähter Flicken. Der Druck liegt als
+  Text über dem Stoff und wächst mit (`cqw`): Wortmarke in Anton, weil sie
+  die Wortmarke *ist*, Tourname in Oswald — Setlist setzt ihn in Edding, hier
+  bleibt Handschrift beim Papier. `shirt.test.ts` rechnet die Drucktinte
+  gegen die hellste Stelle unter dem Druck auf jedem der zwölf Stoffe nach
+  (AA). Gewendet wird in 3D, ohne Drehung bei reduzierter Bewegung; hinten
+  stehen höchstens 33 Daten, alle mit Art des Tages (*Session*, *Lick*,
+  *Sieben Saiten*) in der aufklappbaren Liste darunter (`termine`).
+  Ebenfalls aus Setlist: die **Gaffa-Etiketten** (`.tape`) als
+  Überschriften im Merch-Stand — Edding auf Papierstreifen, mit derselben
+  Tinte wie der Zettel —, die **Bildleiste der Ränge** statt der Segmente,
+  und die Kutte als **eine Fläche** (`.card`). Die Anordnung folgt Setlist
+  und der Handy-Regel: links Rang und Kutte, rechts die Shirts, weil
+  mehrere bildschirmhohe Shirts die Kutte sonst unter sich begraben.
+  Nicht übernommen: die Monats-Tour mit Endgegner (wie bei Roadie) und die
+  Gold- und Platin-Wand, die am gehobenen Gewicht hängt.
   `shirt.test.ts` geht fünfzig Jahre Tournamen durch und verlangt, dass jeder
   ohne Ausweichen auf Farbe und Motiv fällt — wer `ADJEKTIVE` oder `NOMEN` in
   `merch.ts` erweitert, zeichnet das Motiv mit. Die Farben dort sind Stoff,
