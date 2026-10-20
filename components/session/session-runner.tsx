@@ -167,8 +167,14 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setCurrent((index) => index + 1)
   }
 
+  // „+5 Minuten" sind zwei verschiedene Drills zu je zweieinhalb, nicht fünf
+  // Minuten dasselbe — dieselbe Grenze wie in der Session (MAX_AM_STUECK).
   const extend = () => {
-    setBlocks((previous) => (previous ? [...previous, nextExtraBlock(log, previous, { minutes: 5 })] : previous))
+    setBlocks((previous) => {
+      if (!previous) return previous
+      const erster = nextExtraBlock(log, previous, { minutes: 2.5 })
+      return [...previous, erster, nextExtraBlock(log, [...previous, erster], { minutes: 2.5 })]
+    })
   }
 
   const overallProgress = useMemo(

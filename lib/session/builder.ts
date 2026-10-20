@@ -11,10 +11,13 @@ const WARMUP_SECONDS = 120
  */
 const MIN_ROUND_SECONDS = 90
 /**
- * Anteil der ersten von zwei Runden. Etwas länger, weil dort das Reinkommen
- * steckt — die zweite Runde beginnt bereits warm.
+ * Länger am Stück spielt niemand dasselbe, ohne kirre zu werden. Der
+ * Anlass war Daniels Rückmeldung zu Palm Muting: ein neuer Drill bekam seine
+ * ganze Technikzeit in einem Block, in der Viertelstunde sechs Minuten
+ * derselbe Chug, in 25 Minuten elf. Was länger dauert, wird in Runden
+ * geteilt, mit etwas anderem dazwischen.
  */
-const FIRST_ROUND_SHARE = 0.55
+export const MAX_AM_STUECK = 180
 
 /**
  * Der Zufall eines Tages — derselbe, sooft man ihn fragt.
@@ -142,10 +145,16 @@ export function toBlock(
  * Zerlegt die Zeit eines Drills in Runden.
  *
  * Zwei kurze Runden mit etwas anderem dazwischen behalten sich messbar besser
- * als eine lange am Stück — der Kontextinterferenz-Effekt. Das gilt aber fürs
- * *Behalten*, nicht fürs *Erlernen*: eine Bewegung, die die Hand noch nie
- * gemacht hat, braucht erst den Block am Stück. Deshalb bekommt nur ein Drill
- * mit Vorgeschichte zwei Runden.
+ * als eine lange am Stück — der Kontextinterferenz-Effekt. Ein Drill mit
+ * Vorgeschichte bekommt deshalb immer mindestens zwei Runden, sobald beide
+ * lang genug sind.
+ *
+ * Ein neuer Drill bekam früher seinen Block ganz am Stück, weil das Erlernen
+ * einer Bewegung den Block verlangt und nicht die Abwechslung. Das stimmt —
+ * aber drei Minuten *sind* ein Block, und sechs Minuten derselbe Chug sind
+ * keiner mehr, sondern Zermürbung. Deshalb gilt für alle: höchstens
+ * `MAX_AM_STUECK` am Stück. Ein neuer Drill bekommt nur dann eine Runde, wenn
+ * seine Zeit ohnehin darunter liegt.
  */
 function roundsFor(
   drill: Drill,
@@ -154,13 +163,21 @@ function roundsFor(
   profile: Profile | null,
 ): SessionBlock[] {
   const known = progressFor(log, drill.id).attempts > 0
-  const first = Math.round((seconds * FIRST_ROUND_SHARE) / 15) * 15
-  const second = seconds - first
+  const noetig = Math.ceil(seconds / MAX_AM_STUECK)
+  const verteilt = known && seconds >= 2 * MIN_ROUND_SECONDS ? Math.max(2, noetig) : noetig
+  const anzahl = Math.max(1, Math.min(verteilt, Math.floor(seconds / MIN_ROUND_SECONDS) || 1))
 
-  if (!known || Math.min(first, second) < MIN_ROUND_SECONDS) {
-    return [toBlock(drill, log, seconds, 1, 1, profile)]
-  }
-  return [toBlock(drill, log, first, 1, 2, profile), toBlock(drill, log, second, 2, 2, profile)]
+  // Gleich lange Runden in Viertelminuten; der Rest geht an die vorderen,
+  // dort steckt das Reinkommen.
+  const grund = Math.floor(seconds / anzahl / 15) * 15
+  let rest = seconds - grund * anzahl
+  const laengen = Array.from({ length: anzahl }, () => {
+    const zusatz = Math.min(15, rest)
+    rest -= zusatz
+    return grund + zusatz
+  })
+  laengen[anzahl - 1] += rest
+  return laengen.map((laenge, i) => toBlock(drill, log, laenge, i + 1, anzahl, profile))
 }
 
 /** Abwechselnd aus beiden Listen — daher kommt das Interleaving. */

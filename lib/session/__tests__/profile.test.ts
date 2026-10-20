@@ -130,6 +130,6 @@ describe("buildSession with a focus", () => {
 
   it("still produces a full session without any profile", () => {
     const plan = buildSession(EMPTY, { now: NOW, random: fixed })
-    expect(plan.blocks.map((block) => block.drill.kind)).toEqual(["warmup", "technique", "riff"])
+    expect(plan.blocks.map((block) => block.drill.kind)).toEqual(["warmup", "technique", "riff", "technique", "riff"])
   })
 })

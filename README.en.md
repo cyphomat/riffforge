@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1087%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1088%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -140,8 +140,10 @@ today — from the log, not from a hunch.
 - **A drill you know comes up twice** — with something else in between. That is
   the [contextual interference effect](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4989027/):
   distributed repetition is retained measurably better than one long block, even
-  though it feels worse. A **new** drill gets its block in one piece — when you
-  are still acquiring a movement, that is the better order.
+  though it feels worse. And **nothing runs longer than three minutes at a
+  stretch**, not even a new drill: six minutes of the same palm-muted chug
+  drive you up the wall, and then you are sitting it out rather than practising.
+  **+5 minutes** is therefore two different drills of two and a half each.
 - **Today is a poster.** The word for the day stands huge and in its colour,
   one sentence under it — and then what comes next, with tempos, and the start
   button in the same card. The plan is rolled once per day: what the poster

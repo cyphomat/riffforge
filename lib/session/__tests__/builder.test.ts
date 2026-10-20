@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { buildSession, nextExtraBlock, priorityOf, tagesZufall } from "../builder"
+import { buildSession, MAX_AM_STUECK, nextExtraBlock, priorityOf, tagesZufall } from "../builder"
 import { bpmStepFor } from "../progress"
 import { DRILLS, DRILLS_BY_ID } from "../drills"
 import { EMPTY_LOG, type DrillResult, type PracticeLog } from "../types"
@@ -28,13 +28,31 @@ function result(drillId: string, overrides: Partial<DrillResult> = {}): DrillRes
 describe("buildSession", () => {
   it("always opens with a warm-up and covers technique and riff", () => {
     const plan = buildSession(log(), { now: NOW, random: fixed })
-    expect(plan.blocks.map((block) => block.drill.kind)).toEqual(["warmup", "technique", "riff"])
+    expect(plan.blocks[0].drill.kind).toBe("warmup")
+    expect(plan.blocks.map((block) => block.drill.kind)).toEqual(["warmup", "technique", "riff", "technique", "riff"])
   })
 
-  it("gives a brand-new drill one block, not two rounds", () => {
-    // Erlernen braucht den Block am Stueck; erst danach lohnt der Wechsel.
+  it("splits a brand-new drill too, with the riff in between", () => {
+    // Früher bekam ein neuer Drill seine sechs Minuten am Stück — sechs
+    // Minuten derselbe Chug. Drei Minuten sind Block genug zum Erlernen.
     const plan = buildSession(log(), { now: NOW, random: fixed })
-    for (const block of plan.blocks) expect(block.rounds).toBe(1)
+    const technik = plan.blocks.filter((block) => block.drill.kind === "technique")
+    expect(technik.map((block) => block.round)).toEqual([1, 2])
+    expect(plan.blocks[2].drill.kind).toBe("riff")
+  })
+
+  it("never keeps one drill going for more than three minutes", () => {
+    const bekannt = log(...DRILLS.map((drill) => result(drill.id)))
+    for (const minutes of [10, 15, 20, 25, 30]) {
+      for (const verlauf of [log(), bekannt]) {
+        const plan = buildSession(verlauf, { minutes, now: NOW, random: fixed })
+        for (const block of plan.blocks) {
+          expect(block.seconds, `${minutes} min, ${block.drill.id}`).toBeLessThanOrEqual(MAX_AM_STUECK)
+        }
+        // Und nie dieselbe Übung zweimal hintereinander.
+        plan.blocks.slice(1).forEach((block, i) => expect(block.drill.id).not.toBe(plan.blocks[i].drill.id))
+      }
+    }
   })
 
   it("fits the requested length, leaving room for the wrap-up", () => {

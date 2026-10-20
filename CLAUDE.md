@@ -23,9 +23,9 @@ der Scheduler aus dem Übungs-Log — die **Form** ist fix, der **Inhalt** passt
 sich an.
 
 Die zwei Runden mit Abstand sind kein Zufall: verteilte Wiederholung behält
-sich besser als eine lange am Stück. Ein Drill **ohne** Vorgeschichte bekommt
-seinen Block trotzdem am Stück — Erlernen und Behalten verlangen
-Verschiedenes.
+sich besser als eine lange am Stück. Und **kein Drill läuft länger als drei
+Minuten am Stück** (`MAX_AM_STUECK`), auch ein neuer nicht — siehe
+Konventionen.
 
 ## Architektur
 
@@ -814,6 +814,23 @@ Komponente.
   schliessen nie einen Drill aus. Sobald ein Log da ist, schreibt sich das
   Tempo daraus fort und das Profil zählt für diesen Drill nicht mehr. Es darf
   deshalb auch fehlen: jede Funktion nimmt `Profile | null`.
+- **Drei Minuten am Stück, dann etwas anderes.** Ein Drill ohne
+  Vorgeschichte bekam früher seinen ganzen Technik-Anteil in einem Block —
+  Erlernen und Behalten verlangen Verschiedenes, so die Begründung. In der
+  Viertelstunde waren das sechs Minuten, in 25 Minuten elf, und Daniel nach
+  sechs Minuten Palm-Mute-Chug: „irgendwann wird man kirre." Wer kirre wird,
+  übt nicht mehr, er sitzt die Zeit ab. `MAX_AM_STUECK` (180 s) deckelt jetzt
+  jede Runde, neue Drills werden genauso geteilt wie bekannte, mit dem Riff
+  dazwischen; der Test geht 10 bis 30 Minuten mit leerem und vollem Log
+  durch und verlangt ausserdem, dass kein Drill zweimal direkt
+  hintereinander steht. *+5 Minuten* sind deshalb zwei verschiedene Drills
+  zu je zweieinhalb. Ein **Tempowechsel mitten im Block** war der andere
+  Vorschlag und ist bewusst nicht gebaut: ein Eintrag trägt genau ein Tempo,
+  und daran hängen Tempokurve, Bestwert, Rückblick und die
+  Zieltempo-Aufnäher — ein Block mit zwei Tempi wäre dort nicht mehr
+  deutbar. Abwechslung kommt aus dem Wechsel des Drills, nicht aus dem
+  Wechsel im Drill. Ausgenommen ist der einzeln gewählte Drill
+  (`buildDrillSession`, zehn Minuten): wer ihn antippt, will genau den.
 - **Ein Drill über mehrere Runden ist ein Eintrag**, nicht drei. Der
   Session-Runner sammelt die Spielzeit und schreibt nach der letzten Runde.
 - **`pnpm audit` bleibt leer.** Die Werkzeugkette schleppt DoS-Meldungen in
