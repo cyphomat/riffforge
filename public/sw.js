@@ -1,7 +1,7 @@
 // Die App laeuft komplett im Browser: kein Server, keine API, der Uebungs-Log
 // liegt in localStorage. Sie kann also vollstaendig offline laufen — sobald
 // die Huelle einmal im Cache liegt, braucht eine Session kein Netz mehr.
-const CACHE = 'mga-2026-10-21.2'
+const CACHE = 'mga-2026-10-21.3'
 
 // Nur stabile URLs. Die JS-Chunks von Next tragen Hashes im Namen und koennen
 // hier nicht stehen — die kommen beim ersten Online-Besuch ueber den

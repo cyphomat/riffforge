@@ -304,7 +304,12 @@ Komponente.
   selben Element über die Spezifität. Unter 4 verliert sie, egal wie
   spezifisch — beim Umstieg rutschte so die linke Spalte auf jedem breiten
   Bildschirm um 32 px nach unten. Was ein Utility überstimmen *muss*, steht
-  deshalb in `@layer utilities`. Zwei weitere Grenzen: `@apply` geht nur auf
+  deshalb in `@layer utilities`. Die Regel hatte eine Kehrseite, die erst
+  Daniel am breiten Schirm sah: wo die zwei Spalten die Seite selbst sind
+  (*Heute*, *Rückblick*, *Merch*, *Wissen*), nahm sie dem ersten Element
+  auch den Abstand zur Navigation — Plakat und *Bisher* klebten an ihrer
+  Kante. Den Abstand trägt seitdem die Hülle (`.huelle-breit.zwei-spalten`,
+  24 px wie überall), nicht das erste Kind. Zwei weitere Grenzen: `@apply` geht nur auf
   Utilities, nicht auf eigene Klassen (`.huelle`, `.display`, `.rule` stehen
   dort ausgeschrieben), und das Theme steht als `@theme` in `globals.css`,
   nicht mehr in einer `tailwind.config.ts`. Das offizielle Upgrade-Werkzeug

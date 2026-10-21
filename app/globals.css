@@ -921,8 +921,22 @@
    gewinnt die Utility-Ebene immer, egal wie spezifisch die Komponente ist —
    die linke Spalte rutschte auf dem breiten Schirm um 32 px nach unten. */
 @layer utilities {
-  .spalte > :first-child {
+  .spalte > :first-child,
+  /* Ein Abschnitt, der mit seiner Überschrift beginnt: der Abstand sitzt an
+     der Überschrift und fällt durch den Abschnitt hindurch — auf *Wissen*
+     stand die rechte Spalte so 32 px tiefer als die linke. Nur, wo die
+     Spalten die Seite sind: auf *Daten* steht eine Überschrift darüber, und
+     dort ist dieser Abstand der zu ihr. */
+  .huelle-breit.zwei-spalten > .spalte > section:first-child > .rule:first-child {
     @apply wide:mt-0;
+  }
+  /* Die Kehrseite davon: wo die zwei Spalten die Seite selbst *sind* —
+     Heute, Rückblick, Merch-Stand, Wissen —, verlor ihr erstes Element mit
+     dem Abstand auch den zur Navigation, und Plakat wie *Bisher* klebten an
+     ihrer Unterkante. Den Abstand trägt deshalb die Hülle, nicht das erste
+     Kind: dieselben 24 px wie auf jeder einspaltigen Seite (`mt-6`). */
+  .huelle-breit.zwei-spalten {
+    @apply wide:pt-6;
   }
 }
 
