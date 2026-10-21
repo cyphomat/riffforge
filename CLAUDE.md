@@ -154,6 +154,14 @@ Komponente.
   ist jetzt 11,5 px, die Sperrung höchstens 0,14 em. Wer ein Etikett setzt,
   nimmt `.kicker` statt eigener Pixelwerte — sonst wandert der Boden wieder
   nach unten.
+- **Ein Eingabefeld hat 16 px, sonst zoomt das iPhone.** Safari vergrössert
+  beim Antippen jedes Feld unter 16 px und springt danach nicht zurück. Die
+  drei Felder des Abgleichs standen auf 14 — aufgefallen ist es in Roadie,
+  wo dieselbe Falle sass. `lib/ui/__tests__/eingabefeld.test.ts` liest jedes
+  `<input>`, `<textarea>` und `<select>` aus dem Quelltext und verlangt
+  `text-[16px]` oder mehr; ein Feld ohne Angabe fällt dort auch durch. Der
+  Test zählt ausserdem, *dass* er Felder findet: im ersten Lauf hielt er
+  `outline-hidden` für `hidden`, übersprang alle und war grün.
 - **Der Grund ist matt.** Bis Oktober lag ein ganzer Hals als Hintergrund
   auf der Seite — Saiten, Bünde, Einlagen, gekachelt aus `lib/theory/hals.ts`,
   mit einem Regler und einem Test, der die Einlagen im Stylesheet nachrechnete.
