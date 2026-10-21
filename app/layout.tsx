@@ -5,6 +5,7 @@ import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ServiceWorker } from "@/components/service-worker"
 import { asset } from "@/lib/base-path"
+import { DARSTELLUNG_SKRIPT, STATUSLEISTE } from "@/lib/ui/darstellung"
 
 // Kondensiert und versal — trägt Tempi, Zahlen und Drill-Namen.
 // next/font lädt sie beim Build herunter und liefert sie selbst aus, damit
@@ -82,7 +83,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0c0c0e",
+  // Der Anfangswert. Das Skript im Kopf setzt ihn auf die gewählte Fassung —
+  // siehe `lib/ui/darstellung.ts`.
+  themeColor: STATUSLEISTE.dunkel,
   // Fills the notch area on iPhone; the safe-area padding below keeps content
   // out from under it.
   viewportFit: "cover",
@@ -90,9 +93,17 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`dark ${oswald.variable} ${anton.variable} ${edding.variable}`}>
+    // `data-theme` setzt das Skript, bevor React die Seite übernimmt —
+    // deshalb weicht das Attribut absichtlich vom gebauten HTML ab.
+    <html
+      lang="de"
+      data-theme="dunkel"
+      className={`${oswald.variable} ${anton.variable} ${edding.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta httpEquiv="Content-Security-Policy" content={CSP} />
+        <script dangerouslySetInnerHTML={{ __html: DARSTELLUNG_SKRIPT }} />
       </head>
       <body className="min-h-screen">
         <ServiceWorker />

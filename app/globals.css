@@ -105,6 +105,18 @@
 
     --halo: rgba(232, 162, 61, 0.05);
 
+    /* Was je Fassung anders fällt als nur die Farbe: die Narbung des Tolex,
+       der Einlass der Platte, das Glimmen der Heldenzahl, der Boden am Fuss
+       und der Schatten unter Papier. Im Hellen wäre jedes davon in der
+       dunklen Stärke ein Muster oder ein Fleck. */
+    --tolex-licht: rgba(255, 255, 255, 0.014);
+    --tolex-schatten: rgba(0, 0, 0, 0.12);
+    --einlass: inset 0 2px 5px rgba(0, 0, 0, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.035);
+    --glimmen: 0 0 13px rgba(232, 162, 61, 0.22);
+    --boden: rgba(0, 0, 0, 0.45);
+    --papierschatten: 0 8px 22px rgba(0, 0, 0, 0.35);
+    --stoffschatten: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.45));
+
     /* Der Setlist-Zettel ist Papier — in jeder Fassung hell, mit dunkler
        Tinte. Der Stempel ist Rost, weil „nochmal" in dieser App „nicht ganz"
        heisst und nicht „kaputt"; auf Papier braucht er aber eine dunklere
@@ -140,6 +152,57 @@
     color-scheme: dark;
   }
 
+  /* ── Die helle Fassung ───────────────────────────────────────────────
+     Für Tageslicht, aus Roadie: dasselbe Road-Case, nur im hellen Raum. Ein
+     Flightcase in Grau statt Schwarz, Papier statt Glut. Bernstein wird
+     dunkler, sonst trägt es auf hellem Grund keinen Text — #e8a23d läge
+     bei 1,9 : 1. Gesetzt wird die Fassung vor dem ersten Anstrich von einem
+     Skript in `app/layout.tsx`, aus der Einstellung auf *Daten* oder dem
+     System; ohne dieses Attribut bleibt es dunkel.
+
+     Der Kontrasttest rechnet beide Fassungen nach. Was hier fehlt, erbt die
+     dunkle — Papier, Tinte und Stempel sind in beiden dieselben. */
+  :root[data-theme="hell"] {
+    --bg: #dcd9d3;
+    --panel: #eeebe5;
+    --panel2: #e5e2db;
+    /* Was man beim Spielen abliest, steht hell auf hellem Grund heraus — im
+       Dunkeln war es der tiefste Ton, hier ist es der hellste. */
+    --sunken: #f7f5f0;
+    --fg: #1d1b17;
+    --muted: #46424b;
+    --dim: #5c5762;
+    --line: #b5b1a9;
+
+    --akzent: #854d00;
+    --stahl: #375e7b;
+    --gruen: #3d6227;
+    --rost: #8f4716;
+    --rot: #b23a32;
+
+    --tint-akzent: rgba(133, 77, 0, 0.08);
+    --tint-akzent-stark: rgba(133, 77, 0, 0.16);
+    --tint-gruen: rgba(61, 98, 39, 0.12);
+    --tint-rost: rgba(143, 71, 22, 0.12);
+    --tint-stahl: rgba(55, 94, 123, 0.07);
+
+    --halo: rgba(232, 162, 61, 0.16);
+
+    --tolex-licht: rgba(255, 255, 255, 0.16);
+    --tolex-schatten: rgba(0, 0, 0, 0.015);
+    --einlass: inset 0 2px 4px rgba(60, 50, 40, 0.18), inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+    --glimmen: none;
+    --boden: rgba(60, 50, 40, 0.08);
+    --papierschatten: 0 8px 18px rgba(60, 50, 40, 0.22);
+    --stoffschatten: drop-shadow(0 4px 4px rgba(60, 50, 40, 0.3));
+    --gaffa: rgba(52, 50, 48, 0.8);
+
+    --leiste: linear-gradient(180deg, #eeebe5, #dcd9d3);
+    --backdrop: rgba(40, 36, 30, 0.55);
+
+    color-scheme: light;
+  }
+
   /* iOS vergrössert Text im Querformat sonst eigenmächtig — aus Roadie. */
   html {
     -webkit-text-size-adjust: 100%;
@@ -160,7 +223,7 @@
        Muster — siehe „Der Grund ist matt" oben. */
     background-image:
       radial-gradient(1000px 500px at 50% -10%, var(--halo), transparent 70%),
-      linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45));
+      linear-gradient(180deg, transparent 60%, var(--boden));
     background-size: 100% 100%, 100% 100%;
     background-attachment: fixed;
   }
@@ -215,8 +278,8 @@
   .card {
     @apply relative border border-line p-[18px];
     background:
-      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 4px),
-      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(45deg, var(--tolex-licht) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, var(--tolex-schatten) 0 1px, transparent 1px 4px),
       linear-gradient(160deg, var(--panel), var(--panel2));
   }
   .card::before {
@@ -330,7 +393,7 @@
     /* `.display` und `.glimmt`, ausgeschrieben — siehe `.huelle-breit`. */
     font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
     @apply mt-0.5 text-[28px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
-    text-shadow: 0 0 13px rgba(232, 162, 61, 0.22);
+    text-shadow: var(--glimmen);
     font-variant-numeric: tabular-nums;
   }
 
@@ -367,9 +430,7 @@
   .stat {
     @apply relative border border-line;
     background: var(--sunken);
-    box-shadow:
-      inset 0 2px 5px rgba(0, 0, 0, 0.6),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.035);
+    box-shadow: var(--einlass);
   }
   .platte {
     @apply px-[14px] pb-[6px] pt-[13px];
@@ -388,7 +449,7 @@
 
   /* Glimmen, kein Strahlen — ein Röhrenamp leuchtet nicht, er glüht. */
   .glimmt {
-    text-shadow: 0 0 13px rgba(232, 162, 61, 0.22);
+    text-shadow: var(--glimmen);
   }
 
   /* ── Kontrolllampe ────────────────────────────────────────────────────
@@ -491,7 +552,7 @@
     background: var(--papier);
     color: var(--tinte);
     transform: rotate(-0.6deg);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--papierschatten);
   }
   .zettel::before,
   .zettel::after {
@@ -657,7 +718,7 @@
     @apply absolute inset-0;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.45));
+    filter: var(--stoffschatten);
   }
   .shirt-seite > svg {
     @apply block h-full w-full;
@@ -750,6 +811,80 @@
   .termine li {
     @apply flex flex-wrap gap-x-2 py-[3px] text-[13px] leading-snug;
     break-inside: avoid;
+  }
+
+  /* ── Das Pult, aus Roadie ──────────────────────────────────────────
+     Je Drill ein Kanalzug: der Fader steht auf dem letzten sauberen Tempo,
+     die Kerbe auf dem ersten im Rückblick. Die Bahn läuft vom eigenen
+     Starttempo bis zum Ziel — siehe `pultKanaele`. Roadie legt Streifen
+     unter sein Pult; hier nicht, weil ein Kanalzug selbst aus Strichen
+     besteht (Bahn, Skala, Kerbe) — siehe „Der Grund ist matt". */
+  .pult {
+    @apply grid gap-x-[6px] gap-y-4 border border-line bg-panel px-[10px] pb-3 pt-[14px];
+    /* So schmal, wie „Downpicking" in der Etikettenschrift noch ganz passt
+       (76 px) — bei festen vier Spalten brach es auf 320 px mitten im Wort. */
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  }
+  .kanal {
+    @apply flex min-w-0 flex-col items-center gap-[6px] text-center;
+  }
+  .kanal .bahn {
+    position: relative;
+    width: 34px;
+    height: 104px;
+  }
+  /* Die Skala links der Bahn: ein Strich je Zehntel der Strecke. */
+  .kanal .bahn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 6px;
+    background: repeating-linear-gradient(180deg, var(--dim) 0 1px, transparent 1px 9.2px);
+    opacity: 0.55;
+  }
+  /* Der Schlitz, in dem der Regler läuft. */
+  .kanal .bahn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    margin-left: -3px;
+    background: var(--sunken);
+    border: 1px solid var(--line);
+  }
+  .kanal .regler {
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+    width: 30px;
+    height: 12px;
+    margin-left: -15px;
+    background: linear-gradient(180deg, var(--muted), var(--dim));
+    border: 1px solid var(--bg);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+  }
+  .kanal .regler::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 4px;
+    height: 2px;
+    background: var(--akzent);
+  }
+  /* Wo es am Anfang des Fensters stand — rechts am Schlitz, in Stahl, weil
+     es Vergangenheit ist und nicht das, was gerade zählt. */
+  .kanal .kerbe {
+    position: absolute;
+    left: calc(50% + 5px);
+    width: 9px;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--stahl);
   }
 
   /* Aufklappbares Wissen — die Theorie am Drill. */

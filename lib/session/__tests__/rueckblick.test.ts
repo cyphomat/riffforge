@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest"
+import { ALLE_DRILLS_BY_ID } from "../drills"
+import { makeProfile, startBpmFor } from "../profile"
 import {
+  KANAELE_HOECHSTENS,
   WOCHEN_HOECHSTENS,
   drillVerlaeufe,
   entwicklung,
   fensterWochen,
   kalenderwoche,
+  pultKanaele,
   wochen,
 } from "../rueckblick"
 import type { DrillResult, PracticeLog } from "../types"
@@ -147,5 +151,55 @@ describe("Kalenderwoche", () => {
     expect(kalenderwoche("2025-12-29")).toBe(1)
     // 2026 hat 53 Wochen: der 28.12.2026 beginnt KW 53.
     expect(kalenderwoche("2026-12-28")).toBe(53)
+  })
+})
+
+describe("Das Pult", () => {
+  const drill = ALLE_DRILLS_BY_ID["tech-downpicking"]
+  const pult = (results: DrillResult[], profil = null as ReturnType<typeof makeProfile> | null) =>
+    pultKanaele(drillVerlaeufe(log(results), JETZT), profil)
+
+  it("stellt den Fader auf das letzte saubere Tempo, die Kerbe auf das erste", () => {
+    const [kanal] = pult([block(20, { bpm: drill.startBpm + 10 }), block(1, { bpm: drill.startBpm + 30 })])
+    expect(kanal.jetzt).toBe(drill.startBpm + 30)
+    expect(kanal.anfang).toBe(drill.startBpm + 10)
+    expect(kanal.bewegt).toBe(true)
+    expect(kanal.stellung).toBeCloseTo(30 / (drill.targetBpm - drill.startBpm))
+    expect(kanal.stellungAnfang).toBeCloseTo(10 / (drill.targetBpm - drill.startBpm))
+  })
+
+  it("zählt nur sauber Gespieltes — ein zähes Tempo verschiebt keinen Fader", () => {
+    const [kanal] = pult([block(8, { bpm: drill.startBpm + 20 }), block(1, { bpm: drill.startBpm + 50, rating: 2 })])
+    expect(kanal.jetzt).toBe(drill.startBpm + 20)
+    expect(kanal.bewegt).toBe(false)
+  })
+
+  it("hat keinen Kanal für einen Drill ohne sauberes Tempo, und keinen für Unbekanntes", () => {
+    expect(pult([block(1, { rating: 1 })])).toEqual([])
+    expect(pult([block(1, { drillId: "gibt-es-nicht" })])).toEqual([])
+  })
+
+  it("misst ab dem Starttempo dieses Spielers, wie `masteryOf`", () => {
+    const profil = makeProfile("anfang", "beides", JETZT)
+    const start = startBpmFor(drill, profil)
+    expect(start).not.toBe(drill.startBpm)
+    const [kanal] = pult([block(1, { bpm: start })], profil)
+    expect(kanal.start).toBe(start)
+    expect(kanal.stellung).toBe(0)
+  })
+
+  it("steht über dem Ziel oben an und unter dem Start unten, ohne den Wert zu verbiegen", () => {
+    const [oben] = pult([block(1, { bpm: drill.targetBpm + 20 })])
+    expect(oben.stellung).toBe(1)
+    expect(oben.jetzt).toBe(drill.targetBpm + 20)
+    const [unten] = pult([block(1, { bpm: drill.startBpm - 20 })])
+    expect(unten.stellung).toBe(0)
+  })
+
+  it("hat höchstens so viele Kanäle, wie aufs Pult passen — zuletzt Gespieltes zuerst", () => {
+    const ids = Object.keys(ALLE_DRILLS_BY_ID).slice(0, KANAELE_HOECHSTENS + 3)
+    const kanaele = pult(ids.map((drillId, i) => block(i, { drillId, bpm: ALLE_DRILLS_BY_ID[drillId].startBpm })))
+    expect(kanaele).toHaveLength(KANAELE_HOECHSTENS)
+    expect(kanaele[0].drillId).toBe(ids[0])
   })
 })

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1090%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1118%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -78,6 +78,13 @@ scrolled while you play:
 <img src="assets/screens/session-desktop.png" alt="A block on a Mac, clock left, tab right">
 
 <sub>Real screens with sample data, captured via <code>tools/shots.mjs</code>. No mockups — the timing figures above come from an actual measurement.</sub>
+
+**For daylight there is a light version**, borrowed from Roadie: the same
+road case in grey instead of black. Under *Daten → Darstellung* you pick
+**Auto**, **Hell** or **Dunkel**; Auto follows the device. The choice
+belongs to this browser only and is applied before the first paint, so
+nothing flashes. The contrast test checks both versions — amber is much
+darker in the light one, otherwise it could not carry text on a light ground.
 
 ---
 
@@ -380,6 +387,12 @@ the course of it, reached from the row under the rank on *Heute*:
   better that week, and the measured spread around the click (less is better).
   Two charts rather than one with two axes, because everyone reads two scales
   in one picture differently.
+- **At the desk** — above them, borrowed from Roadie: one channel strip per
+  drill. The fader sits at the latest clean tempo, the track runs from your
+  own start tempo to the target — the same distance as the bar under *Wo du
+  stehst*. A steel-blue notch marks where it stood at the start of the look
+  back. A drill without a clean tempo gets no channel, rather than sitting at
+  the bottom and claiming "start tempo".
 
 It reaches back one quarter and grows with the log — three weeks of practice
 show three weeks. What is not in the log is not here either: a week without a

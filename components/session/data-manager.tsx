@@ -20,6 +20,7 @@ import { EMPTY_LOG, type PracticeLog } from "@/lib/session/types"
 import { SyncPanel } from "@/components/session/sync-panel"
 import { UpdatePanel } from "@/components/session/update-panel"
 import { InstallPanel } from "@/components/session/install-panel"
+import { DarstellungPanel } from "@/components/session/darstellung-panel"
 import { EinmessenPanel } from "@/components/session/einmessen-panel"
 import { merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
 import { letzteKopie, sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
@@ -158,6 +159,8 @@ export function DataManager() {
           </p>
         )}
       </section>
+
+      <DarstellungPanel />
 
       <InstallPanel />
 

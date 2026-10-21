@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
+import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
 
 /**
  * Was die App über sich selbst weiss, nicht über das Üben.
@@ -24,7 +25,7 @@ const EINMESS_KEY = "mga.einmessung.v1"
 const SAITEN_KEY = "mga.saiten.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -180,6 +181,32 @@ export function vergissEinmessung(): void {
   } catch {
     /* Nichts zu vergessen. */
   }
+}
+
+/**
+ * Hell, dunkel, oder wie das System.
+ *
+ * Gehört dem Gerät: am Rechner im hellen Raum hell, auf dem Handy am Abend
+ * dunkel — ein Abgleich, der das von einem aufs andere trüge, wäre falsch.
+ * Gespeichert als blosses Wort, weil das Skript in `lib/ui/darstellung.ts`
+ * es vor dem ersten Anstrich ohne Zod lesen muss; was dort nicht `hell` oder
+ * `dunkel` heisst, ist Auto.
+ */
+export function darstellung(): Darstellung {
+  return alsDarstellung(lesen(DARSTELLUNG_KEY))
+}
+
+/** Speichert die Wahl und sagt dem Skript im Kopf der Seite Bescheid, damit es sie gleich anwendet. */
+export function merkeDarstellung(wert: Darstellung): void {
+  if (typeof window === "undefined") return
+  if (wert === "auto") {
+    try {
+      window.localStorage.removeItem(DARSTELLUNG_KEY)
+    } catch {
+      /* Dann bleibt es eben bei der letzten Wahl. */
+    }
+  } else schreiben(DARSTELLUNG_KEY, wert)
+  window.dispatchEvent(new Event(DARSTELLUNG_EREIGNIS))
 }
 
 export function clearLokal(): void {

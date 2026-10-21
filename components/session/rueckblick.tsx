@@ -8,13 +8,16 @@ import {
   drillVerlaeufe,
   entwicklung,
   kalenderwoche,
+  pultKanaele,
   wochen as berechneWochen,
   type DrillVerlauf,
+  type Kanal,
   type Punkt,
   type Woche,
 } from "@/lib/session/rueckblick"
 import { TECHNIQUE_LABELS, type Technique } from "@/lib/session/types"
 import { loadLog } from "@/lib/storage/practice-log"
+import { loadProfile } from "@/lib/storage/profile"
 
 const kw = (woche: string) => `KW ${kalenderwoche(woche)}`
 
@@ -300,21 +303,68 @@ function DrillKarte({ verlauf }: { verlauf: DrillVerlauf }) {
   )
 }
 
+/** Höhe der Bahn minus Regler — so weit fährt er. Steht so in `.kanal` in globals.css. */
+const HUB = 104 - 12
+
+/**
+ * Das Pult: je Drill ein Kanalzug. Der Fader zeigt dieselbe Zahl, die
+ * darüber steht — er ist die Stellung zwischen Start und Ziel, nicht ein
+ * zweiter Wert. Für Screenreader steht alles im Etikett des Kanals; die
+ * Zeichnung ist stumm.
+ */
+function Pult({ kanaele }: { kanaele: Kanal[] }) {
+  return (
+    <ul className="pult" aria-label="Pult: Tempo je Drill zwischen Start und Ziel">
+      {kanaele.map((k) => {
+        const titel = ALLE_DRILLS_BY_ID[k.drillId]?.title ?? k.drillId
+        const oben = (stellung: number) => (1 - stellung) * HUB
+        return (
+          <li
+            key={k.drillId}
+            className="kanal"
+            aria-label={`${titel}: ${k.jetzt} BPM sauber, Ziel ${k.ziel}${
+              k.bewegt ? `, im Rückblick ab ${k.anfang}` : ""
+            }`}
+          >
+            <div aria-hidden className="display num text-[20px] leading-none text-fg">
+              {k.jetzt}
+            </div>
+            <div aria-hidden className="ziffern -mt-1 text-[11.5px] text-dim">
+              / {k.ziel}
+            </div>
+            <div aria-hidden className="bahn">
+              {k.bewegt && <i className="kerbe" style={{ top: oben(k.stellungAnfang) + 6 }} />}
+              <i className="regler" style={{ top: oben(k.stellung) }} />
+            </div>
+            <div
+              aria-hidden
+              className="line-clamp-3 w-full font-mono text-[11.5px] uppercase leading-tight text-muted [overflow-wrap:anywhere]"
+            >
+              {titel}
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
 /**
  * Der Rückblick über die Wochen. Alles wird beim Öffnen aus dem Log
  * gerechnet; was das heisst und was bewusst nicht da steht, erklärt
  * `lib/session/rueckblick.ts`.
  */
 export function Rueckblick() {
-  const [stand, setStand] = useState<{ wochen: Woche[]; drills: DrillVerlauf[] } | null>(null)
+  const [stand, setStand] = useState<{ wochen: Woche[]; drills: DrillVerlauf[]; kanaele: Kanal[] } | null>(null)
 
   useEffect(() => {
     const log = loadLog()
-    setStand({ wochen: berechneWochen(log), drills: drillVerlaeufe(log) })
+    const drills = drillVerlaeufe(log)
+    setStand({ wochen: berechneWochen(log), drills, kanaele: pultKanaele(drills, loadProfile()) })
   }, [])
 
   if (!stand) return null
-  const { wochen, drills } = stand
+  const { wochen, drills, kanaele } = stand
   const diese = wochen.at(-1)!
   const vorige = wochen.length > 1 ? wochen.at(-2)! : null
 
@@ -371,6 +421,18 @@ export function Rueckblick() {
       </div>
 
       <div className="spalte">
+        {kanaele.length > 0 && (
+          <>
+            <h2 className="rule mb-3 mt-9">Am Pult</h2>
+            <Pult kanaele={kanaele} />
+            <p className="mt-2 text-[12.5px] leading-relaxed text-dim">
+              Der Fader steht auf dem letzten sauberen Tempo, die Bahn reicht von deinem Starttempo
+              bis zum Ziel. Die <span className="text-stahl">Kerbe</span> zeigt, wo es am Anfang
+              des Rückblicks stand.
+            </p>
+          </>
+        )}
+
         <h2 className="rule mb-1 mt-9">Je Drill</h2>
         <p className="mb-3 text-[12.5px] leading-relaxed text-dim">
           Tempo heisst: das höchste, das in der Woche mit <i>sauber</i> oder besser abgehakt wurde.

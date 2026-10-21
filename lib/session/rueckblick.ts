@@ -1,3 +1,5 @@
+import { ALLE_DRILLS_BY_ID } from "./drills"
+import { startBpmFor, type Profile } from "./profile"
 import { dayKey, SAUBER_AB, weekKey } from "./progress"
 import type { DrillResult, PracticeLog } from "./types"
 import { median } from "@/lib/audio/timing"
@@ -157,4 +159,62 @@ export function kalenderwoche(key: string): number {
   const ersterDonnerstag = new Date(tag.getFullYear(), 0, 4, 12)
   ersterDonnerstag.setDate(ersterDonnerstag.getDate() + 3 - ((ersterDonnerstag.getDay() + 6) % 7))
   return 1 + Math.round((tag.getTime() - ersterDonnerstag.getTime()) / (7 * 24 * 3600 * 1000))
+}
+
+/** So viele Kanalzüge hat das Pult: zwei Reihen auf dem Handy, mehr wäre eine Liste. */
+export const KANAELE_HOECHSTENS = 8
+
+export interface Kanal {
+  drillId: string
+  /** Das letzte saubere Tempo im Fenster — dort steht der Fader. */
+  jetzt: number
+  /** Das erste saubere Tempo im Fenster — dort sitzt die Kerbe. */
+  anfang: number
+  /** Ob es mehr als eine Woche mit Wert gibt; sonst hat die Kerbe nichts zu sagen. */
+  bewegt: boolean
+  /** Starttempo *dieses* Spielers — der Fuss der Bahn. */
+  start: number
+  /** Zieltempo des Drills — das obere Ende. */
+  ziel: number
+  /** Stellung zwischen Start und Ziel, 0…1. Über dem Ziel steht er oben an. */
+  stellung: number
+  stellungAnfang: number
+}
+
+/**
+ * Das Pult, aus Roadie: je Drill ein Kanalzug, der Fader dort, wo das
+ * Tempo gerade sauber sitzt, die Kerbe dort, wo es am Anfang des Fensters
+ * sass. Die Bahn läuft vom Starttempo *dieses* Spielers bis zum Ziel —
+ * dieselbe Strecke, die `masteryOf` misst, damit ein Fader auf halber Höhe
+ * dasselbe heisst wie ein halber Balken unter *Wo du stehst*.
+ *
+ * Nur Drills mit einem sauberen Tempo im Fenster: ein Fader ohne Wert
+ * stünde unten und behauptete „Starttempo", und das steht nicht im Log.
+ * Was der Katalog nicht kennt, hat kein Ziel und bekommt keinen Kanal.
+ */
+export function pultKanaele(verlaeufe: DrillVerlauf[], profile: Profile | null): Kanal[] {
+  return verlaeufe
+    .flatMap((verlauf) => {
+      const drill = ALLE_DRILLS_BY_ID[verlauf.drillId]
+      const werte = verlauf.tempo.flatMap((p) => (p.wert === null ? [] : [p.wert]))
+      if (!drill || werte.length === 0) return []
+      const start = startBpmFor(drill, profile)
+      const ziel = drill.targetBpm
+      const stellung = (bpm: number) => (ziel <= start ? 1 : Math.max(0, Math.min(1, (bpm - start) / (ziel - start))))
+      const jetzt = werte.at(-1)!
+      const anfang = werte[0]
+      return [
+        {
+          drillId: verlauf.drillId,
+          jetzt,
+          anfang,
+          bewegt: werte.length > 1,
+          start,
+          ziel,
+          stellung: stellung(jetzt),
+          stellungAnfang: stellung(anfang),
+        },
+      ]
+    })
+    .slice(0, KANAELE_HOECHSTENS)
 }

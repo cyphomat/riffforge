@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1090%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1118%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -72,6 +72,13 @@ gescrollt werden muss:
 <img src="assets/screens/session-desktop.png" alt="Ein Block auf dem Mac, Uhr links, Tab rechts">
 
 <sub>Echte Bildschirme mit Beispieldaten, aufgenommen über <code>tools/shots.mjs</code>. Keine Mockups — die Timing-Werte oben stammen aus einer echten Messung.</sub>
+
+**Bei Tageslicht gibt es eine helle Fassung**, aus Roadie: dasselbe
+Road-Case in Grau statt Schwarz. Unter *Daten → Darstellung* stehen
+**Auto**, **Hell** und **Dunkel**; Auto folgt dem Gerät. Die Wahl gilt nur
+für diesen Browser und wird vor dem ersten Anstrich gesetzt, damit nichts
+aufblitzt. Der Kontrasttest rechnet beide Fassungen nach — Bernstein ist im
+Hellen deutlich dunkler, sonst trüge es auf hellem Grund keinen Text.
 
 ---
 
@@ -379,6 +386,12 @@ erreichbar über die Zeile unter dem Rang auf *Heute*:
   Woche *sauber* oder besser sass, und die gemessene Streuung um den Klick
   (weniger ist besser). Zwei Grafiken statt einer mit zwei Achsen, weil zwei
   Skalen in einem Bild jeder anders liest.
+- **Am Pult** — darüber, aus Roadie: je Drill ein Kanalzug. Der Fader steht
+  auf dem letzten sauberen Tempo, die Bahn reicht vom eigenen Starttempo bis
+  zum Ziel — dieselbe Strecke wie der Balken unter *Wo du stehst*. Eine
+  Kerbe in Stahlblau zeigt, wo es am Anfang des Rückblicks stand. Ein Drill
+  ohne sauberes Tempo bekommt keinen Kanal, statt unten zu stehen und
+  „Starttempo" zu behaupten.
 
 Der Rückblick reicht ein Quartal zurück und wächst mit dem Log — wer seit drei
 Wochen übt, sieht drei Wochen. Was nicht im Log steht, steht auch hier nicht:

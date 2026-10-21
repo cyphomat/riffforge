@@ -91,6 +91,8 @@ Konventionen.
 | `lib/session/rueckblick.ts` | Der Rückblick: Wochen, Tempo und Streuung je Drill — aus dem Log |
 | `components/session/rueckblick.tsx` | Säulen und Linien dazu, jede Grafik auch als Tabelle |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
+| `lib/ui/darstellung.ts` | Hell, dunkel oder Auto: die Regel, und das Skript, das sie vor dem ersten Anstrich setzt |
+| `components/session/darstellung-panel.tsx` | Die Wahl dazu, auf *Daten* |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
@@ -148,6 +150,23 @@ Komponente.
   `--panel2`, das helle Ende des Kartenverlaufs — dort ist mein erster
   Kandidat mit 4,47 gescheitert, und der Test hat ihn beim ersten Lauf
   abgewiesen. Wer eine Farbe anfasst, lässt ihn laufen.
+- **Es gibt zwei Fassungen, und beide sind gerechnet.** Die helle kam aus
+  Roadie, für Tageslicht: dasselbe Road-Case in Grau, Papier statt Glut.
+  Sie steht **einmal** in `globals.css`, als `:root[data-theme="hell"]`, und
+  setzt nur, was sich ändert — Papier, Tinte und Stempel erbt sie. Das
+  Attribut setzt ein Skript im Kopf der Seite (`lib/ui/darstellung.ts`),
+  *immer aufgelöst* zu `hell` oder `dunkel`: so braucht es keine zweite
+  Kopie der Palette in einer Medienabfrage, und Auto folgt dem System über
+  `matchMedia`. Das Skript läuft vor React, damit nichts dunkel aufblitzt;
+  es spricht deshalb seine eigene kleine Fassung der Regel, und
+  `darstellung.test.ts` führt es aus und hält es gegen `fassungFuer`. Die
+  Wahl gehört dem Gerät (`mga.darstellung.v1`), nicht dem Log. Was je
+  Fassung anders *fällt* als nur die Farbe — Tolex-Narbung, der Einlass der
+  Platte, das Glimmen, Schatten unter Papier —, steht ebenfalls als
+  Variable: in dunkler Stärke wäre die Narbung auf hellem Grund ein Muster.
+  Bernstein ist im Hellen #854d00 statt #e8a23d; das helle läge dort bei
+  1,9 : 1. Wer eine Farbe hinzufügt, setzt sie in beiden Blöcken oder
+  prüft, dass die dunkle im Hellen trägt — der Kontrasttest rechnet beide.
 - **Klein und gesperrt ist zweimal schlecht.** Die Etiketten standen auf
   10,5 px mit 0,22 em Sperrung; Versalien in Monospace so weit auseinander
   zerlegen das Wortbild, und auf einem Handy kommt beides zusammen. Der Boden
@@ -249,7 +268,7 @@ Komponente.
   ganzzahlig (180 bekommt 5× und Grund drumherum), und die Werkzeuge
   brauchen keinen Browser mehr: `tools/pixel.mjs` schreibt PNG mit
   `node:zlib`. In der Navigation steht das Zeichen vor der Wortmarke, als
-  SVG aus Rechtecken (`public/icons/plektrum.svg`) — und unter 360 px, wo
+  SVG aus Rechtecken (`public/icons/plektrum.svg`) — und unter 385 px, wo
   die Wortmarke weichen muss, steht es allein und bleibt der Weg nach Hause.
   Der README-Banner ist dieselbe Sprache: Pixelschrift statt Anton, weil
   ein SVG im README keine Schrift mitbringen kann, mit dem Haar Luft an der
@@ -448,7 +467,17 @@ Komponente.
   („31 → 17 ms") steht nur da, wo es mindestens zwei Wochen mit Wert gibt.
   Das Fenster wächst mit dem Log bis zu einem Quartal, aus demselben Grund
   wie beim Kalender, und die Säulen haben eine feste Breite statt eines
-  Anteils der Fläche. Der Eingang steht auf *Heute* unter dem Rang, in der
+  Anteils der Fläche.
+  Darüber steht **das Pult**, aus Roadies Soundcheck (`pultKanaele`): je
+  Drill ein Kanalzug, der Fader auf dem letzten sauberen Tempo, die Kerbe
+  auf dem ersten im Fenster. Die Bahn läuft vom Starttempo *dieses*
+  Spielers bis zum Ziel — dieselbe Strecke wie `masteryOf`, damit ein
+  Fader auf halber Höhe dasselbe heisst wie ein halber Balken unter *Wo du
+  stehst*. Kein Kanal ohne sauberes Tempo: ein Fader am Fuss behauptete
+  sonst das Starttempo. Roadie legt Streifen unter sein Pult, hier nicht —
+  ein Kanalzug ist selbst aus Strichen. Die Spalten richten sich nach der
+  Breite (mindestens 78 px), weil „Downpicking" bei festen vier Spalten auf
+  320 px mitten im Wort brach. Der Eingang steht auf *Heute* unter dem Rang, in der
   linken Spalte.
 - **Die Serie zählt Wochen.** In Tagen riss sie nach einem verpassten Abend,
   und wer einmal gerissen ist, hat einen Grund weniger, morgen anzufangen.
