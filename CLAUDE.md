@@ -892,6 +892,15 @@ Komponente.
   raus. Geprüft wird wöchentlich von `audit.yml`, weil neue Meldungen mit der
   Zeit kommen, nicht mit Commits — und bewusst nicht im Deploy, damit eine
   fremde Meldung keinen eiligen Fix aufhält.
+  **Leer heisst nicht sicher.** Next 16.4.1 schloss im Oktober zwei
+  kritische und eine hohe Lücke (`use cache`, Bildoptimierung, Server
+  Actions), und `pnpm audit` sah keine davon: Vercel veröffentlicht sie als
+  Hinweise im eigenen Repo, und in der globalen Datenbank, aus der das
+  Audit liest, standen sie nicht. Getroffen hätten sie diese App ohnehin
+  nicht — ein statischer Export hat keinen Next-Server, und keine der drei
+  Funktionen kommt im Code vor —, wohl aber `next dev` auf diesem Rechner.
+  Wer Next hebt oder nach Sicherheit fragt, liest deshalb die Release-Notes
+  unter github.com/vercel/next.js/releases, nicht nur das Audit.
   Zwei weitere Einträge in `pnpm` halten die Installation warnungsfrei, damit
   eine *neue* Warnung auffällt: `peerDependencyRules` erlaubt ESLint 10 für
   die drei Plugins aus eslint-config-next, die ihre Peer-Angabe noch nicht
