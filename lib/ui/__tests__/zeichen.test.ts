@@ -3,7 +3,7 @@ import { join } from "node:path"
 import { describe, expect, it } from "vitest"
 
 /**
- * Das Zeichen als Pixelraster. Die Regel aus CLAUDE.md als Prüfung: bei 48 px
+ * Das Zeichen als Pixelraster. Die Regel aus docs/marke-und-merch.md als Prüfung: bei 48 px
  * überlebt nur eine geschlossene Silhouette — also eine Fläche, spiegelgleich,
  * ohne Loch und ohne abgesprengte Punkte.
  */

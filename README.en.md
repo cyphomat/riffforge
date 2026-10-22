@@ -790,8 +790,8 @@ node tools/icons.mjs         # public/icons/ from assets/logo/plektrum.txt
 node tools/readme-bilder.mjs # banner, rank ladder, vest
 ```
 
-Architecture and conventions are in [CLAUDE.md](./CLAUDE.md) — in German, like
-the code comments.
+Architecture and conventions are in [CLAUDE.md](./CLAUDE.md), the long rationales in
+[docs/](./docs/) — both in German, like the code comments.
 
 ## Deployment
 
