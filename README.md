@@ -807,7 +807,7 @@ node tools/icons.mjs         # public/icons/ aus assets/logo/plektrum.txt
 node tools/readme-bilder.mjs # Banner, Rangleiter, Kutte
 ```
 
-Architektur und Konventionen stehen in [CLAUDE.md](./CLAUDE.md).
+Architektur und Konventionen stehen in [CLAUDE.md](./CLAUDE.md), die langen Begründungen in [docs/](./docs/).
 
 ## Deployment
 
