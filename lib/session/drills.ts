@@ -1,3 +1,4 @@
+import { SONG_DRILLS } from "./drills-songs"
 import { SIEBEN_DRILLS } from "./drills-sieben"
 import type { Drill } from "./types"
 
@@ -490,6 +491,9 @@ E|-0h3-0h5-0h3--5--0h3---3--------|
     beatsPerBar: 4,
     subdivision: 2,
   },
+
+  // ------------------------------------------------------------------- songs
+  ...SONG_DRILLS,
 ]
 
 export const DRILLS_BY_ID: Record<string, Drill> = Object.fromEntries(

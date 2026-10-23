@@ -81,6 +81,9 @@ Komponente.
 - **Der Log ist append-only.** Einträge sind unveränderlich und über
   `drillId` plus `at` identifiziert. Deshalb ist Verschmelzen die richtige
   Antwort auf zwei Stände, nicht "der neuere gewinnt" — nie überschreiben.
+- **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
+  `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
+  Wiedergabe fallen aus denselben Noten.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
@@ -127,9 +130,10 @@ Die langen Begründungen und Entstehungsgeschichten liegen in `docs/`. Nicht vor
 - `docs/design-und-themes.md` — Farben und Farbsemantik (Rost/Rot), Kontrast, hell/dunkel, Schriften, Flächen, Metal-Twist-Bauteile, Tailwind 4, Layout ab 900 px. Lies bei CSS, Farben, Schriften, Bauteilen.
 - `docs/marke-und-merch.md` — Plektrum-Zeichen, Wortmarke, Pixelkunst, Merch-Stand, Aufnäher, Tourshirts. Lies bei Logo, Icons, Bildern und allem unter `/merch`.
 - `docs/session-und-bildschirme.md` — Tempo, Profil, Drei-Minuten-Grenze, *Heute* und die Ansage, Kalender, Rückblick mit Pult, Abschluss-Zettel. Lies bei `lib/session/builder.ts`, `progress.ts` und diesen Bildschirmen.
+- `docs/songs-und-notenschrift.md` — Songs mit Lernziel, Raster-Regel, Notensatz, Wiedergabe und Nachklang, Song-Blöcke, Klang prüfen ohne Browser. Lies bei `song*.ts`, `notensatz.ts`, `noten-view.tsx`, `song-ansicht.tsx`.
 - `docs/lead-und-sieben-saiter.md` — Lick-Grammatik, Tabulatur-Umbruch, `/lick`, Sieben-Saiter-Modus. Lies bei `lick.ts`, `lead.ts`, `sieben*`.
 - `docs/audio-und-timing.md` — Versatz und Streuung, Einmessen, Figuren, Stimmgerät, Saitenwechsel, offene Punkte. Lies bei allem in `lib/audio/`.
-- `docs/wissen-und-theorie.md` — Wissenskarten, FSRS, Griffbrett-Trainer, CAGED, Hörfragen, Dreiklänge. Lies bei `lib/theory/` außer Lick und Sieben-Saiter.
+- `docs/wissen-und-theorie.md` — Wissenskarten, FSRS, Griffbrett-Trainer, CAGED, Hörfragen, Dreiklänge. Lies bei `lib/theory/` außer Lick, Songs und Sieben-Saiter.
 - `docs/daten-und-abgleich.md` — localStorage, Zod, Abgleich, Löschen, Sicherung, Installieren, Netz-Regel. Lies bei `lib/storage/`, `lib/sync/`, `lib/backup*`.
 - `docs/lieferung-und-werkzeugkette.md` — `pnpm audit`, Abhängigkeiten, TypeScript 6, Build-Rechte, Bau-Stempel, Linter, README-Pflege, Lizenz. Lies bei Abhängigkeiten, Workflows, Veröffentlichen.
 

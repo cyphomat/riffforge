@@ -1,4 +1,5 @@
 import { z } from "zod"
+import type { Song } from "@/lib/theory/song"
 
 export const TECHNIQUES = [
   "warmup",
@@ -59,6 +60,11 @@ export interface Drill {
   beatsPerBar: number
   /** Clicks per beat: 1 = quarters, 2 = eighths. */
   subdivision: number
+  /**
+   * Nur bei Songs: die Noten, aus denen Tabulatur, Notenschrift und Wiedergabe
+   * kommen. `tab` ist dann aus ihnen gerechnet, nicht getippt.
+   */
+  song?: Song
 }
 
 /** How the player felt about a round. Drives the next tempo. */

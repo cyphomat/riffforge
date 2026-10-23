@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1118%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1270%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -208,6 +208,9 @@ Warm-up, Hand für Palm Mute, das X der Dead Note.
 | Ghost Machine | Dead Notes | Dead Notes im Riff — Sechzehntel, von denen nur die Hälfte klingt | 60 → 150 |
 | Hammer Down | Legato | Legato aus der Leersaite heraus, im Riff-Kontext | 55 → 130 |
 | Lick-Schmiede | Pentatonic | Ein neues Lead-Lick aus der Pentatonik — bleibt, bis es sitzt | 50 → 130 |
+| Drei Töne | Pentatonic | Drei Töne lesen und spielen: A, C und D, mit Halben und Vierteln | 50 → 80 |
+| Achtel-Pendel | Pentatonic | Achtel und Pausen: eine Achtel ist eine halbe Viertel | 60 → 90 |
+| Abstände | Pentatonic | Abstände hören und lesen: Quarte und Quinte über mehrere Saiten | 60 → 100 |
 
 ## Ein Lick
 
@@ -244,6 +247,25 @@ zwei Hälften, die nichts voneinander wissen, wären es auch nicht.
 Das Mikrofon hört dabei nur den **Rhythmus**. Ob die *Töne* sassen, kann die
 App nicht wissen und behauptet es auch nicht — das ändert sich erst mit einer
 [Tonhöhen-Erkennung](#was-noch-kommt).
+
+## Songs
+
+Unter den Riffs stehen drei kurze Songs, die nicht nur eine Technik üben,
+sondern **Noten lesen**: Töne, Abstände und Längen. Jeder Song hat ein Lernziel,
+und die App rechnet nach, dass er genau das übt — ein Song, der drei Töne
+verspricht und zwei spielt, kommt nicht durch den Test.
+
+| Song | Töne | Notenwerte | Abstände |
+|---|---|---|---|
+| Drei Töne | A C D | Halbe, Viertel | grosse Sekunde, kleine Terz |
+| Achtel-Pendel | A C D E | Viertel, Achtel, Viertelpause | grosse Sekunde, kleine Terz |
+| Abstände | A C D E G | Halbe, Viertel, Achtel | grosse Sekunde bis Quinte |
+
+Der Block zeigt die Notenschrift mit den Tonnamen, darunter die Tabulatur, und
+lässt dich den Song anhören — mit Einzähler, Klick und Schleife, im Tempo des
+Blocks. Die Länge der Noten hörst du, weil jede dort abgedämpft wird, wo ihr
+Wert endet. Ein Mikrofon-Timing gibt es bei Songs nicht: Pausen und lange Noten
+liessen ein richtiges Spiel als schlecht erscheinen.
 
 ## Sieben Saiten
 

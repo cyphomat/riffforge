@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { BeatIndicator } from "@/components/session/beat-indicator"
 import { MicPanel } from "@/components/session/mic-panel"
+import { SongAnsicht } from "@/components/session/song-ansicht"
 import { TabView } from "@/components/session/tab-view"
 import { TimingReport } from "@/components/session/timing-report"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
@@ -319,17 +320,27 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
         </p>
       )}
 
-      <MicPanel
-        status={mic.status}
-        detail={mic.detail}
-        level={mic.level}
-        hits={hitCount}
-        onToggle={toggleMic}
-      />
+      {/* Bei Songs gibt es kein Mikrofon-Timing: sie haben Pausen und lange
+          Noten, und ein Anschlag je Klick wäre dort nicht das, was verlangt ist.
+          Das Messen gegen die Klicks würde ein richtiges Spiel als schlecht
+          bewerten. */}
+      {!drill.song && (
+        <MicPanel
+          status={mic.status}
+          detail={mic.detail}
+          level={mic.level}
+          hits={hitCount}
+          onToggle={toggleMic}
+        />
+      )}
 
       </div>
 
       <div className="spalte space-y-5">
+      {drill.song && (
+        <SongAnsicht song={drill.song} bpm={metronome.bpm} engine={engine} blockLaeuft={timer.isRunning} />
+      )}
+
       {drill.tab && <TabView tab={drill.tab} />}
 
       <div>
