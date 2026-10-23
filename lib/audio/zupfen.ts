@@ -18,7 +18,18 @@ const ANSCHLAG_S = 0.004
 /** Harmonics stop here: above it a guitar has little left, and a laptop speaker less. */
 const OBERGRENZE_HZ = 6000
 
-export function gezupft(hz: number, sampleRate: number, sekunden = 1.4): Float32Array<ArrayBuffer> {
+/**
+ * @param nachklang How much longer the tone rings, as a factor: 1 is the tone
+ *   the ear-training cards use, 2 rings about twice as long. Songs take a
+ *   longer one — a note's length has to be audible, and a half note has to
+ *   still be sounding when it ends. The pitch does not move with it.
+ */
+export function gezupft(
+  hz: number,
+  sampleRate: number,
+  sekunden = 1.4,
+  nachklang = 1,
+): Float32Array<ArrayBuffer> {
   const laenge = Math.round(sekunden * sampleRate)
   const samples = new Float32Array(laenge)
   const teiltoene = Math.max(1, Math.min(16, Math.floor(OBERGRENZE_HZ / hz)))
@@ -27,7 +38,7 @@ export function gezupft(hz: number, sampleRate: number, sekunden = 1.4): Float32
     // A pluck near the bridge: strong low partials, falling off as 1/k, and
     // each one dying faster than the one below it.
     const staerke = 1 / k
-    const daempfung = 1.6 + 0.9 * k
+    const daempfung = (1.6 + 0.9 * k) / nachklang
     const schritt = (2 * Math.PI * hz * k) / sampleRate
     for (let i = 0; i < laenge; i += 1) {
       samples[i] += staerke * Math.exp((-daempfung * i) / sampleRate) * Math.sin(schritt * i)

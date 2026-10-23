@@ -39,6 +39,38 @@ const LOOKAHEAD_MS = 25
 /** How far ahead of the audio clock we schedule, in seconds. */
 const SCHEDULE_AHEAD_S = 0.1
 
+/**
+ * One click at a fixed time on the AudioContext clock.
+ *
+ * Pulled out because the song player needs the same clicks, and in the same
+ * voice: practising a song to the metronome should sound like the metronome
+ * heard everywhere else. `ziel` is the node the click goes into; the output
+ * when omitted.
+ */
+export function spieleKlick(
+  ctx: AudioContext,
+  time: number,
+  accent: boolean,
+  offbeat: boolean,
+  lautstaerke = 1,
+  ziel: AudioNode = ctx.destination,
+): void {
+  const osc = ctx.createOscillator()
+  const gain = ctx.createGain()
+  osc.connect(gain)
+  gain.connect(ziel)
+
+  osc.frequency.value = accent ? 1200 : offbeat ? 600 : 880
+  const peak = Math.min(0.9, (accent ? 0.18 : offbeat ? 0.06 : 0.11) * lautstaerke)
+
+  gain.gain.setValueAtTime(0.0001, time)
+  gain.gain.exponentialRampToValueAtTime(peak, time + 0.002)
+  gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.06)
+
+  osc.start(time)
+  osc.stop(time + 0.07)
+}
+
 export class Metronome {
   private engine: AudioEngine
   private ctx: AudioContext | null = null
@@ -159,20 +191,6 @@ export class Metronome {
 
   private click(time: number, accent: boolean, offbeat: boolean): void {
     if (!this.ctx) return
-
-    const osc = this.ctx.createOscillator()
-    const gain = this.ctx.createGain()
-    osc.connect(gain)
-    gain.connect(this.ctx.destination)
-
-    osc.frequency.value = accent ? 1200 : offbeat ? 600 : 880
-    const peak = Math.min(0.9, (accent ? 0.18 : offbeat ? 0.06 : 0.11) * this.lautstaerke)
-
-    gain.gain.setValueAtTime(0.0001, time)
-    gain.gain.exponentialRampToValueAtTime(peak, time + 0.002)
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.06)
-
-    osc.start(time)
-    osc.stop(time + 0.07)
+    spieleKlick(this.ctx, time, accent, offbeat, this.lautstaerke)
   }
 }

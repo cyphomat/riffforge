@@ -49,12 +49,22 @@
 | `lib/theory/dreiklaenge.ts` | Dreiklänge in enger Lage auf drei benachbarten Saiten |
 | `lib/theory/gehoer.ts` | Hörfragen: Reihenfolge, Auswahl, die gewürfelten Tonpaare |
 | `lib/audio/zupfen.ts` | Ein gezupfter Ton aus Obertönen — rein, auf den Cent gemessen |
+| `lib/audio/song-ablauf.ts` | Wann in einem Song-Durchgang was erklingt, in Sekunden — rein, das Tempo nachgerechnet |
+| `lib/audio/song-player.ts` | Spielt einen Song auf der einen Uhr: Durchgänge im Voraus planen, Schleife, Einzähler, Klick. Anhalten trennt den Master-Knoten |
+| `components/session/song-bedienung.tsx` | Anhören, Tempo, Schleife und Klick für einen Song; den `AudioEngine` bringt der Aufrufer mit |
+| `components/session/song-ansicht.tsx` | Was ein Song-Block zeigt: Notenschrift, Tonnamen auf Wunsch, Anhören — nicht während der Block läuft |
 | `components/theory/intervall-hoeren.tsx` | Spielt die zwei Töne einer Hörfrage |
 | `lib/theory/hals-trainer.ts` | Der Griffbrett-Trainer als Rechnung: 72 Stellen × 2 Richtungen, FSRS |
 | `lib/theory/hals-id.ts` | Das Präfix `hals-` — damit der Trainer nicht als Wissen zählt |
 | `components/theory/hals-trainer.tsx` | Der fünfte Eingang: Griffbrett-Trainer, `/griffbrett` |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
+| `lib/session/drills-songs.ts` | Die Songs als Drills: Riff, `pentatonic`, Tab aus den Noten — hängt am Hauptkatalog |
+| `lib/theory/song.ts` | Songs mit Lernziel: Schema, Töne, Abstände, Notenwerte, Pausen — und `pruefeSong`, das das Lernziel nachrechnet |
+| `lib/theory/songs.ts` | Der Song-Katalog (reine Daten, von der AI geschrieben, durch `songs.test.ts` geprüft) |
+| `lib/theory/song-tab.ts` | Die Tabulatur eines Songs aus denselben Noten, ein Takt je System auf dem Handy |
+| `lib/theory/notensatz.ts` | Der Notensatz als Rechnung: Position auf der Linie, Hälse, Balken, Pausen, Systeme. Rein |
+| `components/session/noten-view.tsx` | Zeichnet den Notensatz als SVG; ein Takt je Zeile auf schmalem Platz, zwei auf breitem |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
 | `lib/session/drills-sieben.ts` | Der Sieben-Saiter-Katalog (reine Daten, eigene Nummern) |
 | `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |

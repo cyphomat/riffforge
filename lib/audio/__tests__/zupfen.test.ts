@@ -37,6 +37,39 @@ describe("Der gezupfte Ton", () => {
     expect(pegel(Math.round(0.9 * RATE))).toBeLessThan(pegel(Math.round(0.02 * RATE)) / 3)
   })
 
+  describe("mit längerem Nachklang", () => {
+    const pegel = (samples: Float32Array, bei: number) => {
+      const von = Math.round(bei * RATE)
+      return Math.sqrt(samples.slice(von, von + 2048).reduce((s, x) => s + x * x, 0) / 2048)
+    }
+
+    it("klingt länger, ohne die Tonhöhe zu verschieben", () => {
+      for (const midi of [45, 57, 62, 64, 67]) {
+        const lang = gezupft(hertzAus(midi), RATE, 5, 2.2)
+        const gefunden = tonhoehe(mitte(lang), RATE)
+        expect(gefunden, `MIDI ${midi}`).not.toBeNull()
+        expect(Math.abs(midiAus(gefunden!.hz) - midi) * 100, `MIDI ${midi}`).toBeLessThan(2)
+      }
+    })
+
+    it("ist nach einer Sekunde deutlich lauter als der kurze Ton", () => {
+      const kurz = gezupft(hertzAus(57), RATE)
+      const lang = gezupft(hertzAus(57), RATE, 5, 2.2)
+      // Beide auf dieselbe Spitze gebracht, also zählt nur, wie viel übrig bleibt.
+      expect(pegel(lang, 1)).toBeGreaterThan(3 * pegel(kurz, 1))
+    })
+
+    it("lässt den Ton der Hörfragen unberührt, wenn nichts angegeben ist", () => {
+      expect(Array.from(gezupft(hertzAus(57), RATE, 1.4, 1))).toEqual(Array.from(gezupft(hertzAus(57), RATE)))
+    })
+
+    it("knackt weder vorn noch hinten", () => {
+      const samples = gezupft(hertzAus(57), RATE, 5, 2.2)
+      expect(Math.abs(samples[0])).toBeLessThan(0.01)
+      expect(Math.abs(samples[samples.length - 1])).toBeLessThan(0.01)
+    })
+  })
+
   it("trifft A4 bei 440 Hz", () => {
     expect(hertzAus(69)).toBe(440)
     expect(hertzAus(57)).toBeCloseTo(220, 6)
