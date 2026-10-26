@@ -23,6 +23,7 @@ import {
   type FestivalShirt,
   festivalShirts as berechneFestivalShirts,
   type GigArt,
+  gitarreBild,
   kutte,
   touren as berechneTouren,
   RAENGE,
@@ -396,6 +397,35 @@ export function MerchStand() {
               ? `Noch ${rang.naechster.fehlt} ${rang.naechster.fehlt === 1 ? "Woche" : "Wochen"} bis ${rang.naechster.titel}. `
               : "Ganz oben angekommen. "}
             Gezählt werden Wochen mit mindestens einer Session, nicht Sessions. Der Rang fällt nie.
+          </p>
+        </section>
+
+        <h2 className="tape">Gitarrenrack</h2>
+        {/* Eine Gitarre je Rang, wie die Festival-Shirts: die verdienten und die
+            nächste als Umriss. Gezeichnet in Roadie, hier aus `tools/gitarren.mjs`. */}
+        <section className="card">
+          <div className="rack">
+            {RAENGE.slice(0, rang.stufe + 2).map((r, i) => {
+              const erreicht = i <= rang.stufe
+              return (
+                <figure key={r.id} className={erreicht ? "erreicht" : "kommt"}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
+                  <img
+                    src={asset(gitarreBild(r.id))}
+                    alt={erreicht ? r.gitarre : `Nächste Gitarre ab ${r.titel}`}
+                    title={erreicht ? `${r.gitarre}${rangTage[i] ? ` · seit ${datum(rangTage[i])}` : ""}` : `Ab ${r.titel}`}
+                    width={24}
+                    height={56}
+                    className="pixel"
+                  />
+                </figure>
+              )
+            })}
+          </div>
+          <p className="mt-3 text-[14px] leading-relaxed text-muted">
+            Jetzt: <span className="text-fg">{buehne.gitarre}</span>
+            {rang.naechster && ` · als Nächstes hängt hier ab ${rang.naechster.titel} eine neue Gitarre`}. Mit jedem
+            Rang kommt eine dazu; verloren geht keine.
           </p>
         </section>
 

@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { describe, expect, it } from "vitest"
-import { aufnaeherBild, katalog, RAENGE, rangBild } from "@/lib/session/merch"
+import { aufnaeherBild, gitarreBild, katalog, RAENGE, rangBild } from "@/lib/session/merch"
 
 /** Width and height from a PNG's header — enough to check the art is the size it is drawn at. */
 function groesse(pfad: string): [number, number] {
@@ -32,6 +32,14 @@ describe("Die Bilder am Merch-Stand", () => {
       const pfad = datei(rangBild(rang.id))
       expect(existsSync(pfad), rang.id).toBe(true)
       expect(groesse(pfad), rang.id).toEqual([96, 48])
+    }
+  })
+
+  it("haben für jeden Rang eine Gitarre fürs Rack, 24 × 56", () => {
+    for (const rang of RAENGE) {
+      const pfad = datei(gitarreBild(rang.id))
+      expect(existsSync(pfad), rang.id).toBe(true)
+      expect(groesse(pfad), rang.id).toEqual([24, 56])
     }
   })
 })
