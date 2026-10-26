@@ -87,6 +87,7 @@
 | `assets/logo/plektrum.txt` | Das Zeichen als Pixelraster, 32 × 32. Quelle für alle Icons und den Banner. |
 | `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |
 | `tools/readme-bilder.mjs` | Banner, Rangleiter und Kutte der READMEs, aus derselben Pixelkunst |
+| `tools/gitarren.mjs` | Die Rack-Gitarren, je Rang eine, nach `public/merch/gitarre-*.png` |
 | `tools/pixel.mjs` | PNG lesen und schreiben, ganzzahlig vergrössern, SVG aus Rechtecken — ohne Browser |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |
 | `lib/theory/rhythm.ts` | Rhythmusfiguren als Zeitpunkte, und ihre Bewertung |

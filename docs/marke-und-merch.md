@@ -73,6 +73,15 @@
   — und `.zwei-spalten` stapelt die rechte Spalte auf dem Handy unter den
   Kalender: über tausend Pixel tief, und Daniel hat ihn dort nicht gefunden.
   Was auf dem Handy gesehen werden soll, gehört in die linke Spalte.
+- **Das Rack hängt am Rang, nicht an Gold.** In der Orga-App (Roadie) kauft man
+  Gitarren mit Gold; hier gibt es keine Währung, weil gespielt wird um
+  Regelmässigkeit. Zu jedem Rang gehört eine Gitarre (`RAENGE[i].gitarre`),
+  sie hängt im Rack, sobald der Rang erreicht ist, die nächste als Umriss. Es
+  wird nichts gespeichert: das Rack folgt aus `rang(log)`. Die sieben
+  Gitarren (24 × 56, unten bündig, `public/merch/gitarre-*.png`) schreibt
+  `tools/gitarren.mjs` aus den Formen der Orga-App — wer eine Form ändert,
+  lässt das Werkzeug laufen, ein Bild von Hand zu ändern geht nicht. Auf dem
+  Handy stehen bis zu sieben nebeneinander und sind dafür kleiner als 3×.
 - **Pixelkunst nur ganzzahlig.** Rangszenen (96 × 48) und Aufnäher (24 × 24)
   liegen in `public/merch/` und stammen aus Daniels eigener Orga-App, wo sie
   zuerst gezeichnet wurden; die Szene *Hall of Fame* fehlte dort und ist in

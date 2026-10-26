@@ -666,6 +666,25 @@
     }
   }
 
+  /* Das Rack: die Gitarren stehen unten auf einer Linie, wie auf einem Regal.
+     Der Regalboden ist Holz und bleibt es in beiden Themes. Verkleinert statt
+     vergrössert, wie die Bühnenleiste: auf dem Handy passen bis zu sieben
+     nebeneinander, ab breiterem Schirm stehen sie dreifach. */
+  .rack {
+    @apply flex items-end gap-1 px-2 pt-2;
+    border-bottom: 8px solid #5a3b22;
+    background: linear-gradient(to bottom, transparent 70%, rgb(90 59 34 / 0.18));
+  }
+  .rack figure {
+    @apply m-0 min-w-0 flex-1;
+  }
+  .rack img {
+    @apply mx-auto block h-auto w-full max-w-[72px];
+  }
+  .rack .kommt img {
+    filter: grayscale(1) brightness(0.45);
+  }
+
   /* Überschriften im Merch-Stand als Streifen Gaffa mit Edding darauf, aus
      Setlist: leicht schief geklebt, die Enden gerissen. Papier und Tinte wie
      auf dem Zettel — dieselbe Handschrift auf demselben Grund. */

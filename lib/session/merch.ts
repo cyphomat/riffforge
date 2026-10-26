@@ -447,6 +447,8 @@ export function neueAufnaeher(vorher: Aufnaeher[], nachher: Aufnaeher[]): Aufnae
  */
 export const aufnaeherBild = (gruppe: string) => `/merch/aufnaeher-${gruppe}.png`
 export const rangBild = (rangId: string) => `/merch/rang-${rangId}.png`
+/** Die Gitarre zum Rang fürs Rack, 24 × 56 — `tools/gitarren.mjs` zeichnet sie. */
+export const gitarreBild = (rangId: string) => `/merch/gitarre-${rangId}.png`
 
 /* ─────────────────────────────── Der Rang ─────────────────────────────── */
 
@@ -456,13 +458,13 @@ export const rangBild = (rangId: string) => `/merch/rang-${rangId}.png`
  * nicht ab. **Der Rang fällt nie.**
  */
 export const RAENGE = [
-  { id: "garage", titel: "Garagenband", wochen: 0 },
-  { id: "proberaum", titel: "Proberaum", wochen: 4 },
-  { id: "vorband", titel: "Vorband", wochen: 12 },
-  { id: "support", titel: "Support", wochen: 26 },
-  { id: "headliner", titel: "Headliner", wochen: 52 },
-  { id: "festival", titel: "Festival", wochen: 104 },
-  { id: "halloffame", titel: "Hall of Fame", wochen: 208 },
+  { id: "garage", titel: "Garagenband", wochen: 0, gitarre: "Proberaum-Brett" },
+  { id: "proberaum", titel: "Proberaum", wochen: 4, gitarre: "Kellerkind" },
+  { id: "vorband", titel: "Vorband", wochen: 12, gitarre: "Offset Blues" },
+  { id: "support", titel: "Support", wochen: 26, gitarre: "Nachtfalke" },
+  { id: "headliner", titel: "Headliner", wochen: 52, gitarre: "Stahlstern" },
+  { id: "festival", titel: "Festival", wochen: 104, gitarre: "Sieben Siegel" },
+  { id: "halloffame", titel: "Hall of Fame", wochen: 208, gitarre: "Goldene Axt" },
 ] as const
 
 export interface Rang {
