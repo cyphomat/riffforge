@@ -106,6 +106,24 @@ pnpm build    # statischer Export nach out/
 pnpm audit    # muss leer bleiben, siehe docs/lieferung-und-werkzeugkette.md
 ```
 
+## Git und GitHub
+
+- Repo mit `add_repo` (access: push) anhängen. Der Klon ist shallow und verfolgt nur main.
+- In der Cloud läuft `pnpm install --frozen-lockfile` und danach `pnpm check` ohne Workaround.
+- `gh pr create` geht nicht (GraphQL gesperrt). PR per `gh api repos/cyphomat/riffforge/pulls --input datei.json` anlegen.
+- Der Stop-Hook meldet fälschlich einen unpushed Branch. `git ls-remote` zeigt den echten Stand.
+- Branches löscht GitHub nach dem Merge selbst. Nichts manuell löschen.
+
+## Ablauf pro Etappe
+
+Ein Merge auf `main` deployt sofort (siehe Deployment). Auf PRs läuft keine CI, deshalb muss `pnpm check` vorher lokal grün sein.
+
+1. Bauen, `pnpm check` grün. Neue Tests: Testzahl in beiden READMEs nachziehen.
+2. Größere Änderung: PR. Kleinkram (Texte, Tippfehler) bei grünem Check direkt auf main.
+3. Ich prüfe das Ergebnis und schreibe "ja".
+4. Mit diesem einen "ja": PR mergen (`gh api -X PUT repos/cyphomat/riffforge/pulls/N/merge`). Das deployt. Geht das Mergen mit dem Zugang nicht, kurz sagen, dann merge ich selbst.
+5. Ohne dieses "ja" wird nicht gemergt und nicht direkt auf main gepusht.
+
 ## Deployment
 
 Statischer Export auf GitHub Pages, per Actions bei Push auf `main`. Pages
