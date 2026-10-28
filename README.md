@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1286%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1319%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -448,6 +448,9 @@ Jeder mit zwei, drei Sätzen und einer Frage:
 - **Vor dem Auflösen sagst du, wie sicher du bist** — geraten, ziemlich sicher,
   sicher. Wer „sicher“ war und danebenlag, sieht die Karte gleich wieder; unter
   *Wissen* steht, wie oft deine Einschätzung stimmte. FSRS bekommt davon nichts mit.
+- **Die Transfer-Runde fragt Szenarien statt Begriffe** — „Der Song kippt nach Moll,
+  was änderst du am Griff?“ — quer durch die Stufen, eine Frage je Stufe, in
+  gemischter Reihenfolge. Sie kommt, sobald in einer Stufe drei Karten begonnen sind.
 - **Der Kartenstand wird abgespielt, nicht gespeichert.** Antworten sind
   unveränderlich; zwei Geräte verschmelzen ihre Antworten und kommen von selbst
   auf denselben Stand.
