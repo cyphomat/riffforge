@@ -70,6 +70,9 @@
 | `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |
 | `components/session/lick-runner.tsx` | Der zweite Eingang: ein Lick allein, ohne Session |
 | `components/session/sieben-runner.tsx` | Der dritte Eingang: zehn Minuten Siebensaitige |
+| `lib/session/anlaesse.ts` | Anlässe: Regeln (fix, Ostern, n-ter Wochentag, Datum), Phasen, Rang, Sätze — rein. Port aus Setlist |
+| `components/session/anlass-banner.tsx` | Der Streifen auf *Heute* unter der Ansage |
+| `components/session/saisonal-panel.tsx` | Der Schalter dazu, auf *Daten* |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |
@@ -81,12 +84,13 @@
 | `lib/ui/darstellung.ts` | Hell, dunkel oder Auto: die Regel, und das Skript, das sie vor dem ersten Anstrich setzt |
 | `components/session/darstellung-panel.tsx` | Die Wahl dazu, auf *Daten* |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
-| `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen |
+| `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen, Darstellung, Saisonales |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
 | `assets/logo/plektrum.txt` | Das Zeichen als Pixelraster, 32 × 32. Quelle für alle Icons und den Banner. |
 | `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |
 | `tools/readme-bilder.mjs` | Banner, Rangleiter und Kutte der READMEs, aus derselben Pixelkunst |
+| `tools/anlaesse.mjs` | Die Anlass-Motive nach `public/bilder/anlass-*.png` und die Aufnäher nach `public/merch/aufnaeher-anlass-*.png` |
 | `tools/gitarren.mjs` | Die Rack-Gitarren, je Rang eine, nach `public/merch/gitarre-*.png` |
 | `tools/pixel.mjs` | PNG lesen und schreiben, ganzzahlig vergrössern, SVG aus Rechtecken — ohne Browser |
 | `lib/theory/cards.ts` | Der Wissenskatalog (reine Daten) |

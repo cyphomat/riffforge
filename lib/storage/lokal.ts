@@ -23,9 +23,11 @@ const LICK_KEY = "mga.lick-seed.v1"
 const BOX_KEY = "mga.lick-box.v1"
 const EINMESS_KEY = "mga.einmessung.v1"
 const SAITEN_KEY = "mga.saiten.v1"
+const SAISONAL_KEY = "mga.saisonal.v1"
+const VERSTECKT_KEY = "mga.saisonal-versteckt.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -207,6 +209,39 @@ export function merkeDarstellung(wert: Darstellung): void {
     }
   } else schreiben(DARSTELLUNG_KEY, wert)
   window.dispatchEvent(new Event(DARSTELLUNG_EREIGNIS))
+}
+
+/**
+ * Der Banner zu Weihnachten und anderen Anlässen (`lib/session/anlaesse.ts`).
+ *
+ * Gehört dem Gerät, wie die Darstellung: an, solange nicht ausdrücklich
+ * abgeschaltet. Gespeichert wird nur das Abschalten — der Normalfall braucht
+ * keinen Eintrag, und ein leerer Speicher heisst "an".
+ */
+export function saisonalAn(): boolean {
+  return lesen(SAISONAL_KEY) !== "aus"
+}
+
+/** Wieder einschalten holt auch einen für heute ausgeblendeten Banner zurück. */
+export function merkeSaisonal(an: boolean): void {
+  if (typeof window === "undefined") return
+  if (an) {
+    try {
+      window.localStorage.removeItem(SAISONAL_KEY)
+      window.localStorage.removeItem(VERSTECKT_KEY)
+    } catch {
+      /* Dann bleibt es eben bei der letzten Wahl. */
+    }
+  } else schreiben(SAISONAL_KEY, "aus")
+}
+
+/** "Für heute ausblenden" gilt nur für diesen Kalendertag (`JJJJ-MM-TT`). */
+export function anlassVersteckt(tag: string): boolean {
+  return lesen(VERSTECKT_KEY) === tag
+}
+
+export function verstecke(tag: string): void {
+  schreiben(VERSTECKT_KEY, tag)
 }
 
 export function clearLokal(): void {

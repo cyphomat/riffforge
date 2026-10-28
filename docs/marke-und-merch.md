@@ -82,6 +82,15 @@
   `tools/gitarren.mjs` aus den Formen der Orga-App — wer eine Form ändert,
   lässt das Werkzeug laufen, ein Bild von Hand zu ändern geht nicht. Auf dem
   Handy stehen bis zu sieben nebeneinander und sind dafür kleiner als 3×.
+- **Anlässe haben Motive und Aufnäher, beide aus einer Quelle.**
+  `tools/anlaesse.mjs` zeichnet die Banner-Motive (15 × 15, `public/bilder/anlass-*.png`)
+  und daraus die Aufnäher (24 × 24, `public/merch/aufnaeher-anlass-*.png`; Rand und
+  Stickerei vom Debüt-Aufnäher, das Motiv in der Mitte getauscht). Der Aufnäher ist
+  verdient, wenn an einem Tag des Anlasses geübt wurde — gerechnet aus dem Log wie
+  alle anderen, unabhängig vom Schalter für den Banner — und steht erst dann an
+  der Kutte, **nie als Umriss**: Weihnachten und zwei Gedenktage als leere Kreise
+  wären Schmuck und eine Lücke, die sich nur selten füllen lässt. Ein Gedenktag
+  belohnt nichts ausser dem Dasein: kein Zähler, keine Stufen.
 - **Pixelkunst nur ganzzahlig.** Rangszenen (96 × 48) und Aufnäher (24 × 24)
   liegen in `public/merch/` und stammen aus Daniels eigener Orga-App, wo sie
   zuerst gezeichnet wurden; die Szene *Hall of Fame* fehlte dort und ist in

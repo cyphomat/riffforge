@@ -86,6 +86,10 @@ Komponente.
 - **Szenario-Karten (`lib/theory/szenarien.ts`) liegen nicht in `THEORY_CARDS`.**
   Nur die Transfer-Runde fragt sie; neue Karten bekommen ihre Nachrechnung in
   `szenarien.test.ts` und die richtige Antwort nicht immer an dieselbe Stelle.
+- **Der Anlass-Banner (`lib/session/anlaesse.ts`) ist der eine Schmuck.** Nur auf
+  *Heute* unter der Ansage, nie in der Session, ohne Animation, ohne Winkel und
+  Akzent; Aufnäher dazu stehen erst verdient an der Kutte. Die Datumsregeln gibt
+  es zweimal (Setlist, hier) mit denselben Testfällen.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.
