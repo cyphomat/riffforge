@@ -7,7 +7,7 @@ import { RhythmQuiz } from "@/components/theory/rhythm-quiz"
 import { DAEMPFUNG_MINDESTENS, figurById, type FigurBewertung } from "@/lib/theory/rhythm"
 import { GRADES, type Grade } from "@/lib/theory/fsrs"
 import { noteAt, parseTon, sameGriff, verwechselungshinweis } from "@/lib/theory/fretboard"
-import type { Griff, TheoryCard } from "@/lib/theory/types"
+import { SICHERHEITEN, type Griff, type Sicherheit, type TheoryCard } from "@/lib/theory/types"
 
 /**
  * Eine Frage, eine Antwort, dann die Erklärung.
@@ -58,7 +58,7 @@ function istRichtig(card: TheoryCard, antwort: Griff | string | null): boolean {
 
 export interface QuizCardProps {
   card: TheoryCard
-  onAnswer: (grade: Grade, correct: boolean) => void
+  onAnswer: (grade: Grade, correct: boolean, sure?: Sicherheit) => void
   /** Kopfzeile, etwa "Frage 2 von 4". */
   zaehler?: string
 }
@@ -68,6 +68,10 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
   const [text, setText] = useState("")
   const [aufgeloest, setAufgeloest] = useState(false)
   const [gespielt, setGespielt] = useState<FigurBewertung | null>(null)
+  // Wie sicher man vor der Auflösung war. Bleibt leer bei gespielten Fragen
+  // (die Messung ist die Antwort) und beim Auflösen mit Enter (keine stille
+  // Vorgabe, die die Kalibrierung verzerrt).
+  const [sure, setSure] = useState<Sicherheit | undefined>(undefined)
 
   const antwort: Griff | string | null = card.frage.art === "griffbrett" ? griff : text
   const richtig = card.frage.art === "gespielt" ? (gespielt?.richtig ?? false) : istRichtig(card, antwort)
@@ -181,9 +185,27 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
             Ohne Mikrofon: Auflösung zeigen
           </button>
         ) : (
-          <button onClick={() => setAufgeloest(true)} disabled={!bereit} className="btn w-full">
-            Auflösen
-          </button>
+          // Die Abfrage steckt im Auflösen selbst: derselbe Tap, nur mit einer
+          // Antwort darauf, wie sicher man ist. Sie muss vor der Auflösung
+          // kommen, danach wüsste jeder, dass er es gewusst hat.
+          <div>
+            <p className="kicker mb-2 text-dim">Auflösen — wie sicher bist du?</p>
+            <div className="grid grid-cols-3 gap-[9px]">
+              {SICHERHEITEN.map((stufe) => (
+                <button
+                  key={stufe.value}
+                  onClick={() => {
+                    setSure(stufe.value)
+                    setAufgeloest(true)
+                  }}
+                  disabled={!bereit}
+                  className="btn btn-small"
+                >
+                  {stufe.label}
+                </button>
+              ))}
+            </div>
+          </div>
         )
       ) : (
         <div className="space-y-4">
@@ -228,6 +250,11 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                 .
               </p>
             )}
+            {sure === 3 && !richtig && !ungemessen && (
+              <p className="mt-1 text-[14px] leading-relaxed text-akzent">
+                Du warst sicher — und lagst daneben. Die Karte kommt bald wieder.
+              </p>
+            )}
             {hinweis && <p className="mt-1 text-[14px] leading-relaxed text-akzent">{hinweis}</p>}
           </div>
 
@@ -248,7 +275,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                 return (
                   <button
                     key={note.value}
-                    onClick={() => onAnswer(note.value as Grade, richtig)}
+                    onClick={() => onAnswer(note.value as Grade, richtig, sure)}
                     className={`border p-[14px] text-left transition-colors ${
                       empfohlen ? "border-akzent bg-(--tint-akzent)" : "border-line"
                     }`}

@@ -57,4 +57,10 @@ describe("mergeTheoryLogs", () => {
     const voll = log(a("x", "2026-09-01T10:00:00Z"))
     expect(mergeTheoryLogs({ version: 1, answers: [] }, voll)).toEqual(voll)
   })
+
+  it("behält die Sicherheit einer Antwort", () => {
+    const mit: TheoryAnswer = { cardId: "x", grade: 1, correct: false, sure: 3, at: "2026-09-01T10:00:00Z" }
+    expect(mergeTheoryLogs(log(mit), log()).answers[0].sure).toBe(3)
+    expect(mergeTheoryLogs(log(), log(mit)).answers[0].sure).toBe(3)
+  })
 })

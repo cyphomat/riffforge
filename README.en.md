@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1270%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1286%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -445,6 +445,9 @@ are put together. Each with two or three sentences and a question:
 - **When something comes back** is decided by [FSRS-6](https://github.com/open-spaced-repetition/free-spaced-repetition-scheduler) —
   three numbers per card rather than a rule of thumb. Ported from the reference
   implementation and checked against 76 of its results, not reinvented.
+- **Before the answer is revealed you say how sure you are** — guessed, fairly
+  sure, sure. Sure and wrong, and the card comes straight back; *Wissen* shows
+  how often your confidence held up. FSRS is untouched by it.
 - **Card state is replayed, not stored.** Answers are immutable; two devices
   merge their answers and arrive at the same state on their own.
 
