@@ -127,6 +127,24 @@
   Feld `sure`, wenn es den Log neu schreibt (das Zod-Objekt kennt es nicht);
   der Lernstand bleibt dabei erhalten, nur Einschätzung und Scheinwissen dieser
   Antworten gehen verloren.
+- **Szenario-Karten sind ein eigener Katalog, und nur die Transfer-Runde fragt sie.**
+  `lib/theory/szenarien.ts` hält zwölf Karten (zwei je Stufe) in der Form
+  "Du greifst ein Barré, der Song kippt nach Moll — was änderst du?": Wissen
+  anwenden statt wiedererkennen. Sie liegen bewusst nicht in `THEORY_CARDS`,
+  damit "Begonnen von 199", die Stufenlisten, die Session-Portionen und
+  `cards.test.ts` unberührt bleiben. Ihre Antworten laufen durch denselben Log
+  und denselben FSRS-Stand wie alle anderen, Sicherheit und Scheinwissen
+  gelten mit. Bekannt: die Merch-Rechnung zählt Kennungen aus dem Log, nicht
+  aus `THEORY_CARDS`, Szenario-Antworten zählen dort also als Karten, die
+  "sitzen". `transferRunde` (`lib/theory/transfer.ts`, rein) nimmt je Stufe
+  höchstens eine Karte (Scheinwissen zuerst, dann das Schwächste, dann Neues,
+  wie `dueCards`) und mischt, damit die Stufe nicht an der Reihenfolge
+  abzulesen ist; erst ab `TRANSFER_AB` begonnenen Wissenskarten der Stufe,
+  weil Anwenden Gelerntes voraussetzt. Die richtige Antwort liegt an
+  wechselnder Stelle (Test), Töne stehen englisch, und der Hals hat zwölf
+  Bünde. `szenarien.test.ts` rechnet nach, was die Karten behaupten, wie bei
+  den anderen Texten. Vorbild sind Roadies `rf-t01` bis `rf-t12`; dort stand
+  die Antwort überall an erster Stelle und `rf-t07` fragte nach dem 15. Bund.
 - **Die Karten werden erst an der Stelle gewählt**, nicht beim Bauen des
   Plans. Sonst käme in der zweiten Portion wieder, was in der ersten schon
   beantwortet wurde.

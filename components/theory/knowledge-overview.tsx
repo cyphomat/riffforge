@@ -5,6 +5,8 @@ import Link from "next/link"
 import { MdCheck } from "react-icons/md"
 import { QuizCard } from "@/components/theory/quiz-card"
 import { THEORY_CARDS } from "@/lib/theory/cards"
+import { SZENARIO_KARTEN } from "@/lib/theory/szenarien"
+import { TRANSFER_AB, transferRunde } from "@/lib/theory/transfer"
 import { type Grade } from "@/lib/theory/fsrs"
 import {
   cardStates,
@@ -36,6 +38,8 @@ export function KnowledgeOverview() {
   const [log, setLog] = useState<TheoryLog>(EMPTY_THEORY_LOG)
   const [loaded, setLoaded] = useState(false)
   const [runde, setRunde] = useState<TheoryCard[] | null>(null)
+  // Ob die laufende Runde die Transfer-Runde ist. Ändert nur die Kopfzeile.
+  const [transfer, setTransfer] = useState(false)
   const [index, setIndex] = useState(0)
   const [fertig, setFertig] = useState(0)
 
@@ -51,7 +55,19 @@ export function KnowledgeOverview() {
   const schein = scheinwissenKarten(THEORY_CARDS, log)
   const eingeschaetzt = SICHERHEITEN.reduce((summe, stufe) => summe + treffer[stufe.value].n, 0)
 
+  // Nur zum Zählen, deshalb mit festem Zufall: gemischt wird erst beim Start,
+  // sonst würde die Runde bei jedem Zeichnen neu gewürfelt.
+  const transferZahl = transferRunde(SZENARIO_KARTEN, THEORY_CARDS, log, new Date(), () => 0).length
+
+  const transferStarten = () => {
+    setRunde(transferRunde(SZENARIO_KARTEN, THEORY_CARDS, loadTheoryLog()))
+    setTransfer(true)
+    setIndex(0)
+    setFertig(0)
+  }
+
   const starten = () => {
+    setTransfer(false)
     setRunde(dueCards(THEORY_CARDS, loadTheoryLog()).slice(0, RUNDE).map((eintrag) => eintrag.card))
     setIndex(0)
     setFertig(0)
@@ -80,7 +96,7 @@ export function KnowledgeOverview() {
           <QuizCard
             key={runde[index].id}
             card={runde[index]}
-            zaehler={`Frage ${index + 1} von ${runde.length}`}
+            zaehler={`${transfer ? "Transfer · " : ""}Frage ${index + 1} von ${runde.length}`}
             onAnswer={beantworten}
           />
           <button
@@ -124,6 +140,21 @@ export function KnowledgeOverview() {
               ? "Nichts fällig"
               : `${Math.min(RUNDE, faellig.length)} Fragen`}
           </button>
+          <button
+            onClick={transferStarten}
+            disabled={transferZahl === 0}
+            className="btn btn-ghost btn-small mt-[9px] w-full"
+          >
+            {transferZahl === 0
+              ? "Transfer-Runde — noch nichts anzuwenden"
+              : `Transfer-Runde — ${transferZahl} ${transferZahl === 1 ? "Szenario" : "Szenarien"} quer durch die Stufen`}
+          </button>
+          {transferZahl === 0 && (
+            <p className="mt-2 text-[13px] leading-relaxed text-dim">
+              Szenarien wenden an, was du gelernt hast. Sie kommen, sobald in einer Stufe {TRANSFER_AB}{" "}
+              Karten begonnen sind.
+            </p>
+          )}
           <Link href="/griffbrett" className="btn btn-ghost btn-small mt-[9px] w-full">
             Griffbrett-Trainer — den Hals Stelle für Stelle
           </Link>

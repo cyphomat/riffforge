@@ -83,6 +83,9 @@ Komponente.
   Antwort auf zwei Stände, nicht "der neuere gewinnt" — nie überschreiben.
 - **Sicherheit (`sure`) ist Teil der Antwort, FSRS rechnet ohne sie.** Scheinwissen
   zieht nur die Fälligkeit in `dueCards` vor; `lib/theory/fsrs.ts` bleibt unberührt.
+- **Szenario-Karten (`lib/theory/szenarien.ts`) liegen nicht in `THEORY_CARDS`.**
+  Nur die Transfer-Runde fragt sie; neue Karten bekommen ihre Nachrechnung in
+  `szenarien.test.ts` und die richtige Antwort nicht immer an dieselbe Stelle.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.

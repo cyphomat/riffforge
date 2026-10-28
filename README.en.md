@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1286%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1319%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -448,6 +448,9 @@ are put together. Each with two or three sentences and a question:
 - **Before the answer is revealed you say how sure you are** — guessed, fairly
   sure, sure. Sure and wrong, and the card comes straight back; *Wissen* shows
   how often your confidence held up. FSRS is untouched by it.
+- **The transfer round asks scenarios instead of terms** — "the song turns minor,
+  what do you change in the grip?" — across the levels, one question per level, in
+  mixed order. It opens up once three cards of a level have been started.
 - **Card state is replayed, not stored.** Answers are immutable; two devices
   merge their answers and arrive at the same state on their own.
 
