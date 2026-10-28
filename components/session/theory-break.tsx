@@ -4,7 +4,7 @@ import { useState } from "react"
 import { QuizCard } from "@/components/theory/quiz-card"
 import { appendAnswers } from "@/lib/storage/theory-log"
 import type { Grade } from "@/lib/theory/fsrs"
-import type { TheoryCard } from "@/lib/theory/types"
+import type { Sicherheit, TheoryCard } from "@/lib/theory/types"
 
 /**
  * Eine Portion Fragen zwischen zwei Blöcken.
@@ -30,10 +30,12 @@ export function TheoryBreak({
   const [index, setIndex] = useState(0)
   const [beantwortet, setBeantwortet] = useState(0)
 
-  const antworten = (grade: Grade, correct: boolean) => {
+  const antworten = (grade: Grade, correct: boolean, sure?: Sicherheit) => {
     // Sofort schreiben, nicht am Ende der Portion: wer die Session abbricht,
     // soll die Antwort trotzdem behalten.
-    appendAnswers([{ cardId: karten[index].id, grade, correct, at: new Date().toISOString() }])
+    appendAnswers([
+      { cardId: karten[index].id, grade, correct, ...(sure && { sure }), at: new Date().toISOString() },
+    ])
     const jetzt = beantwortet + 1
     setBeantwortet(jetzt)
     if (index + 1 < karten.length) setIndex(index + 1)

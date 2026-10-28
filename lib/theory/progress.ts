@@ -1,6 +1,6 @@
 import { isDue, newCard, review, retrievability, type CardState } from "./fsrs"
 import { istHalsAntwort } from "./hals-id"
-import type { TheoryAnswer, TheoryCard, TheoryLog } from "./types"
+import type { Sicherheit, TheoryAnswer, TheoryCard, TheoryLog } from "./types"
 
 /**
  * Der Stand jeder Karte, abgespielt aus dem Antwort-Log.
@@ -35,11 +35,53 @@ export interface FaelligeKarte {
 }
 
 /**
+ * Sicher gewesen und danebengelegen: die gefährlichste Sorte Fehler, weil sie
+ * sich richtig anfühlt und deshalb nie nachgeschlagen wird.
+ */
+export function istScheinwissen(antwort: Pick<TheoryAnswer, "sure" | "correct">): boolean {
+  return antwort.sure === 3 && !antwort.correct
+}
+
+/**
+ * Welche Karten gerade Scheinwissen sind: die *letzte* Antwort war sicher und
+ * falsch. Mit der nächsten Antwort ist die Karte es nicht mehr — gezählt wird
+ * nach Zeit, nicht nach Listenreihenfolge, denn nach einem Abgleich liegen die
+ * Einträge durcheinander.
+ *
+ * Das ist eine Ansicht auf den Log, kein gespeicherter Zustand, aus demselben
+ * Grund wie `cardStates`.
+ */
+function scheinwissenIds(log: TheoryLog): Set<string> {
+  const letzte = new Map<string, TheoryAnswer>()
+  const sortiert = [...log.answers].sort((a, b) => a.at.localeCompare(b.at))
+  for (const antwort of sortiert) {
+    if (Number.isNaN(Date.parse(antwort.at))) continue
+    letzte.set(antwort.cardId, antwort)
+  }
+  const ids = new Set<string>()
+  for (const [id, antwort] of letzte) {
+    if (istScheinwissen(antwort)) ids.add(id)
+  }
+  return ids
+}
+
+/** Die Karten, bei denen die letzte Antwort Scheinwissen war. */
+export function scheinwissenKarten(cards: TheoryCard[], log: TheoryLog): TheoryCard[] {
+  const ids = scheinwissenIds(log)
+  return cards.filter((card) => ids.has(card.id))
+}
+
+/**
  * Was heute drankommt, schwächste zuerst.
  *
  * Eine neue Karte hat keine Abrufbarkeit — sie zählt als 0 und steht damit
  * ganz vorn, aber erst nachdem alles Fällige durch ist: Behalten geht vor
  * Neuanfangen, sonst wächst der Rückstand, während man Neues sammelt.
+ *
+ * Scheinwissen geht vor allem anderen und gilt als sofort fällig, auch wenn
+ * FSRS die Karte auf später gelegt hat. Die FSRS-Rechnung selbst bleibt
+ * unberührt: sie weiss nicht, wie sicher man sich war, und soll es nicht
+ * wissen, ihr Port hängt an den Prüfwerten der Referenz.
  */
 export function dueCards(
   cards: TheoryCard[],
@@ -47,7 +89,9 @@ export function dueCards(
   now: Date = new Date(),
 ): FaelligeKarte[] {
   const stand = cardStates(log)
+  const schein = scheinwissenIds(log)
 
+  const scheinwissen: FaelligeKarte[] = []
   const faellig: FaelligeKarte[] = []
   const neu: FaelligeKarte[] = []
 
@@ -55,13 +99,16 @@ export function dueCards(
     const state = stand.get(card.id)
     if (!state) {
       neu.push({ card, state: null, retrievability: 0 })
+    } else if (schein.has(card.id)) {
+      scheinwissen.push({ card, state, retrievability: retrievability(state, now) })
     } else if (isDue(state, now)) {
       faellig.push({ card, state, retrievability: retrievability(state, now) })
     }
   }
 
+  scheinwissen.sort((a, b) => a.retrievability - b.retrievability)
   faellig.sort((a, b) => a.retrievability - b.retrievability)
-  return [...faellig, ...neu]
+  return [...scheinwissen, ...faellig, ...neu]
 }
 
 /**
@@ -130,6 +177,33 @@ export function theorieStand(
     faellig,
     trefferquote: karten.length === 0 ? null : richtig / karten.length,
   }
+}
+
+/** Ab wie vielen Antworten einer Stufe die Trefferquote etwas sagt. */
+export const KALIBRIERUNG_AB = 5
+
+export type Kalibrierung = Record<Sicherheit, { n: number; richtig: number }>
+
+/**
+ * Wie oft die Selbsteinschätzung stimmte, je Stufe.
+ *
+ * Wer bei "sicher" in neun von zehn Fällen richtig liegt, kennt seinen Stand;
+ * wer bei "sicher" nur die Hälfte trifft, überschätzt sich. Zählt nur Karten,
+ * bei denen die Sicherheit abgefragt wurde — der Griffbrett-Trainer und ältere
+ * Antworten haben keine, und der Trainer bleibt wie überall ausserhalb.
+ */
+export function kalibrierung(log: TheoryLog): Kalibrierung {
+  const stand: Kalibrierung = {
+    1: { n: 0, richtig: 0 },
+    2: { n: 0, richtig: 0 },
+    3: { n: 0, richtig: 0 },
+  }
+  for (const antwort of log.answers) {
+    if (antwort.sure === undefined || istHalsAntwort(antwort)) continue
+    stand[antwort.sure].n += 1
+    if (antwort.correct) stand[antwort.sure].richtig += 1
+  }
+  return stand
 }
 
 /** Alle Antworten zu einer Karte, älteste zuerst. */

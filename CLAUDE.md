@@ -81,6 +81,8 @@ Komponente.
 - **Der Log ist append-only.** Einträge sind unveränderlich und über
   `drillId` plus `at` identifiziert. Deshalb ist Verschmelzen die richtige
   Antwort auf zwei Stände, nicht "der neuere gewinnt" — nie überschreiben.
+- **Sicherheit (`sure`) ist Teil der Antwort, FSRS rechnet ohne sie.** Scheinwissen
+  zieht nur die Fälligkeit in `dueCards` vor; `lib/theory/fsrs.ts` bleibt unberührt.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.

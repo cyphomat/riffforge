@@ -115,8 +115,23 @@ export const theoryAnswerSchema = z.object({
   grade: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
   /** Ob die Antwort sachlich stimmte. Die Note sagt, wie mühsam es war. */
   correct: z.boolean(),
+  /**
+   * Wie sicher man sich *vor* der Auflösung war. Fehlt bei älteren Antworten,
+   * beim Griffbrett-Trainer und bei gespielten Fragen — dort wusste die App
+   * nichts über die Selbsteinschätzung, und das ist etwas anderes als "geraten".
+   */
+  sure: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
   at: z.string(),
 })
+
+/** 1 geraten · 2 ziemlich sicher · 3 sicher. */
+export type Sicherheit = 1 | 2 | 3
+
+export const SICHERHEITEN: { value: Sicherheit; label: string }[] = [
+  { value: 1, label: "Geraten" },
+  { value: 2, label: "Ziemlich sicher" },
+  { value: 3, label: "Sicher" },
+]
 
 export type TheoryAnswer = z.infer<typeof theoryAnswerSchema>
 

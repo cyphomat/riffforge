@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest"
-import { answersFor, cardStates, dueCards, pickCards, theorieStand } from "@/lib/theory/progress"
-import type { TheoryAnswer, TheoryCard, TheoryLog } from "@/lib/theory/types"
+import {
+  answersFor,
+  cardStates,
+  dueCards,
+  istScheinwissen,
+  kalibrierung,
+  pickCards,
+  scheinwissenKarten,
+  theorieStand,
+} from "@/lib/theory/progress"
+import { theoryLogSchema, type Sicherheit, type TheoryAnswer, type TheoryCard, type TheoryLog } from "@/lib/theory/types"
 import type { Grade } from "@/lib/theory/fsrs"
 
 function karte(id: string, extra: Partial<TheoryCard> = {}): TheoryCard {
@@ -16,6 +25,10 @@ function karte(id: string, extra: Partial<TheoryCard> = {}): TheoryCard {
 
 function antwort(cardId: string, grade: Grade, at: string, correct = grade > 1): TheoryAnswer {
   return { cardId, grade, at, correct }
+}
+
+function sicher(cardId: string, sure: Sicherheit, correct: boolean, at: string): TheoryAnswer {
+  return { cardId, grade: correct ? 3 : 1, correct, sure, at }
 }
 
 function log(...answers: TheoryAnswer[]): TheoryLog {
@@ -195,5 +208,125 @@ describe("answersFor", () => {
       "2026-09-02T10:00:00Z",
       "2026-09-05T10:00:00Z",
     ])
+  })
+})
+
+describe("Scheinwissen", () => {
+  const karten = [karte("a"), karte("b"), karte("c")]
+  const jetzt = JETZT.toISOString()
+
+  it("ist nur 'sicher und falsch'", () => {
+    expect(istScheinwissen(sicher("a", 3, false, jetzt))).toBe(true)
+    expect(istScheinwissen(sicher("a", 3, true, jetzt))).toBe(false)
+    expect(istScheinwissen(sicher("a", 2, false, jetzt))).toBe(false)
+    expect(istScheinwissen(sicher("a", 1, false, jetzt))).toBe(false)
+    // Ohne Angabe wusste die App nichts über die Sicherheit.
+    expect(istScheinwissen(antwort("a", 1, jetzt))).toBe(false)
+  })
+
+  it("holt die Karte sofort zurück, obwohl FSRS sie auf später gelegt hat", () => {
+    const ohne = dueCards(karten, log(sicher("a", 2, false, jetzt)), JETZT)
+    expect(ohne.some((eintrag) => eintrag.card.id === "a")).toBe(false)
+
+    const mit = dueCards(karten, log(sicher("a", 3, false, jetzt)), JETZT)
+    expect(mit[0].card.id).toBe("a")
+    expect(mit[0].state).not.toBeNull()
+  })
+
+  it("steht vor dem, was FSRS ohnehin fällig hält", () => {
+    const faellig = dueCards(
+      karten,
+      log(antwort("b", 3, "2026-08-01T10:00:00Z"), sicher("a", 3, false, jetzt)),
+      JETZT,
+    )
+    expect(faellig.map((eintrag) => eintrag.card.id).slice(0, 2)).toEqual(["a", "b"])
+  })
+
+  it("endet mit der nächsten Antwort", () => {
+    const danach = log(
+      sicher("a", 3, false, "2026-09-10T11:00:00Z"),
+      sicher("a", 3, true, "2026-09-10T11:30:00Z"),
+    )
+    expect(dueCards(karten, danach, JETZT).some((eintrag) => eintrag.card.id === "a")).toBe(false)
+  })
+
+  it("zählt die letzte Antwort nach Zeit, nicht nach Listenreihenfolge", () => {
+    // Nach einem Abgleich liegen die Einträge durcheinander.
+    const gemischt = log(
+      sicher("a", 3, true, "2026-09-10T11:30:00Z"),
+      sicher("a", 3, false, "2026-09-10T11:00:00Z"),
+    )
+    expect(scheinwissenKarten(karten, gemischt)).toHaveLength(0)
+  })
+
+  it("kommt über pickCards noch in derselben Session wieder", () => {
+    const gewaehlt = pickCards(karten, log(sicher("b", 3, false, jetzt)), 2, { now: JETZT })
+    expect(gewaehlt[0].id).toBe("b")
+  })
+
+  it("zählt Karten, nicht Antworten", () => {
+    const stand = log(
+      sicher("a", 3, false, "2026-09-10T10:00:00Z"),
+      sicher("a", 3, false, "2026-09-10T11:00:00Z"),
+      sicher("b", 3, false, "2026-09-10T11:00:00Z"),
+    )
+    expect(scheinwissenKarten(karten, stand).map((k) => k.id).sort()).toEqual(["a", "b"])
+  })
+
+  it("lässt die FSRS-Rechnung unberührt", () => {
+    const mit = cardStates(log(sicher("a", 3, false, jetzt)))
+    const ohne = cardStates(log(sicher("a", 2, false, jetzt)))
+    expect(mit.get("a")).toEqual(ohne.get("a"))
+  })
+})
+
+describe("kalibrierung", () => {
+  const t = "2026-09-10T10:00:00Z"
+
+  it("ist ohne Antworten überall null", () => {
+    expect(kalibrierung(log())).toEqual({
+      1: { n: 0, richtig: 0 },
+      2: { n: 0, richtig: 0 },
+      3: { n: 0, richtig: 0 },
+    })
+  })
+
+  it("zählt je Stufe, wie oft es stimmte", () => {
+    const k = kalibrierung(
+      log(
+        sicher("a", 3, true, t),
+        sicher("b", 3, true, t),
+        sicher("c", 3, false, t),
+        sicher("d", 1, false, t),
+        sicher("e", 2, true, t),
+      ),
+    )
+    expect(k[3]).toEqual({ n: 3, richtig: 2 })
+    expect(k[2]).toEqual({ n: 1, richtig: 1 })
+    expect(k[1]).toEqual({ n: 1, richtig: 0 })
+  })
+
+  it("lässt Antworten ohne Angabe und den Griffbrett-Trainer draussen", () => {
+    const k = kalibrierung(
+      log(antwort("a", 3, t), { ...sicher("hals-finden-1-3", 3, true, t) }, sicher("b", 3, true, t)),
+    )
+    expect(k[3]).toEqual({ n: 1, richtig: 1 })
+  })
+})
+
+describe("Antwort mit Sicherheit", () => {
+  const roh = { cardId: "a", grade: 3, correct: true, at: "2026-09-10T10:00:00Z" }
+
+  it("nimmt alte Logs ohne die Angabe an", () => {
+    expect(theoryLogSchema.safeParse({ version: 1, answers: [roh] }).success).toBe(true)
+  })
+
+  it("behält die Angabe", () => {
+    const geparst = theoryLogSchema.parse({ version: 1, answers: [{ ...roh, sure: 3 }] })
+    expect(geparst.answers[0].sure).toBe(3)
+  })
+
+  it("weist eine Stufe ausserhalb von 1 bis 3 ab", () => {
+    expect(theoryLogSchema.safeParse({ version: 1, answers: [{ ...roh, sure: 4 }] }).success).toBe(false)
   })
 })

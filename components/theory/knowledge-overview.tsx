@@ -6,8 +6,16 @@ import { MdCheck } from "react-icons/md"
 import { QuizCard } from "@/components/theory/quiz-card"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import { type Grade } from "@/lib/theory/fsrs"
-import { cardStates, dueCards, SITZT_AB_TAGEN, theorieStand } from "@/lib/theory/progress"
-import { STUFEN, type TheoryCard, type TheoryLog } from "@/lib/theory/types"
+import {
+  cardStates,
+  dueCards,
+  KALIBRIERUNG_AB,
+  kalibrierung,
+  scheinwissenKarten,
+  SITZT_AB_TAGEN,
+  theorieStand,
+} from "@/lib/theory/progress"
+import { SICHERHEITEN, STUFEN, type Sicherheit, type TheoryCard, type TheoryLog } from "@/lib/theory/types"
 import { EMPTY_THEORY_LOG } from "@/lib/theory/types"
 import { appendAnswers, loadTheoryLog } from "@/lib/storage/theory-log"
 
@@ -39,6 +47,9 @@ export function KnowledgeOverview() {
   const stand = theorieStand(THEORY_CARDS, log)
   const faellig = dueCards(THEORY_CARDS, log)
   const zustaende = cardStates(log)
+  const treffer = kalibrierung(log)
+  const schein = scheinwissenKarten(THEORY_CARDS, log)
+  const eingeschaetzt = SICHERHEITEN.reduce((summe, stufe) => summe + treffer[stufe.value].n, 0)
 
   const starten = () => {
     setRunde(dueCards(THEORY_CARDS, loadTheoryLog()).slice(0, RUNDE).map((eintrag) => eintrag.card))
@@ -46,13 +57,13 @@ export function KnowledgeOverview() {
     setFertig(0)
   }
 
-  const beantworten = (grade: Grade, correct: boolean) => {
+  const beantworten = (grade: Grade, correct: boolean, sure?: Sicherheit) => {
     if (!runde) return
     // Sofort schreiben, nicht erst am Ende: wer die Seite mitten in der Runde
     // verlässt, soll die Antworten trotzdem behalten.
     setLog(
       appendAnswers([
-        { cardId: runde[index].id, grade, correct, at: new Date().toISOString() },
+        { cardId: runde[index].id, grade, correct, ...(sure && { sure }), at: new Date().toISOString() },
       ]),
     )
     setFertig((zahl) => zahl + 1)
@@ -133,6 +144,32 @@ export function KnowledgeOverview() {
             />
           </div>
         </section>
+
+        {eingeschaetzt > 0 && (
+          <section>
+            <h2 className="rule mb-3 mt-8">Einschätzung</h2>
+            {/* Wie oft es stimmte, wenn du es vorher sagtest. Unter fünf
+                Antworten je Stufe ist eine Prozentzahl Zufall, also keine. */}
+            <div className="grid grid-cols-3 gap-[9px]">
+              {SICHERHEITEN.map((stufe) => {
+                const { n, richtig } = treffer[stufe.value]
+                return (
+                  <Stat
+                    key={stufe.value}
+                    label={stufe.label}
+                    value={n >= KALIBRIERUNG_AB ? `${Math.round((richtig / n) * 100)}%` : "—"}
+                    sub={`${richtig} von ${n}`}
+                  />
+                )
+              })}
+            </div>
+            <p className="mt-3 text-[13px] leading-relaxed text-dim">
+              {schein.length > 0
+                ? `${schein.length} ${schein.length === 1 ? "Karte" : "Karten"}: sicher gewesen und danebengelegen. ${schein.length === 1 ? "Sie kommt" : "Sie kommen"} als Erstes wieder.`
+                : "Bei „sicher“ sollte es fast immer stimmen. Weicht es ab, überschätzt du dich."}
+            </p>
+          </section>
+        )}
       </div>
 
       <div className="spalte">

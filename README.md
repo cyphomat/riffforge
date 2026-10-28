@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1270%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1286%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -445,6 +445,9 @@ Jeder mit zwei, drei Sätzen und einer Frage:
   drei Zahlen je Karte statt einer Faustregel. Portiert aus der
   Referenzimplementierung und gegen 76 ihrer Ergebnisse geprüft, nicht
   nachempfunden.
+- **Vor dem Auflösen sagst du, wie sicher du bist** — geraten, ziemlich sicher,
+  sicher. Wer „sicher“ war und danebenlag, sieht die Karte gleich wieder; unter
+  *Wissen* steht, wie oft deine Einschätzung stimmte. FSRS bekommt davon nichts mit.
 - **Der Kartenstand wird abgespielt, nicht gespeichert.** Antworten sind
   unveränderlich; zwei Geräte verschmelzen ihre Antworten und kommen von selbst
   auf denselben Stand.

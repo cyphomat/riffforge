@@ -107,6 +107,26 @@
   Sechzehntel: eine Synkope trifft drei der vier Anschläge und hat keinen zu
   viel. Die Figur steht in `rhythm.ts`, eine Karte dazu hat der Katalogtest
   beim ersten Lauf abgewiesen.
+- **Die Sicherheit wird vor dem Auflösen gefragt, und FSRS erfährt nichts davon.**
+  Die drei Knöpfe *Geraten / Ziemlich sicher / Sicher* ersetzen das einzelne
+  *Auflösen*: derselbe Tap, nur mit einer Antwort. Nach dem Auflösen gefragt
+  wüsste jeder, dass er es gewusst hat; das "Wie lief's?" danach misst die
+  Mühe, nicht die Selbsteinschätzung. Die Stufe steht als optionales `sure` in
+  der Antwort (1 bis 3, fehlt bei älteren Antworten, im Griffbrett-Trainer und
+  bei gespielten Fragen — "keine Angabe" ist etwas anderes als "geraten").
+  *Scheinwissen* ist eine Karte, deren letzte Antwort "sicher und falsch" war
+  (`istScheinwissen`, nach Zeit gezählt, nicht nach Listenreihenfolge). Sie gilt
+  in `dueCards` als sofort fällig und steht vor allem anderen, auch wenn FSRS
+  sie auf später gelegt hat — und kommt deshalb noch in der zweiten Portion
+  derselben Session wieder. Die FSRS-Rechnung bleibt unberührt, ihr Port hängt
+  an den Prüfwerten der Referenz; die Sonderregel sitzt davor, nicht darin. Die
+  Kalibrierung (`kalibrierung`, unter *Wissen* als "Einschätzung") zeigt je
+  Stufe die Trefferquote, erst ab fünf Antworten (`KALIBRIERUNG_AB`) — darunter
+  wäre eine Prozentzahl Zufall. Der Griffbrett-Trainer bleibt wie überall
+  ausserhalb. Bekannte Grenze: ein Gerät mit älterer Version verwirft das
+  Feld `sure`, wenn es den Log neu schreibt (das Zod-Objekt kennt es nicht);
+  der Lernstand bleibt dabei erhalten, nur Einschätzung und Scheinwissen dieser
+  Antworten gehen verloren.
 - **Die Karten werden erst an der Stelle gewählt**, nicht beim Bauen des
   Plans. Sonst käme in der zweiten Portion wieder, was in der ersten schon
   beantwortet wurde.
