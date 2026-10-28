@@ -365,3 +365,50 @@ describe("Tourshirts", () => {
     expect(tour.termine.map((t) => t.tag)).toEqual(tour.gigs)
   })
 })
+
+describe("Aufnäher der Anlässe", () => {
+  // Ein Anlass-Aufnäher steht erst da, wenn er verdient ist: Weihnachten und
+  // zwei Gedenktage als leere Umrisse wären genau der Schmuck, den die App
+  // sonst vermeidet — und eine Lücke, die es nur zwei Mal im Jahr zu füllen gibt.
+  const anlass = (liste: ReturnType<typeof aufnaeher>) => liste.filter((a) => a.reihe === "anlaesse")
+
+  it("gibt es ohne Treffer nicht, auch nicht als Umriss", () => {
+    const liste = aufnaeher(log(r("2026-10-28")))
+    expect(anlass(liste)).toEqual([])
+    expect(kutte(liste).naechste.filter((a) => a.reihe === "anlaesse")).toEqual([])
+    expect(katalog({ mitSieben: true }).filter((a) => a.reihe === "anlaesse")).toEqual([])
+  })
+
+  it("Weihnachten: eine Session zwischen dem 1. und 26.12., der erste Tag zählt", () => {
+    expect(verdient(aufnaeher(log(r("2026-11-30"), r("2026-12-27"))), "anlass-weihnachten")).toBeUndefined()
+    expect(verdient(aufnaeher(log(r("2026-12-05"), r("2026-12-24"))), "anlass-weihnachten")).toBe("2026-12-05")
+  })
+
+  it("Gedenktage: nur an dem einen Tag", () => {
+    expect(verdient(aufnaeher(log(r("2026-07-21"), r("2026-07-23"))), "anlass-ozzy")).toBeUndefined()
+    expect(verdient(aufnaeher(log(r("2026-07-22"))), "anlass-ozzy")).toBe("2026-07-22")
+    expect(verdient(aufnaeher(log(r("2026-12-28"))), "anlass-lemmy")).toBe("2026-12-28")
+  })
+
+  it("liegt in der Reihe Anlässe, mit eigener Leiter je Anlass, und bleibt an der Kutte", () => {
+    const liste = aufnaeher(log(r("2026-12-05")))
+    const [w] = anlass(liste)
+    expect(w).toMatchObject({ id: "anlass-weihnachten", reihe: "anlaesse", gruppe: "anlass-weihnachten" })
+    expect(kutte(liste).verdient.map((a) => a.id)).toContain("anlass-weihnachten")
+  })
+
+  it("wird nur einmal gefeiert, auch im nächsten Jahr nicht noch einmal", () => {
+    const vorher = aufnaeher(log(r("2026-12-05")))
+    const nachher = aufnaeher(log(r("2026-12-05"), r("2027-12-05")))
+    expect(verdient(nachher, "anlass-weihnachten")).toBe("2026-12-05")
+    expect(neueAufnaeher(vorher, nachher).map((a) => a.id)).not.toContain("anlass-weihnachten")
+  })
+
+  it("belohnt keine Menge und sagt es auch nicht", () => {
+    const liste = aufnaeher(log(r("2026-12-05"), r("2026-07-22"), r("2026-12-28")))
+    expect(anlass(liste)).toHaveLength(3)
+    for (const a of anlass(liste)) {
+      expect(`${a.titel} ${a.text}`, a.id).not.toMatch(/Minute|Stunde|Blöcke am Stück|Sessions am Tag/)
+    }
+  })
+})

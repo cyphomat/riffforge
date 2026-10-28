@@ -72,6 +72,11 @@
   stehen in Edding, und der Strich durch Gespieltes ist dünn und in
   `--tinte-blass`: in derselben Tinte lag er genau auf den Querbalken der
   Versalien und deckte das Wort zu.
+- **Unter der Ansage kann ein Anlass-Streifen stehen.** `AnlassBanner` liest
+  Datum und Gerätespeicher erst nach dem ersten Anstrich (der statische Export
+  kennt beim Bauen keins von beiden) und zeigt höchstens einen Anlass
+  (`fuer`: Gedenktag vor Einzeltag vor Phase). `?anlass=weihnachten` zeigt ihn zur
+  Probe und speichert nichts. Grenzen und Begründung: `docs/design-und-themes.md`.
 - **Die Ansage behauptet nichts.** Jede Zeile in `briefing.ts` muss aus dem Log
   ableitbar sein, sonst gehört sie da nicht hin.
 - **Tempo ist ein Anteil des Ziels.** `nextBpm` bewegt sich um Prozent von

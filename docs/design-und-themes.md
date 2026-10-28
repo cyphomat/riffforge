@@ -82,6 +82,18 @@
   `.warnstreifen` markiert **nur verletzte Bedingungen** — Mikrofon
   verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie einen Fehler
   und nie Schmuck.
+- **Der Anlass-Banner ist der eine Schmuck, und er hat Grenzen.** Riffforge
+  verzichtet auf Pixelfeuer, Ansager und HUD; Weihnachten bekommt trotzdem
+  einen Streifen, weil er genau zwei Dinge leistet, die sonst nichts leistet:
+  er sagt dem Nutzer, dass die App den Kalender kennt, und er kostet nichts.
+  Deshalb gilt: nur auf *Heute*, direkt unter der Ansage, **nie in der Session**;
+  ein Motiv von 15 × 15 Pixeln, ganzzahlig dreifach, **ohne Animation**; kein
+  `.winkel`, kein `.jewel`, keine Akzentfarbe — Linie, Motiv, ein Satz, ✕ für den
+  Tag; ein Gedenktag lässt auch die Linie weg. Rund vierzig Tage im Jahr
+  (Weihnachten 1.–26.12., dazu Lemmy und Ozzy), ein Schalter unter *Daten*.
+  Nur öffentliche Anlässe, nie etwas Persönliches: Riffforge hat keine Daten,
+  aus denen Geburtstage oder Konzerte folgten. Wer einen Anlass oder ein Motiv
+  hinzufügt, bleibt in dieser Hülle; was mehr will, gehört nicht hierher.
 - **Der Taktzähler ist eine Spielhilfe, kein Bedienelement.** Er stand als
   vier Quadrate von zehn Pixeln in der Knopfreihe — genug zum Ablesen, aber
   unbrauchbar für den, der das Gerät auf dem Notenständer hat: im Augenwinkel

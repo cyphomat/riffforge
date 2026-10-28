@@ -7,6 +7,7 @@ import { newCard, review, type CardState } from "@/lib/theory/fsrs"
 import { HALS_PREFIX, istHalsAntwort } from "@/lib/theory/hals-id"
 import { HALS_STELLEN } from "@/lib/theory/hals-trainer"
 import { SITZT_AB_TAGEN } from "@/lib/theory/progress"
+import { STANDARD as ANLAESSE, trifft } from "./anlaesse"
 import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 
 /**
@@ -31,7 +32,7 @@ import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 /** Ein Tag als `YYYY-MM-DD`, lokal. */
 type Tag = string
 
-export type Reihe = "buehne" | "handwerk" | "technik" | "lead" | "sieben" | "wissen" | "hals"
+export type Reihe = "buehne" | "handwerk" | "technik" | "lead" | "sieben" | "wissen" | "hals" | "anlaesse"
 
 export const REIHEN: Array<{ id: Reihe; titel: string }> = [
   { id: "buehne", titel: "Bühne" },
@@ -41,6 +42,7 @@ export const REIHEN: Array<{ id: Reihe; titel: string }> = [
   { id: "sieben", titel: "Sieben Saiten" },
   { id: "wissen", titel: "Wissen" },
   { id: "hals", titel: "Griffbrett" },
+  { id: "anlaesse", titel: "Anlässe" },
 ]
 
 export interface Aufnaeher {
@@ -168,9 +170,18 @@ function wochenLaeufe(tage: Tag[]): Array<{ tag: Tag; laenge: number }> {
  * Welche Aufnäher es auf diesem Gerät überhaupt gibt.
  *
  * Die Sieben-Saiter-Reihe erscheint erst, wenn je auf sieben Saiten geübt
- * wurde. Wer keine hat, soll sie nicht als Lücke auf der Kutte sehen.
+ * wurde. Wer keine hat, soll sie nicht als Lücke auf der Kutte sehen. Mit den
+ * Aufnähern der Anlässe ist es genauso: Sie stehen nur da, wenn sie verdient
+ * sind (`anlaesse` nennt deren Kennungen) — Weihnachten und zwei Gedenktage
+ * als leere Umrisse wären Schmuck und eine Lücke, die sich nur selten füllt.
  */
-export function katalog({ mitSieben }: { mitSieben: boolean }): Omit<Aufnaeher, "verdient">[] {
+export function katalog({
+  mitSieben,
+  anlaesse = [],
+}: {
+  mitSieben: boolean
+  anlaesse?: string[]
+}): Omit<Aufnaeher, "verdient">[] {
   const out: Omit<Aufnaeher, "verdient">[] = []
   const p = (id: string, reihe: Reihe, gruppe: string, titel: string, text: string) =>
     out.push({ id, reihe, gruppe, titel, text })
@@ -263,6 +274,10 @@ export function katalog({ mitSieben }: { mitSieben: boolean }): Omit<Aufnaeher, 
     "In- und auswendig",
     `Alle ${HALS_STELLEN.length} Stellen in beiden Richtungen: finden und benennen.`,
   )
+
+  for (const a of ANLAESSE) {
+    if (a.patch && anlaesse.includes(a.id)) p(`anlass-${a.id}`, "anlaesse", `anlass-${a.id}`, a.patch.titel, a.patch.text)
+  }
   return out
 }
 
@@ -282,7 +297,13 @@ export function aufnaeher(
   karten: TheoryCard[] = [],
 ): Aufnaeher[] {
   const ergebnisse = chronologisch(log)
-  const kat = katalog({ mitSieben: ergebnisse.some(istSieben) })
+  // Der erste Tag, an dem geübt wurde und ein Anlass galt. Gerechnet über
+  // `trifft`, nicht über den Rang: an einem Tag mit zwei Anlässen zählen beide.
+  const anlassTage: Record<string, Tag> = {}
+  for (const tag of [...new Set(ergebnisse.map(tagVon))].sort()) {
+    for (const a of ANLAESSE) if (a.patch && !anlassTage[a.id] && trifft(a, tag)) anlassTage[a.id] = tag
+  }
+  const kat = katalog({ mitSieben: ergebnisse.some(istSieben), anlaesse: Object.keys(anlassTage) })
   const gibt = new Set(kat.map((k) => k.id))
   const verdient: Record<string, Tag> = {}
   const setze = (id: string, tag: Tag) => {
@@ -301,6 +322,8 @@ export function aufnaeher(
     const pause = (Date.parse(`${tag}T12:00:00`) - Date.parse(`${tage[i - 1]}T12:00:00`)) / 86_400_000
     if (pause >= COMEBACK_PAUSE_TAGE) setze("comeback", tag)
   })
+
+  for (const [id, tag] of Object.entries(anlassTage)) setze(`anlass-${id}`, tag)
 
   // ── Handwerk: sauber, gemessen, im Zieltempo
   const jeTag = new Map<Tag, DrillResult[]>()

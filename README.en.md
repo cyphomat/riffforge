@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1319%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1363%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -85,6 +85,13 @@ road case in grey instead of black. Under *Daten → Darstellung* you pick
 belongs to this browser only and is applied before the first paint, so
 nothing flashes. The contrast test checks both versions — amber is much
 darker in the light one, otherwise it could not carry text on a light ground.
+
+**A strip at Christmas.** From 1 to 26 December, *Heute* shows a small strip
+under the daily call with a pixel Christmas tree and one line; on the days
+Lemmy and Ozzy died, a plain candle. No motion, never inside a session, with
+a ✕ for the day. *Daten → Saisonales* turns it off entirely. It is the only
+decoration in the app and therefore has tight limits
+(`docs/design-und-themes.md`).
 
 ---
 
@@ -361,6 +368,7 @@ imports their data gets the same vest back. Reached through the rank line on
   | Seven strings | *The Seventh* · *Low End* — only visible once you have practised on seven strings |
   | Knowledge | 10 to 100 cards that hold for a week · *Sense of time*: the first played question answered right |
   | Fretboard | 12, 36 and all 72 places that hold for a week when finding · *In- und auswendig*: all 72 when naming too |
+  | Occasions | *Weihnachtsgig*, *Lemmy*, *Ozzy*: practised on a day of the occasion — only visible once earned, never as an outline |
 
 - **Tour shirts** — every quarter with practice is a tour with a fixed name,
   and each hangs at the stand as a big pixel shirt. The colour comes from the

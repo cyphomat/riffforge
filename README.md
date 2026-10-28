@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1319%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1363%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -79,6 +79,12 @@ Road-Case in Grau statt Schwarz. Unter *Daten → Darstellung* stehen
 für diesen Browser und wird vor dem ersten Anstrich gesetzt, damit nichts
 aufblitzt. Der Kontrasttest rechnet beide Fassungen nach — Bernstein ist im
 Hellen deutlich dunkler, sonst trüge es auf hellem Grund keinen Text.
+
+**Ein Streifen zu Weihnachten.** Vom 1. bis 26.12. steht auf *Heute* unter der
+Ansage ein kleiner Streifen mit Pixel-Tannenbaum und einem Satz; an Lemmys und
+Ozzys Todestag eine schlichte Kerze. Ohne Bewegung, nie in der Session, mit ✕
+für den Tag. Unter *Daten → Saisonales* geht er ganz aus. Das ist der einzige
+Schmuck der App und hat deshalb enge Grenzen (`docs/design-und-themes.md`).
 
 ---
 
@@ -360,6 +366,7 @@ Stand einliest, hat danach dieselbe Kutte. Erreichbar über die Rang-Zeile auf
   | Sieben Saiten | *Die Siebte* · *Low End* — nur sichtbar, wenn je auf sieben Saiten geübt wurde |
   | Wissen | 10 bis 100 Karten, die eine Woche halten · *Taktgefühl*: die erste gespielte Frage richtig |
   | Griffbrett | 12, 36 und alle 72 Stellen, die beim Finden eine Woche halten · *In- und auswendig*: alle 72 auch beim Benennen |
+  | Anlässe | *Weihnachtsgig*, *Lemmy*, *Ozzy*: an einem Tag des Anlasses geübt — nur sichtbar, wenn verdient, nie als Umriss |
 
 - **Tourshirts** — jedes Quartal mit Übung ist eine Tour mit festem Namen,
   und jede hängt als grosses Pixel-Shirt am Stand. Die Farbe kommt vom ersten
