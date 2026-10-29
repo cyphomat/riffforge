@@ -83,7 +83,8 @@
   verweigert, Fassung zurückgerollt, Abgleich gescheitert —, nie einen Fehler
   und nie Schmuck.
 - **Der Anlass-Banner ist der eine Schmuck, und er hat Grenzen.** Riffforge
-  verzichtet auf Pixelfeuer, Ansager und HUD; Weihnachten bekommt trotzdem
+  verzichtete bis Oktober auf Pixelfeuer, Ansager und HUD (das Pixelfeuer steht
+  seitdem auf *Heute*, siehe *Pixel-Metal*); Weihnachten bekommt trotzdem
   einen Streifen, weil er genau zwei Dinge leistet, die sonst nichts leistet:
   er sagt dem Nutzer, dass die App den Kalender kennt, und er kostet nichts.
   Deshalb gilt: nur auf *Heute*, direkt unter der Ansage, **nie in der Session**;
@@ -134,6 +135,48 @@
   Hand umgestellt, Seite für Seite pixelgleich gegen den Stand davor
   verglichen. Tailwind 4 verlangt Safari 16.4 — die Untergrenze für iOS steht
   in beiden READMEs.
+- **Pixel-Metal: die App sieht aus wie das, was man darin übt.** Daniels Urteil
+  im Vergleich mit Roadie und Setlist: etwas öde, „dabei kann das Ding ja Metal
+  leben" — und das Plektrum-Zeichen „sieht eher aus wie ein Herz". Seitdem:
+  - **Das Zeichen ist ein Totenkopf**, 20 × 20 mit glühenden Augen
+    (`assets/logo/totenkopf.txt`, Begründung in `marke-und-merch.md`).
+  - **Zwei Pixelschriften, jede für ihren Zweck.** *Jacquard 24* ist
+    Pixel-Blackletter (`.metal`) und trägt den Namen in der Navigation und das
+    Wort des Tages: nur gross (ab 24 px, scharf bei 24/48/72), gemischt gesetzt
+    — Fraktur-Versalien liest niemand —, mit hartem Schatten in `--lippe`.
+    *Jersey 10* ist `--font-display` und ersetzt Oswald für Titel, Tempi und
+    Zähler. Pixelify Sans war die erste Wahl und ist an den **Ziffern**
+    gescheitert: die 5 liest sich als S, die 8 als 6 mit Loch, und das bei einem
+    Tempo. Jersey ist für Trikotnummern gezeichnet und schmal wie Oswald, also
+    läuft kein Titel auf 320 px über. Oswald bleibt Rückfall und trägt den Druck
+    der Shirts; kleine Schrift (Etiketten, Fliesstext) bleibt Monospace und
+    System — Pixelschrift unter 16 px franst aus.
+  - **Kanten sind Treppen.** `--pix-line`, `--pix-akzent`, `--pix-stahl` sind vier
+    Balken, die um 2 px versetzt hinter dem Element liegen: die Ecken bleiben
+    leer, ohne Bild und ohne `clip-path` — ein Clip schneidet den Fokusring ab,
+    und der wäre dann nicht mehr da. `.btn` sitzt auf einer Lippe (`--lippe`,
+    6 px) und sinkt beim Drücken um 4; `.card` hat einen harten Sockelschatten.
+    Das gilt für Karte, Knopf, Platte, die drei Zahlen und die Navigations-Tabs.
+    Einfache Listenzeilen behalten ihre Linie von 1 px: ein Treppenrahmen an
+    jeder Zeile wäre Gitter.
+  - **Zacken und Schädel sind Masken** (`--glyph-zacke`, `--glyph-schaedel`), kein
+    Bild: die Farbe kommt vom Element und folgt damit der Fassung und dem
+    Kontrast. `.zacken` sitzt unter der Navigation, `.rule::before` setzt einen
+    Schädel vor jede Überschrift, und die Linie dahinter ist gestrichelt statt
+    verlaufend.
+  - **Das Pixelfeuer** (Algorithmus aus Setlist) steigt aus der oberen Kante des
+    Plakats auf *Heute*. Die Höhe folgt dem Ton: *Hart* 14 Reihen, *Solide* 10,
+    *Technik* 8, *Start* 6, *Pause* 4 — ein harter Tag lodert, nach einer Pause
+    glimmt es. Die Kühlung muss mit der Höhe skalieren (`80 / Reihen`): Setlists
+    Wert ist für 34 Reihen gestimmt, und bei 14 stand oben eine gelbe Wand. Der
+    Platz dafür ist ein Platzhalter vor dem Plakat, weil `.spalte > :first-child`
+    dem ersten Kind den Aussenabstand nimmt.
+  - **Was bleibt.** Der Grund ist matt (siehe oben); die Session hat weder Feuer
+    noch Animation, denn dort sind die Hände beschäftigt; der Kontrasttest und
+    die 16 px der Eingabefelder gelten unverändert; Ansager, Konsole und
+    Endgegner sind weiter nicht übernommen. Wer ein weiteres Pixelstück
+    hinzufügt, prüft es zuerst auf der Session und hinter einer Liste — dort ist
+    der Hals-Hintergrund gescheitert.
 - **Rost ist „nicht ganz", Rot ist „kaputt".** `--rost` trägt die zähe
   Bewertung, die überfällige Karte, die fehlende Bedingung. Bleibt Rot dafür
   frei, heisst Rot wirklich noch etwas.

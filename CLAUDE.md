@@ -71,10 +71,13 @@ Komponente.
 - **Ein AudioContext für alles.** Metronom und Mikrofon müssen auf derselben
   Uhr liegen, sonst ist jede Timing-Messung Rauschen. Nie einen zweiten anlegen.
 - **Theorie gehört an den Drill** (`why`-Feld), nicht in einen eigenen Bereich.
-- **Die Design-Sprache kommt aus Setlist.** Matte Flächen, Bernstein nur auf
-  dem, was zählt, Stahlblau für alles Zweitrangige, harte Kanten mit 2 px.
-  Farben stehen als CSS-Variablen in `app/globals.css`, nicht als Hex-Werte in
-  Komponenten. Road-Case, kein HUD.
+- **Die Design-Sprache kommt aus Setlist, und sie ist Pixel-Metal.** Matte
+  Flächen, Bernstein nur auf dem, was zählt, Stahlblau für alles Zweitrangige.
+  Kanten sind Treppen aus 2 px (`--pix-*`), Titel und Zahlen stehen in Jersey,
+  nur der Name und das Wort des Tages in Pixel-Blackletter, das Zeichen ist ein
+  Totenkopf. Farben stehen als CSS-Variablen in `app/globals.css`, nicht als
+  Hex-Werte in Komponenten. Der Grund bleibt matt, die Session bleibt ruhig —
+  Grenzen und Gründe in `docs/design-und-themes.md`.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut
   verschmelzen, noch einmal schreiben — und dann aufhören. Genau ein zweiter
   Versuch, sonst hängt es.
@@ -86,10 +89,15 @@ Komponente.
 - **Szenario-Karten (`lib/theory/szenarien.ts`) liegen nicht in `THEORY_CARDS`.**
   Nur die Transfer-Runde fragt sie; neue Karten bekommen ihre Nachrechnung in
   `szenarien.test.ts` und die richtige Antwort nicht immer an dieselbe Stelle.
-- **Der Anlass-Banner (`lib/session/anlaesse.ts`) ist der eine Schmuck.** Nur auf
+- **Der Anlass-Banner (`lib/session/anlaesse.ts`) ist der leise Schmuck.** Nur auf
   *Heute* unter der Ansage, nie in der Session, ohne Animation, ohne Winkel und
   Akzent; Aufnäher dazu stehen erst verdient an der Kutte. Die Datumsregeln gibt
   es zweimal (Setlist, hier) mit denselben Testfällen.
+- **Pixelfeuer gibt es nur auf *Heute*** (`components/ui/pixel-feuer.tsx`, die
+  Rechnung in `lib/ui/feuer.ts`). Die Höhe folgt dem Ton des Tages; nie in der
+  Session, nie bei „Bewegung reduzieren", und es hält an, solange die Seite
+  verborgen ist. Zahlen stehen in Jersey: Pixelify Sans war die erste Wahl, und
+  dort liest sich die 5 als S.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.
@@ -155,7 +163,7 @@ Die langen Begründungen und Entstehungsgeschichten liegen in `docs/`. Nicht vor
 
 - `docs/architektur.md` — jede Datei und ihre Rolle. Lies, wenn du eine Datei suchst oder eine neue anlegst.
 - `docs/design-und-themes.md` — Farben und Farbsemantik (Rost/Rot), Kontrast, hell/dunkel, Schriften, Flächen, Metal-Twist-Bauteile, Tailwind 4, Layout ab 900 px. Lies bei CSS, Farben, Schriften, Bauteilen.
-- `docs/marke-und-merch.md` — Plektrum-Zeichen, Wortmarke, Pixelkunst, Merch-Stand, Aufnäher, Tourshirts. Lies bei Logo, Icons, Bildern und allem unter `/merch`.
+- `docs/marke-und-merch.md` — Totenkopf-Zeichen, Wortmarke, Pixelkunst, Merch-Stand, Aufnäher, Tourshirts. Lies bei Logo, Icons, Bildern und allem unter `/merch`.
 - `docs/session-und-bildschirme.md` — Tempo, Profil, Drei-Minuten-Grenze, *Heute* und die Ansage, Kalender, Rückblick mit Pult, Abschluss-Zettel. Lies bei `lib/session/builder.ts`, `progress.ts` und diesen Bildschirmen.
 - `docs/songs-und-notenschrift.md` — Songs mit Lernziel, Raster-Regel, Notensatz, Wiedergabe und Nachklang, Song-Blöcke, Klang prüfen ohne Browser. Lies bei `song*.ts`, `notensatz.ts`, `noten-view.tsx`, `song-ansicht.tsx`.
 - `docs/lead-und-sieben-saiter.md` — Lick-Grammatik, Tabulatur-Umbruch, `/lick`, Sieben-Saiter-Modus. Lies bei `lick.ts`, `lead.ts`, `sieben*`.

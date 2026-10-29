@@ -10,7 +10,7 @@ import { kalenderwoche, wochen, type Woche } from "@/lib/session/rueckblick"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import { SIEBEN_DRILLS } from "@/lib/session/drills-sieben"
-import { briefingFor, TONE_CLASS, TONE_LABEL } from "@/lib/session/briefing"
+import { briefingFor, TONE_CLASS, TONE_LABEL, type BriefingTone } from "@/lib/session/briefing"
 import {
   daysPractisedInLast,
   masteryOf,
@@ -22,6 +22,7 @@ import { loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
 import type { Profile } from "@/lib/session/profile"
 import { AnlassBanner } from "@/components/session/anlass-banner"
+import { PixelFeuer, ZELLE } from "@/components/ui/pixel-feuer"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
@@ -31,6 +32,13 @@ import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type Ses
 import { MdGridOn, MdLinearScale, MdMusicNote, MdTune } from "react-icons/md"
 
 const EXTRA_LENGTHS = [10, 25]
+
+/**
+ * Wie hoch das Feuer über dem Plakat steht — es folgt dem Ton des Tages: an
+ * einem harten Tag lodert es, nach einer Pause glimmt es nur. Gemessen in
+ * Reihen zu je 4 Pixeln (`ZELLE`).
+ */
+const FEUER_REIHEN: Record<BriefingTone, number> = { hart: 14, solide: 10, technik: 8, erste: 6, zurueck: 4 }
 
 const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
 const ART: Record<BlockKind, string> = { warmup: "Aufwärmen", technique: "Technik", riff: "Riff" }
@@ -135,7 +143,17 @@ export function PracticeOverview() {
           der Startknopf in derselben Karte. Vorher stand das Tageswort als
           kleines Etikett da, und was heute gespielt wird, sah man erst nach
           dem Start. */}
-      <section className="card winkel mt-6">
+      {/* Der Platz für die Flammen. Die Regel `.spalte > :first-child` nimmt dem
+          ersten Kind den Aussenabstand, deshalb steht davor ein Platzhalter —
+          und das Plakat bekommt seinen Abstand zurück, solange es brennen darf.
+          Bei „Bewegung reduzieren" fehlt beides, und das Bild ist das alte. */}
+      <div
+        aria-hidden
+        className="hidden motion-safe:block"
+        style={{ height: Math.max(0, FEUER_REIHEN[briefing.tone] * ZELLE - 24) }}
+      />
+      <section className="card winkel motion-safe:mt-6">
+        <PixelFeuer reihen={FEUER_REIHEN[briefing.tone]} />
         <div className="flex items-center gap-3">
           {/* Kontrolllampe in der Farbe des Tonfalls — dieselbe Auskunft wie
               das Wort darunter, nur als Lampe. */}
@@ -145,7 +163,7 @@ export function PracticeOverview() {
             {hasHistory && ` · ${streakWeeks(log)} ${streakWeeks(log) === 1 ? "Woche" : "Wochen"} in Folge`}
           </span>
         </div>
-        <h1 className={`display mt-2 text-[64px] leading-[0.95] sm:text-[72px] ${TONE_CLASS[briefing.tone]}`}>
+        <h1 className={`metal mt-1 text-[72px] sm:text-[96px] ${TONE_CLASS[briefing.tone]}`}>
           {TONE_LABEL[briefing.tone]}
         </h1>
         <p className="mt-2 text-[19px] font-semibold leading-snug text-fg">{briefing.line}</p>

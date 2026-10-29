@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1363%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1368%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -661,7 +661,7 @@ rehearsal room — and goes neither into sync nor into the backup file.
 
 ## Installing it as an app
 
-<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="The app icon: a pick made of pixels"></p>
+<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="The app icon: a skull made of pixels"></p>
 
 **iPhone / iPad** — open it in **Safari** (Chrome on iOS cannot do this),
 Share → *Add to Home Screen*.
@@ -669,7 +669,7 @@ Share → *Add to Home Screen*.
 **Mac** — Safari 17+: *File → Add to Dock*. In Chrome: the icon in the address
 bar → *Install*.
 
-It then starts without browser chrome, has its own icon — the pick, in the
+It then starts without browser chrome, has its own icon — a skull with glowing eyes, in the
 same pixels as the stages and patches — and **works offline** —
 after the first visit everything is cached and a session needs no network.
 
@@ -822,7 +822,7 @@ node tools/shots.mjs
 The sign and the pictures on this page come from pixel grids, without a browser:
 
 ```bash
-node tools/icons.mjs         # public/icons/ from assets/logo/plektrum.txt
+node tools/icons.mjs         # public/icons/ from assets/logo/totenkopf.txt
 node tools/readme-bilder.mjs # banner, rank ladder, vest
 ```
 

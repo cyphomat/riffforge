@@ -81,13 +81,15 @@
 | `lib/session/rueckblick.ts` | Der Rückblick: Wochen, Tempo und Streuung je Drill — aus dem Log |
 | `components/session/rueckblick.tsx` | Säulen und Linien dazu, jede Grafik auch als Tabelle |
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
+| `lib/ui/feuer.ts` | Die Rechnung des Pixelfeuers: Palette, Feld, ein Schritt. Rein, der Zufall kommt von aussen. |
+| `components/ui/pixel-feuer.tsx` | Zeichnet das Feuer auf eine Canvas; nur auf *Heute*, nicht bei „Bewegung reduzieren" |
 | `lib/ui/darstellung.ts` | Hell, dunkel oder Auto: die Regel, und das Skript, das sie vor dem ersten Anstrich setzt |
 | `components/session/darstellung-panel.tsx` | Die Wahl dazu, auf *Daten* |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen, Darstellung, Saisonales |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
-| `assets/logo/plektrum.txt` | Das Zeichen als Pixelraster, 32 × 32. Quelle für alle Icons und den Banner. |
+| `assets/logo/totenkopf.txt` | Das Zeichen (ein Totenkopf) als Pixelraster, 32 × 32. Quelle für alle Icons, `app/icon.svg` und den Banner. |
 | `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |
 | `tools/readme-bilder.mjs` | Banner, Rangleiter und Kutte der READMEs, aus derselben Pixelkunst |
 | `tools/anlaesse.mjs` | Die Anlass-Motive nach `public/bilder/anlass-*.png` und die Aufnäher nach `public/merch/aufnaeher-anlass-*.png` |

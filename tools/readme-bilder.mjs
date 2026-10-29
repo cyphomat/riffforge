@@ -2,7 +2,7 @@
 /**
  * Die Bilder der READMEs, aus derselben Pixelkunst wie die App.
  *
- *   assets/banner.svg          Plektrum, Wortmarke, Bühne — als Rechtecke
+ *   assets/banner.svg          Totenkopf, Wortmarke, Bühne — als Rechtecke
  *   assets/readme/rang-*.png   die Rangszenen, zweifach
  *   assets/readme/kutte.png    alle gezeichneten Aufnäher in einer Reihe
  *
@@ -13,7 +13,7 @@
  *
  * Die Wortmarke ist im Banner Pixelschrift statt Anton: ein SVG im README
  * kann keine Schrift mitbringen, und der Rückfall auf eine Systemschrift
- * passte nicht mehr neben ein Plektrum aus Pixeln. Die Fuge „Riff|forge"
+ * passte nicht mehr neben einen Totenkopf aus Pixeln. Die Fuge „Riff|forge"
  * bekommt dabei ihr Haar Luft wie in der App — hier genau einen Pixel.
  *
  *   node tools/readme-bilder.mjs
@@ -24,7 +24,7 @@ import { fileURLToPath } from "node:url"
 import { bild, einsetzen, malen, pngLesen, pngSchreiben, rasterLesen, setze, svgRechtecke } from "./pixel.mjs"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
-const zeichen = rasterLesen(join(root, "assets/logo/plektrum.txt"))
+const zeichen = rasterLesen(join(root, "assets/logo/totenkopf.txt"))
 const GRUND = zeichen.farben["."]
 const BERNSTEIN = zeichen.farben.a
 const SCHATTEN = zeichen.farben.s
@@ -158,7 +158,7 @@ function banner() {
   const markeBreite = breiteVon(GROSS, marke, 2)
   const gesamt = 20 + 8 + markeBreite
   const links = Math.floor((B - gesamt) / 2)
-  // Das Plektrum liegt im Raster auf Zeile 6–25 und Spalte 6–25.
+  // Der Totenkopf liegt im Raster auf Zeile 6–25 und Spalte 6–25.
   malen(b, zeichen, links - 6, 8 - 6, 1, ".")
   schreiben(b, GROSS, marke, links + 28, 10, BERNSTEIN, 2, SCHATTEN)
 
@@ -166,7 +166,7 @@ function banner() {
   schreiben(b, KLEIN, zeile, Math.floor((B - breiteVon(KLEIN, zeile, 1)) / 2), 33, GRAU, 1)
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${B} ${H}" width="${B * 5}" height="${H * 5}" shape-rendering="crispEdges" role="img" aria-label="Riffforge — 15 Minuten am Tag, Riff für Riff">
-<!-- Erzeugt von tools/readme-bilder.mjs aus assets/logo/plektrum.txt. Nicht von Hand ändern. -->
+<!-- Erzeugt von tools/readme-bilder.mjs aus assets/logo/totenkopf.txt. Nicht von Hand ändern. -->
 <rect width="${B}" height="${H}" fill="${GRUND}"/>${svgRechtecke(b, { ohne: GRUND })}
 </svg>
 `

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1363%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1368%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -668,7 +668,7 @@ weder in den Abgleich noch in die Sicherungsdatei.
 
 ## Als App installieren
 
-<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="Das App-Icon: ein Plektrum aus Pixeln"></p>
+<p align="center"><img src="public/icons/icon-192.png" width="96" height="96" alt="Das App-Icon: ein Totenkopf aus Pixeln"></p>
 
 **iPhone / iPad** — in **Safari** öffnen (Chrome auf iOS kann das nicht),
 Teilen → *Zum Home-Bildschirm*.
@@ -676,8 +676,8 @@ Teilen → *Zum Home-Bildschirm*.
 **Mac** — Safari 17+: *Ablage → Zum Dock hinzufügen*. In Chrome: Symbol in der
 Adressleiste → *Installieren*.
 
-Danach startet sie ohne Browserleiste, hat ein eigenes Icon — das Plektrum,
-in denselben Pixeln wie Bühnen und Aufnäher — und **läuft
+Danach startet sie ohne Browserleiste, hat ein eigenes Icon — ein Totenkopf mit
+glühenden Augen, in denselben Pixeln wie Bühnen und Aufnäher — und **läuft
 offline** — nach dem ersten Aufruf liegt alles im Cache, eine Session braucht
 kein Netz mehr.
 
@@ -838,7 +838,7 @@ node tools/shots.mjs
 Das Zeichen und die Bilder dieser Seite kommen aus Pixelrastern, ohne Browser:
 
 ```bash
-node tools/icons.mjs         # public/icons/ aus assets/logo/plektrum.txt
+node tools/icons.mjs         # public/icons/ aus assets/logo/totenkopf.txt
 node tools/readme-bilder.mjs # Banner, Rangleiter, Kutte
 ```
 

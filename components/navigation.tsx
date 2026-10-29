@@ -15,26 +15,20 @@ export function Navigation() {
   const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-20 border-b border-line bg-bg pt-[env(safe-area-inset-top)]">
+    <nav className="sticky top-0 z-20 border-b-2 border-akzent bg-bg pt-[env(safe-area-inset-top)]">
       {/* Vier Knöpfe und ein Schriftzug werden auf schmalen Geräten eng.
-          Enger gesetzt statt gekürzt — "RIF…" ist kein Name —, und unter
-          385 px weicht der Schriftzug ganz. "Heute" führt ohnehin nach Hause.
-          Die Grenze stand bei 360, und darüber stand bis gut 400 px
-          "RIFFFOR…" da — auf einem iPhone mit 390 px fehlten drei Pixel.
-          Gemessen: der Schriftzug braucht 76 px, der engere Abstand gibt ihm
-          bei 390 px 81. */}
+          Der Schriftzug ist Pixel-Blackletter und braucht bei 24 px rund 110 px
+          — er erscheint deshalb erst ab 430 px; darunter steht der Totenkopf
+          allein und bleibt der Weg nach Hause. "Heute" führt ohnehin dorthin. */}
       <div className="mx-auto flex h-14 max-w-[640px] items-center justify-end gap-1.5 px-3 sm:gap-3 sm:px-4 wide:max-w-[1080px]">
-        {/* „Riffforge" ist als Kompositum richtig geschrieben, aber drei
-            gleiche Buchstaben in versaler Schrift liest man nicht auseinander.
-            Die Fuge gibt der Naht ein Haar Luft — siehe `.marke .fuge`. */}
-        {/* Das Plektrum steht immer da — auch unter 385 px, wo die Wortmarke
-            weichen muss, bleibt so ein Weg nach Hause. 20 Pixel, einfach
-            gezeichnet: Pixelkunst nur ganzzahlig. */}
+        {/* Der Totenkopf steht immer da, 20 × 20 Pixel in doppelter Grösse.
+            Pixelkunst nur ganzzahlig. Vorher stand hier ein Plektrum, das sich
+            als Herz las — siehe docs/marke-und-merch.md. */}
         <Link href="/" aria-label="Riffforge — Heute" className="flex min-w-0 flex-1 items-center gap-[9px]">
           {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
-          <img src={asset("/icons/plektrum.svg")} alt="" width={20} height={20} className="shrink-0" />
-          <span className="marke hidden truncate text-[19px] text-akzent min-[385px]:block sm:text-[23px]">
-            Riff<span className="fuge">forge</span>
+          <img src={asset("/icons/totenkopf.svg")} alt="" width={40} height={40} className="shrink-0" />
+          <span className="metal hidden truncate text-[24px] text-akzent min-[430px]:block sm:text-[48px]">
+            Riffforge
           </span>
         </Link>
 
@@ -45,10 +39,10 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex-none border px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-widest ${
+              className={`flex-none px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-widest ${
                 active
-                  ? "border-akzent bg-(--tint-akzent) text-akzent"
-                  : "border-line text-muted hover:border-stahl hover:text-stahl"
+                  ? "bg-(--tint-akzent) text-akzent shadow-(--pix-akzent)"
+                  : "text-muted shadow-(--pix-line) hover:text-stahl hover:shadow-(--pix-stahl)"
               }`}
             >
               {item.label}
@@ -56,6 +50,9 @@ export function Navigation() {
           )
         })}
       </div>
+      {/* Die Zackenkante: eine Reihe Fänge unter der Leiste. Reine Kante, kein
+          Inhalt — sie sitzt ausserhalb der Leiste und fängt keine Klicks. */}
+      <span aria-hidden className="zacken" />
     </nav>
   )
 }
