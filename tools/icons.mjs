@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Erzeugt public/icons/ aus assets/logo/plektrum.txt.
+ * Erzeugt public/icons/ aus assets/logo/totenkopf.txt.
  *
  * Eine Quelle, alle Grössen, zwei Zwecke. Von Hand gepflegte Icons laufen
  * auseinander: irgendwann trägt das 192er ein anderes Zeichen als das 512er,
@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url"
 import { bild, malen, pngSchreiben, rasterLesen, svgRechtecke } from "./pixel.mjs"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
-const zeichen = rasterLesen(join(root, "assets/logo/plektrum.txt"))
+const zeichen = rasterLesen(join(root, "assets/logo/totenkopf.txt"))
 const GRUND = zeichen.farben["."]
 
 const gewuenscht = [
@@ -58,10 +58,22 @@ const breite = Math.max(...spalten) - links + 1
 const frei = bild(breite, hoehe, GRUND, false)
 malen(frei, zeichen, -links, -oben, 1, ".")
 writeFileSync(
-  join(root, "public/icons/plektrum.svg"),
+  join(root, "public/icons/totenkopf.svg"),
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${breite} ${hoehe}" width="${breite}" height="${hoehe}" shape-rendering="crispEdges">${svgRechtecke(frei)}</svg>\n`,
 )
-console.log(`plektrum.svg · ${breite}×${hoehe}, ohne Grund`)
+console.log(`totenkopf.svg · ${breite}×${hoehe}, ohne Grund`)
+
+// Das Favicon, das Next aus `app/icon.svg` selbst ausliefert: das ganze
+// 32er-Raster mit Grund, als Rechtecke. Stand hier bis Oktober ein Amboss von
+// Hand — und blieb es, als alle anderen Icons längst ein anderes Zeichen
+// trugen. Jetzt kommt es aus derselben Quelle wie der Rest.
+const kachel = bild(zeichen.breite, zeichen.hoehe, GRUND)
+malen(kachel, zeichen, 0, 0, 1, ".")
+writeFileSync(
+  join(root, "app/icon.svg"),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${zeichen.breite} ${zeichen.hoehe}" shape-rendering="crispEdges"><rect width="${zeichen.breite}" height="${zeichen.hoehe}" fill="${GRUND}"/>${svgRechtecke(kachel, { ohne: GRUND })}</svg>\n`,
+)
+console.log("app/icon.svg · 32×32 mit Grund")
 
 // Die Startseite liegt auf einer fremden Adresse und lädt nichts nach — das
 // Zeichen steht deshalb eingebettet darin, zwischen zwei Markierungen, damit
@@ -70,9 +82,9 @@ const landing = join(root, "landing/index.html")
 const seite = readFileSync(landing, "utf8")
 const eingebettet = `<svg viewBox="0 0 ${breite} ${hoehe}" shape-rendering="crispEdges" aria-hidden="true">${svgRechtecke(frei)}</svg>`
 const neu = seite.replace(
-  /(<!-- plektrum: von tools\/icons\.mjs eingesetzt -->)[\s\S]*?(<!-- \/plektrum -->)/,
+  /(<!-- zeichen: von tools\/icons\.mjs eingesetzt -->)[\s\S]*?(<!-- \/zeichen -->)/,
   `$1${eingebettet}$2`,
 )
-if (neu === seite && !seite.includes(eingebettet)) throw new Error("landing/index.html: Markierung für das Plektrum fehlt")
+if (neu === seite && !seite.includes(eingebettet)) throw new Error("landing/index.html: Markierung für das Zeichen fehlt")
 writeFileSync(landing, neu)
-console.log("landing/index.html · Plektrum eingesetzt")
+console.log("landing/index.html · Zeichen eingesetzt")

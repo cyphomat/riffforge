@@ -27,8 +27,9 @@
      heissen bewusst anders als die Theme-Werte: --font-display ist unter
      Tailwind 4 selbst einer, und gleich benannt verwiese er auf sich selbst
      — die Anzeigeschrift fiele still auf Helvetica zurück. */
-  --font-display: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-marke: var(--font-anton), var(--font-oswald), "Helvetica Neue", sans-serif;
+  --font-metal: var(--font-jacquard), var(--font-anton), Georgia, serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
   /* Die Fliesstextschrift ist die des Systems. Tailwind 4.3 hat seine
      Standardliste umgestellt; hier steht die bisherige ausdrücklich, damit
@@ -36,7 +37,7 @@
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
 
-  /* Road-Case, kein HUD: eine Kante, kein Radius. */
+  /* Pixel-Metal: eine Kante, kein Radius — die Ecken sind Treppen (`--pix-*`). */
   --radius-xs: 2px;
   --radius-sm: 2px;
   --radius-md: 2px;
@@ -104,6 +105,24 @@
     --tint-stahl: rgba(111, 147, 173, 0.06);
 
     --halo: rgba(232, 162, 61, 0.05);
+
+    /* ── Pixelkanten ─────────────────────────────────────────────────
+       Ein Rahmen aus vier Balken, die um 2 px versetzt hinter dem Element
+       liegen: die Ecken bleiben leer, und aus dem Rechteck wird eine
+       Treppe — ohne Bild, ohne Clip (der Fokusring bleibt sichtbar) und in
+       jeder Farbe. Die Lippe ist der Sockel eines Knopfes: sie zeigt, wie
+       tief er sich drücken lässt. */
+    --lippe: #6a4310;
+    --hartschatten: rgba(0, 0, 0, 0.5);
+    --pix-line: -2px 0 0 0 var(--line), 2px 0 0 0 var(--line), 0 -2px 0 0 var(--line), 0 2px 0 0 var(--line);
+    --pix-akzent: -2px 0 0 0 var(--akzent), 2px 0 0 0 var(--akzent), 0 -2px 0 0 var(--akzent), 0 2px 0 0 var(--akzent);
+    --pix-stahl: -2px 0 0 0 var(--stahl), 2px 0 0 0 var(--stahl), 0 -2px 0 0 var(--stahl), 0 2px 0 0 var(--stahl);
+
+    /* Zwei Masken aus Rechtecken: ein 7 × 7 Schädel und eine 16 × 8 Zacke.
+       Als Maske, nicht als Bild — die Farbe kommt vom Element, also folgt sie
+       beiden Fassungen und dem Kontrast, statt ein zweites Bild mitzubringen. */
+    --glyph-schaedel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h5v1h-5zM0 1h7v1h-7zM0 2h2v2h-2zM3 2h1v2h-1zM5 2h2v2h-2zM0 4h7v1h-7zM1 5h5v1h-5zM1 6h1v1h-1zM3 6h1v1h-1zM5 6h1v1h-1z'/%3E%3C/svg%3E");
+    --glyph-zacke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h16v2h-16zM2 2h12v2h-12zM4 4h8v2h-8zM6 6h4v2h-4z'/%3E%3C/svg%3E");
 
     /* Was je Fassung anders fällt als nur die Farbe: die Narbung des Tolex,
        der Einlass der Platte, das Glimmen der Heldenzahl, der Boden am Fuss
@@ -188,6 +207,9 @@
 
     --halo: rgba(232, 162, 61, 0.16);
 
+    --lippe: #4a2b00;
+    --hartschatten: rgba(60, 50, 40, 0.28);
+
     --tolex-licht: rgba(255, 255, 255, 0.16);
     --tolex-schatten: rgba(0, 0, 0, 0.015);
     --einlass: inset 0 2px 4px rgba(60, 50, 40, 0.18), inset 0 -1px 0 rgba(255, 255, 255, 0.7);
@@ -263,11 +285,23 @@
   .rule {
     @apply flex items-center gap-[10px] font-mono text-[12px] font-bold uppercase tracking-[0.14em] text-muted;
   }
+  /* Ein Schädel vor jeder Überschrift, und die Linie dahinter ist gestrichelt
+     in 4-px-Pixeln statt verlaufend: ein Verlauf ist weich, und weich ist hier
+     das Gegenteil von Metal. */
+  .rule::before {
+    content: "";
+    flex: none;
+    width: 14px;
+    height: 14px;
+    background: var(--akzent);
+    -webkit-mask: var(--glyph-schaedel) center / 100% 100% no-repeat;
+    mask: var(--glyph-schaedel) center / 100% 100% no-repeat;
+  }
   .rule::after {
     content: "";
     flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--line), transparent);
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
   }
 
   /* Fläche mit Bernsteinkante links: markiert, was gerade dran ist.
@@ -276,7 +310,10 @@
      beide so schwach, dass sie keine Struktur zeigen, sondern nur
      verhindern, dass die Fläche ein blosser Farbwert bleibt. */
   .card {
-    @apply relative border border-line p-[18px];
+    @apply relative p-[18px];
+    /* Treppenrahmen und ein harter Sockelschatten statt eines Randes: die
+       Karte steht auf dem Grund, sie liegt nicht darin. */
+    box-shadow: var(--pix-line), 6px 6px 0 0 var(--hartschatten);
     background:
       repeating-linear-gradient(45deg, var(--tolex-licht) 0 1px, transparent 1px 4px),
       repeating-linear-gradient(-45deg, var(--tolex-schatten) 0 1px, transparent 1px 4px),
@@ -330,8 +367,33 @@
 
   /* Grosse Zahlen und Namen: Oswald, versal, eng geführt. */
   .display {
-    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
     @apply font-semibold uppercase leading-[1.05] tracking-[0.01em];
+  }
+
+  /* Die Zackenkante unter der Navigation: 16 × 8 Pixel, Bernstein, nach unten
+     gerichtet. Maske statt Bild, damit sie der Fassung folgt. */
+  .zacken {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 8px;
+    pointer-events: none;
+    background: var(--akzent);
+    opacity: 0.9;
+    -webkit-mask: var(--glyph-zacke) 0 0 / 16px 8px repeat-x;
+    mask: var(--glyph-zacke) 0 0 / 16px 8px repeat-x;
+  }
+
+  /* Der Name und das Wort des Tages: Pixel-Blackletter, gemischt gesetzt —
+     Fraktur-Versalien liest niemand, Metal-Logos stehen nie in Kapitälchen.
+     Der harte Schatten ist der Pixel-Satz einer Plattenhülle: ein Schritt
+     nach rechts unten, ohne Weichzeichner. Nur gross benutzen (ab 24 px). */
+  .metal {
+    font-family: var(--font-jacquard), var(--font-anton), Georgia, serif;
+    @apply font-normal normal-case leading-[0.9] tracking-normal;
+    text-shadow: 3px 3px 0 var(--lippe);
   }
 
   /* Ziffern in der Anzeigeschrift. Bewusst ohne `font-mono`: die Klasse
@@ -347,23 +409,37 @@
     @apply font-mono tabular-nums;
   }
 
+  /* Der Knopf ist ein Klotz mit Sockel: Treppenrahmen in Bernstein und darunter
+     eine dunkle Lippe, vier Pixel tief. Beim Drücken sinkt er auf die Lippe —
+     das ist die ganze Animation, und sie läuft nur, wenn man ihn berührt. */
   .btn {
-    @apply inline-flex cursor-pointer items-center justify-center gap-2 border border-akzent
+    @apply inline-flex cursor-pointer items-center justify-center gap-2
            bg-(--tint-akzent) px-5 py-4 font-mono text-[13px] font-extrabold uppercase
-           tracking-[0.14em] text-akzent transition-colors;
+           tracking-[0.14em] text-akzent;
+    box-shadow: var(--pix-akzent), 0 6px 0 0 var(--lippe);
   }
   .btn:hover:not(:disabled) {
     background: var(--tint-akzent-stark);
   }
+  .btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: var(--pix-akzent), 0 2px 0 0 var(--lippe);
+  }
   .btn:disabled {
-    @apply cursor-not-allowed border-line bg-transparent text-dim;
+    @apply cursor-not-allowed bg-transparent text-dim;
+    box-shadow: var(--pix-line);
   }
   .btn-ghost {
-    @apply border-line bg-transparent text-muted;
+    @apply bg-transparent text-muted;
+    box-shadow: var(--pix-line), 0 6px 0 0 var(--hartschatten);
   }
   .btn-ghost:hover:not(:disabled) {
-    @apply border-stahl text-stahl;
+    @apply text-stahl;
     background: var(--tint-stahl);
+    box-shadow: var(--pix-stahl), 0 6px 0 0 var(--hartschatten);
+  }
+  .btn-ghost:active:not(:disabled) {
+    box-shadow: var(--pix-stahl), 0 2px 0 0 var(--hartschatten);
   }
   .btn-small {
     @apply px-3 py-2 text-[12px] tracking-[0.1em];
@@ -391,7 +467,7 @@
   }
   .stat .v {
     /* `.display` und `.glimmt`, ausgeschrieben — siehe `.huelle-breit`. */
-    font-family: var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
     @apply mt-0.5 text-[28px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
     text-shadow: var(--glimmen);
     font-variant-numeric: tabular-nums;
@@ -428,9 +504,9 @@
      Kante der Aussparung. */
   .platte,
   .stat {
-    @apply relative border border-line;
+    @apply relative;
     background: var(--sunken);
-    box-shadow: var(--einlass);
+    box-shadow: var(--pix-line), var(--einlass);
   }
   .platte {
     @apply px-[14px] pb-[6px] pt-[13px];

@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest"
  * ohne Loch und ohne abgesprengte Punkte.
  */
 
-const quelle = readFileSync(join(process.cwd(), "assets/logo/plektrum.txt"), "utf8").split("\n")
+const quelle = readFileSync(join(process.cwd(), "assets/logo/totenkopf.txt"), "utf8").split("\n")
 const raster = quelle.filter((z) => z.length > 0 && !z.startsWith("#"))
 const farben = new Set(quelle.flatMap((z) => z.match(/^#\s(\S)\s#[0-9a-f]{6}\b/i)?.[1] ?? []))
 const voll = (x: number, y: number) => raster[y]?.[x] !== undefined && raster[y][x] !== "."

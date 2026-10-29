@@ -18,7 +18,7 @@ const SHELL = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   // Steht in der Navigation auf jeder Seite — offline ohne es fehlte das Zeichen.
-  'icons/plektrum.svg',
+  'icons/totenkopf.svg',
 ]
 
 self.addEventListener('install', (event) => {

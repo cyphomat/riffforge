@@ -6,7 +6,8 @@
 
 ## Konventionen
 
-- **Das Zeichen ist ein Plektrum, und es wird bei 48 px entschieden.** Das
+- **Das Zeichen ist ein Totenkopf (vorher ein Plektrum), und es wird bei 48 px
+  entschieden.** Das
   alte Icon war ein Amboss mit einem Vierstrahl-Stern: „Forge" war drin,
   „Riff" nicht, der Funke las sich als KI-Glyph, und die liegende Silhouette
   wurde auf dem Homescreen ein Klumpen. Beim Neubau sind neun Entwürfe
@@ -14,7 +15,7 @@
   und zwar **alle an derselben Spalte**: bei 48 px überlebt nur eine fette,
   geschlossene Silhouette. Feine Linien zerfallen, dünne Formen werden
   Striche, mehrfarbige Bänder werden Candy Corn. Wer das Zeichen anfasst,
-  prüft es zuerst klein. Die Quelle ist `assets/logo/plektrum.txt`, und
+  prüft es zuerst klein. Die Quelle ist `assets/logo/totenkopf.txt`, und
   `tools/icons.mjs` erzeugt daraus alle Grössen — samt einer **maskierbaren**
   Fassung, weil Android bis zu 20 % vom Rand wegschneidet und ein
   flächenfüllendes Zeichen dort seine Spitze verliert.
@@ -30,17 +31,30 @@
   ganzzahlig (180 bekommt 5× und Grund drumherum), und die Werkzeuge
   brauchen keinen Browser mehr: `tools/pixel.mjs` schreibt PNG mit
   `node:zlib`. In der Navigation steht das Zeichen vor der Wortmarke, als
-  SVG aus Rechtecken (`public/icons/plektrum.svg`) — und unter 385 px, wo
+  SVG aus Rechtecken (`public/icons/totenkopf.svg`) — und unter 385 px, wo
   die Wortmarke weichen muss, steht es allein und bleibt der Weg nach Hause.
   Der README-Banner ist dieselbe Sprache: Pixelschrift statt Anton, weil
   ein SVG im README keine Schrift mitbringen kann, mit dem Haar Luft an der
   Fuge als genau einem Pixel. GitHub kennt kein `pixelated`, deshalb sind
   Rangszenen und Aufnäher dort vorher ganzzahlig vergrössert und werden in
   genau dieser Grösse gezeigt.
+  **Seit Ende Oktober ist es ein Totenkopf.** Das Plektrum las sich in
+  Bernstein als **Herz**: flache Schultern, eine Spitze, ein Licht oben links —
+  die 48-px-Regel hatte „Tropfen" und „Edelstein" abgewehrt, aber nicht das.
+  Ein Totenkopf ist die Silhouette, die niemand mit etwas Weichem verwechselt,
+  und er ist Metal, ohne es zu erklären. 20 × 20, spiegelgleich, die Augenhöhlen
+  sind **gemalte** Pixel (`k`) statt eines Ausschnitts, damit der Umriss eine
+  geschlossene Fläche bleibt (`zeichen.test.ts` prüft das weiter), und die Glut
+  in den Höhlen (`e`, #ff5a1f) ist die Schmiede. `tools/icons.mjs` schreibt
+  daraus auch `app/icon.svg` — das stand bis dahin als Amboss da und lief den
+  PNG-Icons unbemerkt davon. In der Navigation steht er in doppelter Grösse
+  (40 px).
 - **Die Wortfuge bekommt ein Haar Luft.** „Riff" + „forge" ergibt drei
   gleiche Buchstaben hintereinander — dasselbe Problem wie bei
   „Schifffahrt", und in versaler Anzeigeschrift liest man das als
-  Tippfehler. `.marke .fuge` gibt der Naht 0,05 em. Zwei naheliegende
+  Tippfehler. `.marke .fuge` gibt der Naht 0,05 em. (Die Navigation setzt den Namen seit
+  Oktober in Blackletter, `.metal`, gemischt statt versal; die Fuge ist dort
+  keine Frage mehr, und `.marke` bleibt auf Shirt und Banner.) Zwei naheliegende
   Lösungen sind ausgeschieden: ein Farbwechsel, weil **Rost in dieser App
   „nicht ganz" heisst** und ein zweifarbiger Name ein gebrochenes Versprechen
   wäre; und ein Trennzeichen, weil „Riff · Forge" sich wie zwei Produkte
@@ -104,8 +118,9 @@
   liess es auf 320 px kaum fünfzig Pixel für „Gitarrensolo", und die Seite lief
   über — das tat sie dort übrigens schon vorher um 8 px, weil `grid-cols-2`
   Spalten auf ihren längsten Inhalt aufbläst; die Kacheln stehen deshalb in
-  `minmax(0,1fr)`-Spalten. Nicht übernommen aus der Orga-App: Pixelfeuer,
-  Ansager, Konsole und die Endgegner — Schmuck und HUD, und die vier
+  `minmax(0,1fr)`-Spalten. Nicht übernommen aus der Orga-App: Ansager,
+  Konsole und die Endgegner — HUD (das Pixelfeuer ist seit Pixel-Metal doch da,
+  auf *Heute*, siehe `design-und-themes.md`), und die vier
   Bauteile mit Grenze sind hier schon vergeben.
   Die **Tourshirts** sind keine Dateien, sondern gerechnet
   (`lib/session/shirt.ts`): Stofffarbe aus dem Adjektiv des Tournamens,

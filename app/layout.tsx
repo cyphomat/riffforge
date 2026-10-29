@@ -1,13 +1,25 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Anton, Oswald, Permanent_Marker } from "next/font/google"
+import { Anton, Jacquard_24, Jersey_10, Oswald, Permanent_Marker } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ServiceWorker } from "@/components/service-worker"
 import { asset } from "@/lib/base-path"
 import { DARSTELLUNG_SKRIPT, STATUSLEISTE } from "@/lib/ui/darstellung"
 
-// Kondensiert und versal — trägt Tempi, Zahlen und Drill-Namen.
+// Pixel-Blackletter — der Name und das Wort des Tages, gross und nie klein
+// gesetzt: unter 24 px ist Fraktur auch in Pixeln ein Rätsel. Sie ist für ein
+// 24er-Raster gezeichnet und steht deshalb scharf bei 24, 48 und 72 px.
+const jacquard = Jacquard_24({ subsets: ["latin"], weight: "400", variable: "--font-jacquard" })
+
+// Pixelschrift für alles, was bisher Oswald war: Tempi, Zahlen, Drill-Namen.
+// Schmal wie Oswald, damit kein Titel auf 320 px überläuft, und vor allem mit
+// eindeutigen Ziffern: Pixelify Sans war die erste Wahl, und dort sieht die 5
+// aus wie ein S und die 8 wie eine 6 mit Loch — bei einem Tempo ist das ein
+// Fehler, kein Stil. Jersey ist für Trikotnummern gezeichnet.
+const jersey = Jersey_10({ subsets: ["latin"], weight: "400", variable: "--font-jersey" })
+
+// Bleibt als Rückfall und für den Druck der Shirts (siehe `.druck`).
 // next/font lädt sie beim Build herunter und liefert sie selbst aus, damit
 // die App offline genauso aussieht wie online.
 const oswald = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-oswald" })
@@ -98,7 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="de"
       data-theme="dunkel"
-      className={`${oswald.variable} ${anton.variable} ${edding.variable}`}
+      className={`${oswald.variable} ${anton.variable} ${edding.variable} ${jacquard.variable} ${jersey.variable}`}
       suppressHydrationWarning
     >
       <head>
