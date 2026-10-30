@@ -39,7 +39,7 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex-none px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-widest ${
+              className={`flex min-h-10 flex-none items-center px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-widest ${
                 active
                   ? "bg-(--tint-akzent) text-akzent shadow-(--pix-akzent)"
                   : "text-muted shadow-(--pix-line) hover:text-stahl hover:shadow-(--pix-stahl)"

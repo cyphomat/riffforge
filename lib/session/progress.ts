@@ -202,3 +202,18 @@ export function daysPractisedInLast(log: PracticeLog, span: number, now: Date = 
 export function totalMinutes(log: PracticeLog): number {
   return Math.round(log.results.reduce((sum, r) => sum + r.seconds, 0) / 60)
 }
+
+/**
+ * Was heute schon gespielt wurde, aus dem Log — oder null, wenn nichts.
+ * Zählt den Kalendertag des Geräts, wie die Serie und der Kalender.
+ */
+export function heuteGeuebt(
+  log: PracticeLog,
+  now: Date = new Date(),
+): { minuten: number; bloecke: number } | null {
+  const heute = dayKey(now)
+  const heutige = log.results.filter((r) => dayKey(new Date(r.at)) === heute)
+  if (heutige.length === 0) return null
+  const sekunden = heutige.reduce((summe, r) => summe + r.seconds, 0)
+  return { minuten: Math.max(1, Math.round(sekunden / 60)), bloecke: heutige.length }
+}
