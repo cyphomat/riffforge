@@ -193,14 +193,14 @@
     --dim: #5c5762;
     --line: #b5b1a9;
 
-    --akzent: #854d00;
+    --akzent: #6e3f00;
     --stahl: #375e7b;
     --gruen: #3d6227;
     --rost: #8f4716;
     --rot: #b23a32;
 
-    --tint-akzent: rgba(133, 77, 0, 0.08);
-    --tint-akzent-stark: rgba(133, 77, 0, 0.16);
+    --tint-akzent: rgba(110, 63, 0, 0.08);
+    --tint-akzent-stark: rgba(110, 63, 0, 0.16);
     --tint-gruen: rgba(61, 98, 39, 0.12);
     --tint-rost: rgba(143, 71, 22, 0.12);
     --tint-stahl: rgba(55, 94, 123, 0.07);
@@ -426,7 +426,7 @@
     box-shadow: var(--pix-akzent), 0 2px 0 0 var(--lippe);
   }
   .btn:disabled {
-    @apply cursor-not-allowed bg-transparent text-dim;
+    @apply cursor-not-allowed bg-transparent text-dim opacity-55;
     box-shadow: var(--pix-line);
   }
   .btn-ghost {

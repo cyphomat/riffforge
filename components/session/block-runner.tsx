@@ -268,13 +268,13 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
             </div>
             <div className="mt-2 flex items-center justify-end gap-2">
               <button
-                className="btn btn-ghost btn-small"
+                className="btn btn-ghost btn-small min-h-[44px] min-w-[48px]"
                 onClick={() => metronome.setBpm(metronome.bpm - HAND_SCHRITT)}
               >
                 −{HAND_SCHRITT}
               </button>
               <button
-                className="btn btn-ghost btn-small"
+                className="btn btn-ghost btn-small min-h-[44px] min-w-[48px]"
                 onClick={() => metronome.setBpm(metronome.bpm + HAND_SCHRITT)}
               >
                 +{HAND_SCHRITT}

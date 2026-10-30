@@ -40,6 +40,19 @@ function farbe(name: string, fassung: Fassung = "dunkel"): string {
   expect.fail(`--${name} fehlt in globals.css oder ist kein Hex-Wert`)
 }
 
+/** Eine Tönung (`rgba`) über einem Grund, als Hex — so liegt sie wirklich auf dem Bildschirm. */
+function getoent(tint: string, grund: string, fassung: Fassung): string {
+  for (const quelle of FASSUNGEN[fassung]) {
+    const m = quelle.match(new RegExp(`--${tint}:\\s*rgba\\((\\d+),\\s*(\\d+),\\s*(\\d+),\\s*([\\d.]+)\\)`))
+    if (!m) continue
+    const [r, g, b] = [m[1], m[2], m[3]].map(Number)
+    const a = Number(m[4])
+    const unten = [1, 3, 5].map((i) => parseInt(grund.slice(i, i + 2), 16))
+    return `#${[r, g, b].map((v, i) => Math.round(v * a + unten[i] * (1 - a)).toString(16).padStart(2, "0")).join("")}`
+  }
+  return expect.fail(`--${tint} fehlt in globals.css oder ist kein rgba-Wert`)
+}
+
 /** Die Gründe, auf denen Text tatsächlich steht. */
 const GRUENDE = ["bg", "panel", "panel2", "sunken"] as const
 
@@ -62,6 +75,18 @@ describe.each(Object.keys(FASSUNGEN) as Fassung[])("Farbkontrast, %s", (fassung)
       }
     },
   )
+
+  it("Akzent auf der Akzent-Tönung (aktiver Tab, Hauptknopf) schafft AA auf jedem Grund", () => {
+    // Im Hellen lag das bei 4,38 : 1: der Akzent war gegen die Karte gerechnet,
+    // der Text steht aber auf der getönten Fläche.
+    for (const tint of ["tint-akzent", "tint-akzent-stark"]) {
+      for (const grund of GRUENDE) {
+        const flaeche = getoent(tint, f(grund), fassung)
+        const wert = kontrast(f("akzent"), flaeche)
+        expect(wert, `--akzent auf --${tint} über --${grund}: ${wert.toFixed(2)}`).toBeGreaterThanOrEqual(AA_TEXT)
+      }
+    }
+  })
 
   it("trägt dunkle Schrift auf Bernstein — der Live-Sticker am Tourshirt", () => {
     const wert = kontrast(f("bg"), f("akzent"))

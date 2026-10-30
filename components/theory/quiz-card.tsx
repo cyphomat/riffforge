@@ -5,6 +5,7 @@ import { Fretboard } from "@/components/theory/fretboard"
 import { IntervallHoeren } from "@/components/theory/intervall-hoeren"
 import { RhythmQuiz } from "@/components/theory/rhythm-quiz"
 import { DAEMPFUNG_MINDESTENS, figurById, type FigurBewertung } from "@/lib/theory/rhythm"
+import { bewertungsvorschlag } from "@/lib/theory/bewertung"
 import { GRADES, type Grade } from "@/lib/theory/fsrs"
 import { noteAt, parseTon, sameGriff, verwechselungshinweis } from "@/lib/theory/fretboard"
 import { SICHERHEITEN, type Griff, type Sicherheit, type TheoryCard } from "@/lib/theory/types"
@@ -72,6 +73,8 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
   // (die Messung ist die Antwort) und beim Auflösen mit Enter (keine stille
   // Vorgabe, die die Kalibrierung verzerrt).
   const [sure, setSure] = useState<Sicherheit | undefined>(undefined)
+  // Nach einem sicheren Treffer genügt ein Tap; die vier Noten kommen erst auf Wunsch.
+  const [andersBewerten, setAndersBewerten] = useState(false)
 
   const antwort: Griff | string | null = card.frage.art === "griffbrett" ? griff : text
   const richtig = card.frage.art === "gespielt" ? (gespielt?.richtig ?? false) : istRichtig(card, antwort)
@@ -136,6 +139,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
           autoCorrect="off"
           spellCheck={false}
           placeholder="Antwort"
+          aria-label="Antwort"
           className="w-full border border-line bg-sunken px-3 py-3 font-mono text-[16px] text-fg outline-hidden focus:border-akzent disabled:text-muted"
         />
       )}
@@ -190,6 +194,15 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
           // kommen, danach wüsste jeder, dass er es gewusst hat.
           <div>
             <p className="kicker mb-2 text-dim">Auflösen — wie sicher bist du?</p>
+            {!bereit && (
+              <p className="mb-2 text-[14px] text-muted">
+                {card.frage.art === "griffbrett"
+                  ? "Erst die Stelle am Griffbrett antippen, dann die Sicherheit wählen."
+                  : card.frage.art === "eingabe"
+                    ? "Erst die Antwort eintippen, dann die Sicherheit wählen."
+                    : "Erst eine Antwort wählen, dann die Sicherheit."}
+              </p>
+            )}
             <div className="grid grid-cols-3 gap-[9px]">
               {SICHERHEITEN.map((stufe) => (
                 <button
@@ -263,30 +276,50 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
             <p className="mt-1 text-[15px] leading-relaxed text-muted">{card.erklaerung}</p>
           </div>
 
-          <div>
-            <h3 className="rule mb-3">Wie lief&apos;s?</h3>
-            <div className="grid gap-[9px] sm:grid-cols-2">
-              {GRADES.map((note) => {
-                // Vorschlag, keine Vorgabe: falsch beantwortet heisst
-                // "Nochmal", richtig heisst "Gut". Überschreiben geht immer.
-                // Ohne Messung wird nichts vorgeschlagen — dafür weiss die App
-                // schlicht zu wenig.
-                const empfohlen = ungemessen ? false : richtig ? note.value === 3 : note.value === 1
-                return (
-                  <button
-                    key={note.value}
-                    onClick={() => onAnswer(note.value as Grade, richtig, sure)}
-                    className={`border p-[14px] text-left transition-colors ${
-                      empfohlen ? "border-akzent bg-(--tint-akzent)" : "border-line"
-                    }`}
-                  >
-                    <span className="display block text-[17px] text-fg">{note.label}</span>
-                    <span className="text-[13px] text-dim">{note.hint}</span>
+          {(() => {
+            const { vorschlag, volleWahl } = bewertungsvorschlag(richtig, sure, ungemessen)
+            if (!volleWahl && vorschlag !== null && !andersBewerten) {
+              return (
+                <div className="space-y-2">
+                  <button onClick={() => onAnswer(vorschlag, richtig, sure)} className="btn w-full">
+                    Weiter
                   </button>
-                )
-              })}
-            </div>
-          </div>
+                  <button
+                    onClick={() => setAndersBewerten(true)}
+                    className="btn btn-ghost btn-small w-full"
+                  >
+                    Anders bewerten
+                  </button>
+                </div>
+              )
+            }
+            return (
+              <div>
+                <h3 className="rule mb-3">Wie lief&apos;s?</h3>
+                <div className="grid gap-[9px] sm:grid-cols-2">
+                  {GRADES.map((note) => {
+                    // Vorschlag, keine Vorgabe: falsch beantwortet heisst
+                    // "Nochmal", richtig heisst "Gut". Überschreiben geht immer.
+                    // Ohne Messung wird nichts vorgeschlagen — dafür weiss die App
+                    // schlicht zu wenig.
+                    const empfohlen = note.value === vorschlag
+                    return (
+                      <button
+                        key={note.value}
+                        onClick={() => onAnswer(note.value as Grade, richtig, sure)}
+                        className={`border p-[14px] text-left transition-colors ${
+                          empfohlen ? "border-akzent bg-(--tint-akzent)" : "border-line"
+                        }`}
+                      >
+                        <span className="display block text-[17px] text-fg">{note.label}</span>
+                        <span className="text-[13px] text-dim">{note.hint}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
     </div>

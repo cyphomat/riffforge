@@ -17,6 +17,7 @@ import {
   progressFor,
   streakWeeks,
   totalMinutes,
+  heuteGeuebt,
 } from "@/lib/session/progress"
 import { loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
@@ -122,6 +123,7 @@ export function PracticeOverview() {
   const jetzt = new Date()
   const heuteKopf = `${WOCHENTAGE[jetzt.getDay()]} ${`${jetzt.getDate()}`.padStart(2, "0")}.${`${jetzt.getMonth() + 1}`.padStart(2, "0")}.`
   const hasHistory = loaded && log.results.length > 0
+  const geuebt = loaded ? heuteGeuebt(log, jetzt) : null
 
   // Beide Kataloge: der Sieben-Saiter schreibt in denselben Log, und was
   // gespielt wurde, gehört in den Fortschritt — gefiltert wird ohnehin auf
@@ -161,6 +163,7 @@ export function PracticeOverview() {
           <span className="kicker text-dim">
             {heuteKopf}
             {hasHistory && ` · ${streakWeeks(log)} ${streakWeeks(log) === 1 ? "Woche" : "Wochen"} in Folge`}
+            {geuebt && <span className="text-stahl"> · Heute geübt · {geuebt.minuten} Min</span>}
           </span>
         </div>
         <h1 className={`metal mt-1 text-[72px] sm:text-[96px] ${TONE_CLASS[briefing.tone]}`}>
@@ -195,7 +198,10 @@ export function PracticeOverview() {
           </div>
         )}
 
-        <Link href="/session?minutes=15" className="btn mt-5 w-full py-5 text-[15px]">
+        <Link
+          href="/session?minutes=15"
+          className={`btn mt-5 w-full py-5 text-[15px] ${geuebt ? "btn-ghost" : ""}`}
+        >
           Session starten · 15 Min
         </Link>
       </section>

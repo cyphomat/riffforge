@@ -6,6 +6,7 @@ import {
   dayKey,
   daysPractisedInLast,
   floorBpmFor,
+  heuteGeuebt,
   masteryOf,
   nextBpm,
   progressFor,
@@ -226,5 +227,32 @@ describe("daysPractisedInLast", () => {
 describe("dayKey", () => {
   it("uses local time so a late session counts for that day", () => {
     expect(dayKey(new Date(2026, 2, 10, 23, 50))).toBe("2026-03-10")
+  })
+})
+
+describe("heuteGeuebt", () => {
+  const jetzt = new Date(2026, 9, 30, 19, 0, 0)
+
+  it("ist null ohne Eintrag von heute", () => {
+    expect(heuteGeuebt({ version: 1, results: [] }, jetzt)).toBeNull()
+    const gestern = result({ at: new Date(2026, 9, 29, 20, 0, 0).toISOString() })
+    expect(heuteGeuebt({ version: 1, results: [gestern] }, jetzt)).toBeNull()
+  })
+
+  it("summiert die Spielzeit von heute und zählt die Blöcke", () => {
+    const log: PracticeLog = {
+      version: 1,
+      results: [
+        result({ seconds: 120, at: new Date(2026, 9, 30, 18, 0, 0).toISOString() }),
+        result({ seconds: 360, at: new Date(2026, 9, 30, 18, 5, 0).toISOString() }),
+        result({ seconds: 900, at: new Date(2026, 9, 29, 18, 5, 0).toISOString() }),
+      ],
+    }
+    expect(heuteGeuebt(log, jetzt)).toEqual({ minuten: 8, bloecke: 2 })
+  })
+
+  it("nennt mindestens eine Minute", () => {
+    const log: PracticeLog = { version: 1, results: [result({ seconds: 10, at: jetzt.toISOString() })] }
+    expect(heuteGeuebt(log, jetzt)?.minuten).toBe(1)
   })
 })
