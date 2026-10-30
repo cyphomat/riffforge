@@ -3,9 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/session/lead"
-import { lickBox, lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
+import {
+  lickBox,
+  lickSeed,
+  merkeLickSeed,
+  merkeSessionStand,
+  sessionStand,
+  vergissSessionStand,
+} from "@/lib/storage/lokal"
+import { ausgangsLog, ergebnisseSeit, stehtNoch, type SessionStand } from "@/lib/session/session-stand"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
+import { dayKey } from "@/lib/session/progress"
 import { buildDrillSession, buildSession, nextExtraBlock, tagesZufall } from "@/lib/session/builder"
 import {
   FRAGEN_JE_PORTION,
@@ -18,6 +27,7 @@ import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import type { TheoryLog } from "@/lib/theory/types"
 import { pickCards } from "@/lib/theory/progress"
+import type { Profile } from "@/lib/session/profile"
 import { EMPTY_LOG, type DrillResult, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 
 export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?: string }) {
@@ -51,17 +61,56 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   const [erledigteEinschuebe, setErledigteEinschuebe] = useState<number[]>([])
   const [beantworteteFragen, setBeantworteteFragen] = useState(0)
 
-  useEffect(() => {
+  /** Ein gemerkter Stand von heute, über den der Spieler erst entscheidet. */
+  const [angebot, setAngebot] = useState<SessionStand | null>(null)
+  const startedAt = useRef<string>("")
+  /** Nach „+5 Minuten" ist der Plan nicht mehr aus dem Log zurückzurechnen; dann wird nichts mehr gemerkt. */
+  const keinStand = useRef(false)
+
+  const planFuer = (startLog: PracticeLog, profile: Profile | null) => {
+    const single = drillId ? buildDrillSession(startLog, drillId, { minutes, profile }) : null
+    // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
+    const plan = (single ?? buildSession(startLog, { minutes, profile, random: tagesZufall() })).blocks
+    setBlocks(plan)
+    setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
+  }
+
+  const neuStarten = () => {
+    vergissSessionStand()
+    setAngebot(null)
     const initial = loadLog()
-    const profile = loadProfile()
-    const single = drillId ? buildDrillSession(initial, drillId, { minutes, profile }) : null
+    startedAt.current = new Date().toISOString()
     setStartingLog(initial)
     setStartingTheory(loadTheoryLog())
     setLog(initial)
-    // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
-    const plan = (single ?? buildSession(initial, { minutes, profile, random: tagesZufall() })).blocks
-    setBlocks(plan)
-    setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
+    planFuer(initial, loadProfile())
+  }
+
+  const weiterSpielen = (stand: SessionStand) => {
+    const aktuell = loadLog()
+    const start = ausgangsLog(aktuell, stand.startedAt)
+    startedAt.current = stand.startedAt
+    setStartingLog(start)
+    setStartingTheory(loadTheoryLog())
+    setLog(aktuell)
+    setResults(ergebnisseSeit(aktuell, stand.startedAt))
+    carried.current = stand.carried
+    setErledigteEinschuebe(stand.erledigteEinschuebe)
+    setBeantworteteFragen(stand.beantworteteFragen)
+    setCurrent(stand.current)
+    setAngebot(null)
+    planFuer(start, loadProfile())
+  }
+
+  useEffect(() => {
+    const stand = sessionStand()
+    if (stehtNoch(stand, { minutes, drillId, jetzt: new Date() })) {
+      setAngebot(stand)
+      return
+    }
+    neuStarten()
+    // Läuft einmal je Anfrage; die Helfer lesen nur Speicher und setzen Zustand.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drillId, minutes])
 
   /**
@@ -170,6 +219,8 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   // „+5 Minuten" sind zwei verschiedene Drills zu je zweieinhalb, nicht fünf
   // Minuten dasselbe — dieselbe Grenze wie in der Session (MAX_AM_STUECK).
   const extend = () => {
+    keinStand.current = true
+    vergissSessionStand()
     setBlocks((previous) => {
       if (!previous) return previous
       const erster = nextExtraBlock(log, previous, { minutes: 2.5 })
@@ -177,10 +228,52 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     })
   }
 
+
+  // Die Stelle merken, sobald etwas gespielt ist; am Ende vergessen. Wer die
+  // Seite verlässt und wiederkommt, bekommt „Weiter" angeboten statt eines
+  // neuen Warm-ups.
+  useEffect(() => {
+    if (blocks === null || startingLog === null || keinStand.current) return
+    if (done) {
+      vergissSessionStand()
+      return
+    }
+    if (current === 0) return
+    merkeSessionStand({
+      version: 1,
+      tag: dayKey(new Date()),
+      minutes,
+      drillId,
+      startedAt: startedAt.current,
+      current,
+      erledigteEinschuebe: erledigteEinschuebe,
+      beantworteteFragen,
+      carried: carried.current,
+    })
+  }, [blocks, startingLog, done, current, erledigteEinschuebe, beantworteteFragen, minutes, drillId])
+
   const overallProgress = useMemo(
     () => (blocks?.length ? (current / blocks.length) * 100 : 0),
     [current, blocks],
   )
+
+  if (angebot) {
+    return (
+      <div className="huelle space-y-4 pt-8">
+        <p className="kicker">Session von heute</p>
+        <h1 className="display text-[32px] text-fg">Du warst mitten drin.</h1>
+        <p className="text-[15px] text-muted">
+          Es geht bei Block {angebot.current + 1} weiter. Was du schon gespielt hast, steht im Log.
+        </p>
+        <button onClick={() => weiterSpielen(angebot)} className="btn w-full py-4">
+          Weiter bei Block {angebot.current + 1}
+        </button>
+        <button onClick={neuStarten} className="btn btn-ghost w-full py-4">
+          Neu starten
+        </button>
+      </div>
+    )
+  }
 
   if (blocks === null || startingLog === null) {
     return (

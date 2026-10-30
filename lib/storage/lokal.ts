@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
+import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
 
 /**
@@ -25,9 +26,10 @@ const EINMESS_KEY = "mga.einmessung.v1"
 const SAITEN_KEY = "mga.saiten.v1"
 const SAISONAL_KEY = "mga.saisonal.v1"
 const VERSTECKT_KEY = "mga.saisonal-versteckt.v1"
+const SESSION_KEY = "mga.session-stand.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -250,5 +252,36 @@ export function clearLokal(): void {
     for (const key of OWN_KEYS) window.localStorage.removeItem(key)
   } catch {
     /* Nichts Lesbares zu löschen. */
+  }
+}
+
+/**
+ * Wo die laufende Session steht (siehe `lib/session/session-stand.ts`).
+ *
+ * Gehört diesem Gerät und nur diesem, wird nicht abgeglichen. Kaputtes wird
+ * verworfen: ein verlorener Stand heisst, dass die Session neu beginnt, wie
+ * ohne ihn.
+ */
+export function sessionStand(): SessionStand | null {
+  const roh = lesen(SESSION_KEY)
+  if (!roh) return null
+  try {
+    const geprueft = sessionStandSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : null
+  } catch {
+    return null
+  }
+}
+
+export function merkeSessionStand(stand: SessionStand): void {
+  schreiben(SESSION_KEY, JSON.stringify(sessionStandSchema.parse(stand)))
+}
+
+export function vergissSessionStand(): void {
+  if (typeof window === "undefined") return
+  try {
+    window.localStorage.removeItem(SESSION_KEY)
+  } catch {
+    /* Nichts zu vergessen. */
   }
 }

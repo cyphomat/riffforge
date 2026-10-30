@@ -23,7 +23,8 @@
 | `lib/session/saiten.ts` | Wann die Saiten fällig sind: Übungstage aus dem Log, Tage seit dem Wechsel |
 | `lib/session/types.ts` | Domänen-Typen + Zod-Schemas für alles Persistierte |
 | `lib/session/drills.ts` | Der Übungs-Katalog (reine Daten) |
-| `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery |
+| `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery, `heuteGeuebt` |
+| `lib/session/session-stand.ts` | Wo die laufende Session steht (Schema, `stehtNoch`, Log zu Beginn zurückgerechnet) |
 | `lib/session/builder.ts` | Wählt aus, was heute drankommt |
 | `lib/session/profile.ts` | Die zwei Antworten vom ersten Start: Starttempo und Gewichtung |
 | `lib/session/briefing.ts` | Die Ansage: der Ton des Tages, aus dem Log |
@@ -40,6 +41,7 @@
 | `lib/sync/run.ts` | Ein Abgleich beider Logs, von Hand oder im Hintergrund |
 | `lib/storage/loeschen.ts` | *Alles löschen* — die eine Liste, gegen den Quelltext getestet |
 | `components/session/*` | UI der Session |
+| `lib/theory/bewertung.ts` | Welche Note nach einer Frage vorgeschlagen wird, und wann die volle Wahl bleibt |
 | `lib/theory/fsrs.ts` | FSRS-6, portiert aus der Referenz. Rein, gegengeprüft. |
 | `lib/theory/types.ts` | Karten, Fragen und der Antwort-Log |
 | `lib/theory/progress.ts` | Kartenstand aus dem Antwort-Log, Auswahl fürs Abfragen |
@@ -62,9 +64,9 @@
 | `lib/session/drills-songs.ts` | Die Songs als Drills: Riff, `pentatonic`, Tab aus den Noten — hängt am Hauptkatalog |
 | `lib/theory/song.ts` | Songs mit Lernziel: Schema, Töne, Abstände, Notenwerte, Pausen — und `pruefeSong`, das das Lernziel nachrechnet |
 | `lib/theory/songs.ts` | Der Song-Katalog (reine Daten, von der AI geschrieben, durch `songs.test.ts` geprüft) |
-| `lib/theory/song-tab.ts` | Die Tabulatur eines Songs aus denselben Noten, ein Takt je System auf dem Handy |
+| `lib/theory/song-tab.ts` | Die Tabulatur eines Songs aus denselben Noten, je System, in der Zeilenbreite der Notenschrift |
 | `lib/theory/notensatz.ts` | Der Notensatz als Rechnung: Position auf der Linie, Hälse, Balken, Pausen, Systeme. Rein |
-| `components/session/noten-view.tsx` | Zeichnet den Notensatz als SVG; ein Takt je Zeile auf schmalem Platz, zwei auf breitem |
+| `components/session/noten-view.tsx` | Zeichnet den Notensatz als SVG; ein Takt je Zeile auf schmalem Platz, zwei auf breitem. `NotenMitTab`: unter jedem System seine Tabulatur |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
 | `lib/session/drills-sieben.ts` | Der Sieben-Saiter-Katalog (reine Daten, eigene Nummern) |
 | `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |
@@ -83,10 +85,11 @@
 | `lib/ui/kontrast.ts` | WCAG-Kontrast als Rechnung — Grundlage des Lesbarkeitstests |
 | `lib/ui/feuer.ts` | Die Rechnung des Pixelfeuers: Palette, Feld, ein Schritt. Rein, der Zufall kommt von aussen. |
 | `components/ui/pixel-feuer.tsx` | Zeichnet das Feuer auf eine Canvas; nur auf *Heute*, nicht bei „Bewegung reduzieren" |
+| `lib/ui/session-wache.ts` | Ob ein Block läuft; die Navigation fragt dann vor dem Verlassen |
 | `lib/ui/darstellung.ts` | Hell, dunkel oder Auto: die Regel, und das Skript, das sie vor dem ersten Anstrich setzt |
 | `components/session/darstellung-panel.tsx` | Die Wahl dazu, auf *Daten* |
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
-| `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen, Darstellung, Saisonales |
+| `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen, Darstellung, Saisonales, Stand der laufenden Session |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
 | `assets/logo/totenkopf.txt` | Das Zeichen (ein Totenkopf) als Pixelraster, 32 × 32. Quelle für alle Icons, `app/icon.svg` und den Banner. |

@@ -16,7 +16,13 @@ import { ACHTEL_JE_TAKT } from "./song"
 const PASST_AUFS_HANDY = 33
 const SAITEN = ["e", "B", "G", "D", "A", "E"]
 
-export function songTab(song: Song): string {
+/**
+ * Die Tabulatur als eine Zeichenfolge je System, in der Reihenfolge der
+ * Notenschrift. `proZeile` zwingt eine Zeilenbreite auf — der Notensatz setzt
+ * je nach Platz einen oder zwei Takte, und jedes System soll genau seine Takte
+ * darunter haben. Ohne Angabe rechnet die Funktion, wie viele aufs Handy passen.
+ */
+export function songTabSysteme(song: Song, proZeile?: number): string[] {
   const breiteste = Math.max(...song.noten.map((n) => `${n.griff.bund}`.length))
   const spalte = breiteste + 1
 
@@ -35,12 +41,16 @@ export function songTab(song: Song): string {
   }
 
   const breiteJeTakt = ACHTEL_JE_TAKT * spalte + 1
-  const proZeile = Math.max(1, Math.floor((PASST_AUFS_HANDY - 2) / breiteJeTakt))
+  const jeZeile = proZeile ?? Math.max(1, Math.floor((PASST_AUFS_HANDY - 2) / breiteJeTakt))
 
   const systeme: string[] = []
-  for (let ab = 0; ab < song.takte; ab += proZeile) {
-    const takte = Array.from({ length: Math.min(proZeile, song.takte - ab) }, (_, i) => takt(ab + i))
+  for (let ab = 0; ab < song.takte; ab += jeZeile) {
+    const takte = Array.from({ length: Math.min(jeZeile, song.takte - ab) }, (_, i) => takt(ab + i))
     systeme.push(SAITEN.map((name, saite) => `${name}|${takte.map((t) => t[saite]).join("|")}|`).join("\n"))
   }
-  return systeme.join("\n\n")
+  return systeme
+}
+
+export function songTab(song: Song): string {
+  return songTabSysteme(song).join("\n\n")
 }
