@@ -44,6 +44,12 @@ Notenschrift.
 - **Zeilen nach Platz, nicht nach Bildschirm:** ein Takt je Zeile, solange die
   Notenschrift unter 28 rem breit ist, sonst zwei (Container-Query). Zwei Takte
   auf 320 px machen die Linienabstände zu klein (gut sechs Pixel).
+- **Unter jedem System steht seine Tabulatur** (`NotenMitTab`). Zuerst alle
+  Noten und dann alle Tabs hiess auf dem Handy zwei Bildschirme scrollen, um
+  Zeile 1 mit Zeile 1 zu vergleichen. `songTabSysteme(song, proZeile)` nimmt die
+  Zeilenbreite der Notenschrift (ein oder zwei Takte) statt der eigenen, damit
+  beide dieselben Takte tragen. Dazu klebt beim Lesen eine schmale Zeile mit Zeit
+  und Tempo unter der Navigation, sobald die Zeitanzeige oben herausgescrollt ist.
 - **Der Schlüssel ist von Hand gezeichnet**, mit einer Linie. Er ist keine
   Schriftart.
 - **Gleichstand der Hälse:** zwei verbundene Achtel gleich weit von der

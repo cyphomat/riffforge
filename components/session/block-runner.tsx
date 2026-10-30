@@ -12,6 +12,7 @@ import { useMetronome } from "@/hooks/use-metronome"
 import { useOnsetMic } from "@/hooks/use-onset-mic"
 import { analyseTiming, suggestRating, type TimingAnalysis } from "@/lib/audio/timing"
 import { einmessung } from "@/lib/storage/lokal"
+import { setBlockLaeuft } from "@/lib/ui/session-wache"
 import { RATINGS, TECHNIQUE_LABELS, type Rating, type SessionBlock, type TimingResult } from "@/lib/session/types"
 import { MdPause, MdPlayArrow, MdSkipNext } from "react-icons/md"
 
@@ -110,6 +111,29 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
   }, [disableMic, drill.subdivision, isLastRound, metronome.bpm, onDone, onsets, stopMetronome])
 
   const timer = useCountdown(block.seconds, finishPlaying)
+
+  // Beim Lesen langer Noten scrollt die Zeit aus dem Bild; dann klebt eine
+  // schmale Zeile mit Zeit und Tempo unter der Navigation. Ohne Animation —
+  // in der Session bleibt es ruhig.
+  // Solange der Block Zeit sammelt, fragt die Navigation vor dem Verlassen.
+  const hatZeit = phase === "play" && (timer.isRunning || timer.elapsed > 0)
+  useEffect(() => {
+    setBlockLaeuft(hatZeit)
+    return () => setBlockLaeuft(false)
+  }, [hatZeit])
+
+  const platteRef = useRef<HTMLDivElement>(null)
+  const [platteWeg, setPlatteWeg] = useState(false)
+  useEffect(() => {
+    const platte = platteRef.current
+    if (!platte || typeof IntersectionObserver === "undefined") return
+    const beobachter = new IntersectionObserver(([eintrag]) => {
+      // Nur wenn sie oben herausgescrollt ist; unterhalb des Bildes (nach oben gescrollt) bleibt die Zeile weg.
+      setPlatteWeg(!eintrag.isIntersecting && eintrag.boundingClientRect.top < 0)
+    })
+    beobachter.observe(platte)
+    return () => beobachter.disconnect()
+  }, [phase])
   const { pause: pauseTimer } = timer
 
   // finishPlaying wird vom Timer aufgerufen und darf sich nicht bei jedem
@@ -245,9 +269,21 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
         </span>
       </div>
 
+      {platteWeg && (
+        <div
+          className="fixed inset-x-0 z-10 border-b border-line bg-panel px-3 py-1.5"
+          style={{ top: "calc(3.5rem + 8px + env(safe-area-inset-top, 0px))" }}
+        >
+          <div className="mx-auto flex max-w-[640px] items-baseline justify-between wide:max-w-[1080px]">
+            <span className="display num text-[22px] leading-none text-fg">{formatClock(timer.remaining)}</span>
+            <span className="ziffern text-[13px] text-muted">{metronome.bpm} BPM</span>
+          </div>
+        </div>
+      )}
+
       <div className="zwei-spalten mt-5">
       <div className="spalte space-y-5">
-      <div className="card plain winkel">
+      <div className="card plain winkel" ref={platteRef}>
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="kicker">Verbleibend</span>
@@ -341,7 +377,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
         <SongAnsicht song={drill.song} bpm={metronome.bpm} engine={engine} blockLaeuft={timer.isRunning} />
       )}
 
-      {drill.tab && <TabView tab={drill.tab} />}
+      {drill.tab && !drill.song && <TabView tab={drill.tab} />}
 
       <div>
         <h3 className="rule mb-2">Worauf achten</h3>

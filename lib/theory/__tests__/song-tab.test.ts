@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { SONGS } from "../songs"
-import { songTab } from "../song-tab"
+import { songTab, songTabSysteme } from "../song-tab"
 import type { Dauer, Song, SongNote } from "../song"
 
 const note = (saite: SongNote["griff"]["saite"], bund: number, start: number, dauer: Dauer = 2): SongNote => ({
@@ -67,5 +67,21 @@ describe("songTab", () => {
     // Nur Achtel 0 gespielt: alle anderen Spalten bleiben Striche.
     const zeilen = songTab(song([note(1, 5, 0)])).split("\n")
     expect(zeilen[0]).toBe("e|-5--------------|")
+  })
+})
+
+describe("songTabSysteme", () => {
+  it("ergibt zusammengesetzt dieselbe Tabulatur wie songTab", () => {
+    for (const eintrag of SONGS) {
+      expect(songTabSysteme(eintrag.song).join("\n\n")).toBe(songTab(eintrag.song))
+    }
+  })
+
+  it("legt die Zeilenbreite fest: ein Takt je System, oder zwei, bis nichts mehr übrig ist", () => {
+    for (const eintrag of SONGS) {
+      const { takte } = eintrag.song
+      expect(songTabSysteme(eintrag.song, 1)).toHaveLength(takte)
+      expect(songTabSysteme(eintrag.song, 2)).toHaveLength(Math.ceil(takte / 2))
+    }
   })
 })

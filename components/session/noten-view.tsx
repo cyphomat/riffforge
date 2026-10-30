@@ -1,5 +1,6 @@
 import { LINIE, OBEN, baueNotensatz, type Kopf, type PauseZeichen } from "@/lib/theory/notensatz"
 import { toeneOf, type Song } from "@/lib/theory/song"
+import { songTabSysteme } from "@/lib/theory/song-tab"
 
 /**
  * Die Notenschrift eines Songs, als SVG.
@@ -111,24 +112,31 @@ function NotenSvg({
   takteProZeile,
   mitNamen,
   className,
+  nurSystem,
 }: {
   song: Song
   takteProZeile: number
   mitNamen: boolean
   className: string
+  /** Zeigt nur dieses System (der Ausschnitt kommt aus dem viewBox), damit die Tabulatur direkt darunter stehen kann. */
+  nurSystem?: number
 }) {
   const satz = baueNotensatz(song, takteProZeile)
   const unten = OBEN + 4 * LINIE
+  const systemHoehe = satz.hoehe / satz.systeme.length
+  const sichtbar = nurSystem === undefined ? satz.systeme : [satz.systeme[nurSystem]]
+  const ausschnittY = nurSystem === undefined ? 0 : sichtbar[0].y0
+  const ausschnittH = nurSystem === undefined ? satz.hoehe : systemHoehe
 
   return (
     <svg
-      viewBox={`-1 0 ${satz.breite + 2} ${satz.hoehe}`}
+      viewBox={`-1 ${ausschnittY} ${satz.breite + 2} ${ausschnittH}`}
       role="img"
       aria-label={`Notenschrift, ${song.takte} Takte, Töne ${toeneOf(song).join(" ")}`}
       className={className}
       style={{ maxWidth: satz.breite * 2 }}
     >
-      {satz.systeme.map((system) => (
+      {sichtbar.map((system) => (
         <g key={system.y0} transform={`translate(0 ${system.y0})`}>
           <g className="stroke-stahl" strokeWidth={1}>
             {satz.linien.map((ly) => (
@@ -225,6 +233,43 @@ export function NotenView({
           <NotenSvg song={song} takteProZeile={2} mitNamen={mitNamen} className="mx-auto hidden h-auto w-full @md:block" />
         </>
       )}
+    </div>
+  )
+}
+
+/**
+ * Noten und Tabulatur im Wechsel: unter jedem System die Takte, die darin
+ * stehen. Wer beim Spielen liest, vergleicht Zeile für Zeile; zuerst alle
+ * Noten und dann alle Tabs hiess auf dem Handy zwei Bildschirme scrollen.
+ * Zeilenbreite wie bei `NotenView`: ein Takt je Zeile unter 28 rem, sonst zwei.
+ */
+export function NotenMitTab({ song, mitNamen = false }: { song: Song; mitNamen?: boolean }) {
+  const fassung = (proZeile: number, klasse: string) => {
+    const satz = baueNotensatz(song, proZeile)
+    const tabs = songTabSysteme(song, proZeile)
+    return (
+      <div className={`space-y-5 ${klasse}`}>
+        {satz.systeme.map((system, i) => (
+          <div key={system.y0}>
+            <NotenSvg
+              song={song}
+              takteProZeile={proZeile}
+              mitNamen={mitNamen}
+              nurSystem={i}
+              className="mx-auto block h-auto w-full"
+            />
+            <pre className="mt-1 overflow-x-auto font-mono text-[12.5px] leading-[1.6] text-muted sm:text-[13px]">
+              {tabs[i]}
+            </pre>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  return (
+    <div className="@container border border-line bg-sunken p-4">
+      {fassung(1, "@md:hidden")}
+      {fassung(2, "hidden @md:block")}
     </div>
   )
 }

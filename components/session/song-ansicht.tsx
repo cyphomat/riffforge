@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { NotenView } from "@/components/session/noten-view"
+import { NotenMitTab } from "@/components/session/noten-view"
 import { SongBedienung } from "@/components/session/song-bedienung"
 import type { AudioEngine } from "@/lib/audio/audio-engine"
 import type { Song } from "@/lib/theory/song"
@@ -36,7 +36,7 @@ export function SongAnsicht({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="rule flex-1">Noten</h3>
+        <h3 className="rule flex-1">Noten und Tabulatur</h3>
         <button
           className={`btn btn-small ${namen ? "" : "btn-ghost"}`}
           aria-pressed={namen}
@@ -45,7 +45,7 @@ export function SongAnsicht({
           Tonnamen
         </button>
       </div>
-      <NotenView song={song} mitNamen={namen} />
+      <NotenMitTab song={song} mitNamen={namen} />
       {blockLaeuft ? (
         <p className="text-[13px] text-dim">Anhören ist in der Pause und vor dem Los da — im Block läuft das Metronom.</p>
       ) : (

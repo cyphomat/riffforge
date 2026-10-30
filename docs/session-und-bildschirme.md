@@ -6,6 +6,25 @@
 
 ## Konventionen
 
+- **Eine verlassene Session wird nicht neu gewürfelt.** Im UX-Check kam heraus:
+  wer nach dem Warm-up die Seite verliess und zurückkam, bekam ein *anderes*
+  Warm-up, weil der Plan an Tag und Log hängt und der Log sich geändert hatte.
+  Gemerkt wird deshalb nur die Stelle (`SessionStand`, `mga.session-stand.v1`),
+  nicht der Plan; der Plan wird aus dem Log *zu Beginn* neu gebaut
+  (`ausgangsLog`: der Log ohne alles seit `startedAt`) und ist derselbe. Der
+  Log wird dabei nie umgeschrieben. Der Stand gilt nur am selben Tag und für
+  dieselbe Anfrage; nach „+5 Minuten" wird nichts mehr gemerkt, weil dieser
+  Plan so nicht zurückzurechnen ist. Ein Tipp auf die Navigation während ein
+  Block läuft fragt in der Leiste (`session-wache.ts`), kein `confirm()`.
+- **Nach einem sicheren Treffer ein Tap.** Antwort und Sicherheit stehen vor
+  der Auflösung; danach noch vier Noten zu verlangen war die dritte Auskunft
+  zur selben Frage und kostete die Hälfte aller Taps einer Session
+  (`bewertungsvorschlag`). Richtig und mindestens „ziemlich sicher" heisst
+  `Weiter` (Gut); falsch, geraten, ohne Angabe oder ungemessen bleibt die
+  volle Wahl. FSRS rechnet weiter nur mit der Note.
+- **Heute sagt, dass schon geübt wurde** (`heuteGeuebt`): in Stahlblau in der
+  Datumszeile, und der Startknopf wird zum Zweitknopf — Bernstein bleibt bei
+  dem, was als Nächstes zählt.
 - **Ein leeres Raster ist keine Auskunft.** Der Übungskalender zeigte feste
   sechzehn Wochen — einem Wiedereinsteiger also hundertzwölf leere Kästchen
   und darunter „0 von 112 Tagen". `weeksFor` lässt ihn mit dem Log wachsen.
