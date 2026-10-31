@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1441%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1457%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -227,6 +227,7 @@ the warm-up, a hand for palm muting, the X of a dead note.
 | Three Notes | Pentatonic | Read and play three notes: A, C and D, with half and quarter notes | 50 → 80 |
 | Eighth Pendulum | Pentatonic | Eighth notes and rests: an eighth is half a quarter | 60 → 90 |
 | Distances | Pentatonic | Hear and read distances: fourth and fifth across several strings | 60 → 100 |
+| Two Places | Pentatonic | Positions: the same note in two places, first in position 1, then in position 2 | 50 → 80 |
 
 ## One lick
 
@@ -267,8 +268,8 @@ is something the app cannot know, and it does not claim to —
 
 ## Songs
 
-Below the riffs sit three short songs that do not just train a technique but
-**reading music**: notes, distances and lengths. Every song has a learning
+Below the riffs sit four short songs that do not just train a technique but
+**reading music**: notes, distances, lengths and positions. Every song has a learning
 goal, and the app checks that it trains exactly that — a song that promises
 three notes and plays two does not pass the test.
 
@@ -277,6 +278,7 @@ three notes and plays two does not pass the test.
 | Three Notes | A C D | Half, quarter | major second, minor third |
 | Eighth Pendulum | A C D E | Quarter, eighth, quarter rest | major second, minor third |
 | Distances | A C D E G | Half, quarter, eighth | major second up to a fifth |
+| Two Places | A C D E G | Half, quarter | major second, minor third, fourth; positions 1 and 2 |
 
 The block shows the notation with the note names, the tab below it, and lets
 you listen to the song — with count-in, click and loop, at the tempo of the
