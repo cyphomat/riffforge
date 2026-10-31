@@ -2,6 +2,7 @@ import { stufeInForm } from "./caged"
 import { dreiklangTon } from "./dreiklaenge"
 import { INTERVALLE, positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
 import { HOER_AUSWAHL, HOER_REIHENFOLGE, type Richtung } from "./gehoer"
+import { NOTEN_KARTEN } from "./noten-karten"
 import type { Griff, TheoryCard } from "./types"
 
 /**
@@ -2551,6 +2552,8 @@ export const THEORY_CARDS: TheoryCard[] = [
       richtig: ["A#", "Bb"],
     },
   },
+  // Karten mit Notenbild: gerechnet aus den Noten, siehe noten-karten.ts.
+  ...NOTEN_KARTEN,
 ]
 
 

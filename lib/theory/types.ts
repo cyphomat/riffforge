@@ -1,6 +1,7 @@
 import { z } from "zod"
 import type { Technique } from "@/lib/session/types"
 import type { Richtung } from "./gehoer"
+import type { Song } from "./song"
 
 /**
  * Die Wissensdatenbank: ein Begriff, eine Erklärung, mindestens eine Frage.
@@ -85,6 +86,12 @@ export interface Frage {
   rhythmus?: { figurId: string; bpm: number; takte: number }
   /** Nur bei "gehoert": welcher Abstand, und ob der zweite Ton höher oder tiefer liegt. */
   hoeren?: { halbtoene: number; richtung: Richtung }
+  /**
+   * Ein kleines Notenbild zur Frage, gezeichnet wie die Notenschrift der Songs.
+   * Die Antwort wird aus diesem Bild gerechnet (`lib/theory/noten-karten.ts`),
+   * damit beide nicht auseinanderlaufen.
+   */
+  notenbild?: Song
 }
 
 export interface TheoryCard {

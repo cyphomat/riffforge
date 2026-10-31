@@ -103,9 +103,26 @@ schreiben, zum Anhören, und mit derselben YIN wie das Stimmgerät nachmessen:
 Tonhöhe jeder Note, Pegel von Klick und Melodie, Stille nach dem Notenende.
 So ist der Nachklang aufgefallen.
 
+## Die klingende Note leuchtet
+
+Beim Anhören färbt sich der Notenkopf der Note, die gerade zu hören ist, mit Hals
+und Tonname bernsteinfarben, und der Kopf wird um knapp ein Drittel größer —
+sonst hinge es allein an der Farbe. Gerechnet wird in zwei Schichten:
+
+- `klingendeNoten` (`song-ablauf.ts`) ist rein: Töne, Beginn des Durchgangs, Zeit
+  → welche Noten klingen. Eine Note gilt von ihrem Start bis zu ihrem Ende, dort,
+  wo auch abgedämpft wird, nicht bis zum Ausklingen.
+- `SongPlayer.klingend()` merkt sich die geplanten Durchgänge und fragt die Uhr
+  des einen AudioContext, abzüglich `outputLatency`. Ohne den Abzug leuchtete die
+  Note, bevor man sie hört — bei Bluetooth-Kopfhörern um Zehntelsekunden.
+
+Die Anzeige schaut je Bild nach (`requestAnimationFrame` in `SongBedienung`) und
+meldet nur Änderungen nach oben (`SongAnsicht` → `NotenMitTab`). Die Tabulatur
+zieht nicht mit: sie ist Text in einem `pre`, und ein Hervorheben dort wäre ein
+Eingriff in den Umbruch. Im laufenden Block leuchtet nichts, dort gibt es kein
+Anhören.
+
 ## Offen
 
-- Die klingende Note in der Notenschrift hervorheben, während der Song läuft.
-- Wissenskarten zu Notenwerten, Notennamen und Abständen, die die Notenschrift
-  wiederverwenden.
+- Die Tabulatur beim Anhören mitleuchten lassen.
 - Weitere Songs: Lernziele in der Reihenfolge Töne, Längen, Abstände, dann Lagen.
