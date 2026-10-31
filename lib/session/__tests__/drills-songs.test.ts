@@ -52,7 +52,7 @@ describe("SONG_DRILLS", () => {
   })
 
   it("lässt das Metronom Achtel klicken, wenn der Song Achtel hat, sonst Viertel", () => {
-    expect(SONG_DRILLS.map((d) => d.subdivision)).toEqual([1, 2, 2])
+    expect(SONG_DRILLS.map((d) => d.subdivision)).toEqual([1, 2, 2, 1])
     expect(SONG_DRILLS.every((d) => d.beatsPerBar === 4)).toBe(true)
   })
 

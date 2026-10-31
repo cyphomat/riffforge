@@ -10,10 +10,11 @@ import { songSchema, type SongNote } from "./song"
  * einhalten muss, und `pruefeSong` rechnet nach, dass er übt, was sein
  * Lernziel sagt.
  *
- * Alle drei liegen in Lage 1 der A-Moll-Pentatonik, auf der D-, G- und
+ * Die ersten drei liegen in Lage 1 der A-Moll-Pentatonik, auf der D-, G- und
  * H-Saite. Die Hand bleibt dabei ruhig, und es kommen nur Naturtöne vor, also
  * keine Vorzeichen in der Notenschrift. Die Reihenfolge ist der Weg: erst
- * wenige Töne und lange Werte, dann kürzere, dann weitere Abstände.
+ * wenige Töne und lange Werte, dann kürzere, dann weitere Abstände, dann der
+ * Ort: derselbe Ton in zwei Lagen.
  */
 
 export const songEintragSchema = z.object({
@@ -31,6 +32,11 @@ export const songEintragSchema = z.object({
   why: z.string().min(1),
   startBpm: z.number().int().min(20).max(300),
   targetBpm: z.number().int().min(20).max(300),
+  /**
+   * Die Pentatonik-Lagen, in denen der Song liegt. Fehlt das Feld, ist es Lage 1;
+   * jede Note muss in einer der genannten Lagen liegen (`songs.test.ts`).
+   */
+  lagen: z.array(z.number().int().min(1).max(5)).min(1).optional(),
   song: songSchema,
 })
 
@@ -43,12 +49,18 @@ export type SongEintrag = z.infer<typeof songEintragSchema>
  *   E4 = H-Saite, Bund 5     G4 = H-Saite, Bund 8
  *
  * Geschrieben steht jeder Ton eine Oktave höher, wie bei jeder Gitarre.
+ *
+ * In Lage 2 liegen A, D und G an denselben Stellen; nur C und E wandern:
+ *
+ *   C4 = D-Saite, Bund 10    E4 = G-Saite, Bund 9
  */
 const A3 = { saite: 4, bund: 7 } as const
 const C4 = { saite: 3, bund: 5 } as const
 const D4 = { saite: 3, bund: 7 } as const
 const E4 = { saite: 2, bund: 5 } as const
 const G4 = { saite: 2, bund: 8 } as const
+const C4_LAGE2 = { saite: 4, bund: 10 } as const
+const E4_LAGE2 = { saite: 3, bund: 9 } as const
 
 /** Eine Note ohne Bindung: wo sie liegt, wann sie beginnt (in Achteln) und wie lang sie ist. */
 function n(griff: SongNote["griff"], start: number, dauer: SongNote["dauer"]): SongNote {
@@ -149,6 +161,43 @@ export const SONGS: SongEintrag[] = [
         n(A3, 28, 4),
       ],
       lernziel: { toene: ["A", "C", "D", "E", "G"], abstaende: [2, 3, 5, 7], notenwerte: [4, 2, 1] },
+    },
+  },
+  {
+    id: "song-zwei-orte",
+    titel: "Zwei Orte",
+    ziel: "Lagen: derselbe Ton an zwei Orten, erst in Lage 1, dann in Lage 2",
+    cues: [
+      "Erst anhören: beide Hälften klingen gleich — es sind dieselben Töne",
+      "Beim C und beim E wandert die Hand, A, D und G bleiben, wo sie sind",
+      "Die Tonnamen laut mitsprechen, auch in der zweiten Hälfte",
+    ],
+    why: "Auf der Gitarre liegt derselbe Ton an mehreren Stellen: das C auf der G-Saite im fünften Bund ist dasselbe wie das C auf der D-Saite im zehnten. Deshalb sehen beide Hälften in der Notenschrift gleich aus, und nur die Tabulatur ändert sich. Eine Lage ist ein Ort für die Hand, keine andere Melodie.",
+    startBpm: 50,
+    targetBpm: 80,
+    lagen: [1, 2],
+    song: {
+      grundton: "A",
+      takte: 4,
+      // Takt 1–2 in Lage 1, Takt 3–4 dieselbe Melodie in Lage 2:
+      // C D E G | E D A (Halbe) — der Sprung D–A ist die Quarte aus „Abstände“.
+      noten: [
+        n(C4, 0, 2),
+        n(D4, 2, 2),
+        n(E4, 4, 2),
+        n(G4, 6, 2),
+        n(E4, 8, 2),
+        n(D4, 10, 2),
+        n(A3, 12, 4),
+        n(C4_LAGE2, 16, 2),
+        n(D4, 18, 2),
+        n(E4_LAGE2, 20, 2),
+        n(G4, 22, 2),
+        n(E4_LAGE2, 24, 2),
+        n(D4, 26, 2),
+        n(A3, 28, 4),
+      ],
+      lernziel: { toene: ["A", "C", "D", "E", "G"], abstaende: [2, 3, 5], notenwerte: [4, 2] },
     },
   },
 ]

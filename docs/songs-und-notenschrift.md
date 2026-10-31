@@ -21,6 +21,27 @@ Die Songs schreibt die AI in einer Sitzung, `songs.test.ts` prüft sie. Ein
 Skript, das nicht prüft, wäre ein Wunsch; deshalb liegt die Prüfung in den
 Tests und läuft mit `pnpm check`.
 
+## Lagen: „Zwei Orte"
+
+Der vierte Song übt keinen neuen Ton und keinen neuen Wert, sondern den **Ort**:
+Takt 1–2 liegen in Lage 1, Takt 3–4 sind dieselbe Melodie in Lage 2. Das C wandert
+von der G-Saite (Bund 5) auf die D-Saite (Bund 10), das E von der H-Saite (Bund 5) auf
+die G-Saite (Bund 9); A, D und G bleiben. Die Notenschrift ist in beiden Hälften
+identisch, nur die Tabulatur ändert sich — das ist der Punkt: derselbe Ton, zwei Orte.
+
+- **`lagen` am Katalogeintrag, nicht im Lernziel.** Töne, Abstände und Werte rechnet
+  `pruefeSong` aus den Noten nach; eine Lage ist eine Aussage über den Hals, nicht
+  über das Notenbild, und stünde zweimal in den Daten. Der Test verlangt, dass jede
+  Note in einer der genannten Lagen liegt (ohne Angabe: Lage 1), und `Zwei Orte`
+  zusätzlich, dass beide Hälften dieselben Töne im selben Rhythmus spielen.
+- **Nur C und E wandern.** In Lage 2 liegen A, D und G an denselben Stellen. Das ist
+  kein Mangel: so sieht man, *welche* Töne einen neuen Ort brauchen.
+- **Kein neuer Notenwert.** Der Song hat nur Halbe und Viertel; wer die Lagen üben
+  will, soll nicht nebenbei Achtel lesen müssen.
+- **Ob die Melodie in Lage 2 angenehm liegt,** hat bisher nur die Rechnung geprüft,
+  nicht eine Hand: der Sprung von C (D-Saite, Bund 10) auf D (G-Saite, Bund 7)
+  ist der weiteste.
+
 ## Die Raster-Regel
 
 Eine Note beginnt nur auf einem Vielfachen ihrer eigenen Länge (in Achteln): eine
@@ -125,4 +146,6 @@ Anhören.
 ## Offen
 
 - Die Tabulatur beim Anhören mitleuchten lassen.
-- Weitere Songs: Lernziele in der Reihenfolge Töne, Längen, Abstände, dann Lagen.
+- Weitere Songs: Töne, Längen, Abstände und Lagen sind abgedeckt. Als Nächstes
+  brauchen sie Sechzehntel, Punktierte oder Vorzeichen im Notensatz (siehe „Noch
+  nicht gesetzt") — oder eine dritte Lage, wenn die Hand die zweite sicher hat.

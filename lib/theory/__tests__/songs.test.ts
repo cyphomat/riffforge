@@ -49,12 +49,12 @@ describe.each(SONGS.map((eintrag) => [eintrag.id, eintrag] as const))("%s", (_id
     expect(noteAt(letzte.griff)).toBe(song.grundton)
   })
 
-  it("bleibt in Lage 1 der Moll-Pentatonik", () => {
-    // Die Hand wandert nicht: das ist der Punkt dieser Songs, und ein Ton
-    // außerhalb wäre ein Lagenwechsel, den niemand angekündigt hat.
-    const lage = pentatonikLage(song.grundton, 1)
+  it("bleibt in den Lagen der Moll-Pentatonik, die er nennt", () => {
+    // Ohne Angabe ist es Lage 1: die Hand wandert nicht, und ein Ton außerhalb
+    // wäre ein Lagenwechsel, den niemand angekündigt hat.
+    const lagen = (eintrag.lagen ?? [1]).flatMap((nr) => pentatonikLage(song.grundton, nr as 1 | 2 | 3 | 4 | 5))
     for (const note of song.noten) {
-      expect(lage.some((griff) => sameGriff(griff, note.griff))).toBe(true)
+      expect(lagen.some((griff) => sameGriff(griff, note.griff))).toBe(true)
     }
   })
 
@@ -106,5 +106,37 @@ describe("der Weg durch den Katalog", () => {
   it("führt die Achtel im zweiten Song ein", () => {
     expect(eins.noten.some((n) => n.dauer === 1)).toBe(false)
     expect(zwei.noten.some((n) => n.dauer === 1)).toBe(true)
+  })
+})
+
+describe("Zwei Orte", () => {
+  const eintrag = SONGS_BY_ID["song-zwei-orte"]
+  const { noten } = eintrag.song
+  const haelfte = noten.length / 2
+  const erste = noten.slice(0, haelfte)
+  const zweite = noten.slice(haelfte)
+
+  it("liegt in Lage 1 und Lage 2 und kommt als letzter Song im Katalog", () => {
+    expect(eintrag.lagen).toEqual([1, 2])
+    expect(SONGS[SONGS.length - 1]).toBe(eintrag)
+    for (const frueher of SONGS.slice(0, -1)) expect(frueher.lagen ?? [1]).toEqual([1])
+  })
+
+  it("spielt in beiden Hälften dieselben Töne im selben Rhythmus", () => {
+    expect(zweite.map((n) => midiAt(n.griff))).toEqual(erste.map((n) => midiAt(n.griff)))
+    expect(zweite.map((n) => n.start - 16)).toEqual(erste.map((n) => n.start))
+    expect(zweite.map((n) => n.dauer)).toEqual(erste.map((n) => n.dauer))
+  })
+
+  it("greift in der zweiten Hälfte nur C und E an anderen Stellen", () => {
+    // C und E wandern, A, D und G bleiben: genau das ist, was der Song zeigt.
+    const gewandert = zweite.filter((n, i) => !sameGriff(n.griff, erste[i].griff)).map((n) => noteAt(n.griff))
+    expect(new Set(gewandert)).toEqual(new Set(["C", "E"]))
+  })
+
+  it("liegt in der ersten Hälfte in Lage 1, in der zweiten in Lage 2", () => {
+    const lage = (nr: 1 | 2) => pentatonikLage("A", nr)
+    for (const n of erste) expect(lage(1).some((g) => sameGriff(g, n.griff))).toBe(true)
+    for (const n of zweite) expect(lage(2).some((g) => sameGriff(g, n.griff))).toBe(true)
   })
 })
