@@ -194,7 +194,11 @@
   Hall, Verzerrer vor dem Amp, Modulation dahinter). Was sich streiten lässt, steht
   als `ausnahme` am Eintrag und nicht in der Reihenfolge: Phaser und Flanger
   gehören im Original vor den Amp, ein Fuzz Face vor das Wah. Die Einträge sind
-  eigener Text aus allgemeinem Gitarrenwissen, ohne Quellen geprüft; Geräte
-  stehen nur als Beispiele. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
+  eigener Text, am 31.10.2026 per Websuche gegengelesen. Die Quellen sind
+  überwiegend Foren, Händlerseiten und Gitarren-Blogs, keine Herstellerdokumente;
+  die Reihenfolgen sind Konvention, die Einstellungen Ausgangspunkte. Dabei
+  korrigiert: Hendrix stellte das Wah *vor* das Fuzz Face, der Federhall eines
+  Fender-Amps sitzt zwischen Vor- und Endstufe, und nicht jeder Octaver ist
+  einstimmig. Geräte stehen nur als Beispiele. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
   rechnet ein Test nach. Als Nächstes möglich: ein Delay-Rechner, der die Zeit
   aus dem Tempo des Blocks nimmt.

@@ -103,7 +103,18 @@ describe("die Kette", () => {
 describe("die Ausnahmen", () => {
   it("nennen sie bei den Pedalen, über die man streitet", () => {
     // Wer hier nichts stehen hat, behauptet, es gäbe keinen Streit.
-    for (const id of ["fx-wah", "fx-fuzz", "fx-eq", "fx-gate", "fx-phaser", "fx-flanger", "fx-delay", "fx-booster"]) {
+    for (const id of [
+      "fx-wah",
+      "fx-fuzz",
+      "fx-eq",
+      "fx-gate",
+      "fx-phaser",
+      "fx-flanger",
+      "fx-delay",
+      "fx-booster",
+      "fx-whammy",
+      "fx-kompressor",
+    ]) {
       expect(EFFEKTE_BY_ID[id].ausnahme, id).toBeTruthy()
     }
   })

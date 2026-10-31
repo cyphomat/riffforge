@@ -126,11 +126,11 @@ export const EFFEKTE: Effekt[] = [
     metal:
       "Leads und Soli mit Stimme drin, oder halb getreten als fester, schneidender Filter für ein Solo.",
     einstellung:
-      "Pedal ganz zurück klingt dumpf, ganz vorne schneidend. Zum Stehenlassen etwa zwei Drittel vorne.",
+      "Pedal ganz zurück klingt dumpf, ganz vorne schneidend. In der Mitte stehen gelassen wird es zu einem festen Filter.",
     fallstrick:
-      "Hinter dem Verzerrer klingt es dünn und fiept, denn das Filter braucht ein ungezerrtes Signal, das es durchfahren kann.",
+      "Hinter dem Verzerrer wird der Sweep schwächer und klingt anders: der Verzerrer hat das Signal schon verdichtet, bevor das Filter es bekommt.",
     ausnahme:
-      "Hendrix schaltete das Fuzz Face vor das Wah: das klingt rauer und kreischender, weil das Wah ein schon verzerrtes Signal filtert.",
+      "Hendrix spielte das Wah vor dem Fuzz Face, so wie es üblich ist. Das Problem ist das Fuzz Face: es mag kein Wah davor und kann dann quietschen. Deshalb stellen manche das Fuzz vor das Wah, andere einen Puffer dazwischen.",
     beispiele: ["Dunlop Cry Baby", "Vox V847"],
   },
   {
@@ -146,7 +146,9 @@ export const EFFEKTE: Effekt[] = [
     einstellung:
       "Bei fester Verschiebung den Effektanteil auf 100 % und mit dem Pedal dosieren; als Harmonizer beide Signale etwa gleich laut.",
     fallstrick:
-      "Das Pedal verfolgt die Tonhöhe und braucht dafür ein klares Signal. Hinter Verzerrung verschluckt es Töne und wird unsicher.",
+      "Das Pedal verfolgt die Tonhöhe und braucht dafür ein klares Signal. Bei Akkorden wird es unsicher und schwankt, hinter Verzerrung noch mehr.",
+    ausnahme:
+      "Manche stellen ihn hinter den Verzerrer: das klingt anders und folgt schlechter. Ein mehrstimmiger Harmonizer steht dort häufiger als ein klassisches Whammy.",
     beispiele: ["DigiTech Whammy", "Boss PS-6"],
   },
   {
@@ -159,7 +161,7 @@ export const EFFEKTE: Effekt[] = [
     metal:
       "Einzelne Töne bekommen Gewicht: ein Riff auf der tiefen Saite klingt wie mit Bass dazu, oder ein Solo wird dicker.",
     einstellung: "Die tiefe Oktave nur halb so laut wie das Originalsignal, sonst frisst sie den Ton.",
-    fallstrick: "Nur für einzelne Töne. Bei Akkorden findet das Pedal keine eindeutige Tonhöhe und blubbert.",
+    fallstrick: "Einfache (monophone) Octaver folgen nur einzelnen Tönen; bei Akkorden blubbern sie. Polyphone Modelle wie der Boss OC-5 im Poly-Modus kommen mit Akkorden besser zurecht.",
     beispiele: ["Boss OC-5", "EHX Nano POG"],
   },
   {
@@ -174,9 +176,9 @@ export const EFFEKTE: Effekt[] = [
       "Selten: in cleanen Passagen und bei Funk-Anschlägen. Bei viel Gain macht der Amp die Kompression ohnehin selbst.",
     einstellung: "Verhältnis etwa 4:1, Attack mittel, Pegel so, dass der saubere Ton nur leicht einspringt.",
     fallstrick:
-      "Hebt das Rauschen mit an. Vor starkem Gain verwischt er zusätzlich, was man spielt, weil der Anschlag verschwindet.",
+      "Ist selbst rauschig und hebt Nebengeräusche mit an. Vor starkem Gain wird dieses Rauschen mitverstärkt.",
     ausnahme:
-      "Am Ende der Kette im Loop wirkt er als Begrenzer, damit ein lautes Solo nicht übersteuert; das ist selten.",
+      "Hinter dem Verzerrer quetscht er einen schon verdichteten Ton und klingt platt. Manche nehmen das in Kauf, weil das Rauschen dann kleiner bleibt.",
     beispiele: ["MXR Dyna Comp", "Boss CS-3"],
   },
   {
@@ -191,7 +193,7 @@ export const EFFEKTE: Effekt[] = [
     einstellung: "Sustain nach Gefühl; das Gitarren-Volume zurückdrehen, bis es aufräumt, dann ist es ein zweiter Sound.",
     fallstrick:
       "Fuzz reagiert auf alles, was davor steht: ein Buffer oder Wah davor ändert den Klang deutlich, und nicht immer zum Guten.",
-    ausnahme: "Ein Fuzz Face und ähnliche Pedale wollen die Gitarre direkt hören, also noch vor Buffer und Wah.",
+    ausnahme: "Ein Fuzz Face, besonders mit Germanium, will die Gitarre direkt hören, also vor Buffer und Wah. Mit einem Puffer zwischen Wah und Fuzz geht auch die übliche Reihenfolge.",
     beispiele: ["EHX Big Muff Pi", "Dunlop Fuzz Face"],
   },
   {
@@ -223,7 +225,7 @@ export const EFFEKTE: Effekt[] = [
     metal:
       "Fast jede Metal-Kette hat einen davor: er strafft den Bass vor der Hochgain-Vorstufe, deshalb klingen Palm Mutes klarer.",
     einstellung:
-      "Drive ganz oder fast ganz zurück, Level voll aufgedreht, Tone etwa auf zwölf Uhr. Das Pedal soll nicht zerren, sondern den Amp anschieben.",
+      "Drive ganz oder fast ganz zurück, Level hoch (ab etwa zwei Uhr), Tone nach Geschmack. Das Pedal soll nicht zerren, sondern den Amp anschieben.",
     fallstrick:
       "Viel Drive am Pedal gibt matschige Mitten, die die Vorstufe noch einmal verzerrt.",
     ausnahme:
@@ -255,7 +257,7 @@ export const EFFEKTE: Effekt[] = [
       "Hebt oder senkt feste Frequenzbänder. Vor dem Amp formt er, was in die Verzerrung geht.",
     metal:
       "Mitten anheben und tiefen Bass abschneiden: der Amp zerrt dann nicht den Tiefbass mit, und der Ton wird straff.",
-    einstellung: "Unter 80 Hz absenken, bei etwa 800 Hz um drei bis sechs Dezibel anheben.",
+    einstellung: "Unter 80 Hz absenken, bei etwa 700 bis 800 Hz um drei bis sechs Dezibel anheben.",
     fallstrick:
       "Vor dem Amp ändert er auch, wie stark der Amp zerrt: wer Pegel anhebt, bekommt mehr Gain, nicht nur mehr Lautstärke.",
     ausnahme:
@@ -308,7 +310,7 @@ export const EFFEKTE: Effekt[] = [
       "Schwelle so, dass es beim Ausklingen sauber schliesst, aber ein leise ausklingender Akkord nicht abgehackt wird.",
     fallstrick: "Zu hoch eingestellt wird es zum Schneidwerkzeug: Ausklang und leise Stellen werden abgehackt.",
     ausnahme:
-      "Wer mit Pedalen zerrt statt mit dem Amp, stellt es hinter die Verzerrer und vor den Amp. In beiden Fällen steht es vor Delay und Reverb, sonst schneidet es deren Ausklang ab.",
+      "Vor dem Amp hört das Gate auf das Brummen der Tonabnehmer, im Loop nur auf das Rauschen der Vorstufe; manche nehmen zwei. Wer mit Pedalen zerrt statt mit dem Amp, stellt es hinter die Verzerrer. In beiden Fällen steht es vor Delay und Reverb, sonst schneidet es deren Ausklang ab.",
     beispiele: ["ISP Decimator", "Boss NS-2"],
   },
   {
@@ -363,10 +365,10 @@ export const EFFEKTE: Effekt[] = [
     platz: 60,
     wofuer:
       "Wie ein Chorus, aber mit sehr kurzer Verzögerung, die gegen das Original schwebt. Das gibt ein Rauschen wie ein Düsenjäger.",
-    metal: "Soli und Breaks der Achtziger: das Rauschen, das durch einen Akkord zieht.",
+    metal: "Eddie Van Halens Sweeps auf Stücken wie „Unchained“: das Rauschen, das durch einen Akkord zieht.",
     einstellung: "Rate langsam, Manual mittig, Feedback gering.",
     fallstrick: "Viel Feedback klingt metallisch-scharf und ist laut.",
-    ausnahme: "Wie beim Phaser vor dem Amp, wenn die Verzerrung mitkreisen soll.",
+    ausnahme: "Wie beim Phaser vor dem Amp, wenn die Verzerrung mitkreisen soll. Van Halen stellte den Flanger dort sogar vor den Phase 90.",
     beispiele: ["MXR M117R", "Boss BF-3"],
   },
   {
@@ -380,7 +382,7 @@ export const EFFEKTE: Effekt[] = [
     einstellung: "Rate auf das Tempo des Songs (Achtel oder Viertel), Depth mittel.",
     fallstrick:
       "Nicht verwechseln mit dem Tremolohebel der Gitarre: dort ändert sich die Tonhöhe, hier die Lautstärke.",
-    ausnahme: "Alte Röhrenamps haben es eingebaut, hinter der Vorstufe, deshalb steht es meist im Loop.",
+    ausnahme: "Alte Fender-Amps mischen es erst nach den Vorstufenstufen ein und hinter dem Hall, sodass die Hallfahne mitpulsiert. Als Pedal geht das, wenn man es hinter den Hall stellt.",
     beispiele: ["Boss TR-2"],
   },
   {
@@ -410,7 +412,7 @@ export const EFFEKTE: Effekt[] = [
       "Dezent bei Leads und Cleanpassagen. Im Rhythmus bleibt er weg, sonst verschwimmen die Palm Mutes.",
     einstellung: "Mix zehn bis zwanzig Prozent bei Leads, Decay ein bis zwei Sekunden; lieber Plate oder Room als einen langen Hall.",
     fallstrick: "Viel Hall und viel Gain schmieren zusammen: der Hall wird mit der Verzerrung zu Brei.",
-    ausnahme: "Der Federhall im Amp sitzt in der Endstufe, hinter allem anderen.",
+    ausnahme: "Der Federhall in Fender-Amps sitzt zwischen Vorstufe und Endstufe, also etwa dort, wo auch der FX-Loop liegt.",
     beispiele: ["TC Hall of Fame", "Boss FRV-1"],
   },
   {
@@ -439,7 +441,7 @@ export const EFFEKTE: Effekt[] = [
     metal:
       "Im Metal kommt die Verzerrung aus der Vorstufe, die Endstufe bleibt möglichst sauber und gibt Druck.",
     einstellung: "Master so, dass der Amp laut genug ist, ohne dass die Endstufe in die Sättigung kommt.",
-    fallstrick: "Ein Röhrenamp läuft nie ohne Box oder Last: Endstufenröhren und Trafo gehen sonst kaputt.",
+    fallstrick: "Ein Röhrenamp wird nie ohne Box oder Last gespielt: Endstufenröhren und Ausgangsübertrager können sonst Schaden nehmen.",
   },
   {
     id: "fx-box",
@@ -450,7 +452,7 @@ export const EFFEKTE: Effekt[] = [
     wofuer:
       "Die Box formt den Klang stärker als jedes Pedal: sie filtert Höhen und Tiefbass und gibt die Mitten. Mikrofon oder Impulsantwort (IR) fangen genau das ein.",
     metal:
-      "Die 4x12-Box mit Celestion Vintage 30 ist der Standard der Metal-Sounds; Modeler laden eine IR statt einer echten Box.",
+      "Die 4x12-Box mit Celestion Vintage 30 ist im Metal weit verbreitet: die Mesa-Rectifier-4x12 trägt vier davon. Modeler laden eine IR statt einer echten Box.",
     einstellung:
       "Mikrofon nahe an der Kappe: hell und scharf, zum Rand hin dunkler. Bei einer IR eine passende Box wählen und den Bass unter 80 Hz abschneiden.",
     fallstrick:
