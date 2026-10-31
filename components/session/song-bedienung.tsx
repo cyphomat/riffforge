@@ -32,12 +32,15 @@ export function SongBedienung({
   bpm,
   onBpm,
   engine,
+  onKlingend,
 }: {
   song: Song
   bpm: number
   /** Wenn gesetzt, zeigt die Bedienung Tempoknöpfe und meldet das neue Tempo. */
   onBpm?: (bpm: number) => void
   engine: AudioEngine
+  /** Meldet bei jedem Wechsel, welche Noten gerade zu hören sind; leer, wenn nichts klingt oder angehalten ist. */
+  onKlingend?: (noten: number[]) => void
 }) {
   const [spielt, setSpielt] = useState(false)
   // Zum Üben ist die Schleife der Normalfall: ein Song, der nach einem
@@ -49,6 +52,30 @@ export function SongBedienung({
   )
 
   useEffect(() => () => player.dispose(), [player])
+
+  // Solange gespielt wird, schaut die Anzeige je Bild auf die Uhr des Players.
+  // Gemeldet wird nur, wenn sich etwas ändert, damit nicht 60-mal in der
+  // Sekunde neu gezeichnet wird.
+  useEffect(() => {
+    if (!onKlingend) return
+    if (!spielt) {
+      onKlingend([])
+      return
+    }
+    let bild = 0
+    let zuletzt = ""
+    const schauen = () => {
+      const jetzt = player.klingend()
+      const schluessel = jetzt.join(",")
+      if (schluessel !== zuletzt) {
+        zuletzt = schluessel
+        onKlingend(jetzt)
+      }
+      bild = requestAnimationFrame(schauen)
+    }
+    bild = requestAnimationFrame(schauen)
+    return () => cancelAnimationFrame(bild)
+  }, [spielt, player, onKlingend])
   useEffect(() => player.setBpm(bpm), [bpm, player])
 
   const umschalten = () => {

@@ -16,9 +16,26 @@ const SCHLUESSEL =
   "M14 24 C16 21 20 22 20 26 C20 31 14 34 10 30 C5 26 8 16 14 8 C19 2 18 -8 15 -13 " +
   "C12 -8 14 0 14 12 L14 36 C14 42 8 43 8 39 C8 36 12 36 12 39"
 
-function KopfZeichen({ kopf, mitNamen, namenY }: { kopf: Kopf; mitNamen: boolean; namenY: number }) {
+/**
+ * `klingt`: die Note ist gerade zu hören. Bernstein, weil es das ist, was
+ * zählt, und größer, damit es nicht allein an der Farbe hängt — wer Farben
+ * schlecht trennt, sieht den dickeren Kopf.
+ */
+function KopfZeichen({
+  kopf,
+  mitNamen,
+  namenY,
+  klingt,
+}: {
+  kopf: Kopf
+  mitNamen: boolean
+  namenY: number
+  klingt: boolean
+}) {
   const { x, y } = kopf
   const ganze = kopf.dauer === 8
+  const gross = klingt ? 1.3 : 1
+  const stift = klingt ? "stroke-akzent" : "stroke-fg"
   return (
     <g>
       {kopf.hilfslinien.map((ly) => (
@@ -30,8 +47,8 @@ function KopfZeichen({ kopf, mitNamen, namenY }: { kopf: Kopf; mitNamen: boolean
           x2={kopf.hals.x}
           y1={kopf.hals.von}
           y2={kopf.hals.bis}
-          className="stroke-fg"
-          strokeWidth={1.4}
+          className={stift}
+          strokeWidth={klingt ? 2 : 1.4}
         />
       )}
       {kopf.fahne && kopf.hals && (
@@ -42,7 +59,7 @@ function KopfZeichen({ kopf, mitNamen, namenY }: { kopf: Kopf; mitNamen: boolean
               : `M${kopf.hals.x} ${kopf.hals.bis} C${kopf.hals.x + 1} ${kopf.hals.bis - 8} ${kopf.hals.x + 9} ${kopf.hals.bis - 10} ${kopf.hals.x + 8} ${kopf.hals.bis - 21}`
           }
           fill="none"
-          className="stroke-fg"
+          className={stift}
           strokeWidth={2.2}
           strokeLinecap="round"
         />
@@ -50,12 +67,12 @@ function KopfZeichen({ kopf, mitNamen, namenY }: { kopf: Kopf; mitNamen: boolean
       <ellipse
         cx={x}
         cy={y}
-        rx={ganze ? 6.4 : 5.2}
-        ry={ganze ? 4.3 : 3.8}
+        rx={(ganze ? 6.4 : 5.2) * gross}
+        ry={(ganze ? 4.3 : 3.8) * gross}
         transform={ganze ? undefined : `rotate(-20 ${x} ${y})`}
-        className={kopf.gefuellt ? "fill-fg" : "stroke-fg"}
+        className={kopf.gefuellt ? (klingt ? "fill-akzent" : "fill-fg") : stift}
         fill={kopf.gefuellt ? undefined : "none"}
-        strokeWidth={kopf.gefuellt ? undefined : 2}
+        strokeWidth={kopf.gefuellt ? undefined : klingt ? 2.8 : 2}
       />
       {kopf.kreuz && (
         <text x={x - 14} y={y + 4} fontSize={13} className="fill-fg" textAnchor="middle">
@@ -64,7 +81,13 @@ function KopfZeichen({ kopf, mitNamen, namenY }: { kopf: Kopf; mitNamen: boolean
       )}
       {mitNamen && (
         // Tiefe Töne mit Hilfslinien würden sonst in ihrem Namen stehen.
-        <text x={x} y={Math.max(namenY, y + 16)} fontSize={12} className="fill-muted font-mono" textAnchor="middle">
+        <text
+          x={x}
+          y={Math.max(namenY, y + 16)}
+          fontSize={12}
+          className={`${klingt ? "fill-akzent" : "fill-muted"} font-mono`}
+          textAnchor="middle"
+        >
           {kopf.name}
         </text>
       )}
@@ -113,11 +136,14 @@ function NotenSvg({
   mitNamen,
   className,
   nurSystem,
+  klingend,
 }: {
   song: Song
   takteProZeile: number
   mitNamen: boolean
   className: string
+  /** Indizes der Noten, die gerade zu hören sind. */
+  klingend: number[]
   /** Zeigt nur dieses System (der Ausschnitt kommt aus dem viewBox), damit die Tabulatur direkt darunter stehen kann. */
   nurSystem?: number
 }) {
@@ -181,7 +207,13 @@ function NotenSvg({
                 <PausenZeichen key={pause.x} pause={pause} />
               ))}
               {takt.koepfe.map((kopf) => (
-                <KopfZeichen key={kopf.note} kopf={kopf} mitNamen={mitNamen} namenY={satz.namenY} />
+                <KopfZeichen
+                  key={kopf.note}
+                  kopf={kopf}
+                  mitNamen={mitNamen}
+                  namenY={satz.namenY}
+                  klingt={klingend.includes(kopf.note)}
+                />
               ))}
               {takt.balken.map((balken) => (
                 <line
@@ -210,27 +242,30 @@ function NotenSvg({
  *   die Notenköpfe so klein, dass man sie nicht mehr trifft — die
  *   Linienabstände lägen bei gut sechs Pixeln.
  * @param mitNamen Schreibt den Tonnamen unter jede Note — fürs Lernen der Namen.
+ * @param klingend Die Noten, die gerade zu hören sind, werden hervorgehoben.
  */
 export function NotenView({
   song,
   takteProZeile,
   mitNamen = false,
+  klingend = [],
 }: {
   song: Song
   takteProZeile?: number
   mitNamen?: boolean
+  klingend?: number[]
 }) {
   return (
     <div className="@container border border-line bg-sunken p-4">
       {takteProZeile ? (
-        <NotenSvg song={song} takteProZeile={takteProZeile} mitNamen={mitNamen} className="mx-auto block h-auto w-full" />
+        <NotenSvg song={song} takteProZeile={takteProZeile} mitNamen={mitNamen} klingend={klingend} className="mx-auto block h-auto w-full" />
       ) : (
         // Beide Fassungen stehen im Dokument, eine ist immer `display: none` und
         // damit auch für Vorleseprogramme unsichtbar. Das spart Skript und
         // verhindert, dass beim Laden erst die falsche Breite aufblitzt.
         <>
-          <NotenSvg song={song} takteProZeile={1} mitNamen={mitNamen} className="mx-auto block h-auto w-full @md:hidden" />
-          <NotenSvg song={song} takteProZeile={2} mitNamen={mitNamen} className="mx-auto hidden h-auto w-full @md:block" />
+          <NotenSvg song={song} takteProZeile={1} mitNamen={mitNamen} klingend={klingend} className="mx-auto block h-auto w-full @md:hidden" />
+          <NotenSvg song={song} takteProZeile={2} mitNamen={mitNamen} klingend={klingend} className="mx-auto hidden h-auto w-full @md:block" />
         </>
       )}
     </div>
@@ -243,7 +278,15 @@ export function NotenView({
  * Noten und dann alle Tabs hiess auf dem Handy zwei Bildschirme scrollen.
  * Zeilenbreite wie bei `NotenView`: ein Takt je Zeile unter 28 rem, sonst zwei.
  */
-export function NotenMitTab({ song, mitNamen = false }: { song: Song; mitNamen?: boolean }) {
+export function NotenMitTab({
+  song,
+  mitNamen = false,
+  klingend = [],
+}: {
+  song: Song
+  mitNamen?: boolean
+  klingend?: number[]
+}) {
   const fassung = (proZeile: number, klasse: string) => {
     const satz = baueNotensatz(song, proZeile)
     const tabs = songTabSysteme(song, proZeile)
@@ -255,6 +298,7 @@ export function NotenMitTab({ song, mitNamen = false }: { song: Song; mitNamen?:
               song={song}
               takteProZeile={proZeile}
               mitNamen={mitNamen}
+              klingend={klingend}
               nurSystem={i}
               className="mx-auto block h-auto w-full"
             />

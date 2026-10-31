@@ -252,4 +252,42 @@ describe("SongPlayer", () => {
     expect(player.laeuft).toBe(true)
     expect(quellen).toHaveLength(2 * NOTEN)
   })
+
+  it("sagt, welche Note gerade zu hören ist — nach der Uhr, nicht nach dem Plan", async () => {
+    const { ctx, engine } = falschesAudio()
+    const player = new SongPlayer(engine, { bpm: 120, klick: false })
+    expect(player.klingend()).toEqual([])
+    await player.start(drei)
+
+    // Der Durchgang beginnt bei 0.1; die Halbe dauert bis 1.1, danach folgt die Viertel.
+    expect(player.klingend()).toEqual([])
+    vorstellen(ctx, 0.5)
+    expect(player.klingend()).toEqual([0])
+    vorstellen(ctx, 1.3)
+    expect(player.klingend()).toEqual([1])
+  })
+
+  it("zieht die Zeit bis zum Lautsprecher ab, sonst leuchtete die Note zu früh", async () => {
+    const { ctx, engine } = falschesAudio()
+    ;(ctx as unknown as { outputLatency: number }).outputLatency = 0.2
+    const player = new SongPlayer(engine, { bpm: 120, klick: false })
+    await player.start(drei)
+
+    // Bei 1.2 s ist die Halbe laut Plan vorbei (1.1), aber hörbar ist sie noch bis 1.3.
+    vorstellen(ctx, 1.2)
+    expect(player.klingend()).toEqual([0])
+  })
+
+  it("beginnt mit der Schleife wieder bei der ersten Note und nennt nach dem Anhalten keine", async () => {
+    const { ctx, engine } = falschesAudio()
+    const player = new SongPlayer(engine, { bpm: 120, klick: false, schleife: true })
+    await player.start(drei)
+
+    vorstellen(ctx, 3.9)
+    vorstellen(ctx, 4.3)
+    expect(player.klingend()).toEqual([0])
+
+    player.stop()
+    expect(player.klingend()).toEqual([])
+  })
 })

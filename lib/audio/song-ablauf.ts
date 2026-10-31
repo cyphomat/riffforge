@@ -59,6 +59,19 @@ export function bauAblauf(song: Song, bpm: number): Ablauf {
   }
 }
 
+/**
+ * Welche Noten klingen zu diesem Zeitpunkt, als Indizes in den Noten des Songs.
+ *
+ * `beginn` ist, wann der Durchgang auf der Uhr anfängt, `jetzt` die Uhrzeit,
+ * die gefragt ist. Eine Note gilt von ihrem Start bis zu ihrem Ende, dort, wo
+ * auch abgedämpft wird: was danach ausklingt, ist nicht mehr die Note, die man
+ * lesen soll. Vor dem Beginn (Einzähler) klingt nichts.
+ */
+export function klingendeNoten(toene: SongTon[], beginn: number, jetzt: number): number[] {
+  const t = jetzt - beginn
+  return toene.filter((ton) => t >= ton.start && t < ton.ende).map((ton) => ton.note)
+}
+
 /** Der Einzähler: ein Takt Klicks, bevor der Song anfängt. */
 export function einzaehler(bpm: number): { klicks: SongKlick[]; dauer: number } {
   const schlag = 60 / bpm
