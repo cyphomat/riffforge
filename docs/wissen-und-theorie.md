@@ -199,6 +199,11 @@
   die Reihenfolgen sind Konvention, die Einstellungen Ausgangspunkte. Dabei
   korrigiert: Hendrix stellte das Wah *vor* das Fuzz Face, der Federhall eines
   Fender-Amps sitzt zwischen Vor- und Endstufe, und nicht jeder Octaver ist
-  einstimmig. Am selben Tag nachgeprüft: Overdrive steht vor Distortion und Fuzz (Tube Screamer vor Big Muff oder RAT), der Chorus hinter dem Verzerrer. Geräte stehen nur als Beispiele; bei Boss PS-6 und FRV-1 ist die Produktseite gelesen, andere Namen sind nicht einzeln geprüft. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
-  rechnet ein Test nach. Als Nächstes möglich: ein Delay-Rechner, der die Zeit
-  aus dem Tempo des Blocks nimmt.
+  einstimmig. Am selben Tag nachgeprüft: Overdrive steht vor Distortion und Fuzz (Tube Screamer vor Big Muff oder RAT), der Chorus hinter dem Verzerrer. Geräte stehen nur als Beispiele; bei Boss PS-6 und FRV-1 ist die Produktseite gelesen, andere Namen sind nicht einzeln geprüft. Der Delay-Eintrag trägt einen
+  Rechner: `delayMs(bpm)` (reine Funktion in `effekte.ts`, 60 000 geteilt durch
+  BPM, dann Achtel und punktierte Achtel) und ein Tempo-Feld in `effekt-lexikon.tsx`
+  mit 40 bis 300 BPM, Standard 120. Das Feld merkt sich nichts und liest das Tempo
+  keines Blocks: ein Lexikon kennt keine Session. Der Beispieltext im Eintrag
+  („500 ms bei 120 BPM") wird gegen `delayMs` geprüft, damit Text und Rechner
+  nicht auseinanderlaufen. Möglich bliebe, das Tempo des zuletzt geübten Drills
+  vorzubelegen; das wäre die erste Verbindung zwischen Lexikon und Log.

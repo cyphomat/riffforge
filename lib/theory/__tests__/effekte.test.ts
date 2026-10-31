@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest"
-import { EFFEKTE, EFFEKTE_BY_ID, KATEGORIEN, ORTE, effektSchema, eintraegeAm, kette, reihenfolge } from "../effekte"
+import {
+  DELAY_BPM,
+  EFFEKTE,
+  EFFEKTE_BY_ID,
+  KATEGORIEN,
+  ORTE,
+  delayMs,
+  effektSchema,
+  eintraegeAm,
+  kette,
+  reihenfolge,
+} from "../effekte"
 
 /**
  * Was das Effektlexikon einhalten muss.
@@ -123,11 +134,48 @@ describe("die Ausnahmen", () => {
     }
   })
 
-  it("rechnet das Delay-Beispiel richtig: 120 BPM sind 500 ms je Viertel, 375 ms je punktierte Achtel", () => {
-    const viertel = 60_000 / 120
-    expect(viertel).toBe(500)
-    expect(viertel * 0.75).toBe(375)
-    expect(EFFEKTE_BY_ID["fx-delay"].einstellung).toContain("500 ms")
-    expect(EFFEKTE_BY_ID["fx-delay"].einstellung).toContain("375 ms")
+  it("nennt im Delay-Eintrag, was delayMs für 120 BPM rechnet", () => {
+    const { viertel, punktierteAchtel } = delayMs(120)
+    expect(EFFEKTE_BY_ID["fx-delay"].einstellung).toContain(`${viertel} ms`)
+    expect(EFFEKTE_BY_ID["fx-delay"].einstellung).toContain(`${punktierteAchtel} ms`)
+  })
+})
+
+describe("delayMs", () => {
+  it("rechnet 120 BPM auf 500, 250 und 375 ms", () => {
+    expect(delayMs(120)).toEqual({ viertel: 500, achtel: 250, punktierteAchtel: 375 })
+  })
+
+  it("rechnet 90 BPM: die punktierte Achtel fällt auf volle 500 ms", () => {
+    const { viertel, achtel, punktierteAchtel } = delayMs(90)
+    expect(viertel).toBeCloseTo(666.667, 3)
+    expect(achtel).toBeCloseTo(333.333, 3)
+    expect(punktierteAchtel).toBeCloseTo(500, 9)
+  })
+
+  it("bleibt im ganzen Bereich des Feldes in plausiblen Grenzen", () => {
+    // 40 BPM: eine Viertel dauert 1,5 s; 300 BPM: 200 ms. Alles andere liegt dazwischen.
+    expect(delayMs(DELAY_BPM.min).viertel).toBe(1500)
+    expect(delayMs(DELAY_BPM.max).viertel).toBe(200)
+    for (let bpm = DELAY_BPM.min; bpm <= DELAY_BPM.max; bpm += 1) {
+      const t = delayMs(bpm)
+      expect(t.achtel).toBeLessThan(t.punktierteAchtel)
+      expect(t.punktierteAchtel).toBeLessThan(t.viertel)
+      expect(t.achtel).toBeGreaterThanOrEqual(100)
+      expect(t.viertel).toBeLessThanOrEqual(1500)
+    }
+  })
+
+  it("wird mit steigendem Tempo kürzer", () => {
+    expect(delayMs(160).viertel).toBeLessThan(delayMs(120).viertel)
+  })
+
+  it("verweigert ein Tempo, das keins ist", () => {
+    for (const bpm of [0, -60, Number.NaN, Number.POSITIVE_INFINITY]) expect(() => delayMs(bpm)).toThrow(RangeError)
+  })
+
+  it("hat einen Standard, der im Feld liegt", () => {
+    expect(DELAY_BPM.standard).toBeGreaterThanOrEqual(DELAY_BPM.min)
+    expect(DELAY_BPM.standard).toBeLessThanOrEqual(DELAY_BPM.max)
   })
 })
