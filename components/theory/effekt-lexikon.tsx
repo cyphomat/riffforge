@@ -1,7 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { letztesTempo } from "@/lib/session/letztes-tempo"
+import { loadLog } from "@/lib/storage/practice-log"
 import {
   DELAY_BPM,
   EFFEKTE,
@@ -32,9 +34,24 @@ function Zeile({ titel, text, ton }: { titel: string; text: string; ton?: string
   )
 }
 
-/** Delay-Zeiten zu einem Tempo. Nichts davon wird gespeichert: es ist ein Rechenschieber. */
+/**
+ * Delay-Zeiten zu einem Tempo. Das Feld beginnt beim Tempo des zuletzt
+ * gespielten Blocks, sonst bei 120. Gelesen wird der Log, geschrieben wird
+ * nichts: es ist ein Rechenschieber.
+ */
 function DelayRechner() {
   const [eingabe, setEingabe] = useState(String(DELAY_BPM.standard))
+  const [ausLog, setAusLog] = useState(false)
+  // Ein Tempo, das jemand selbst getippt hat, überschreibt der Log nie.
+  const getippt = useRef(false)
+
+  useEffect(() => {
+    const tempo = letztesTempo(loadLog(), DELAY_BPM)
+    if (tempo === null || getippt.current) return
+    setEingabe(String(tempo))
+    setAusLog(true)
+  }, [])
+
   const bpm = Number(eingabe)
   const gueltig = eingabe.trim() !== "" && bpm >= DELAY_BPM.min && bpm <= DELAY_BPM.max
   const zeiten = gueltig ? delayMs(bpm) : null
@@ -53,12 +70,17 @@ function DelayRechner() {
           min={DELAY_BPM.min}
           max={DELAY_BPM.max}
           value={eingabe}
-          onChange={(event) => setEingabe(event.target.value)}
+          onChange={(event) => {
+            getippt.current = true
+            setAusLog(false)
+            setEingabe(event.target.value)
+          }}
           aria-invalid={!gueltig}
           className="w-20 border border-line bg-bg px-2 py-[6px] font-mono text-[16px] text-fg"
         />
         <span className="font-mono text-[12px] text-dim">BPM</span>
       </div>
+      {ausLog && <p className="mt-2 text-[13px] text-dim">Tempo deines letzten Blocks.</p>}
       <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
         {(
           [

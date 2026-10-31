@@ -185,7 +185,7 @@
   relearning_steps=())`.
 - **Das Effektlexikon ist Nachschlagen, keine Abfrage.** `lib/theory/effekte.ts`
   hält 24 Einträge (Pedale, Amp, Loop, Box), `/wissen/effekte` zeigt sie; keine
-  Karten, kein Log, kein FSRS. Das ist ein Gegenstück zu „Theorie gehört an den
+  Karten, kein FSRS, nichts wird in den Log geschrieben. Das ist ein Gegenstück zu „Theorie gehört an den
   Drill": ein Lexikon erklärt nichts, was die Hände gerade tun, sondern beantwortet
   „was kommt wohin", und das fragt man beim Aufbauen des Boards, nicht beim Üben.
   Der Eintrag trägt seinen **Platz** (`ort`, `platz` in Zehnerschritten, damit
@@ -202,8 +202,15 @@
   einstimmig. Am selben Tag nachgeprüft: Overdrive steht vor Distortion und Fuzz (Tube Screamer vor Big Muff oder RAT), der Chorus hinter dem Verzerrer. Geräte stehen nur als Beispiele; bei Boss PS-6 und FRV-1 ist die Produktseite gelesen, andere Namen sind nicht einzeln geprüft. Der Delay-Eintrag trägt einen
   Rechner: `delayMs(bpm)` (reine Funktion in `effekte.ts`, 60 000 geteilt durch
   BPM, dann Achtel und punktierte Achtel) und ein Tempo-Feld in `effekt-lexikon.tsx`
-  mit 40 bis 300 BPM, Standard 120. Das Feld merkt sich nichts und liest das Tempo
-  keines Blocks: ein Lexikon kennt keine Session. Der Beispieltext im Eintrag
+  mit 40 bis 300 BPM, Standard 120. Das Feld merkt sich nichts. Es beginnt beim Tempo des
+  zuletzt gespielten Blocks (`letztesTempo` in `lib/session/letztes-tempo.ts`,
+  gelesen über `loadLog()`, nach Zeitstempel und nicht nach Stelle im Array, weil
+  der Log zwischen Geräten verschmilzt); gibt es keins oder liegt es außerhalb
+  von 40 bis 300 BPM, bleibt es bei 120. Ein Tempo außerhalb wird nicht
+  zurechtgebogen: ein Warm-up mit 30 BPM gibt 120, keine stille 40. Gelesen wird
+  nach dem Laden der Seite, nicht beim Zeichnen, sonst passt das statische HTML nicht
+  zur Seite im Browser; was jemand selbst getippt hat, überschreibt der Log nie. Der Beispieltext im Eintrag
   („500 ms bei 120 BPM") wird gegen `delayMs` geprüft, damit Text und Rechner
-  nicht auseinanderlaufen. Möglich bliebe, das Tempo des zuletzt geübten Drills
-  vorzubelegen; das wäre die erste Verbindung zwischen Lexikon und Log.
+  nicht auseinanderlaufen. Die Schwäche der Vorbelegung: „zuletzt gespielt“ kann ein
+  langsames Warm-up sein. Als Alternative käme das höchste Tempo des Tages in Frage;
+  das wäre eine eigene Regel im Log und wurde bisher nicht gebraucht.
