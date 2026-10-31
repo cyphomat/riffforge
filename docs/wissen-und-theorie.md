@@ -199,6 +199,6 @@
   die Reihenfolgen sind Konvention, die Einstellungen Ausgangspunkte. Dabei
   korrigiert: Hendrix stellte das Wah *vor* das Fuzz Face, der Federhall eines
   Fender-Amps sitzt zwischen Vor- und Endstufe, und nicht jeder Octaver ist
-  einstimmig. Geräte stehen nur als Beispiele. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
+  einstimmig. Am selben Tag nachgeprüft: Overdrive steht vor Distortion und Fuzz (Tube Screamer vor Big Muff oder RAT), der Chorus hinter dem Verzerrer. Geräte stehen nur als Beispiele; bei Boss PS-6 und FRV-1 ist die Produktseite gelesen, andere Namen sind nicht einzeln geprüft. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
   rechnet ein Test nach. Als Nächstes möglich: ein Delay-Rechner, der die Zeit
   aus dem Tempo des Blocks nimmt.

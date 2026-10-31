@@ -71,6 +71,10 @@ describe("die Kette", () => {
     }
   })
 
+  it("stellt den Overdrive vor Distortion und Fuzz: er drückt sie härter an", () => {
+    for (const id of ["fx-distortion", "fx-fuzz"]) expect(stelle("fx-overdrive")).toBeLessThan(stelle(id))
+  })
+
   it("stellt die Verzerrer vor den Amp und Delay, Hall und Modulation dahinter", () => {
     const amp = stelle("fx-amp")
     for (const id of ["fx-fuzz", "fx-distortion", "fx-overdrive", "fx-booster", "fx-eq"]) {

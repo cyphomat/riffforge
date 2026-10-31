@@ -113,7 +113,7 @@ export const EFFEKTE: Effekt[] = [
     fallstrick:
       "Zu viele Buffer hintereinander färben den Ton selbst, und ein Fuzz mag nichts Gepuffertes vor sich.",
     ausnahme: "Mit einem Fuzz Face steht das Fuzz zuerst und der Buffer dahinter.",
-    beispiele: ["Boss Pedale (meist gepuffert)", "Behringer Buffer"],
+    beispiele: ["Boss Compact-Pedale (gepuffert)"],
   },
   {
     id: "fx-wah",
@@ -182,11 +182,29 @@ export const EFFEKTE: Effekt[] = [
     beispiele: ["MXR Dyna Comp", "Boss CS-3"],
   },
   {
+    id: "fx-overdrive",
+    name: "Overdrive und Tube Screamer",
+    kategorie: "verzerrung",
+    ort: "vorne",
+    platz: 70,
+    wofuer:
+      "Wärmt das Signal an und kippt sanft in die Verzerrung. Der Tube Screamer hebt dazu die Mitten und kappt den tiefen Bass.",
+    metal:
+      "Fast jede Metal-Kette hat einen davor: er strafft den Bass vor der Hochgain-Vorstufe, deshalb klingen Palm Mutes klarer.",
+    einstellung:
+      "Drive ganz oder fast ganz zurück, Level hoch (ab etwa zwei Uhr), Tone nach Geschmack. Das Pedal soll nicht zerren, sondern den Amp anschieben.",
+    fallstrick:
+      "Viel Drive am Pedal gibt matschige Mitten, die die Vorstufe noch einmal verzerrt.",
+    ausnahme:
+      "Als Booster vor einem Hochgain-Amp steht er direkt vor dem Amp, ohne weitere Verzerrer. Vor Distortion oder Fuzz drückt er diese härter an und strafft ihren Bass; dahinter ist er nur noch ein Lautstärke-Boost und rauscht mehr.",
+    beispiele: ["Ibanez TS808", "Ibanez TS9", "Maxon OD808"],
+  },
+  {
     id: "fx-fuzz",
     name: "Fuzz",
     kategorie: "verzerrung",
     ort: "vorne",
-    platz: 70,
+    platz: 80,
     wofuer:
       "Verzerrt hart und kratzig, bis das Signal fast ein Rechteck ist. Klingt dichter und rauer als ein Overdrive.",
     metal: "Doom, Stoner und Sludge: der Big Muff ist der klassische dicke Sound für Leads und tiefe Riffs.",
@@ -201,7 +219,7 @@ export const EFFEKTE: Effekt[] = [
     name: "Distortion",
     kategorie: "verzerrung",
     ort: "vorne",
-    platz: 80,
+    platz: 90,
     wofuer:
       "Verzerrt härter als ein Overdrive, auch ohne Amp-Gain. Kompression und Obertöne sind fest eingebaut.",
     metal:
@@ -211,26 +229,8 @@ export const EFFEKTE: Effekt[] = [
     fallstrick:
       "Ein Distortion-Pedal vor einem schon stark zerrenden Amp macht keinen härteren Sound, nur einen undeutlicheren.",
     ausnahme:
-      "Zwei Verzerrer hintereinander: der mit weniger Gain zuerst, der mit mehr dahinter. Das ist Geschmack, hier hilft Probieren.",
+      "Ein Overdrive davor drückt den Distortion härter an und strafft ihn; das ist der übliche Weg. Manche schwören auf die andere Reihenfolge, hier hilft Probieren.",
     beispiele: ["Boss DS-1", "Boss MT-2", "ProCo RAT"],
-  },
-  {
-    id: "fx-overdrive",
-    name: "Overdrive und Tube Screamer",
-    kategorie: "verzerrung",
-    ort: "vorne",
-    platz: 90,
-    wofuer:
-      "Wärmt das Signal an und kippt sanft in die Verzerrung. Der Tube Screamer hebt dazu die Mitten und kappt den tiefen Bass.",
-    metal:
-      "Fast jede Metal-Kette hat einen davor: er strafft den Bass vor der Hochgain-Vorstufe, deshalb klingen Palm Mutes klarer.",
-    einstellung:
-      "Drive ganz oder fast ganz zurück, Level hoch (ab etwa zwei Uhr), Tone nach Geschmack. Das Pedal soll nicht zerren, sondern den Amp anschieben.",
-    fallstrick:
-      "Viel Drive am Pedal gibt matschige Mitten, die die Vorstufe noch einmal verzerrt.",
-    ausnahme:
-      "Direkt vor dem Amp, also hinter allen anderen Verzerrern: dort strafft er auch deren Bass mit.",
-    beispiele: ["Ibanez TS808", "Ibanez TS9", "Maxon OD808"],
   },
   {
     id: "fx-booster",
@@ -340,7 +340,7 @@ export const EFFEKTE: Effekt[] = [
       "Cleane Passagen und Balladen, Intros und Arpeggios. Auf Verzerrung klingt er schnell schwammig.",
     einstellung: "Rate langsam, Depth mittel, Mix etwa die Hälfte.",
     fallstrick: "Auf Hochgain klingt Chorus wie ein Schwimmbad und nimmt dem Anschlag die Kante.",
-    ausnahme: "Vor dem Amp klingt er herber, weil die Verzerrung die Verdopplung mitzerrt.",
+    ausnahme: "Vor dem Amp klingt er herber, weil die Verzerrung die Verdopplung mitzerrt. Vor dem Verzerrer geht er oft unter.",
     beispiele: ["Boss CE-2", "TC Corona"],
   },
   {
@@ -413,7 +413,7 @@ export const EFFEKTE: Effekt[] = [
     einstellung: "Mix zehn bis zwanzig Prozent bei Leads, Decay ein bis zwei Sekunden; lieber Plate oder Room als einen langen Hall.",
     fallstrick: "Viel Hall und viel Gain schmieren zusammen: der Hall wird mit der Verzerrung zu Brei.",
     ausnahme: "Der Federhall in Fender-Amps sitzt zwischen Vorstufe und Endstufe, also etwa dort, wo auch der FX-Loop liegt.",
-    beispiele: ["TC Hall of Fame", "Boss FRV-1"],
+    beispiele: ["TC Hall of Fame"],
   },
   {
     id: "fx-looper",
