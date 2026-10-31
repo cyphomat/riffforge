@@ -58,6 +58,7 @@
 | `components/theory/intervall-hoeren.tsx` | Spielt die zwei Töne einer Hörfrage |
 | `lib/theory/hals-trainer.ts` | Der Griffbrett-Trainer als Rechnung: 72 Stellen × 2 Richtungen, FSRS |
 | `lib/theory/hals-id.ts` | Das Präfix `hals-` — damit der Trainer nicht als Wissen zählt |
+| `components/theory/effekt-lexikon.tsx` | Das Lexikon unter `/wissen/effekte`: Kette in vier Stationen, Filter, Einträge |
 | `components/theory/hals-trainer.tsx` | Der fünfte Eingang: Griffbrett-Trainer, `/griffbrett` |
 | `lib/theory/lick.ts` | Lead-Licks als Grammatik: Motiv, Entwicklung, Anlauf, Auflösung |
 | `lib/session/lead.ts` | Hängt das gerechnete Lick an einen Drill mit fester Nummer |
@@ -75,6 +76,7 @@
 | `lib/session/anlaesse.ts` | Anlässe: Regeln (fix, Ostern, n-ter Wochentag, Datum), Phasen, Rang, Sätze — rein. Port aus Setlist |
 | `components/session/anlass-banner.tsx` | Der Streifen auf *Heute* unter der Ansage |
 | `components/session/saisonal-panel.tsx` | Der Schalter dazu, auf *Daten* |
+| `lib/theory/effekte.ts` | Das Pedal- und Effektlexikon: Einträge mit Platz in der Signalkette (reine Daten), geprüft von `effekte.test.ts` |
 | `lib/theory/noten-karten.ts` | Wissenskarten mit Notenbild: Antwort aus dem Bild gerechnet, Bilder als echte `Song`-Daten |
 | `lib/session/gitarren.ts` | Die Gitarrenroulette: Rack-Schema, Standardliste, Würfeln je Technik+Riff-Paar — rein |
 | `components/session/gitarren-panel.tsx` | Das Rack bearbeiten, auf *Daten*; die Karte selbst zeigt `block-runner.tsx` |

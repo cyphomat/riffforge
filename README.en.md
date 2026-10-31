@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1457%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1496%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -585,6 +585,18 @@ back up and delete like everything else. They do not count as knowledge
 cards: not in the card count, not in the hit rate, and not for their patches —
 the neck has a row of its own at the merch stand, and whatever a round earns
 there shows up right in its report.
+
+### Pedals and effects
+
+Under *Wissen* there is a reference: **/wissen/effekte**, 24 entries from tuner
+and wah through drives, gate, chorus and delay to power amp and cabinet. Each
+entry says what the effect does, where you hear it in metal, what to start with
+and what people get wrong the first time. Above all, **where it sits in the
+chain**: the chain itself at the top in four stations (before the amp, preamp,
+FX loop, power amp and cabinet), the entries below it, filterable by category.
+Where the order is debatable, the exception is stated on the entry. It is
+for looking things up, not for quizzing: the reference adds no cards and writes
+nothing to the log.
 
 ## What the microphone hears
 

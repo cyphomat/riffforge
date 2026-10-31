@@ -183,3 +183,22 @@
   Erwartungen anzupassen. Ohne Lernschritte, weil hier niemand nach zehn
   Minuten wiederkommt; das entspricht `Scheduler(learning_steps=(),
   relearning_steps=())`.
+- **Das Effektlexikon ist Nachschlagen, keine Abfrage.** `lib/theory/effekte.ts`
+  hält 24 Einträge (Pedale, Amp, Loop, Box), `/wissen/effekte` zeigt sie; keine
+  Karten, kein Log, kein FSRS. Das ist ein Gegenstück zu „Theorie gehört an den
+  Drill": ein Lexikon erklärt nichts, was die Hände gerade tun, sondern beantwortet
+  „was kommt wohin", und das fragt man beim Aufbauen des Boards, nicht beim Üben.
+  Der Eintrag trägt seinen **Platz** (`ort`, `platz` in Zehnerschritten, damit
+  ein neuer dazwischen passt), und `effekte.test.ts` hält die Regeln fest, die
+  jeder unterschreibt (Wah vor den Verzerrern, Gate vor Delay und Hall, Delay vor
+  Hall, Verzerrer vor dem Amp, Modulation dahinter). Was sich streiten lässt, steht
+  als `ausnahme` am Eintrag und nicht in der Reihenfolge: Phaser und Flanger
+  gehören im Original vor den Amp, ein Fuzz Face vor das Wah. Die Einträge sind
+  eigener Text, am 31.10.2026 per Websuche gegengelesen. Die Quellen sind
+  überwiegend Foren, Händlerseiten und Gitarren-Blogs, keine Herstellerdokumente;
+  die Reihenfolgen sind Konvention, die Einstellungen Ausgangspunkte. Dabei
+  korrigiert: Hendrix stellte das Wah *vor* das Fuzz Face, der Federhall eines
+  Fender-Amps sitzt zwischen Vor- und Endstufe, und nicht jeder Octaver ist
+  einstimmig. Geräte stehen nur als Beispiele. Das Delay-Beispiel (500 ms je Viertel bei 120 BPM)
+  rechnet ein Test nach. Als Nächstes möglich: ein Delay-Rechner, der die Zeit
+  aus dem Tempo des Blocks nimmt.

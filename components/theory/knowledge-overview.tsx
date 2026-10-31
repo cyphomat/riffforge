@@ -158,6 +158,9 @@ export function KnowledgeOverview() {
           <Link href="/griffbrett" className="btn btn-ghost btn-small mt-[9px] w-full">
             Griffbrett-Trainer — den Hals Stelle für Stelle
           </Link>
+          <Link href="/wissen/effekte" className="btn btn-ghost btn-small mt-[9px] w-full">
+            Pedale und Effekte — was wohin in die Kette gehört
+          </Link>
         </section>
 
         <section>
