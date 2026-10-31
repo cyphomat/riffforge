@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1535%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1577%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -571,6 +571,15 @@ auseinander. Zuerst kommen die beiden Enden, dann die Mitte. Auch die tiefe E
 (E2) ist auf den Cent nachgemessen, obwohl sie unter dem Bereich der
 Intervallkarten liegt; auf kleinen Lautsprechern fehlt ihre Grundschwingung
 fast ganz, und das Ohr ergänzt sie aus den Obertönen.
+
+Und zwölf Karten für den Ton nach Anker: erst die tiefe E-Saite, dann ein
+zweiter Ton darüber, gefragt ist sein Name. Das ist kein absolutes Gehör —
+niemand muss einen Ton aus dem Nichts benennen, sondern einen Ton gegen einen,
+den jede Gitarristin und jeder Gitarrist kennt. Quinte und Quarte kommen
+zuerst, weil sie wie die Leersaiten klingen. Die Erklärung nennt zu jedem Ton
+die Stelle auf dem Hals, nah am Sattel, und die Tests rechnen sie nach; die
+Auswahl nennt die schwarzen Tasten mit beiden Namen (F# / Gb), damit niemand
+wegen der Schreibweise falsch liegt.
 
 ### Den Hals lernen
 

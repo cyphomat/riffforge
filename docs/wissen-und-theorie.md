@@ -89,6 +89,21 @@
   daraus macht. Die Erklärungen nennen Ton und Hertz, und `cards.test.ts`
   rechnet beides nach. Die Siebensaiter-Saite (tiefes H) gibt es hier noch
   nicht.
+- **Ein Ton wird gegen einen Anker gehört, nie aus dem Nichts.** Zwölf
+  Ankerkarten (`nachAnker`): die tiefe E (`ANKER_TON`, E2) erklingt, dann ein
+  Ton bis eine Oktave darüber, gefragt ist sein Name. Absolutes Gehör ist für
+  Erwachsene kaum zu lernen und würde nur frustrieren; ein Ton gegen einen, den
+  man vom Instrument kennt, ist lernbar und hängt am Griffbrett-Wissen. Die
+  Oktave statt des Einklangs, weil der Einklang keine Frage wäre; die
+  Auswahl nennt die schwarzen Tasten mit beiden Namen, sonst wäre „Gb“ gegen
+  „F#“ eine Rechtschreibfrage. Die Erklärung entsteht aus denselben Sätzen wie
+  die Intervallkarten (der Abstand zum Anker *ist* das Intervall) und nennt die
+  Stelle am Sattel (`ankerStelle`: bis zum 4. Bund die tiefe E, dann A, dann D);
+  `cards.test.ts` rechnet jede Stelle auf die MIDI-Nummer nach. Reihenfolge wie
+  bei den Intervallen: Quinte und Quarte zuerst, weil die Leersaiten Quarten
+  sind. Anders als bei den Intervallkarten wird das Paar nicht gewürfelt: der
+  Anker liegt fest, und „B klingt so über der tiefen E“ ist genau das, was
+  hängen bleiben soll.
 - **Dreiklänge sind gerechnet, und ihre Behauptungen sind eng gefasst.**
   `dreiklaenge.ts` stapelt in enger Lage und lässt den Knick zur B-Saite aus
   den Leersaiten fallen, ohne Sonderfall. Zwei Aussagen musste der Test

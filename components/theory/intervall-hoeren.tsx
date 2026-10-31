@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 import { MdReplay, MdVolumeUp } from "react-icons/md"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
 import { gezupft, hertzAus } from "@/lib/audio/zupfen"
-import { hoerPaar, saitenTon, type Richtung } from "@/lib/theory/gehoer"
+import { ankerPaar, hoerPaar, saitenTon, type Richtung } from "@/lib/theory/gehoer"
 import type { Griff } from "@/lib/theory/types"
 
 /** Seconds between the two tones — long enough to hear the first one land. */
@@ -61,6 +61,11 @@ function TonSpieler({ toene }: { toene: number[] }) {
 export function IntervallHoeren({ halbtoene, richtung }: { halbtoene: number; richtung: Richtung }) {
   const [zufall] = useState(() => Math.random())
   return <TonSpieler toene={hoerPaar(halbtoene, richtung, zufall)} />
+}
+
+/** Die tiefe E als Anker, dann ein Ton darüber — immer dasselbe Paar, gefragt ist der Name des zweiten. */
+export function AnkerHoeren({ halbtoene }: { halbtoene: number }) {
+  return <TonSpieler toene={ankerPaar(halbtoene)} />
 }
 
 /** Eine Leersaite, immer derselbe Ton — gefragt ist, welche Saite es ist. */

@@ -2,6 +2,10 @@ import { stufeInForm } from "./caged"
 import { dreiklangTon } from "./dreiklaenge"
 import { INTERVALLE, positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
 import {
+  ANKER_AUSWAHL,
+  ANKER_REIHENFOLGE,
+  ankerStelle,
+  ankerWahl,
   HOER_AUSWAHL,
   HOER_REIHENFOLGE,
   SAITEN_AUSWAHL,
@@ -105,6 +109,37 @@ function saitenKarten(): TheoryCard[] {
         auswahl: [...SAITEN_AUSWAHL],
         richtig: [name],
         leersaite: saite,
+      },
+    }
+  })
+}
+
+/** Wie die Karte die Stelle auf dem Hals nennt — „als leere A-Saite“, „im 3. Bund der tiefen E-Saite“. */
+function stelleText(stelle: Griff): string {
+  const saite = { 6: "tiefen E", 5: "A", 4: "D" }[stelle.saite as 4 | 5 | 6]
+  return stelle.bund === 0 ? `als leere ${saite}-Saite` : `im ${stelle.bund}. Bund der ${saite}-Saite`
+}
+
+/**
+ * Zwölf Hörkarten: die tiefe E erklingt als Anker, danach ein zweiter Ton,
+ * gefragt ist sein Name. Die Erklärung erzeugt sich aus denselben Sätzen wie
+ * die Intervallkarten — der Abstand zum Anker *ist* das Intervall — und nennt
+ * dazu die Stelle auf dem Hals, damit Hören und Griffbrett sich berühren.
+ */
+function ankerKarten(): TheoryCard[] {
+  return ANKER_REIHENFOLGE.map((halbtoene) => {
+    const name = ankerWahl(halbtoene)
+    return {
+      id: `ga-anker-${halbtoene}`,
+      stufe: 2,
+      begriff: `Gehört: ${name} über dem E`,
+      erklaerung: `${name} — Abstand zur tiefen E: ${INTERVALLE[halbtoene].name}. ${HOER_CHARAKTER[halbtoene]} Auf dem Hals findest du den Ton ${stelleText(ankerStelle(halbtoene))}.`,
+      frage: {
+        art: "gehoert",
+        text: "Erst die tiefe E-Saite, dann ein zweiter Ton darüber. Welcher Ton ist der zweite?",
+        auswahl: [...ANKER_AUSWAHL],
+        richtig: [name],
+        nachAnker: halbtoene,
       },
     }
   })
@@ -730,6 +765,7 @@ export const THEORY_CARDS: TheoryCard[] = [
   // Hören statt zählen: aufwärts zuerst, abwärts erst danach — abwärts ist
   // dasselbe Intervall, aber schwerer zu hören.
   ...saitenKarten(),
+  ...ankerKarten(),
   ...hoerKarten("auf"),
   ...hoerKarten("ab"),
 
