@@ -6,6 +6,15 @@
 
 ## Konventionen
 
+- **Karten mit Notenbild rechnen die Antwort aus dem Bild.** `Frage.notenbild` ist
+  ein echter `Song` (`notenbild()` in `lib/theory/noten-karten.ts` baut ihn aus
+  Kurzschrift, das Lernziel fällt aus den Noten) und geht durch `pruefeSong`.
+  Tonname, Abstand, Schlagzahl und Pausenwert kommen aus `noteAt`, den
+  MIDI-Nummern, der Dauer und `pausenOf`; `noten-karten.test.ts` rechnet sie auf
+  anderem Weg nach. Die Antwort steht bei den vier Möglichkeiten an wechselnder
+  Stelle. Der Begriff ist nummeriert und verrät nichts: in der Übersicht steht er
+  vor der Frage.
+
 - **Antworten auf dem Griffbrett sind gerechnet, nicht getippt.** Der Katalog
   holt jede richtige Stelle aus `lib/theory/fretboard.ts`. Ein Tippfehler in
   einer Tabelle mit hundert Tönen fällt niemandem auf; ein Fehler in der

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { SONGS } from "../../theory/songs"
-import { achtelSekunden, bauAblauf, einzaehler } from "../song-ablauf"
+import { achtelSekunden, bauAblauf, einzaehler, klingendeNoten } from "../song-ablauf"
 
 /**
  * Das Tempo, nachgerechnet: bei 120 BPM dauert eine Viertel eine halbe
@@ -74,5 +74,33 @@ describe("einzaehler", () => {
     expect(klicks[0].betont).toBe(true)
     expect(klicks.slice(1).every((k) => !k.betont)).toBe(true)
     expect(dauer).toBe(2)
+  })
+})
+
+describe("klingendeNoten", () => {
+  // „Drei Töne" bei 120 BPM: Noten 0 bis 4 beginnen bei 0, 1, 1.5, 2 und 3 Sekunden.
+  const toene = bauAblauf(drei, 120).toene
+
+  it("nennt die Note, die gerade erklingt", () => {
+    expect(klingendeNoten(toene, 0, 0.5)).toEqual([0])
+    expect(klingendeNoten(toene, 0, 1.2)).toEqual([1])
+  })
+
+  it("rechnet ab dem Beginn des Durchgangs, nicht ab der Uhr null", () => {
+    expect(klingendeNoten(toene, 10, 10.5)).toEqual([0])
+    expect(klingendeNoten(toene, 10, 0.5)).toEqual([])
+  })
+
+  it("nennt vor dem Beginn des Durchgangs nichts, auch nicht im Einzähler", () => {
+    expect(klingendeNoten(toene, 2, 1)).toEqual([])
+  })
+
+  it("lässt die Note am Ende ihres Werts los, genau dort, wo auch abgedämpft wird", () => {
+    expect(klingendeNoten(toene, 0, 0.999)).toEqual([0])
+    expect(klingendeNoten(toene, 0, 1)).toEqual([1])
+  })
+
+  it("kennt höchstens eine Note je Zeitpunkt, denn der Song hat eine Stimme", () => {
+    for (let t = 0; t < 4; t += 0.05) expect(klingendeNoten(toene, 0, t).length).toBeLessThanOrEqual(1)
   })
 })

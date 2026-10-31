@@ -1,7 +1,7 @@
 import type { Song } from "../theory/song"
 import type { AudioEngine } from "./audio-engine"
 import { spieleKlick } from "./metronome"
-import { bauAblauf, einzaehler, type SongKlick } from "./song-ablauf"
+import { bauAblauf, einzaehler, klingendeNoten, type SongKlick, type SongTon } from "./song-ablauf"
 import { gezupft, hertzAus } from "./zupfen"
 
 /**
@@ -65,6 +65,8 @@ export class SongPlayer {
   /** Wann der letzte geplante Durchgang vorbei ist; nur gesetzt, wenn keiner mehr folgt. */
   private ende: number | null = null
   private puffer = new Map<number, AudioBuffer>()
+  /** Die geplanten Durchgänge mit ihrem Beginn auf der Uhr — Futter für `klingend`. */
+  private durchgaenge: { beginn: number; ende: number; toene: SongTon[] }[] = []
   /** Zählt jedes Anhalten, damit ein `start`, das noch auf den AudioContext wartet, es merkt. */
   private anhalten = 0
 
@@ -131,8 +133,25 @@ export class SongPlayer {
     this.timer = setInterval(() => this.nachsehen(), TIMER_MS)
   }
 
+  /**
+   * Welche Noten gerade zu hören sind (Indizes im Song), für die Anzeige.
+   *
+   * Gefragt wird die Uhr des einen AudioContext, abzüglich der Zeit, die der
+   * Ton bis zum Lautsprecher braucht — sonst leuchtete die Note, bevor man sie
+   * hört. Ohne laufenden Player ist die Antwort leer.
+   */
+  klingend(): number[] {
+    const ctx = this.ctx
+    if (!ctx || !this.timer) return []
+    const jetzt = ctx.currentTime - (ctx.outputLatency || ctx.baseLatency || 0)
+    // Was vorbei ist, fliegt raus; der Durchgang nach einer Schleife steht schon da.
+    this.durchgaenge = this.durchgaenge.filter((d) => d.ende > jetzt)
+    return this.durchgaenge.flatMap((d) => klingendeNoten(d.toene, d.beginn, jetzt))
+  }
+
   stop(): void {
     this.anhalten += 1
+    this.durchgaenge = []
     if (this.timer) {
       clearInterval(this.timer)
       this.timer = null
@@ -169,6 +188,7 @@ export class SongPlayer {
 
     const ablauf = bauAblauf(song, this.bpm)
     const beginn = this.naechster
+    this.durchgaenge.push({ beginn, ende: beginn + ablauf.dauer, toene: ablauf.toene })
     for (const ton of ablauf.toene) this.planeTon(ton.midi, beginn + ton.start, beginn + ton.ende)
     if (this.klick) this.planeKlicks(ablauf.klicks, beginn)
 

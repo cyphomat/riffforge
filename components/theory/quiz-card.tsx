@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Fretboard } from "@/components/theory/fretboard"
 import { IntervallHoeren } from "@/components/theory/intervall-hoeren"
+import { NotenView } from "@/components/session/noten-view"
 import { RhythmQuiz } from "@/components/theory/rhythm-quiz"
 import { DAEMPFUNG_MINDESTENS, figurById, type FigurBewertung } from "@/lib/theory/rhythm"
 import { bewertungsvorschlag } from "@/lib/theory/bewertung"
@@ -103,6 +104,8 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
           {card.frage.text}
         </h2>
       </div>
+
+      {card.frage.notenbild && <NotenView song={card.frage.notenbild} />}
 
       {card.frage.art === "griffbrett" && (
         <Fretboard

@@ -102,6 +102,8 @@ Komponente.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.
+- **Karten mit Notenbild (`lib/theory/noten-karten.ts`) rechnen die Antwort aus dem
+  Bild**, das Bild ist ein geprüfter `Song`; Begründung in `docs/wissen-und-theorie.md`.
 - **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt je Technik+Riff-Paar
   und nie in den Log.** Das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
   App nichts; Begründung in `docs/session-und-bildschirme.md`.

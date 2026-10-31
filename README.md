@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1398%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1441%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -275,9 +275,14 @@ verspricht und zwei spielt, kommt nicht durch den Test.
 
 Der Block zeigt die Notenschrift mit den Tonnamen, darunter die Tabulatur, und
 lässt dich den Song anhören — mit Einzähler, Klick und Schleife, im Tempo des
-Blocks. Die Länge der Noten hörst du, weil jede dort abgedämpft wird, wo ihr
-Wert endet. Ein Mikrofon-Timing gibt es bei Songs nicht: Pausen und lange Noten
+Blocks. Beim Anhören leuchtet die Note, die gerade klingt, in der
+Notenschrift auf. Die Länge der Noten hörst du, weil jede dort abgedämpft wird,
+wo ihr Wert endet. Ein Mikrofon-Timing gibt es bei Songs nicht: Pausen und lange Noten
 liessen ein richtiges Spiel als schlecht erscheinen.
+
+Zwölf Wissenskarten üben das Lesen selbst: eine Note benennen, den Abstand
+zweier Noten, die Länge einer Note, den Wert einer Pause. Das Notenbild steht
+in der Frage, und die Antwort wird aus ihm gerechnet statt dazugeschrieben.
 
 ## Sieben Saiten
 

@@ -32,6 +32,7 @@ export function SongAnsicht({
   blockLaeuft: boolean
 }) {
   const [namen, setNamen] = useState(true)
+  const [klingend, setKlingend] = useState<number[]>([])
 
   return (
     <div className="space-y-3">
@@ -45,11 +46,11 @@ export function SongAnsicht({
           Tonnamen
         </button>
       </div>
-      <NotenMitTab song={song} mitNamen={namen} />
+      <NotenMitTab song={song} mitNamen={namen} klingend={blockLaeuft ? [] : klingend} />
       {blockLaeuft ? (
         <p className="text-[13px] text-dim">Anhören ist in der Pause und vor dem Los da — im Block läuft das Metronom.</p>
       ) : (
-        <SongBedienung song={song} bpm={bpm} engine={engine} />
+        <SongBedienung song={song} bpm={bpm} engine={engine} onKlingend={setKlingend} />
       )}
     </div>
   )

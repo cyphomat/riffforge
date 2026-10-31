@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1398%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1441%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -280,9 +280,14 @@ three notes and plays two does not pass the test.
 
 The block shows the notation with the note names, the tab below it, and lets
 you listen to the song — with count-in, click and loop, at the tempo of the
-block. You can hear how long a note lasts because each one is damped where its
+block. While you listen, the note that is sounding lights up in the notation.
+You can hear how long a note lasts because each one is damped where its
 value ends. There is no microphone timing for songs: rests and long notes
 would make a correct performance look wrong.
+
+Twelve knowledge cards practise the reading itself: naming a note, the distance
+between two notes, how long a note lasts, the value of a rest. The notation sits
+in the question, and the answer is calculated from it instead of written next to it.
 
 ## Seven strings
 
