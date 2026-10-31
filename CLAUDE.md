@@ -104,6 +104,10 @@ Komponente.
   Wiedergabe fallen aus denselben Noten.
 - **Karten mit Notenbild (`lib/theory/noten-karten.ts`) rechnen die Antwort aus dem
   Bild**, das Bild ist ein geprüfter `Song`; Begründung in `docs/wissen-und-theorie.md`.
+- **Das Effektlexikon (`lib/theory/effekte.ts`, `/wissen/effekte`) ist Nachschlagen,
+  keine Abfrage.** Jeder Eintrag trägt seinen Platz in der Signalkette, die Reihenfolge
+  prüft `effekte.test.ts`; Streitfälle stehen als `ausnahme` am Eintrag; Begründung
+  in `docs/wissen-und-theorie.md`.
 - **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt je Technik+Riff-Paar
   und nie in den Log.** Das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
   App nichts; Begründung in `docs/session-und-bildschirme.md`.
