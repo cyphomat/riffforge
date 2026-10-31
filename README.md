@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1514%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1535%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -562,6 +562,15 @@ man hören, nicht wiedererkennen, wie die Karte letztes Mal klang. Erzeugt
 werden sie aus Obertönen statt als Aufnahme oder Saitenmodell: so liegt die
 Tonhöhe genau dort, wo sie soll — nachgemessen mit demselben YIN wie im
 Stimmgerät, auf unter zwei Cent über den ganzen Bereich von A2 bis E5.
+
+Dazu sechs Karten, die eine Leersaite erklingen lassen und nach ihrem Namen
+fragen. Hier wechselt der Ton nicht: die Tonhöhe selbst ist der Stoff. Die
+beiden E-Saiten heissen in der Auswahl „E (tief)“ und „e (hoch)“, weil sie
+auseinanderzuhalten die eigentliche Übung ist — sie liegen zwei Oktaven
+auseinander. Zuerst kommen die beiden Enden, dann die Mitte. Auch die tiefe E
+(E2) ist auf den Cent nachgemessen, obwohl sie unter dem Bereich der
+Intervallkarten liegt; auf kleinen Lautsprechern fehlt ihre Grundschwingung
+fast ganz, und das Ohr ergänzt sie aus den Obertönen.
 
 ### Den Hals lernen
 

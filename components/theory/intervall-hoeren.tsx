@@ -4,29 +4,28 @@ import { useRef, useState } from "react"
 import { MdReplay, MdVolumeUp } from "react-icons/md"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
 import { gezupft, hertzAus } from "@/lib/audio/zupfen"
-import { hoerPaar, type Richtung } from "@/lib/theory/gehoer"
+import { hoerPaar, saitenTon, type Richtung } from "@/lib/theory/gehoer"
+import type { Griff } from "@/lib/theory/types"
 
 /** Seconds between the two tones — long enough to hear the first one land. */
 const ABSTAND_S = 0.8
+/** Seconds a tone rings (`gezupft` default) — the button stays busy until the last one has. */
+const TONDAUER_S = 1.4
 
 /**
- * Spielt die zwei Töne einer Hörfrage.
+ * Spielt Töne nacheinander, auf Tippen.
  *
  * Kein Abspielen von selbst: ein AudioContext entsteht nur aus einem Tippen,
- * sonst bleibt er auf iOS dauerhaft stumm. Die Töne werden beim ersten
- * Zeigen gewürfelt und bleiben dann für diese Karte — *Nochmal* spielt
- * dasselbe Paar, sonst wäre es eine neue Frage.
+ * sonst bleibt er auf iOS dauerhaft stumm.
  */
-export function IntervallHoeren({ halbtoene, richtung }: { halbtoene: number; richtung: Richtung }) {
+function TonSpieler({ toene }: { toene: number[] }) {
   const engine = useAudioEngine()
-  const [zufall] = useState(() => Math.random())
   const [gehoert, setGehoert] = useState(false)
   const [spielt, setSpielt] = useState(false)
   const puffer = useRef<Map<number, AudioBuffer>>(new Map())
 
   const abspielen = async () => {
     const ctx = await engine.resume()
-    const toene = hoerPaar(halbtoene, richtung, zufall)
     const start = ctx.currentTime + 0.05
     toene.forEach((midi, i) => {
       let buffer = puffer.current.get(midi)
@@ -43,7 +42,7 @@ export function IntervallHoeren({ halbtoene, richtung }: { halbtoene: number; ri
     })
     setGehoert(true)
     setSpielt(true)
-    setTimeout(() => setSpielt(false), (ABSTAND_S + 1.4) * 1000)
+    setTimeout(() => setSpielt(false), ((toene.length - 1) * ABSTAND_S + TONDAUER_S) * 1000)
   }
 
   return (
@@ -52,4 +51,19 @@ export function IntervallHoeren({ halbtoene, richtung }: { halbtoene: number; ri
       {spielt ? "Hör zu …" : gehoert ? "Nochmal hören" : "Anhören"}
     </button>
   )
+}
+
+/**
+ * Die zwei Töne einer Hörfrage. Sie werden beim ersten Zeigen gewürfelt und
+ * bleiben dann für diese Karte — *Nochmal* spielt dasselbe Paar, sonst wäre
+ * es eine neue Frage.
+ */
+export function IntervallHoeren({ halbtoene, richtung }: { halbtoene: number; richtung: Richtung }) {
+  const [zufall] = useState(() => Math.random())
+  return <TonSpieler toene={hoerPaar(halbtoene, richtung, zufall)} />
+}
+
+/** Eine Leersaite, immer derselbe Ton — gefragt ist, welche Saite es ist. */
+export function SaiteHoeren({ saite }: { saite: Griff["saite"] }) {
+  return <TonSpieler toene={[saitenTon(saite)]} />
 }

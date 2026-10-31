@@ -1,4 +1,5 @@
-import { INTERVALLE } from "./fretboard"
+import { INTERVALLE, midiAt } from "./fretboard"
+import type { Griff } from "./types"
 
 /**
  * Ear training: which intervals are asked, in which order, and on which notes.
@@ -28,6 +29,30 @@ export const HOER_AUSWAHL: string[] = INTERVALLE.slice(1).map((intervall) => int
  */
 export const TIEFSTER_TON = 45
 export const HOECHSTER_TON = 76
+
+/**
+ * Open strings, heard one at a time. Unlike the interval cards the tone does
+ * not move: the thing to learn *is* the pitch, and it stays put. The choices
+ * are the six strings, lowest first; the two E strings carry their height in
+ * the name, because telling them apart is the point of the exercise.
+ */
+export const SAITEN_AUSWAHL = ["E (tief)", "A", "D", "G", "B", "e (hoch)"] as const
+
+/**
+ * The order the string cards come in: the two ends first — two E's two octaves
+ * apart are the easiest contrast — then the middle, neighbours last.
+ */
+export const SAITEN_REIHENFOLGE: readonly Griff["saite"][] = [6, 1, 4, 3, 5, 2]
+
+/** The choice that names a string, 1 = high e … 6 = low E. */
+export function saitenWahl(saite: Griff["saite"]): (typeof SAITEN_AUSWAHL)[number] {
+  return SAITEN_AUSWAHL[6 - saite]
+}
+
+/** MIDI note of a string played open. */
+export function saitenTon(saite: Griff["saite"]): number {
+  return midiAt({ saite, bund: 0 })
+}
 
 /**
  * The two notes for one hearing. `zufall` is a number in [0, 1); the same

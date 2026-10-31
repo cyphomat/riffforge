@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { tonhoehe, midiAus } from "@/lib/audio/tonhoehe"
 import { gezupft, hertzAus } from "@/lib/audio/zupfen"
-import { HOECHSTER_TON, TIEFSTER_TON } from "@/lib/theory/gehoer"
+import { HOECHSTER_TON, saitenTon, TIEFSTER_TON } from "@/lib/theory/gehoer"
 
 const RATE = 48000
 
@@ -19,6 +19,15 @@ describe("Der gezupfte Ton", () => {
       const gefunden = tonhoehe(mitte(gezupft(hertzAus(midi), RATE)), RATE)
       expect(gefunden, `MIDI ${midi}`).not.toBeNull()
       expect(Math.abs(midiAus(gefunden!.hz) - midi) * 100, `MIDI ${midi}`).toBeLessThan(2)
+    }
+  })
+
+  it("trifft auch jede Leersaite auf den Cent — die tiefe E liegt unter dem Hörbereich der Intervalle", () => {
+    for (const saite of [1, 2, 3, 4, 5, 6] as const) {
+      const midi = saitenTon(saite)
+      const gefunden = tonhoehe(mitte(gezupft(hertzAus(midi), RATE)), RATE)
+      expect(gefunden, `Saite ${saite}`).not.toBeNull()
+      expect(Math.abs(midiAus(gefunden!.hz) - midi) * 100, `Saite ${saite}`).toBeLessThan(2)
     }
   })
 
