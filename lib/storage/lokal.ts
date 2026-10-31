@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
+import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/gitarren"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
 
@@ -27,9 +28,10 @@ const SAITEN_KEY = "mga.saiten.v1"
 const SAISONAL_KEY = "mga.saisonal.v1"
 const VERSTECKT_KEY = "mga.saisonal-versteckt.v1"
 const SESSION_KEY = "mga.session-stand.v1"
+const GITARREN_KEY = "mga.gitarren.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -244,6 +246,40 @@ export function anlassVersteckt(tag: string): boolean {
 
 export function verstecke(tag: string): void {
   schreiben(VERSTECKT_KEY, tag)
+}
+
+/**
+ * Die Gitarren für die Roulette (`lib/session/gitarren.ts`).
+ *
+ * Gehört dem Gerät, wie die Darstellung: das Rack zu Hause ist nicht das auf
+ * dem Handy im Proberaum, und ein Abgleich müsste sich für eines entscheiden.
+ * Kein Eintrag heisst Standardliste; ein gespeicherter leerer Stand heisst
+ * ausdrücklich keine — dann würfelt die App nicht. Kaputtes fällt auf den
+ * Standard zurück: eine Liste ist in einer halben Minute neu getippt.
+ */
+export function gitarren(): Gitarre[] {
+  const roh = lesen(GITARREN_KEY)
+  if (!roh) return STANDARD_GITARREN
+  try {
+    const geprueft = gitarrenSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : STANDARD_GITARREN
+  } catch {
+    return STANDARD_GITARREN
+  }
+}
+
+export function merkeGitarren(liste: Gitarre[]): void {
+  schreiben(GITARREN_KEY, JSON.stringify(gitarrenSchema.parse(liste)))
+}
+
+/** Zurück auf die Standardliste: der Eintrag wird entfernt, nicht überschrieben. */
+export function vergissGitarren(): void {
+  if (typeof window === "undefined") return
+  try {
+    window.localStorage.removeItem(GITARREN_KEY)
+  } catch {
+    /* Nichts zu vergessen. */
+  }
 }
 
 export function clearLokal(): void {

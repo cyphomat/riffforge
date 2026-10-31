@@ -6,6 +6,17 @@
 
 ## Konventionen
 
+- **Die Gitarrenroulette würfelt je Technik+Riff-Paar, nicht je Block.** Das Riff
+  ist dieselbe Technik im Kontext; mittendrin umzugreifen kostet nur Ruhe. Das
+  Warm-up bekommt keine Gitarre, die nächste Technik nie dieselbe wie die davor.
+  Gewürfelt wird einmal beim Planen (`zuweisen` in `lib/session/gitarren.ts`),
+  „+5 Minuten" würfelt nur die neuen Blöcke. Anders als der Plan lässt sich der
+  Zufall nicht zurückrechnen: die Gitarren stehen im Session-Stand, damit
+  „Weiter" dieselben zeigt. Ins Übungs-Log kommen sie nicht — er ist append-only
+  und wird abgeglichen, ein Zufall hätte dort nichts zu suchen. Das Rack gehört
+  dem Gerät (`mga.gitarren.v1`); unter zwei Gitarren bleibt die Karte weg, im
+  Sieben-Saiter-Modus zählen nur Siebensaitige.
+
 - **Eine verlassene Session wird nicht neu gewürfelt.** Im UX-Check kam heraus:
   wer nach dem Warm-up die Seite verliess und zurückkam, bekam ein *anderes*
   Warm-up, weil der Plan an Tag und Log hängt und der Log sich geändert hatte.
