@@ -2,7 +2,17 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { EFFEKTE, KATEGORIEN, ORTE, kette, reihenfolge, type Effekt, type Kategorie } from "@/lib/theory/effekte"
+import {
+  DELAY_BPM,
+  EFFEKTE,
+  KATEGORIEN,
+  ORTE,
+  delayMs,
+  kette,
+  reihenfolge,
+  type Effekt,
+  type Kategorie,
+} from "@/lib/theory/effekte"
 
 type Filter = Kategorie | "alle"
 
@@ -18,6 +28,56 @@ function Zeile({ titel, text, ton }: { titel: string; text: string; ton?: string
     <div>
       <dt className={`font-mono text-[11.5px] uppercase tracking-[0.12em] ${ton ?? "text-muted"}`}>{titel}</dt>
       <dd className="mt-[2px] text-[14.5px] leading-relaxed text-fg">{text}</dd>
+    </div>
+  )
+}
+
+/** Delay-Zeiten zu einem Tempo. Nichts davon wird gespeichert: es ist ein Rechenschieber. */
+function DelayRechner() {
+  const [eingabe, setEingabe] = useState(String(DELAY_BPM.standard))
+  const bpm = Number(eingabe)
+  const gueltig = eingabe.trim() !== "" && bpm >= DELAY_BPM.min && bpm <= DELAY_BPM.max
+  const zeiten = gueltig ? delayMs(bpm) : null
+  const ms = (wert: number | undefined) => (wert === undefined ? "—" : `${Math.round(wert)} ms`)
+
+  return (
+    <div className="mt-4 border border-line bg-sunken p-3">
+      <label htmlFor="delay-bpm" className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-muted">
+        Delay-Zeit zum Tempo
+      </label>
+      <div className="mt-2 flex items-center gap-2">
+        <input
+          id="delay-bpm"
+          type="number"
+          inputMode="numeric"
+          min={DELAY_BPM.min}
+          max={DELAY_BPM.max}
+          value={eingabe}
+          onChange={(event) => setEingabe(event.target.value)}
+          aria-invalid={!gueltig}
+          className="w-20 border border-line bg-bg px-2 py-[6px] font-mono text-[16px] text-fg"
+        />
+        <span className="font-mono text-[12px] text-dim">BPM</span>
+      </div>
+      <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
+        {(
+          [
+            ["Viertel", zeiten?.viertel],
+            ["Achtel", zeiten?.achtel],
+            ["Punktierte Achtel", zeiten?.punktierteAchtel],
+          ] as const
+        ).map(([titel, wert]) => (
+          <div key={titel}>
+            <dt className="font-mono text-[11px] uppercase leading-tight tracking-[0.08em] text-muted">{titel}</dt>
+            <dd className="mt-1 font-mono text-[15px] text-akzent">{ms(wert)}</dd>
+          </div>
+        ))}
+      </dl>
+      {!gueltig && (
+        <p className="mt-2 text-[13px] text-rost" role="status">
+          Tempo zwischen {DELAY_BPM.min} und {DELAY_BPM.max} BPM.
+        </p>
+      )}
     </div>
   )
 }
@@ -41,6 +101,7 @@ function Eintrag({ effekt }: { effekt: Effekt }) {
         <Zeile titel="Fallstrick" text={effekt.fallstrick} ton="text-rost" />
         {effekt.ausnahme && <Zeile titel="Ausnahme" text={effekt.ausnahme} ton="text-stahl" />}
       </dl>
+      {effekt.id === "fx-delay" && <DelayRechner />}
       {effekt.beispiele && (
         <p className="mt-3 font-mono text-[12px] text-dim">z. B. {effekt.beispiele.join(", ")}</p>
       )}

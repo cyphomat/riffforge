@@ -478,3 +478,17 @@ export function kette() {
 export function reihenfolge(): Effekt[] {
   return kette().flatMap((station) => station.eintraege)
 }
+
+/** Der Bereich des Tempo-Feldes im Delay-Eintrag. */
+export const DELAY_BPM = { min: 40, max: 300, standard: 120 } as const
+
+/**
+ * Die Delay-Zeiten zu einem Tempo, in Millisekunden: Viertel, Achtel und
+ * punktierte Achtel (anderthalb Achtel, also drei Viertel einer Viertel).
+ * Ungerundet; gerundet wird erst beim Anzeigen.
+ */
+export function delayMs(bpm: number) {
+  if (!Number.isFinite(bpm) || bpm <= 0) throw new RangeError(`bpm must be positive, got ${bpm}`)
+  const viertel = 60_000 / bpm
+  return { viertel, achtel: viertel / 2, punktierteAchtel: viertel * 0.75 }
+}
