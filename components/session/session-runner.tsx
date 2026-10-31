@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/session/lead"
 import {
+  gitarren,
   lickBox,
   lickSeed,
   merkeLickSeed,
@@ -12,6 +13,7 @@ import {
   vergissSessionStand,
 } from "@/lib/storage/lokal"
 import { ausgangsLog, ergebnisseSeit, stehtNoch, type SessionStand } from "@/lib/session/session-stand"
+import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { dayKey } from "@/lib/session/progress"
@@ -45,6 +47,16 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [blocks, setBlocks] = useState<SessionBlock[] | null>(null)
 
+  /**
+   * Die Gitarre je Block, einmal beim Planen gewürfelt und danach festgehalten.
+   * Das Rack wird einmal gelesen: ein späterer Eintrag soll mitten in der
+   * Session nichts umwerfen. Der Plan lässt sich aus dem Log zurückrechnen, der
+   * Zufall nicht — darum steht er im Session-Stand. „+5 Minuten" würfelt nur
+   * die neuen Blöcke.
+   */
+  const rack = useRef<ReturnType<typeof gitarren>>([])
+  const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
+
   const [current, setCurrent] = useState(0)
   const [results, setResults] = useState<DrillResult[]>([])
 
@@ -67,11 +79,13 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   /** Nach „+5 Minuten" ist der Plan nicht mehr aus dem Log zurückzurechnen; dann wird nichts mehr gemerkt. */
   const keinStand = useRef(false)
 
-  const planFuer = (startLog: PracticeLog, profile: Profile | null) => {
+  const planFuer = (startLog: PracticeLog, profile: Profile | null, gemerkteGitarren: Zuweisung = []) => {
     const single = drillId ? buildDrillSession(startLog, drillId, { minutes, profile }) : null
     // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
     const plan = (single ?? buildSession(startLog, { minutes, profile, random: tagesZufall() })).blocks
     setBlocks(plan)
+    rack.current = gitarren()
+    setGitarrenJeBlock(zuweisen(gemerkteGitarren, plan, rack.current, Math.random))
     setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
   }
 
@@ -99,7 +113,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setBeantworteteFragen(stand.beantworteteFragen)
     setCurrent(stand.current)
     setAngebot(null)
-    planFuer(start, loadProfile())
+    planFuer(start, loadProfile(), stand.gitarren)
   }
 
   useEffect(() => {
@@ -221,11 +235,11 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   const extend = () => {
     keinStand.current = true
     vergissSessionStand()
-    setBlocks((previous) => {
-      if (!previous) return previous
-      const erster = nextExtraBlock(log, previous, { minutes: 2.5 })
-      return [...previous, erster, nextExtraBlock(log, [...previous, erster], { minutes: 2.5 })]
-    })
+    if (!blocks) return
+    const erster = nextExtraBlock(log, blocks, { minutes: 2.5 })
+    const mehr = [...blocks, erster, nextExtraBlock(log, [...blocks, erster], { minutes: 2.5 })]
+    setBlocks(mehr)
+    setGitarrenJeBlock((bisher) => zuweisen(bisher, mehr, rack.current, Math.random))
   }
 
 
@@ -249,8 +263,9 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
       erledigteEinschuebe: erledigteEinschuebe,
       beantworteteFragen,
       carried: carried.current,
+      gitarren: gitarrenJeBlock,
     })
-  }, [blocks, startingLog, done, current, erledigteEinschuebe, beantworteteFragen, minutes, drillId])
+  }, [blocks, startingLog, done, current, erledigteEinschuebe, beantworteteFragen, minutes, drillId, gitarrenJeBlock])
 
   const overallProgress = useMemo(
     () => (blocks?.length ? (current / blocks.length) * 100 : 0),
@@ -315,6 +330,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
         block={active}
         index={current}
         total={blocks.length}
+        gitarre={gitarrenJeBlock[current] ?? null}
         onComplete={completeBlock}
       />
       )}

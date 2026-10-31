@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { ausgangsLog, ergebnisseSeit, stehtNoch, type SessionStand } from "../session-stand"
+import { ausgangsLog, ergebnisseSeit, sessionStandSchema, stehtNoch, type SessionStand } from "../session-stand"
 import type { DrillResult, PracticeLog } from "../types"
 
 const jetzt = new Date(2026, 9, 30, 19, 30, 0)
@@ -45,5 +45,16 @@ describe("ausgangsLog und ergebnisseSeit", () => {
   it("lässt den Log selbst unverändert", () => {
     ausgangsLog(log, stand.startedAt)
     expect(log.results).toHaveLength(2)
+  })
+})
+
+describe("Gitarren im Stand", () => {
+  it("nimmt die gewürfelten Gitarren mit, auch die leeren Stellen", () => {
+    const mit = { ...stand, gitarren: [null, "Solar S-Type", "Solar S-Type"] }
+    expect(sessionStandSchema.parse(mit).gitarren).toEqual([null, "Solar S-Type", "Solar S-Type"])
+  })
+
+  it("lässt einen Stand von vor der Roulette gültig", () => {
+    expect(sessionStandSchema.safeParse(stand).success).toBe(true)
   })
 })

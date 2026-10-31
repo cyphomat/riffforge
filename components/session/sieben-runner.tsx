@@ -6,6 +6,8 @@ import { MdArrowBack, MdMusicNote, MdTune } from "react-icons/md"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { SessionSummary } from "@/components/session/session-summary"
 import { STIMMUNG, buildSiebenSession, naechsterSiebenBlock } from "@/lib/session/sieben"
+import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
+import { gitarren } from "@/lib/storage/lokal"
 import { appendResults, loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
 import { EMPTY_LOG, type DrillResult, type PracticeLog, type SessionBlock } from "@/lib/session/types"
@@ -26,12 +28,16 @@ export function SiebenRunner() {
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [current, setCurrent] = useState(0)
   const [results, setResults] = useState<DrillResult[]>([])
+  // Hier würfelt die Roulette nur unter den Siebensaitigen — meist gibt es eine, dann bleibt sie still.
+  const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
 
   const starten = () => {
     const gelesen = loadLog()
     setStartLog(gelesen)
     setLog(gelesen)
-    setBlocks(buildSiebenSession(gelesen, { profile: loadProfile() }).blocks)
+    const plan = buildSiebenSession(gelesen, { profile: loadProfile() }).blocks
+    setBlocks(plan)
+    setGitarrenJeBlock(zuweisen([], plan, gitarren(), Math.random, { nurSieben: true }))
     setCurrent(0)
     setResults([])
   }
@@ -61,11 +67,10 @@ export function SiebenRunner() {
   }
 
   const verlaengern = () => {
-    setBlocks((bisher) =>
-      bisher
-        ? [...bisher, naechsterSiebenBlock(log, bisher.map((block) => block.drill.id))]
-        : bisher,
-    )
+    if (!blocks) return
+    const mehr = [...blocks, naechsterSiebenBlock(log, blocks.map((block) => block.drill.id))]
+    setBlocks(mehr)
+    setGitarrenJeBlock((bisher) => zuweisen(bisher, mehr, gitarren(), Math.random, { nurSieben: true }))
   }
 
   if (blocks === null) {
@@ -138,6 +143,7 @@ export function SiebenRunner() {
         block={block}
         index={current}
         total={blocks.length}
+        gitarre={gitarrenJeBlock[current] ?? null}
         onComplete={fertig}
       />
     </div>

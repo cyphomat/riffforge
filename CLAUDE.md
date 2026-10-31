@@ -102,6 +102,9 @@ Komponente.
 - **Songs sind Daten, ihr Lernziel wird nachgerechnet.** Ein Song gilt erst, wenn
   `songs.test.ts` ihn durchlässt (`pruefeSong`); Tabulatur, Notenschrift und
   Wiedergabe fallen aus denselben Noten.
+- **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt je Technik+Riff-Paar
+  und nie in den Log.** Das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
+  App nichts; Begründung in `docs/session-und-bildschirme.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
