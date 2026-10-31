@@ -73,6 +73,8 @@
 | `lib/session/anlaesse.ts` | Anlässe: Regeln (fix, Ostern, n-ter Wochentag, Datum), Phasen, Rang, Sätze — rein. Port aus Setlist |
 | `components/session/anlass-banner.tsx` | Der Streifen auf *Heute* unter der Ansage |
 | `components/session/saisonal-panel.tsx` | Der Schalter dazu, auf *Daten* |
+| `lib/session/gitarren.ts` | Die Gitarrenroulette: Rack-Schema, Standardliste, Würfeln je Technik+Riff-Paar — rein |
+| `components/session/gitarren-panel.tsx` | Das Rack bearbeiten, auf *Daten*; die Karte selbst zeigt `block-runner.tsx` |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |

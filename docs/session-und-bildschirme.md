@@ -6,6 +6,15 @@
 
 ## Konventionen
 
+- **Die Gitarrenroulette würfelt je Technik+Riff-Paar, nicht je Block.** Das Riff
+  ist dieselbe Technik im Kontext; mittendrin umzugreifen kostet nur Ruhe. Das
+  Warm-up bekommt keine Gitarre, die nächste Technik nie dieselbe wie die davor.
+  Gewürfelt wird einmal beim Planen (`zuweisen` in `lib/session/gitarren.ts`),
+  „+5 Minuten" würfelt nur die neuen Blöcke. Das Ergebnis kommt nicht in den
+  Log: er ist append-only und wird abgeglichen, ein Zufall hätte dort nichts zu
+  suchen. Das Rack gehört dem Gerät (`mga.gitarren.v1`); unter zwei Gitarren
+  bleibt die Karte weg, im Sieben-Saiter-Modus zählen nur Siebensaitige.
+
 - **Ein leeres Raster ist keine Auskunft.** Der Übungskalender zeigte feste
   sechzehn Wochen — einem Wiedereinsteiger also hundertzwölf leere Kästchen
   und darunter „0 von 112 Tagen". `weeksFor` lässt ihn mit dem Log wachsen.

@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
 import { LEAD_DRILL_ID, SITZT_AB, istLead, mitLick, naechsterSeed } from "@/lib/session/lead"
-import { lickBox, lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
+import { gitarren, lickBox, lickSeed, merkeLickSeed } from "@/lib/storage/lokal"
+import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { buildDrillSession, buildSession, nextExtraBlock, tagesZufall } from "@/lib/session/builder"
@@ -35,6 +36,14 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [blocks, setBlocks] = useState<SessionBlock[] | null>(null)
 
+  /**
+   * Die Gitarre je Block, einmal beim Planen gewürfelt und danach festgehalten.
+   * Das Rack wird einmal gelesen: ein späterer Eintrag soll mitten in der
+   * Session nichts umwerfen. „+5 Minuten" würfelt nur die neuen Blöcke.
+   */
+  const rack = useRef<ReturnType<typeof gitarren>>([])
+  const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
+
   const [current, setCurrent] = useState(0)
   const [results, setResults] = useState<DrillResult[]>([])
 
@@ -61,6 +70,8 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
     const plan = (single ?? buildSession(initial, { minutes, profile, random: tagesZufall() })).blocks
     setBlocks(plan)
+    rack.current = gitarren()
+    setGitarrenJeBlock(zuweisen([], plan, rack.current, Math.random))
     setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
   }, [drillId, minutes])
 
@@ -170,11 +181,11 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   // „+5 Minuten" sind zwei verschiedene Drills zu je zweieinhalb, nicht fünf
   // Minuten dasselbe — dieselbe Grenze wie in der Session (MAX_AM_STUECK).
   const extend = () => {
-    setBlocks((previous) => {
-      if (!previous) return previous
-      const erster = nextExtraBlock(log, previous, { minutes: 2.5 })
-      return [...previous, erster, nextExtraBlock(log, [...previous, erster], { minutes: 2.5 })]
-    })
+    if (!blocks) return
+    const erster = nextExtraBlock(log, blocks, { minutes: 2.5 })
+    const mehr = [...blocks, erster, nextExtraBlock(log, [...blocks, erster], { minutes: 2.5 })]
+    setBlocks(mehr)
+    setGitarrenJeBlock((bisher) => zuweisen(bisher, mehr, rack.current, Math.random))
   }
 
   const overallProgress = useMemo(
@@ -222,6 +233,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
         block={active}
         index={current}
         total={blocks.length}
+        gitarre={gitarrenJeBlock[current] ?? null}
         onComplete={completeBlock}
       />
       )}

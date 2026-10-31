@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1368%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1381%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -85,6 +85,12 @@ Ansage ein kleiner Streifen mit Pixel-Tannenbaum und einem Satz; an Lemmys und
 Ozzys Todestag eine schlichte Kerze. Ohne Bewegung, nie in der Session, mit ✕
 für den Tag. Unter *Daten → Saisonales* geht er ganz aus. Das ist der einzige
 Schmuck der App und hat deshalb enge Grenzen (`docs/design-und-themes.md`).
+
+**Eine Gitarre aus dem Rack.** Zu jeder Technik würfelt die Session eine deiner
+Gitarren, das Riff dazu spielst du auf derselben; die zweite Runde nie auf
+der ersten. Das Rack pflegst du unter *Daten → Gitarren*, es gilt nur für
+diesen Browser. Ab zwei Gitarren, im Sieben-Saiter-Modus nur unter den
+Siebensaitigen.
 
 ---
 

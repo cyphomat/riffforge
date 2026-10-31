@@ -22,6 +22,7 @@ import { UpdatePanel } from "@/components/session/update-panel"
 import { InstallPanel } from "@/components/session/install-panel"
 import { DarstellungPanel } from "@/components/session/darstellung-panel"
 import { SaisonalPanel } from "@/components/session/saisonal-panel"
+import { GitarrenPanel } from "@/components/session/gitarren-panel"
 import { EinmessenPanel } from "@/components/session/einmessen-panel"
 import { merkeSicherung, zuletztGesichert } from "@/lib/storage/lokal"
 import { letzteKopie, sollErinnern, tageSeit } from "@/lib/backup-erinnerung"
@@ -163,6 +164,9 @@ export function DataManager() {
 
       <DarstellungPanel />
       <SaisonalPanel />
+
+      {/* Nach „Alles löschen" neu einhängen: die Liste ist dann wieder die Standardliste. */}
+      <GitarrenPanel key={loeschRunde} />
 
       <InstallPanel />
 
