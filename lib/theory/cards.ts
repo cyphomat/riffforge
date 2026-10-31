@@ -1,7 +1,14 @@
 import { stufeInForm } from "./caged"
 import { dreiklangTon } from "./dreiklaenge"
 import { INTERVALLE, positionsOf, positionsOfInterval, stufeInLage } from "./fretboard"
-import { HOER_AUSWAHL, HOER_REIHENFOLGE, type Richtung } from "./gehoer"
+import {
+  HOER_AUSWAHL,
+  HOER_REIHENFOLGE,
+  SAITEN_AUSWAHL,
+  SAITEN_REIHENFOLGE,
+  saitenWahl,
+  type Richtung,
+} from "./gehoer"
 import { NOTEN_KARTEN } from "./noten-karten"
 import type { Griff, TheoryCard } from "./types"
 
@@ -65,6 +72,39 @@ function hoerKarten(richtung: Richtung): TheoryCard[] {
         auswahl: HOER_AUSWAHL,
         richtig: [name],
         hoeren: { halbtoene, richtung },
+      },
+    }
+  })
+}
+
+/**
+ * Woran man eine Leersaite erkennt — je Saite ein Text, der mit Name, Ton und
+ * Hertz beginnt. Die Zahlen prüft `cards.test.ts` gegen die Stimmung nach.
+ */
+const SAITEN_CHARAKTER: Record<Griff["saite"], string> = {
+  6: "Die tiefe E-Saite, E2, 82 Hz: der tiefste Ton der Gitarre und der Grundton der meisten Metal-Riffs. Er brummt mehr, als er singt — auf kleinen Lautsprechern fehlt die Grundschwingung fast ganz, und das Ohr ergänzt sie aus den Obertönen. Genau das ist die Übung: den Ton an seiner Färbung erkennen, nicht nur an der Tiefe.",
+  5: "Die A-Saite, A2, 110 Hz: eine Quarte über der tiefen E. Das A ist der Kammerton — 440 Hz sind zwei Oktaven darüber —, und viele stimmen von ihr aus die übrigen Saiten. Ihr Klang ist noch dunkel, aber schon deutlich weniger brummig als der der tiefen E.",
+  4: "Die D-Saite, D3, 147 Hz: die dritte von unten, wieder eine Quarte über der A-Saite. Wer die Quarte kennt — fünf Halbtöne, der Abstand zweier benachbarter Leersaiten —, hört den Schritt von A zu D wieder und kann die D-Saite von der A aus finden.",
+  3: "Die G-Saite, G3, 196 Hz: die Saite, an der die Stimmung knickt. Bis hierher stehen die Saiten eine Quarte auseinander, fünf Halbtöne; von G zu B sind es nur vier, eine grosse Terz, danach wieder fünf. Wer nach Gehör stimmt, merkt sich diesen einen Schritt gesondert.",
+  2: "Die B-Saite, B3, 247 Hz: die zweite von oben, eine grosse Terz über der G-Saite. Sie ist heller als die G und noch nicht so dünn wie die hohe e — im Mittelfeld wird sie deshalb am ehesten mit ihren Nachbarn verwechselt.",
+  1: "Die hohe e-Saite, E4, 330 Hz: zwei Oktaven über der tiefen E, derselbe Ton in dünn. Zwei Töne im Oktavabstand sind so verwandt, dass man sie leicht verwechselt — das Ohr hört den Namen sofort, die Höhe muss man dazu lernen.",
+}
+
+/** Sechs Hörkarten: eine Leersaite erklingt, gefragt ist ihr Name. Die Töne wechseln nicht — die Tonhöhe selbst ist der Stoff. */
+function saitenKarten(): TheoryCard[] {
+  return SAITEN_REIHENFOLGE.map((saite) => {
+    const name = saitenWahl(saite)
+    return {
+      id: `gs-saite-${saite}`,
+      stufe: 2,
+      begriff: `Gehört: ${saite === 6 ? "tiefe E" : saite === 1 ? "hohe e" : name}-Saite`,
+      erklaerung: SAITEN_CHARAKTER[saite],
+      frage: {
+        art: "gehoert",
+        text: "Eine Leersaite wird angeschlagen, Standardstimmung. Welche ist es?",
+        auswahl: [...SAITEN_AUSWAHL],
+        richtig: [name],
+        leersaite: saite,
       },
     }
   })
@@ -689,6 +729,7 @@ export const THEORY_CARDS: TheoryCard[] = [
 
   // Hören statt zählen: aufwärts zuerst, abwärts erst danach — abwärts ist
   // dasselbe Intervall, aber schwerer zu hören.
+  ...saitenKarten(),
   ...hoerKarten("auf"),
   ...hoerKarten("ab"),
 

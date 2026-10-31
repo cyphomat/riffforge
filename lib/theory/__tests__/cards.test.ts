@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest"
+import { hertzAus } from "@/lib/audio/zupfen"
 import { DRILLS } from "@/lib/session/drills"
 import { cagedForm, FORMEN, formenAmHals, stufeInForm } from "@/lib/theory/caged"
 import { cardById, cardsOfStufe, THEORY_CARDS } from "@/lib/theory/cards"
+import { SAITEN_AUSWAHL, saitenTon } from "@/lib/theory/gehoer"
 import {
   INTERVALLE,
   intervalBetween,
@@ -130,7 +132,7 @@ describe("Jede Karte", () => {
  * auf, und Übungsmaterial, das lügt, ist schlimmer als keines.
  */
 describe("Hörfragen im Katalog", () => {
-  const gehoert = THEORY_CARDS.filter((card) => card.frage.art === "gehoert")
+  const gehoert = THEORY_CARDS.filter((card) => card.frage.art === "gehoert" && card.frage.hoeren)
 
   it("gibt es zu jedem Intervall aufwärts und abwärts", () => {
     expect(gehoert).toHaveLength(24)
@@ -158,6 +160,33 @@ describe("Hörfragen im Katalog", () => {
     const erstesAb = THEORY_CARDS.findIndex((c) => c.frage.hoeren?.richtung === "ab")
     const letztesAuf = THEORY_CARDS.findLastIndex((c) => c.frage.hoeren?.richtung === "auf")
     expect(letztesAuf).toBeLessThan(erstesAb)
+  })
+})
+
+describe("Saitenkarten im Katalog", () => {
+  const saiten = THEORY_CARDS.filter((card) => card.frage.art === "gehoert" && card.frage.leersaite)
+
+  it("gibt es zu jeder der sechs Leersaiten genau eine", () => {
+    expect(saiten.map((c) => c.frage.leersaite).sort()).toEqual([1, 2, 3, 4, 5, 6])
+  })
+
+  it.each(saiten.map((card) => [card.id, card] as const))("%s nennt als Antwort die gespielte Saite", (_id, card) => {
+    const saite = card.frage.leersaite!
+    expect(card.frage.richtig).toEqual([SAITEN_AUSWAHL[6 - saite]])
+    // Dieselben sechs Namen auf jeder Karte, sonst verriete die Auswahl die Karte.
+    expect(card.frage.auswahl).toEqual([...SAITEN_AUSWAHL])
+  })
+
+  it.each(saiten.map((card) => [card.id, card] as const))("%s nennt Ton und Hertz in der Erklärung richtig", (_id, card) => {
+    const midi = saitenTon(card.frage.leersaite!)
+    const name = `${TOENE[((midi % 12) + 12) % 12]}${Math.floor(midi / 12) - 1}`
+    expect(card.erklaerung, card.id).toContain(`${name}, ${Math.round(hertzAus(midi))} Hz`)
+  })
+
+  it("trägt den Abstand der Nachbarsaiten richtig vor: viermal fünf Halbtöne, einmal vier", () => {
+    const vonUnten = [6, 5, 4, 3, 2, 1] as const
+    const abstaende = vonUnten.slice(1).map((saite, i) => saitenTon(saite) - saitenTon(vonUnten[i]))
+    expect(abstaende).toEqual([5, 5, 5, 4, 5])
   })
 })
 

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1514%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1535%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -558,6 +558,14 @@ that is what should be heard — not how the card sounded last time. They are
 built from harmonics rather than recorded or modelled as a string, so the
 pitch sits exactly where it should: measured with the same YIN the tuner uses,
 within two cents across the whole range from A2 to E5.
+
+On top of that, six cards play an open string and ask for its name. Here the
+note does not move: the pitch itself is what is being learned. The two E
+strings appear as "E (tief)" and "e (hoch)" in the choices, because telling
+them apart is the actual exercise — they are two octaves apart. The two ends
+come first, then the middle. The low E (E2) is measured to the cent as well,
+although it sits below the range of the interval cards; on small speakers its
+fundamental is nearly missing, and the ear fills it in from the overtones.
 
 ### Learning the neck
 

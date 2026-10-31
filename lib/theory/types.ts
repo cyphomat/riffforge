@@ -86,6 +86,8 @@ export interface Frage {
   rhythmus?: { figurId: string; bpm: number; takte: number }
   /** Nur bei "gehoert": welcher Abstand, und ob der zweite Ton höher oder tiefer liegt. */
   hoeren?: { halbtoene: number; richtung: Richtung }
+  /** Nur bei "gehoert", statt `hoeren`: welche Leersaite (Standardstimmung) erklingt und benannt werden soll. */
+  leersaite?: Griff["saite"]
   /**
    * Ein kleines Notenbild zur Frage, gezeichnet wie die Notenschrift der Songs.
    * Die Antwort wird aus diesem Bild gerechnet (`lib/theory/noten-karten.ts`),

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Fretboard } from "@/components/theory/fretboard"
-import { IntervallHoeren } from "@/components/theory/intervall-hoeren"
+import { IntervallHoeren, SaiteHoeren } from "@/components/theory/intervall-hoeren"
 import { NotenView } from "@/components/session/noten-view"
 import { RhythmQuiz } from "@/components/theory/rhythm-quiz"
 import { DAEMPFUNG_MINDESTENS, figurById, type FigurBewertung } from "@/lib/theory/rhythm"
@@ -150,6 +150,8 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
       {card.frage.art === "gehoert" && card.frage.hoeren && (
         <IntervallHoeren halbtoene={card.frage.hoeren.halbtoene} richtung={card.frage.hoeren.richtung} />
       )}
+
+      {card.frage.art === "gehoert" && card.frage.leersaite && <SaiteHoeren saite={card.frage.leersaite} />}
 
       {(card.frage.art === "auswahl" || card.frage.art === "gehoert") && (
         // Zwölf Intervallnamen untereinander wären auf dem Handy eine Liste

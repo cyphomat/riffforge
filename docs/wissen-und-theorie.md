@@ -74,6 +74,21 @@
   demselben Grund wie überall: kein AudioContext vor einer Nutzergeste.
   Im Browser geprüft, indem die gespielten Puffer abgegriffen und ihre
   Tonhöhe nachgerechnet wurde — Quinte aufwärts kam als F#3 → C#4 an.
+- **Eine Saitenkarte fragt die Tonhöhe selbst, deshalb bleibt der Ton stehen.**
+  Sechs Karten (`leersaite` an der Frage), je eine Leersaite in
+  Standardstimmung, Antwort ist ihr Name. Anders als beim Intervall wird
+  nichts gewürfelt: der Ton *ist* der Stoff, und zwei Töne, die bei jedem
+  Zeigen woanders liegen, wären eine andere Übung. Die beiden E-Saiten stehen
+  als „E (tief)“ und „e (hoch)“ in der Auswahl, damit der Oktavabstand zu
+  hören bleibt, statt sich im Namen zu verstecken; alle sechs Karten bieten
+  dieselben sechs Namen. Reihenfolge: die beiden Enden zuerst (E, e), dann
+  D, G, A, B. Die tiefe E (E2, 82 Hz) liegt unter `TIEFSTER_TON`, also unter
+  dem Bereich der Intervallkarten; `zupfen.test.ts` misst sie deshalb eigens
+  nach. Auf einem Laptop-Lautsprecher fehlt ihre Grundschwingung fast ganz —
+  gemessen ist nur der erzeugte Puffer, nicht, was ein bestimmter Lautsprecher
+  daraus macht. Die Erklärungen nennen Ton und Hertz, und `cards.test.ts`
+  rechnet beides nach. Die Siebensaiter-Saite (tiefes H) gibt es hier noch
+  nicht.
 - **Dreiklänge sind gerechnet, und ihre Behauptungen sind eng gefasst.**
   `dreiklaenge.ts` stapelt in enger Lage und lässt den Knick zur B-Saite aus
   den Leersaiten fallen, ohne Sonderfall. Zwei Aussagen musste der Test
