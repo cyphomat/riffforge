@@ -76,6 +76,7 @@
 | `lib/session/anlaesse.ts` | Anlässe: Regeln (fix, Ostern, n-ter Wochentag, Datum), Phasen, Rang, Sätze — rein. Port aus Setlist |
 | `components/session/anlass-banner.tsx` | Der Streifen auf *Heute* unter der Ansage |
 | `components/session/saisonal-panel.tsx` | Der Schalter dazu, auf *Daten* |
+| `lib/session/letztes-tempo.ts` | Das Tempo des zuletzt gespielten Blocks aus dem Log, nach Zeitstempel; `null` außerhalb der Grenzen. Rein |
 | `lib/theory/effekte.ts` | Das Pedal- und Effektlexikon: Einträge mit Platz in der Signalkette (reine Daten), geprüft von `effekte.test.ts` |
 | `lib/theory/noten-karten.ts` | Wissenskarten mit Notenbild: Antwort aus dem Bild gerechnet, Bilder als echte `Song`-Daten |
 | `lib/session/gitarren.ts` | Die Gitarrenroulette: Rack-Schema, Standardliste, Würfeln je Technik+Riff-Paar — rein |

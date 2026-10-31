@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1503%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1514%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -596,8 +596,9 @@ chain**: the chain itself at the top in four stations (before the amp, preamp,
 FX loop, power amp and cabinet), the entries below it, filterable by category.
 Where the order is debatable, the exception is stated on the entry. The delay
 entry has a small calculator: type a tempo and it shows the times for quarter,
-eighth and dotted-eighth notes. It is for looking things up, not for quizzing:
-the reference adds no cards and writes nothing to the log.
+eighth and dotted-eighth notes; it starts at the tempo of your last block. It is
+for looking things up, not for quizzing: the reference adds no cards and writes
+nothing to the log, it only reads it for that tempo.
 
 ## What the microphone hears
 
