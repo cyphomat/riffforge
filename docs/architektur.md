@@ -49,13 +49,13 @@
 | `lib/theory/hals.ts` | Die Maße des Halses — für das antippbare Griffbrett |
 | `lib/theory/caged.ts` | CAGED als Rechnung: fünf offene Griffe, in jede Tonart verschoben |
 | `lib/theory/dreiklaenge.ts` | Dreiklänge in enger Lage auf drei benachbarten Saiten |
-| `lib/theory/gehoer.ts` | Hörfragen: Reihenfolge, Auswahl, die gewürfelten Tonpaare; dazu die sechs Leersaiten (Auswahl, Reihenfolge, Ton) |
+| `lib/theory/gehoer.ts` | Hörfragen: Reihenfolge, Auswahl, die gewürfelten Tonpaare; dazu die sechs Leersaiten (Auswahl, Reihenfolge, Ton) und der Anker (die tiefe E, zwölf Töne darüber, ihre Stelle auf dem Hals) |
 | `lib/audio/zupfen.ts` | Ein gezupfter Ton aus Obertönen — rein, auf den Cent gemessen |
 | `lib/audio/song-ablauf.ts` | Wann in einem Song-Durchgang was erklingt, in Sekunden — rein, das Tempo nachgerechnet |
 | `lib/audio/song-player.ts` | Spielt einen Song auf der einen Uhr: Durchgänge im Voraus planen, Schleife, Einzähler, Klick. Anhalten trennt den Master-Knoten |
 | `components/session/song-bedienung.tsx` | Anhören, Tempo, Schleife und Klick für einen Song; den `AudioEngine` bringt der Aufrufer mit |
 | `components/session/song-ansicht.tsx` | Was ein Song-Block zeigt: Notenschrift, Tonnamen auf Wunsch, Anhören — nicht während der Block läuft |
-| `components/theory/intervall-hoeren.tsx` | Spielt die Töne einer Hörfrage: zwei bei einem Intervall (`IntervallHoeren`), einen bei einer Leersaite (`SaiteHoeren`) |
+| `components/theory/intervall-hoeren.tsx` | Spielt die Töne einer Hörfrage: zwei bei einem Intervall (`IntervallHoeren`), einen bei einer Leersaite (`SaiteHoeren`), Anker plus Ton bei einer Ankerkarte (`AnkerHoeren`) |
 | `lib/theory/hals-trainer.ts` | Der Griffbrett-Trainer als Rechnung: 72 Stellen × 2 Richtungen, FSRS |
 | `lib/theory/hals-id.ts` | Das Präfix `hals-` — damit der Trainer nicht als Wissen zählt |
 | `components/theory/effekt-lexikon.tsx` | Das Lexikon unter `/wissen/effekte`: Kette in vier Stationen, Filter, Einträge |

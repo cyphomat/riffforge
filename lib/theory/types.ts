@@ -88,6 +88,8 @@ export interface Frage {
   hoeren?: { halbtoene: number; richtung: Richtung }
   /** Nur bei "gehoert", statt `hoeren`: welche Leersaite (Standardstimmung) erklingt und benannt werden soll. */
   leersaite?: Griff["saite"]
+  /** Nur bei "gehoert", statt `hoeren`: wie viele Halbtöne der zweite Ton über der tiefen E (dem Anker) liegt, 1 bis 12. */
+  nachAnker?: number
   /**
    * Ein kleines Notenbild zur Frage, gezeichnet wie die Notenschrift der Songs.
    * Die Antwort wird aus diesem Bild gerechnet (`lib/theory/noten-karten.ts`),

@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest"
 import { INTERVALLE } from "@/lib/theory/fretboard"
-import { HOECHSTER_TON, HOER_AUSWAHL, HOER_REIHENFOLGE, hoerPaar, TIEFSTER_TON } from "@/lib/theory/gehoer"
+import {
+  ANKER_REIHENFOLGE,
+  ANKER_TON,
+  ankerPaar,
+  HOECHSTER_TON,
+  HOER_AUSWAHL,
+  HOER_REIHENFOLGE,
+  hoerPaar,
+  TIEFSTER_TON,
+} from "@/lib/theory/gehoer"
 
 describe("Hörfragen", () => {
   it("fragt jedes Intervall von der kleinen Sekunde bis zur Oktave genau einmal", () => {
@@ -35,6 +44,15 @@ describe("Hörfragen", () => {
     // Der ganze Spielraum wird genutzt, auch die Ränder.
     expect(Math.min(...unten)).toBe(TIEFSTER_TON)
     expect(hoerPaar(7, "auf", 0.999999)[1]).toBe(HOECHSTER_TON)
+  })
+
+  it("spielt bei einer Ankerkarte immer zuerst die tiefe E, dann den Ton darüber", () => {
+    expect(ANKER_TON).toBe(40)
+    for (const halbtoene of ANKER_REIHENFOLGE) expect(ankerPaar(halbtoene)).toEqual([40, 40 + halbtoene])
+  })
+
+  it("fragt jeden Abstand von der Halbtonstufe bis zur Oktave genau einmal ab", () => {
+    expect([...ANKER_REIHENFOLGE].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
   })
 
   it("nennt dieselben Namen wie die Intervalltabelle", () => {

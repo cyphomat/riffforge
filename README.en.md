@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1535%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1577%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -566,6 +566,14 @@ them apart is the actual exercise — they are two octaves apart. The two ends
 come first, then the middle. The low E (E2) is measured to the cent as well,
 although it sits below the range of the interval cards; on small speakers its
 fundamental is nearly missing, and the ear fills it in from the overtones.
+
+And twelve cards for the note against an anchor: first the low E string, then
+a second note above it, and the answer is its name. This is not absolute
+pitch — nobody has to name a note out of nothing, only against one every
+guitarist knows. Fifth and fourth come first, because they sound like the open
+strings. Each explanation names the place on the neck, close to the nut, and
+the tests work it out again; the choices give the black keys both names
+(F# / Gb), so nobody is marked wrong for the spelling.
 
 ### Learning the neck
 

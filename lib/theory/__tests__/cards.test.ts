@@ -3,7 +3,7 @@ import { hertzAus } from "@/lib/audio/zupfen"
 import { DRILLS } from "@/lib/session/drills"
 import { cagedForm, FORMEN, formenAmHals, stufeInForm } from "@/lib/theory/caged"
 import { cardById, cardsOfStufe, THEORY_CARDS } from "@/lib/theory/cards"
-import { SAITEN_AUSWAHL, saitenTon } from "@/lib/theory/gehoer"
+import { ANKER_AUSWAHL, ANKER_TON, ankerStelle, SAITEN_AUSWAHL, saitenTon } from "@/lib/theory/gehoer"
 import {
   INTERVALLE,
   intervalBetween,
@@ -187,6 +187,43 @@ describe("Saitenkarten im Katalog", () => {
     const vonUnten = [6, 5, 4, 3, 2, 1] as const
     const abstaende = vonUnten.slice(1).map((saite, i) => saitenTon(saite) - saitenTon(vonUnten[i]))
     expect(abstaende).toEqual([5, 5, 5, 4, 5])
+  })
+})
+
+describe("Ankerkarten im Katalog", () => {
+  const anker = THEORY_CARDS.filter((card) => card.frage.art === "gehoert" && card.frage.nachAnker)
+
+  it("gibt es zu jedem Abstand von der Halbtonstufe bis zur Oktave genau eine", () => {
+    expect(anker.map((c) => c.frage.nachAnker).sort((a, b) => a! - b!)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+  })
+
+  it.each(anker.map((card) => [card.id, card] as const))("%s nennt als Antwort genau den gespielten Ton", (_id, card) => {
+    const halbtoene = card.frage.nachAnker!
+    const gespielt = TOENE[(ANKER_TON + halbtoene) % 12]
+    // Die Auswahl nennt jeden Ton mit seinen beiden Namen; der gespielte steht vorn.
+    expect(card.frage.richtig).toEqual([ANKER_AUSWAHL[halbtoene % 12]])
+    expect(ANKER_AUSWAHL[halbtoene % 12].split(" / ")[0]).toBe(gespielt)
+    // Dieselben zwölf Namen auf jeder Karte, sonst verriete die Auswahl die Karte.
+    expect(card.frage.auswahl).toEqual([...ANKER_AUSWAHL])
+  })
+
+  it("bietet alle zwölf Töne genau einmal an, jeden mit dem Namen aus der Tontabelle", () => {
+    expect(new Set(ANKER_AUSWAHL).size).toBe(12)
+    ANKER_AUSWAHL.forEach((wahl, i) => expect(wahl.split(" / ")[0], wahl).toBe(TOENE[(ANKER_TON + i) % 12]))
+  })
+
+  it.each(anker.map((card) => [card.id, card] as const))("%s nennt eine Stelle auf dem Hals, an der der Ton wirklich liegt", (_id, card) => {
+    const halbtoene = card.frage.nachAnker!
+    const stelle = ankerStelle(halbtoene)
+    expect(midiAt(stelle), card.id).toBe(ANKER_TON + halbtoene)
+    expect(stelle.bund).toBeLessThanOrEqual(4)
+    const saite = { 6: "tiefen E", 5: "A", 4: "D" }[stelle.saite as 4 | 5 | 6]
+    expect(card.erklaerung, card.id).toContain(stelle.bund === 0 ? `als leere ${saite}-Saite` : `im ${stelle.bund}. Bund der ${saite}-Saite`)
+    expect(card.erklaerung, card.id).toContain(INTERVALLE[halbtoene].name)
+  })
+
+  it("bringt Quinte und Quarte zuerst", () => {
+    expect(anker.slice(0, 2).map((c) => c.frage.nachAnker)).toEqual([7, 5])
   })
 })
 

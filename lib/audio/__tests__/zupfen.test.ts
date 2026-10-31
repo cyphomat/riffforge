@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { tonhoehe, midiAus } from "@/lib/audio/tonhoehe"
 import { gezupft, hertzAus } from "@/lib/audio/zupfen"
-import { HOECHSTER_TON, saitenTon, TIEFSTER_TON } from "@/lib/theory/gehoer"
+import { ANKER_TON, HOECHSTER_TON, saitenTon, TIEFSTER_TON } from "@/lib/theory/gehoer"
 
 const RATE = 48000
 
@@ -28,6 +28,15 @@ describe("Der gezupfte Ton", () => {
       const gefunden = tonhoehe(mitte(gezupft(hertzAus(midi), RATE)), RATE)
       expect(gefunden, `Saite ${saite}`).not.toBeNull()
       expect(Math.abs(midiAus(gefunden!.hz) - midi) * 100, `Saite ${saite}`).toBeLessThan(2)
+    }
+  })
+
+  it("trifft jeden Ton der Ankerkarten auf den Cent, von der tiefen E bis eine Oktave darüber", () => {
+    const [anker, hoechster] = [ANKER_TON, ANKER_TON + 12]
+    for (let midi = anker; midi <= hoechster; midi += 1) {
+      const gefunden = tonhoehe(mitte(gezupft(hertzAus(midi), RATE)), RATE)
+      expect(gefunden, `MIDI ${midi}`).not.toBeNull()
+      expect(Math.abs(midiAus(gefunden!.hz) - midi) * 100, `MIDI ${midi}`).toBeLessThan(2)
     }
   })
 
