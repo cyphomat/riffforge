@@ -16,6 +16,13 @@
   und wird abgeglichen, ein Zufall hätte dort nichts zu suchen. Das Rack gehört
   dem Gerät (`mga.gitarren.v1`); unter zwei Gitarren bleibt die Karte weg, im
   Sieben-Saiter-Modus zählen nur Siebensaitige.
+  Eine frische Session beginnt mit einem eigenen Start-Schirm
+  (`components/session/start-gitarre.tsx`): die Gitarre des ersten Paars, „Weiter",
+  „Andere Gitarre" und das Stimmgerät zum Aufklappen. Eingebettet statt als Link
+  nach `/stimmen`, weil der Weg hin und zurück die Würfelung verlöre — vor Block 1
+  wird noch nichts gemerkt. „Andere Gitarre" würfelt alles neu, die erste
+  ist dabei nie die gezeigte (`erstesNicht`). Bei „Weiter bei Block X" und ohne
+  Roulette entfällt der Schirm.
 
 - **Eine verlassene Session wird nicht neu gewürfelt.** Im UX-Check kam heraus:
   wer nach dem Warm-up die Seite verliess und zurückkam, bekam ein *anderes*

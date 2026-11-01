@@ -32,13 +32,16 @@ const HALTEN_MS = 600
  * App weiterhin nur nach dem Rhythmus. Warum, steht in
  * `lib/audio/__tests__/tonhoehe.test.ts`, mit den Zahlen.
  */
-export function Stimmgeraet() {
+export function Stimmgeraet({
+  eingebettet = false,
+  anfang = "sechs",
+}: { eingebettet?: boolean; anfang?: Stimmung } = {}) {
   const engine = useAudioEngine()
   const mikro = useRef<Mikrofon | null>(null)
   const verlauf = useRef<Array<Tonhoehe | null>>([])
   const imTonSeit = useRef<number | null>(null)
 
-  const [stimmung, setStimmung] = useState<Stimmung>("sechs")
+  const [stimmung, setStimmung] = useState<Stimmung>(anfang)
   const [hoert, setHoert] = useState(false)
   const [grund, setGrund] = useState<string | null>(null)
   const [anzeige, setAnzeige] = useState<Anzeige | null>(null)
@@ -104,15 +107,18 @@ export function Stimmgeraet() {
   const nadel = anzeige ? 50 + Math.max(-50, Math.min(50, anzeige.cent)) : 50
 
   return (
-    <div className="huelle">
-      <header className="mt-6">
-        <span className="kicker">Stimmen</span>
-        <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Stimmgerät</h1>
-        <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
-          Eine Saite anschlagen und klingen lassen. Die App hört hier die Tonhöhe — nur zum Stimmen;
-          was du im Block spielst, bewertet sie weiter nur nach dem Rhythmus.
-        </p>
-      </header>
+    <div className={eingebettet ? undefined : "huelle"}>
+      {/* Eingebettet (Start-Schirm der Session) trägt der Rahmen die Überschrift. */}
+      {!eingebettet && (
+        <header className="mt-6">
+          <span className="kicker">Stimmen</span>
+          <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Stimmgerät</h1>
+          <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
+            Eine Saite anschlagen und klingen lassen. Die App hört hier die Tonhöhe — nur zum Stimmen;
+            was du im Block spielst, bewertet sie weiter nur nach dem Rhythmus.
+          </p>
+        </header>
+      )}
 
       <div className="mt-5 flex gap-[9px]" role="group" aria-label="Stimmung">
         {(["sechs", "sieben"] as const).map((s) => (
@@ -241,11 +247,15 @@ export function Stimmgeraet() {
         auf unter drei Cent — bei voller Verzerrung und mehreren klingenden Saiten wird es unruhig.
       </p>
 
-      <SaitenPanel />
+      {!eingebettet && (
+        <>
+          <SaitenPanel />
 
-      <Link href="/" className="btn btn-ghost btn-small mt-9 w-full py-3">
-        <MdArrowBack className="h-[16px] w-[16px]" /> Zurück
-      </Link>
+          <Link href="/" className="btn btn-ghost btn-small mt-9 w-full py-3">
+            <MdArrowBack className="h-[16px] w-[16px]" /> Zurück
+          </Link>
+        </>
+      )}
     </div>
   )
 }

@@ -14,6 +14,7 @@ import {
 } from "@/lib/storage/lokal"
 import { ausgangsLog, ergebnisseSeit, stehtNoch, type SessionStand } from "@/lib/session/session-stand"
 import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
+import { StartGitarre } from "@/components/session/start-gitarre"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { dayKey } from "@/lib/session/progress"
@@ -56,6 +57,12 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
    */
   const rack = useRef<ReturnType<typeof gitarren>>([])
   const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
+  /**
+   * Der Start-Schirm der Roulette: nur bei einer frischen Session, in der es
+   * etwas zu würfeln gibt. „Weiter bei Block X" und eine Session ohne
+   * Roulette gehen direkt in den Block.
+   */
+  const [startSchirm, setStartSchirm] = useState(false)
 
   const [current, setCurrent] = useState(0)
   const [results, setResults] = useState<DrillResult[]>([])
@@ -79,14 +86,16 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   /** Nach „+5 Minuten" ist der Plan nicht mehr aus dem Log zurückzurechnen; dann wird nichts mehr gemerkt. */
   const keinStand = useRef(false)
 
-  const planFuer = (startLog: PracticeLog, profile: Profile | null, gemerkteGitarren: Zuweisung = []) => {
+  const planFuer = (startLog: PracticeLog, profile: Profile | null, gemerkteGitarren: Zuweisung = []): Zuweisung => {
     const single = drillId ? buildDrillSession(startLog, drillId, { minutes, profile }) : null
     // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
     const plan = (single ?? buildSession(startLog, { minutes, profile, random: tagesZufall() })).blocks
     setBlocks(plan)
     rack.current = gitarren()
-    setGitarrenJeBlock(zuweisen(gemerkteGitarren, plan, rack.current, Math.random))
+    const gitarrenPlan = zuweisen(gemerkteGitarren, plan, rack.current, Math.random)
+    setGitarrenJeBlock(gitarrenPlan)
     setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
+    return gitarrenPlan
   }
 
   const neuStarten = () => {
@@ -97,7 +106,15 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setStartingLog(initial)
     setStartingTheory(loadTheoryLog())
     setLog(initial)
-    planFuer(initial, loadProfile())
+    const gitarrenPlan = planFuer(initial, loadProfile())
+    setStartSchirm(gitarrenPlan.some((name) => name !== null))
+  }
+
+  /** „Andere Gitarre": alles neu würfeln, die erste ist nicht mehr die gezeigte. */
+  const andereGitarre = () => {
+    if (!blocks) return
+    const gezeigt = gitarrenJeBlock.find((name) => name !== null) ?? undefined
+    setGitarrenJeBlock(zuweisen([], blocks, rack.current, Math.random, { erstesNicht: gezeigt }))
   }
 
   const weiterSpielen = (stand: SessionStand) => {
@@ -113,6 +130,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setBeantworteteFragen(stand.beantworteteFragen)
     setCurrent(stand.current)
     setAngebot(null)
+    setStartSchirm(false)
     planFuer(start, loadProfile(), stand.gitarren)
   }
 
@@ -295,6 +313,18 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
       <p className="huelle pt-8 font-mono text-[12px] uppercase tracking-[0.18em] text-dim">
         Session wird vorbereitet…
       </p>
+    )
+  }
+
+  const ersteGitarre = gitarrenJeBlock.find((name) => name !== null) ?? null
+  if (startSchirm && ersteGitarre !== null && current === 0) {
+    return (
+      <StartGitarre
+        gitarre={ersteGitarre}
+        sieben={rack.current.find((g) => g.name === ersteGitarre)?.sieben ?? false}
+        onAndere={andereGitarre}
+        onWeiter={() => setStartSchirm(false)}
+      />
     )
   }
 
