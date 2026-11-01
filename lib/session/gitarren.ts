@@ -64,13 +64,16 @@ function ziehe(pool: string[], nicht: string | null, random: () => number): stri
  *
  * Mit weniger als zwei Gitarren zur Auswahl gibt es nichts zu würfeln — dann
  * bleibt überall `null` und die App zeigt keine Karte.
+ *
+ * `erstesNicht`: der Start-Schirm würfelt auf Wunsch neu, und die erste
+ * Gitarre soll dann eine andere sein als die eben gezeigte.
  */
 export function zuweisen(
   bisher: Zuweisung,
   blocks: SessionBlock[],
   liste: Gitarre[],
   random: () => number,
-  optionen: { nurSieben?: boolean } = {},
+  optionen: { nurSieben?: boolean; erstesNicht?: string } = {},
 ): Zuweisung {
   const pool = (optionen.nurSieben ? liste.filter((gitarre) => gitarre.sieben) : liste).map(
     (gitarre) => gitarre.name,
@@ -85,7 +88,8 @@ export function zuweisen(
       continue
     }
     // Neu gewürfelt wird an jeder Technik — und wo noch keine in der Hand ist.
-    if (art === "technique" || aktuell === null) aktuell = ziehe(pool, aktuell, random)
+    // Der Start-Schirm würfelt „andere Gitarre": die erste Ziehung meidet die eben gezeigte.
+    if (art === "technique" || aktuell === null) aktuell = ziehe(pool, aktuell ?? optionen.erstesNicht ?? null, random)
     ergebnis.push(aktuell)
   }
   return ergebnis

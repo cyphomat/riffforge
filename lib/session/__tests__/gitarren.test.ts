@@ -85,6 +85,22 @@ describe("Gitarrenroulette", () => {
     expect(z[1]).toBe(z[0])
   })
 
+  it("würfelt auf Wunsch neu und nimmt dann zuerst eine andere Gitarre", () => {
+    for (const r of [0, 0.26, 0.51, 0.76, 0.999999]) {
+      for (const gezeigt of STANDARD_GITARREN) {
+        const z = zuweisen([], SESSION, STANDARD_GITARREN, () => r, { erstesNicht: gezeigt.name })
+        expect(z[1]).not.toBe(gezeigt.name)
+        expect(z[2]).toBe(z[1])
+        expect(z[3]).not.toBe(z[1])
+      }
+    }
+  })
+
+  it("bleibt mit „erstesNicht“ still, wenn es nichts zu würfeln gibt", () => {
+    const eine = STANDARD_GITARREN.slice(0, 1)
+    expect(zuweisen([], SESSION, eine, Math.random, { erstesNicht: eine[0].name }).every((g) => g === null)).toBe(true)
+  })
+
   it("nimmt im Sieben-Saiter-Modus nur Siebensaitige — und würfelt bei einer nicht", () => {
     expect(zuweisen([], SESSION, STANDARD_GITARREN, Math.random, { nurSieben: true }).every((g) => g === null)).toBe(true)
     const zwei = [...STANDARD_GITARREN, { name: "Ibanez 7", sieben: true }]
