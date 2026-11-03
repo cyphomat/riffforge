@@ -67,9 +67,12 @@ Notenschrift.
   auf 320 px machen die Linienabstände zu klein (gut sechs Pixel).
 - **Unter jedem System steht seine Tabulatur** (`NotenMitTab`). Zuerst alle
   Noten und dann alle Tabs hiess auf dem Handy zwei Bildschirme scrollen, um
-  Zeile 1 mit Zeile 1 zu vergleichen. `songTabSysteme(song, proZeile)` nimmt die
-  Zeilenbreite der Notenschrift (ein oder zwei Takte) statt der eigenen, damit
-  beide dieselben Takte tragen. Dazu klebt beim Lesen eine schmale Zeile mit Zeit
+  Zeile 1 mit Zeile 1 zu vergleichen. Die Tabulatur ist **SVG im Koordinatensystem
+  der Noten** (`TabSvg`, Zahlen aus `Takt.tab` in `notensatz.ts`): gleiche
+  viewBox-Breite, jede Zahl auf dem x ihres Notenkopfs, Taktstriche auf denselben
+  Stellen. Als Text in Festbreite (`pre`) stand sie versetzt — die Notenschrift
+  skaliert mit der Breite, der Text nicht, und Schlüssel und Taktart schoben die
+  Noten zusätzlich nach rechts. Dazu klebt beim Lesen eine schmale Zeile mit Zeit
   und Tempo unter der Navigation, sobald die Zeitanzeige oben herausgescrollt ist.
 - **Der Schlüssel ist von Hand gezeichnet**, mit einer Linie. Er ist keine
   Schriftart.
@@ -138,14 +141,12 @@ sonst hinge es allein an der Farbe. Gerechnet wird in zwei Schichten:
   Note, bevor man sie hört — bei Bluetooth-Kopfhörern um Zehntelsekunden.
 
 Die Anzeige schaut je Bild nach (`requestAnimationFrame` in `SongBedienung`) und
-meldet nur Änderungen nach oben (`SongAnsicht` → `NotenMitTab`). Die Tabulatur
-zieht nicht mit: sie ist Text in einem `pre`, und ein Hervorheben dort wäre ein
-Eingriff in den Umbruch. Im laufenden Block leuchtet nichts, dort gibt es kein
-Anhören.
+meldet nur Änderungen nach oben (`SongAnsicht` → `NotenMitTab`). Die Zahl der
+Tabulatur leuchtet mit ihrer Note (gleicher Index). Im laufenden Block leuchtet
+nichts, dort gibt es kein Anhören.
 
 ## Offen
 
-- Die Tabulatur beim Anhören mitleuchten lassen.
 - Weitere Songs: Töne, Längen, Abstände und Lagen sind abgedeckt. Als Nächstes
   brauchen sie Sechzehntel, Punktierte oder Vorzeichen im Notensatz (siehe „Noch
   nicht gesetzt") — oder eine dritte Lage, wenn die Hand die zweite sicher hat.

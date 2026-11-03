@@ -79,6 +79,12 @@ export function yVon(pos: number): number {
   return OBEN + 4 * LINIE - pos * HALB
 }
 
+/** Abstand zweier Tabulaturlinien, in denselben Einheiten wie `LINIE`. */
+export const TAB_ABSTAND = 12
+/** Luft über und unter den sechs Tabulaturlinien. */
+export const TAB_RAND = 8
+export const TAB_HOEHE = 2 * TAB_RAND + 5 * TAB_ABSTAND
+
 export type Richtung = "auf" | "ab"
 
 export interface Kopf {
@@ -115,6 +121,21 @@ export interface PauseZeichen {
   dauer: Dauer
 }
 
+/**
+ * Ein Bund in der Tabulatur. `x` ist das des Notenkopfs: beide Zeichnungen
+ * teilen das Koordinatensystem, und so steht jede Zahl senkrecht unter ihrer
+ * Note — mit Text in Festbreite ging das nie auf, denn die Notenschrift
+ * skaliert mit der Breite und der Text nicht.
+ */
+export interface TabZahl {
+  /** Index der Note im Song. */
+  note: number
+  x: number
+  /** 0 ist die hohe e-Saite oben, 5 die tiefe E unten. */
+  linie: number
+  bund: number
+}
+
 export interface Takt {
   /** Nummer im Song, 0-basiert. */
   index: number
@@ -125,6 +146,7 @@ export interface Takt {
   koepfe: Kopf[]
   balken: Balken[]
   pausen: PauseZeichen[]
+  tab: TabZahl[]
 }
 
 export interface System {
@@ -265,6 +287,10 @@ function baueTakt(song: Song, pausen: Pause[], index: number, x: number): Takt {
     koepfe,
     balken,
     pausen: pausenImTakt,
+    tab: koepfe.map((kopf) => {
+      const { saite, bund } = song.noten[kopf.note].griff
+      return { note: kopf.note, x: kopf.x, linie: saite - 1, bund }
+    }),
   }
 }
 

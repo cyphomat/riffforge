@@ -1,6 +1,14 @@
-import { LINIE, OBEN, baueNotensatz, type Kopf, type PauseZeichen } from "@/lib/theory/notensatz"
+import {
+  LINIE,
+  OBEN,
+  TAB_ABSTAND,
+  TAB_HOEHE,
+  TAB_RAND,
+  baueNotensatz,
+  type Kopf,
+  type PauseZeichen,
+} from "@/lib/theory/notensatz"
 import { toeneOf, type Song } from "@/lib/theory/song"
-import { songTabSysteme } from "@/lib/theory/song-tab"
 
 /**
  * Die Notenschrift eines Songs, als SVG.
@@ -234,6 +242,84 @@ function NotenSvg({
   )
 }
 
+const SAITEN_NAMEN = ["e", "B", "G", "D", "A", "E"]
+
+/**
+ * Die Tabulatur eines Systems, im selben Koordinatensystem wie die Notenschrift
+ * darüber: gleiche viewBox-Breite, gleiche Spalten. Die Zahlen sitzen auf der
+ * x-Position ihres Notenkopfs und die Taktstriche auf denselben Stellen, also
+ * steht jede Zahl senkrecht unter ihrer Note, auf jeder Breite.
+ */
+function TabSvg({
+  song,
+  takteProZeile,
+  nurSystem,
+  klingend,
+  className,
+}: {
+  song: Song
+  takteProZeile: number
+  nurSystem: number
+  klingend: number[]
+  className: string
+}) {
+  const satz = baueNotensatz(song, takteProZeile)
+  const system = satz.systeme[nurSystem]
+  const linieY = (i: number) => TAB_RAND + i * TAB_ABSTAND
+  const unten = linieY(5)
+  const zahlen = system.takte.flatMap((takt) => takt.tab)
+
+  return (
+    <svg
+      viewBox={`-1 0 ${satz.breite + 2} ${TAB_HOEHE}`}
+      role="img"
+      aria-label={`Tabulatur: ${zahlen.map((z) => `Saite ${SAITEN_NAMEN[z.linie]}, Bund ${z.bund}`).join("; ")}`}
+      className={className}
+      style={{ maxWidth: satz.breite * 2 }}
+    >
+      <g className="stroke-stahl" strokeWidth={1}>
+        {SAITEN_NAMEN.map((name, i) => (
+          <line key={name} x1={0} x2={system.breite} y1={linieY(i)} y2={linieY(i)} />
+        ))}
+        <line x1={0.5} x2={0.5} y1={linieY(0)} y2={unten} />
+        {system.takte.map((takt) => (
+          <line
+            key={takt.index}
+            x1={takt.x + takt.breite}
+            x2={takt.x + takt.breite}
+            y1={linieY(0)}
+            y2={unten}
+            strokeWidth={takt.schluss ? 3.5 : 1}
+            transform={takt.schluss ? "translate(-1.75 0)" : undefined}
+          />
+        ))}
+      </g>
+      <g className="fill-dim font-mono" fontSize={8} textAnchor="middle">
+        {SAITEN_NAMEN.map((name, i) => (
+          <text key={name} x={8} y={linieY(i) + 3}>
+            {name}
+          </text>
+        ))}
+      </g>
+      {/* Die Zahl bekommt einen Rand in der Grundfarbe und unterbricht so die Linie, auf der sie steht. */}
+      <g className="font-mono" fontSize={11} textAnchor="middle" paintOrder="stroke">
+        {zahlen.map((z) => (
+          <text
+            key={z.note}
+            x={z.x}
+            y={linieY(z.linie) + 3.8}
+            strokeWidth={5}
+            strokeLinejoin="round"
+            className={`stroke-sunken ${klingend.includes(z.note) ? "fill-akzent" : "fill-fg"}`}
+          >
+            {z.bund}
+          </text>
+        ))}
+      </g>
+    </svg>
+  )
+}
+
 /**
  * @param takteProZeile Wie viele Takte auf eine Zeile kommen. Ohne Angabe: einer,
  *   solange der Platz unter 28 rem (448 px) liegt, sonst zwei. Gefragt wird der
@@ -289,7 +375,6 @@ export function NotenMitTab({
 }) {
   const fassung = (proZeile: number, klasse: string) => {
     const satz = baueNotensatz(song, proZeile)
-    const tabs = songTabSysteme(song, proZeile)
     return (
       <div className={`space-y-5 ${klasse}`}>
         {satz.systeme.map((system, i) => (
@@ -302,9 +387,13 @@ export function NotenMitTab({
               nurSystem={i}
               className="mx-auto block h-auto w-full"
             />
-            <pre className="mt-1 overflow-x-auto font-mono text-[12.5px] leading-[1.6] text-muted sm:text-[13px]">
-              {tabs[i]}
-            </pre>
+            <TabSvg
+              song={song}
+              takteProZeile={proZeile}
+              nurSystem={i}
+              klingend={klingend}
+              className="mx-auto mt-1 block h-auto w-full"
+            />
           </div>
         ))}
       </div>

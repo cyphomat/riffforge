@@ -65,9 +65,9 @@
 | `lib/session/drills-songs.ts` | Die Songs als Drills: Riff, `pentatonic`, Tab aus den Noten — hängt am Hauptkatalog |
 | `lib/theory/song.ts` | Songs mit Lernziel: Schema, Töne, Abstände, Notenwerte, Pausen — und `pruefeSong`, das das Lernziel nachrechnet |
 | `lib/theory/songs.ts` | Der Song-Katalog (reine Daten, von der AI geschrieben, durch `songs.test.ts` geprüft) |
-| `lib/theory/song-tab.ts` | Die Tabulatur eines Songs aus denselben Noten, je System, in der Zeilenbreite der Notenschrift |
+| `lib/theory/song-tab.ts` | Die Tabulatur eines Songs als Text (`drill.tab`, Export); im Song-Block zeichnet `TabSvg` sie aus `notensatz.ts` |
 | `lib/theory/notensatz.ts` | Der Notensatz als Rechnung: Position auf der Linie, Hälse, Balken, Pausen, Systeme. Rein |
-| `components/session/noten-view.tsx` | Zeichnet den Notensatz als SVG; ein Takt je Zeile auf schmalem Platz, zwei auf breitem. `NotenMitTab`: unter jedem System seine Tabulatur |
+| `components/session/noten-view.tsx` | Zeichnet den Notensatz als SVG; ein Takt je Zeile auf schmalem Platz, zwei auf breitem. `NotenMitTab`: unter jedem System seine Tabulatur (`TabSvg`, selbe Spalten wie die Noten) |
 | `lib/theory/sieben.ts` | Die Siebensaitige als Rechnung: B Standard, Abstände, Frequenzen |
 | `lib/session/drills-sieben.ts` | Der Sieben-Saiter-Katalog (reine Daten, eigene Nummern) |
 | `lib/session/sieben.ts` | Der Sieben-Saiter-Modus: drei Blöcke, eigener Vorrat |
