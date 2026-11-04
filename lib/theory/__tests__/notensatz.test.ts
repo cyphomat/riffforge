@@ -278,4 +278,20 @@ describe.each(SONGS.map((e) => [e.id, e.song] as const))("%s", (_id, eintrag) =>
   it("benennt jeden Kopf nach seinem Ton", () => {
     expect(koepfe.every((k) => /^[A-G]$/.test(k.name))).toBe(true)
   })
+
+  it("setzt jede Tabulaturzahl senkrecht unter ihren Notenkopf", () => {
+    for (const nummer of [1, 2]) {
+      const gesetzt = baueNotensatz(eintrag, nummer)
+      for (const takt of gesetzt.systeme.flatMap((s) => s.takte)) {
+        expect(takt.tab.map((z) => z.note)).toEqual(takt.koepfe.map((k) => k.note))
+        takt.tab.forEach((zahl, i) => {
+          const note = eintrag.noten[zahl.note]
+          expect(zahl.x).toBe(takt.koepfe[i].x)
+          expect(zahl.bund).toBe(note.griff.bund)
+          // Linie 0 ist die hohe e-Saite oben, wie in jeder Tabulatur.
+          expect(zahl.linie).toBe(note.griff.saite - 1)
+        })
+      }
+    }
+  })
 })
