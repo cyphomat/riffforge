@@ -23,6 +23,7 @@ import { loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
 import type { Profile } from "@/lib/session/profile"
 import { AnlassBanner } from "@/components/session/anlass-banner"
+import { RoadieHeute } from "@/components/session/roadie-heute"
 import { PixelFeuer, ZELLE } from "@/components/ui/pixel-feuer"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
@@ -207,6 +208,8 @@ export function PracticeOverview() {
       </section>
 
       <AnlassBanner />
+
+      <RoadieHeute log={log} />
 
       <div className="mt-3 flex items-center gap-2">
         <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">oder</span>

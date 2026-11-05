@@ -112,6 +112,10 @@ Komponente.
 - **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt je Technik+Riff-Paar
   und nie in den Log.** Das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
   App nichts; Begründung in `docs/session-und-bildschirme.md`.
+- **Der Gurt (`lib/session/gurt.ts`, `drops.ts`) fällt aus dem Log und wird nicht
+  gespeichert.** Drops sind Daten in `drops-daten.ts`; selten und episch brauchen
+  Fakt und Quelle, `drops.test.ts` prüft es. Der Roadie spricht nur auf *Heute* und im
+  Abschluss, der Tag wählt den Satz; Begründung in `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim

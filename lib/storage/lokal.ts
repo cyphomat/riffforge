@@ -29,9 +29,10 @@ const SAISONAL_KEY = "mga.saisonal.v1"
 const VERSTECKT_KEY = "mga.saisonal-versteckt.v1"
 const SESSION_KEY = "mga.session-stand.v1"
 const GITARREN_KEY = "mga.gitarren.v1"
+const DROP_KEY = "mga.drop-gesehen.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -280,6 +281,21 @@ export function vergissGitarren(): void {
   } catch {
     /* Nichts zu vergessen. */
   }
+}
+
+/**
+ * Welcher Drop (`lib/session/drops.ts`) auf *Heute* schon gesehen wurde.
+ *
+ * Gehört dem Gerät: ob die Karte noch auffällt, ist keine Frage für den
+ * Abgleich, und der Gurt selbst fällt ohnehin aus dem Log.
+ */
+export function dropGesehen(): string | null {
+  const roh = lesen(DROP_KEY)
+  return roh && /^\d{4}-\d{2}$/.test(roh) ? roh : null
+}
+
+export function merkeDropGesehen(id: string): void {
+  if (/^\d{4}-\d{2}$/.test(id)) schreiben(DROP_KEY, id)
 }
 
 export function clearLokal(): void {

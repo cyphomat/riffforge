@@ -13,6 +13,11 @@ import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import type { TheoryLog } from "@/lib/theory/types"
 import { AufnaeherKachel, RangAufstieg } from "@/components/session/merch-stand"
+import { RoadieBild } from "@/components/session/roadie-heute"
+import { isoLokal } from "@/lib/session/anlaesse"
+import { sichtbareDrops } from "@/lib/session/drops"
+import { DROPS } from "@/lib/session/drops-daten"
+import { uebungsSpruch } from "@/lib/session/roadie"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
 import { lastSynced } from "@/lib/sync/settings"
@@ -84,6 +89,12 @@ export function SessionSummary({
   // bekommt deshalb seine Bühne zu sehen. Dieselbe Vorher-nachher-Rechnung.
   const [aufstieg, setAufstieg] = useState<Rang | null>(null)
   const [profil, setProfil] = useState<ReturnType<typeof loadProfile>>(null)
+  // Der Roadie sagt einen Satz zur Übung; welcher, entscheidet der Tag, nicht der Zufall.
+  const [spruch, setSpruch] = useState<string | null>(null)
+  useEffect(() => {
+    const tagHeute = isoLokal()
+    setSpruch(uebungsSpruch(results, tagHeute, sichtbareDrops(DROPS, tagHeute)))
+  }, [results])
   useEffect(() => {
     const theorie = loadTheoryLog()
     setNeu(
@@ -188,6 +199,13 @@ export function SessionSummary({
             Zum Merch-Stand ›
           </Link>
         </>
+      )}
+
+      {spruch && (
+        <div className="mt-6 flex items-center gap-3">
+          <RoadieBild />
+          <p className="text-[13.5px] italic leading-snug text-muted">„{spruch}“</p>
+        </div>
       )}
 
       <div className="mt-6 flex flex-wrap gap-[9px]">
