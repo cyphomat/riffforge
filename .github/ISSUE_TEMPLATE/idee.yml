@@ -1,0 +1,19 @@
+name: Idee oder Wunsch
+description: Eine Übung, eine Funktion oder etwas, das dir fehlt.
+labels: ["idee"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Eigene Übungen im Stil der App sind willkommen – keine abgeschriebenen Tabs.
+  - type: textarea
+    id: fehlt
+    attributes:
+      label: Was fehlt dir?
+    validations:
+      required: true
+  - type: textarea
+    id: uebst
+    attributes:
+      label: Wie übst du gerade?
+      description: Hilft einzuschätzen, wo der Wunsch herkommt. Freiwillig.

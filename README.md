@@ -928,8 +928,13 @@ abgeschriebenen Tabs, kein Audio urheberrechtlich geschützter Aufnahmen.
 ## Mitmachen
 
 Gebaut von [@cyphomat](https://github.com/cyphomat). Fehler gefunden, ein
-Wunsch, eine Idee für eine Übung? Gern als
-[Issue](https://github.com/cyphomat/riffforge/issues).
+Wunsch, eine Idee für eine Übung? Gern als Issue, mit einem GitHub-Konto:
+[Fehler melden](https://github.com/cyphomat/riffforge/issues/new?template=fehler.yml)
+oder [Idee und Wunsch](https://github.com/cyphomat/riffforge/issues/new?template=idee.yml).
+Fragen und Gespräch gehören in die
+[Discussions](https://github.com/cyphomat/riffforge/discussions). Dieselben Links
+stehen in der App unter *Daten → Über Riffforge*. Bitte keine echten Übungsdaten
+anhängen; eine Beschreibung reicht.
 
 Riffforge steht unter der [MIT-Lizenz](./LICENSE): **forken, anpassen, eigene
 Übungen dazuschreiben ist ausdrücklich erwünscht.** Ein Fork erkennt das
