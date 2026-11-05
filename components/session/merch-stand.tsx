@@ -34,6 +34,11 @@ import {
   REIHEN,
   type Tour,
 } from "@/lib/session/merch"
+import { isoLokal } from "@/lib/session/anlaesse"
+import { dropStaende, type DropStand } from "@/lib/session/drops"
+import { DROPS } from "@/lib/session/drops-daten"
+import { gurtRiffs, type RiffSlot } from "@/lib/session/gurt"
+import { GurtAnsicht } from "@/components/session/gurt-ansicht"
 import { loadLog } from "@/lib/storage/practice-log"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
@@ -287,6 +292,8 @@ export function MerchStand() {
     touren: Tour[]
     festival: FestivalShirt[]
     rangTage: Array<string | null>
+    riffs: RiffSlot[]
+    drops: DropStand[]
   } | null>(null)
   // Welche Bühne gross steht: die aktuelle, oder eine schon erreichte aus der Leiste.
   const [gezeigt, setGezeigt] = useState<number | null>(null)
@@ -300,11 +307,13 @@ export function MerchStand() {
       touren: berechneTouren(log, liste),
       festival: berechneFestivalShirts(log),
       rangTage: berechneRangTage(log),
+      riffs: gurtRiffs(log, isoLokal()),
+      drops: dropStaende(DROPS, log, isoLokal()),
     })
   }, [])
 
   if (!stand) return null
-  const { rang, liste, touren, festival, rangTage } = stand
+  const { rang, liste, touren, festival, rangTage, riffs, drops } = stand
   const stufe = gezeigt ?? rang.stufe
   const buehne = RAENGE[stufe]
   const frueher = stufe !== rang.stufe
@@ -428,6 +437,8 @@ export function MerchStand() {
             Rang kommt eine dazu; verloren geht keine.
           </p>
         </section>
+
+        <GurtAnsicht riffs={riffs} drops={drops} />
 
         <h2 className="tape schief">Die Kutte</h2>
         {/* Die Kutte als eine Fläche, wie in Setlist: Aufnäher gehören auf

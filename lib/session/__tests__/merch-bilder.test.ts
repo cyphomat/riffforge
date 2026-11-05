@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { describe, expect, it } from "vitest"
 import { STANDARD } from "@/lib/session/anlaesse"
+import { DROPS } from "@/lib/session/drops-daten"
 import { aufnaeherBild, gitarreBild, katalog, RAENGE, rangBild } from "@/lib/session/merch"
 
 /** Width and height from a PNG's header — enough to check the art is the size it is drawn at. */
@@ -27,6 +28,15 @@ describe("Die Bilder am Merch-Stand", () => {
 
   it("haben eine Szene für den Willkommens-Schirm, 96 × 48", () => {
     expect(groesse(datei("/bilder/willkommen.png"))).toEqual([96, 48])
+  })
+
+  it("haben für jeden Drop eine Bühne, 96 × 48, und der Roadie ist 16 × 16", () => {
+    for (const drop of DROPS) {
+      const pfad = datei(`/bilder/drop-${drop.id}.png`)
+      expect(existsSync(pfad), drop.id).toBe(true)
+      expect(groesse(pfad), drop.id).toEqual([96, 48])
+    }
+    expect(groesse(datei("/bilder/roadie.png"))).toEqual([16, 16])
   })
 
   it("haben für jeden Rang eine Szene, 96 × 48", () => {

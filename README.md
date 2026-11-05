@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1583%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1615%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -413,6 +413,21 @@ Was die App nicht messen kann, wird auch nicht belohnt: ob die Töne sassen,
 weiss sie nicht, und dafür gibt es keinen Aufnäher. Was ein Gerät nicht hat —
 eine Siebensaitige —, fehlt auf der Kutte, statt als verfehlt dazustehen. Nach
 einer Session stehen neu verdiente Aufnäher direkt unter dem Zettel.
+
+### Gurt und Drops
+
+Für jedes Riff, das an drei verschiedenen Tagen mindestens „Sauber“ war, hängt
+ein Plektrum am Gurt. Dazu kommt jeden Monat ein **Drop**: ein Thema aus
+Gitarren, Verstärkern, Pedalen und Gitarristen, mit einer Bühne als Pixelbild,
+Plektren und Sprüchen des Roadies. Gewöhnliche Plektren schaltet der Monat nach
+4 Übungstagen frei, seltene nach 12, epische nach 20. Selten und episch tragen
+einen belegten Fakt mit Quelle. Wie bei der Kutte wird nichts gespeichert, alles
+fällt aus dem Log. Der Roadie sagt auf *Heute* und auf dem Abschluss-Zettel
+einen Satz zur Übung — nie in der Session.
+
+| Monat | Drop | Plektren (gewöhnlich / selten / episch) |
+|---|---|---|
+| 2026-11 | Röhren und Kettensäge · Verstärker | 4 / 3 / 2 |
 
 ## Der Rückblick
 

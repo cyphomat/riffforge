@@ -84,6 +84,14 @@
 | `components/session/start-gitarre.tsx` | Start-Schirm einer frischen Session: gewürfelte Gitarre, neu würfeln, Stimmgerät aufklappen |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
+| `lib/session/gurt.ts` | Der Gurt: Riff-Plektren, Aussehen aus der Drill-ID, Patina und Staub — rein, alles aus dem Log |
+| `lib/session/drops.ts` | Drop-Schema, Sichtbarkeit nach Datum, Freischaltung nach Übungstagen im Monat — rein |
+| `lib/session/drops-daten.ts` | Die Drops, ein Datensatz je Monat; `drops.test.ts` prüft Fakt und Quelle |
+| `lib/session/roadie.ts` | Die Sätze des Roadies: Grundsprüche, Drop-Sprüche, Satz zur Übung — der Tag wählt, nicht der Zufall |
+| `components/session/plektrum.tsx` | Ein Plektrum als SVG: Form, Material, Patina, Staub |
+| `components/session/gurt-ansicht.tsx` | Gurt und Drops auf dem Merch-Stand |
+| `components/session/roadie-heute.tsx` | Roadie-Satz und Karte des neuen Drops auf *Heute*; `RoadieBild` auch im Abschluss-Zettel |
+| `tools/drops.mjs` | Die Drop-Bühnen nach `public/bilder/drop-*.png` und der Roadie nach `public/bilder/roadie.png` |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |
 | `lib/session/technik-zeichen.ts` | Ein 16 × 16 Pixelzeichen je Technik — für die Drill-Liste und gestickt als Technik-Wappen |
 | `public/merch/`, `public/bilder/` | Pixelkunst: Rangszenen, Aufnäher, Willkommens-Szene |

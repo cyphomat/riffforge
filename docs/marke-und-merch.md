@@ -182,3 +182,43 @@
   folgen ihr, statt ein Bild mitzubringen. Der Willkommens-Schirm hat eine
   eigene Szene (`public/bilder/willkommen.png`, Übungsecke am Abend, auf dem
   Notenständer eine 15), dazugezeichnet in der Palette der Rangszenen.
+
+## Gurt, Drops und der Roadie
+
+- **Der Gurt rechnet aus dem Log und speichert nichts** (`lib/session/gurt.ts`,
+  `drops.ts`). Wie bei der Kutte: ein verdientes Plektrum kann nicht
+  verschwinden, es wandert mit dem Abgleich, und ein zweites Gerät hat danach
+  denselben Gurt. Gewürfelt wird nicht — Farbe und Form eines Riff-Plektrums
+  fallen aus einem Hash der Drill-ID (`hash`, FNV-1a), also auf jedem Gerät
+  gleich. Ein Riff gilt als geübt, wenn es an `GEUEBT_TAGE` (3) verschiedenen
+  Tagen mindestens `GEUEBT_AB` (3, „Sauber") bekam; wer das Zieltempo sauber
+  gespielt hat, bekommt ein Plektrum aus Metall.
+- **Drops sind Daten, kein Dienst.** Riffforge ist ein statischer Export; es gibt
+  keine Datenbank, aus der ein Katalog nachlädt. Ein Monat ist ein Eintrag in
+  `lib/session/drops-daten.ts` samt Bühne in `tools/drops.mjs` — also ein
+  Commit, und der Merge deployt. `drops.test.ts` lässt nur durch, was
+  `dropSchema` erfüllt: Selten und episch brauchen einen belegten Fakt mit
+  https-Quelle, die IDs sind eindeutig, das Datum liegt im Monat. Vor dem
+  Eintragen jeden Fakt nachlesen; was sich nicht belegen lässt, kommt nicht rein.
+- **Freigeschaltet wird nach Übungstagen im Monat des Drops** (`FREISCHALTUNG`:
+  gewöhnlich 4, selten 12, episch 20). Ein vergangener Monat bleibt, wie der Log
+  ihn hinterlassen hat; er lässt sich nicht nachholen, weil nur Tage in diesem
+  Monat zählen. Die Zahlen sind eine Vermutung und dürfen sich ändern, solange
+  der Test mitzieht.
+- **Stille Eigenschaften, nirgends beworben, alle aus dem Log:**
+  *Patina* (Spieltage eines Riffs ab 10 und 25 machen das Plektrum
+  abgegriffener), *Staub* (ein verdientes Riff, das länger als `STAUB_TAGE`
+  (30) nicht gespielt wurde, wird matt; einmal wieder gespielt, glänzt es) und
+  die *Zugabe* (ein Extra-Plektrum je Drop, das erst erscheint, wenn alle
+  anderen verdient sind, und vorher in „n von m" nicht mitzählt). Sie stehen im
+  Test, nicht im README.
+- **Der Roadie sagt einen Satz, nie in der Session** (`lib/session/roadie.ts`,
+  `components/session/roadie-heute.tsx`): auf *Heute* unter dem Banner und auf
+  dem Abschluss-Zettel, ohne Animation. Welcher Satz, entscheidet der Tag
+  (`hash`), nicht der Zufall — dieselbe Regel wie beim Plan: zurückgerechnet,
+  nicht gewürfelt. Er ist 16 × 16, dreifach gezeichnet (`public/bilder/roadie.png`,
+  `tools/drops.mjs`).
+- **Die Karte des neuen Drops auf *Heute*** bleibt, bis „Gesehen" oder „Zum
+  Gurt" gedrückt wurde; gemerkt wird nur die Drop-ID, pro Gerät
+  (`dropGesehen` in `lib/storage/lokal.ts`).
+

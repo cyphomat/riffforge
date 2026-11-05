@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1583%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1615%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -415,6 +415,20 @@ What the app cannot measure is not rewarded either: it does not know whether the
 notes were right, so there is no patch for that. What a device lacks — a
 seven-string — is missing from the vest instead of showing up as a failure.
 After a session, newly earned patches appear right under the note.
+
+### Belt and drops
+
+Every riff that was rated at least 3 of 4 ("Sauber", sits on tempo) on three
+different days gets a pick on the belt. On top of that comes a monthly **drop**: a theme from guitars, amps,
+pedals and guitarists, with a stage as pixel art, picks and lines from the
+roadie. The month unlocks common picks after 4 practice days, rare ones after 12
+and epic ones after 20. Rare and epic picks carry a sourced fact. Like the vest,
+nothing is stored: it all falls out of the log. The roadie says one line about
+your practice on *Today* and on the summary — never during a session.
+
+| Month | Drop | Picks (common / rare / epic) |
+|---|---|---|
+| 2026-11 | Tubes and chainsaw · Amps | 4 / 3 / 2 |
 
 ## The look back
 

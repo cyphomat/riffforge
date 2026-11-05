@@ -147,3 +147,13 @@
   (`buildDrillSession`, zehn Minuten): wer ihn antippt, will genau den.
 - **Ein Drill über mehrere Runden ist ein Eintrag**, nicht drei. Der
   Session-Runner sammelt die Spielzeit und schreibt nach der letzten Runde.
+
+## Der Roadie auf *Heute* und im Abschluss
+
+- **Der Roadie kommentiert die Übung mit einem Satz, nie in der Session.** Auf
+  *Heute* steht er unter dem Anlass-Banner, im Abschluss-Zettel über den
+  Knöpfen; beides ohne Bewegung, in derselben Ruhe wie der Banner. Gewählt wird
+  per Tages-Hash, nicht per Zufall — wer die Seite zweimal öffnet, liest denselben
+  Satz. Details und Begründung: `docs/marke-und-merch.md`, Abschnitt „Gurt, Drops
+  und der Roadie".
+
