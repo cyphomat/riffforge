@@ -910,8 +910,13 @@ tabs, no audio from copyrighted recordings.
 ## Contributing
 
 Built by [@cyphomat](https://github.com/cyphomat). Found a bug, have a wish, an
-idea for a drill? An [issue](https://github.com/cyphomat/riffforge/issues) is
-welcome.
+idea for a drill? Open an issue (a GitHub account is needed):
+[report a bug](https://github.com/cyphomat/riffforge/issues/new?template=fehler.yml)
+or [suggest an idea](https://github.com/cyphomat/riffforge/issues/new?template=idee.yml).
+Questions and chat belong in the
+[Discussions](https://github.com/cyphomat/riffforge/discussions). The same links
+are in the app under *Daten → Über Riffforge*. Please don't attach real practice
+data; a description is enough.
 
 Riffforge is under the [MIT licence](./LICENSE): **forking, adapting and adding
 your own drills is explicitly welcome.** A fork recognises the original by
