@@ -31,6 +31,12 @@ import { MdFileDownload, MdFileUpload } from "react-icons/md"
 
 type Notice = { tone: "ok" | "err"; text: string } | null
 
+/** A `dayKey` (YYYY-MM-DD) the way the rest of the app writes dates: 2.11.2026. */
+function tagDeutsch(key: string): string {
+  const [jahr, monat, tag] = key.split("-").map(Number)
+  return `${tag}.${monat}.${jahr}`
+}
+
 export function DataManager() {
   const [log, setLog] = useState<PracticeLog>(EMPTY_LOG)
   const [theorie, setTheorie] = useState<TheoryLog>(EMPTY_THEORY_LOG)
@@ -156,7 +162,7 @@ export function DataManager() {
         </div>
         {days.length > 0 && (
           <p className="mt-2 font-mono text-[11.5px] text-dim">
-            seit {days[0]} · zuletzt {days[days.length - 1]}
+            seit {tagDeutsch(days[0])} · zuletzt {tagDeutsch(days[days.length - 1])}
             {days[days.length - 1] === dayKey(new Date()) && " (heute)"}
           </p>
         )}
@@ -166,7 +172,7 @@ export function DataManager() {
       <SaisonalPanel />
 
       {/* Nach „Alles löschen" neu einhängen: die Liste ist dann wieder die Standardliste. */}
-      <GitarrenPanel key={loeschRunde} />
+      <GitarrenPanel key={`gitarren-${loeschRunde}`} />
 
       <InstallPanel />
 
@@ -174,7 +180,7 @@ export function DataManager() {
 
       {/* Nach „Alles löschen" neu einhängen — die Einmessung ist mitgelöscht,
           und das Panel soll das auch zeigen. */}
-      <EinmessenPanel key={loeschRunde} />
+      <EinmessenPanel key={`einmessen-${loeschRunde}`} />
 
       </div>
 

@@ -416,6 +416,10 @@
     @apply inline-flex cursor-pointer items-center justify-center gap-2
            bg-(--tint-akzent) px-5 py-4 font-mono text-[13px] font-extrabold uppercase
            tracking-[0.14em] text-akzent;
+    /* A link styled as a button inherits left-aligned text, a real button
+       centres it. Both wrap the same way, in lines of similar length. */
+    text-align: center;
+    text-wrap: balance;
     box-shadow: var(--pix-akzent), 0 6px 0 0 var(--lippe);
   }
   .btn:hover:not(:disabled) {
