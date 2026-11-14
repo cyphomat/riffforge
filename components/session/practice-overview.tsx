@@ -18,6 +18,7 @@ import {
   streakWeeks,
   totalMinutes,
   heuteGeuebt,
+  spielzeit,
 } from "@/lib/session/progress"
 import { loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
@@ -164,7 +165,7 @@ export function PracticeOverview() {
           <span className="kicker text-dim">
             {heuteKopf}
             {hasHistory && ` · ${streakWeeks(log)} ${streakWeeks(log) === 1 ? "Woche" : "Wochen"} in Folge`}
-            {geuebt && <span className="text-stahl"> · Heute geübt · {geuebt.minuten} Min</span>}
+            {geuebt && <span className="text-stahl"> · Heute geübt · {spielzeit(geuebt.sekunden, "kurz")}</span>}
           </span>
         </div>
         <h1 className={`metal mt-1 text-[72px] sm:text-[96px] ${TONE_CLASS[briefing.tone]}`}>
@@ -187,7 +188,12 @@ export function PracticeOverview() {
                   </span>
                   <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">
                     {block.drill.title}
-                    {runden > 1 && <span className="text-dim"> · {runden} Runden</span>}
+                    {runden > 1 && (
+                      <span className="text-dim">
+                        {" "}
+                        · <span className="whitespace-nowrap">{runden} Runden</span>
+                      </span>
+                    )}
                   </span>
                   <span className="ziffern flex-none text-[15px] font-bold text-akzent">
                     {block.bpm}

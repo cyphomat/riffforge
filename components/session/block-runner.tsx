@@ -10,6 +10,7 @@ import { useAudioEngine } from "@/hooks/use-audio-engine"
 import { useCountdown } from "@/hooks/use-countdown"
 import { useMetronome } from "@/hooks/use-metronome"
 import { useOnsetMic } from "@/hooks/use-onset-mic"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { analyseTiming, suggestRating, type TimingAnalysis } from "@/lib/audio/timing"
 import { einmessung } from "@/lib/storage/lokal"
 import { setBlockLaeuft } from "@/lib/ui/session-wache"
@@ -55,6 +56,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
 
   const { drill } = block
   const [phase, setPhase] = useState<"play" | "rate">("play")
+  useScrollTopOn(phase)
   const [analysis, setAnalysis] = useState<TimingAnalysis | null>(null)
   const [suggested, setSuggested] = useState<Rating | null>(null)
   const [hitCount, setHitCount] = useState(0)

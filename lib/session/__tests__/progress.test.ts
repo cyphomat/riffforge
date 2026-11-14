@@ -10,6 +10,7 @@ import {
   masteryOf,
   nextBpm,
   progressFor,
+  spielzeit,
   streakWeeks,
   weekKey,
 } from "../progress"
@@ -248,11 +249,33 @@ describe("heuteGeuebt", () => {
         result({ seconds: 900, at: new Date(2026, 9, 29, 18, 5, 0).toISOString() }),
       ],
     }
-    expect(heuteGeuebt(log, jetzt)).toEqual({ minuten: 8, bloecke: 2 })
+    expect(heuteGeuebt(log, jetzt)).toEqual({ minuten: 8, sekunden: 480, bloecke: 2 })
   })
 
   it("nennt mindestens eine Minute", () => {
     const log: PracticeLog = { version: 1, results: [result({ seconds: 10, at: jetzt.toISOString() })] }
     expect(heuteGeuebt(log, jetzt)?.minuten).toBe(1)
+  })
+})
+
+describe("spielzeit", () => {
+  it("nennt unter einer Minute die Sekunden, nicht eine erfundene Minute", () => {
+    expect(spielzeit(11)).toBe("11 Sekunden")
+    expect(spielzeit(1)).toBe("1 Sekunde")
+    expect(spielzeit(0)).toBe("0 Sekunden")
+    expect(spielzeit(59.4)).toBe("59 Sekunden")
+  })
+
+  it("rundet ab einer Minute auf ganze Minuten", () => {
+    expect(spielzeit(60)).toBe("1 Minute")
+    expect(spielzeit(89)).toBe("1 Minute")
+    expect(spielzeit(90)).toBe("2 Minuten")
+    expect(spielzeit(59.6)).toBe("1 Minute")
+    expect(spielzeit(900)).toBe("15 Minuten")
+  })
+
+  it("hat eine kurze Form für die Datumszeile", () => {
+    expect(spielzeit(11, "kurz")).toBe("11 Sek")
+    expect(spielzeit(480, "kurz")).toBe("8 Min")
   })
 })

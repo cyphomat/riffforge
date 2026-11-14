@@ -5,7 +5,7 @@ import Link from "next/link"
 // Über beide Kataloge: im Log steht eine Nummer, und der Sieben-Saiter-Modus
 // schreibt in denselben Log. Ohne das stünde hier die nackte Nummer.
 import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
-import { nextBpm, progressFor, streakWeeks } from "@/lib/session/progress"
+import { nextBpm, progressFor, spielzeit, streakWeeks } from "@/lib/session/progress"
 import { SITZT_AB } from "@/lib/session/lead"
 import { aufnaeher, neueAufnaeher, rang, type Aufnaeher, type Rang } from "@/lib/session/merch"
 import { loadProfile } from "@/lib/storage/profile"
@@ -69,7 +69,7 @@ export function SessionSummary({
   previousTheory,
   onExtend,
 }: SessionSummaryProps) {
-  const minutes = Math.max(1, Math.round(results.reduce((sum, r) => sum + r.seconds, 0) / 60))
+  const sekunden = results.reduce((sum, r) => sum + r.seconds, 0)
   const streak = streakWeeks(log)
   const gains = gainsFrom(results, previousLog)
   const jetzt = new Date()
@@ -136,10 +136,22 @@ export function SessionSummary({
         <span className="kicker text-gruen">Feierabend</span>
         <h1 className="display mt-1 text-[38px] text-fg">Session steht</h1>
         <p className="ziffern mt-1 text-[13px] text-muted">
-          {minutes === 1 ? "1 Minute" : `${minutes} Minuten`} ·{" "}
-          {results.length === 1 ? "1 Block" : `${results.length} Blöcke`}
-          {fragen > 0 && ` · ${fragen === 1 ? "1 Frage" : `${fragen} Fragen`}`}
-          {streak > 1 && ` · ${streak} Wochen in Folge`}
+          {/* Each fact stays in one piece; the line only breaks between them. */}
+          {[
+            spielzeit(sekunden),
+            results.length === 1 ? "1 Block" : `${results.length} Blöcke`,
+            fragen > 0 && (fragen === 1 ? "1 Frage" : `${fragen} Fragen`),
+            streak > 1 && `${streak} Wochen in Folge`,
+          ]
+            .filter((text): text is string => typeof text === "string")
+            .map((text, i, alle) => (
+              <span key={text}>
+                <span className="whitespace-nowrap">
+                  {text}
+                  {i < alle.length - 1 && " ·"}
+                </span>{" "}
+              </span>
+            ))}
         </p>
 
         {gains.length > 0 && (

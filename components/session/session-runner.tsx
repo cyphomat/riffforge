@@ -17,6 +17,7 @@ import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
 import { StartGitarre } from "@/components/session/start-gitarre"
 import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { dayKey } from "@/lib/session/progress"
 import { buildDrillSession, buildSession, nextExtraBlock, tagesZufall } from "@/lib/session/builder"
 import {
@@ -289,6 +290,9 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     () => (blocks?.length ? (current / blocks.length) * 100 : 0),
     [current, blocks],
   )
+
+  // Every screen of the session starts at its heading — see useScrollTopOn.
+  useScrollTopOn(`${startSchirm}|${current}|${offenerEinschub?.vorIndex ?? ""}|${done}`)
 
   if (angebot) {
     return (

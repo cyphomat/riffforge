@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdArrowBack, MdRefresh } from "react-icons/md"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { BoxPicker } from "@/components/session/box-picker"
 import { RangAufstieg } from "@/components/session/merch-stand"
 import { DRILLS_BY_ID } from "@/lib/session/drills"
@@ -41,6 +42,7 @@ export function LickRunner() {
   const [bpm, setBpm] = useState<number | null>(null)
   const [zuletzt, setZuletzt] = useState<DrillResult | null>(null)
   const [aufstieg, setAufstieg] = useState<Rang | null>(null)
+  useScrollTopOn(`${phase}|${seed}`)
 
   useEffect(() => {
     setBox(lickBox())

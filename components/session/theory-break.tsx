@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { QuizCard } from "@/components/theory/quiz-card"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { appendAnswers } from "@/lib/storage/theory-log"
 import type { Grade } from "@/lib/theory/fsrs"
 import type { Sicherheit, TheoryCard } from "@/lib/theory/types"
@@ -29,6 +30,7 @@ export function TheoryBreak({
 }) {
   const [index, setIndex] = useState(0)
   const [beantwortet, setBeantwortet] = useState(0)
+  useScrollTopOn(index)
 
   const antworten = (grade: Grade, correct: boolean, sure?: Sicherheit) => {
     // Sofort schreiben, nicht am Ende der Portion: wer die Session abbricht,

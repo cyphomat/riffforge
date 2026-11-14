@@ -147,6 +147,31 @@
   (`buildDrillSession`, zehn Minuten): wer ihn antippt, will genau den.
 - **Ein Drill über mehrere Runden ist ein Eintrag**, nicht drei. Der
   Session-Runner sammelt die Spielzeit und schreibt nach der letzten Runde.
+- **Ein neuer Bildschirm beginnt oben.** Block, Bewertung, Fragen und Abschluss
+  lösen sich an Ort und Stelle ab, die Seite wechselt nicht — der Browser
+  behält also die Scroll-Position. Beim Durchspielen lag die Überschrift des
+  nächsten Bildschirms dann oberhalb, und ein ungespielt beendeter Block sah
+  aus, als wäre nichts passiert: gleicher Aufbau, gleiche Uhr, nur der Name
+  darüber war ein anderer. `useScrollTopOn` springt bei jedem Wechsel nach
+  oben, ohne Gleiten. „Los" und „Pause" wechseln keinen Bildschirm und lassen
+  die Position in Ruhe.
+- **Eine Drill-Tabulatur passt aufs Handy, sonst ist sie falsch gesetzt.** Das
+  Chromatic-Warm-up war 63 Zeichen breit und scrollte auf jedem Handy quer —
+  und beim Zerlegen fiel auf, dass der letzte Ton jeder Saite in derselben
+  Spalte stand wie der erste der nächsten, also wie zwei Töne zugleich. Es
+  steht jetzt in zwei Systemen zu je drei Saiten. Im Sieben-Saiter-Katalog
+  waren vier Tabulaturen 42 bis 51 Zeichen breit; sie stehen auf einem
+  Zweier- statt Dreierraster, Reihenfolge, Saite und Bund jedes Tons sind
+  gleich geblieben. Die Schrift in `TabView` wächst mit dem Schirm
+  (`4vw - 3.3px`, zwischen 9,5 und 12,5 px): im Browser gemessen bleibt dem
+  Feld die Schirmbreite minus 81 px, ein Zeichen ist 0,6 em breit, und damit
+  passen **41 Zeichen** von 320 px an aufwärts. `drills-tab.test.ts` hält die
+  Grenze über beide Kataloge fest. Licks rechnen ihren Umbruch selbst, siehe
+  `docs/lead-und-sieben-saiter.md`.
+- **Spielzeit unter einer Minute steht in Sekunden** (`spielzeit`). Der
+  Abschluss meldete nach elf Sekunden „1 Minute", *Heute* ebenso — die
+  Untergrenze sollte „0 Min" verhindern, behauptete aber etwas, das nicht
+  gespielt wurde. Ab einer Minute wird wie bisher auf ganze Minuten gerundet.
 
 ## Der Roadie auf *Heute* und im Abschluss
 
