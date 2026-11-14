@@ -63,7 +63,7 @@ export function GitarrenPanel() {
             <button
               onClick={() => setze(gitarreWeg(liste, gitarre.name))}
               aria-label={`${gitarre.name} entfernen`}
-              className="flex-none p-1 text-dim hover:text-fg"
+              className="-my-2 -mr-2 flex-none p-[11px] text-dim hover:text-fg"
             >
               <MdClose className="h-[18px] w-[18px]" />
             </button>

@@ -99,7 +99,7 @@ export function SiebenRunner() {
           {/* Wer die Gitarre gerade aus dem Koffer holt, stimmt zuerst. */}
           <Link
             href="/stimmen?saiten=7"
-            className="mt-3 inline-flex items-center gap-1 font-mono text-[12.5px] text-stahl underline-offset-4 hover:underline"
+            className="mt-1 inline-flex items-center gap-1 py-2.5 font-mono text-[12.5px] text-stahl underline-offset-4 hover:underline"
           >
             <MdTune className="h-[15px] w-[15px]" /> Erst stimmen ›
           </Link>
