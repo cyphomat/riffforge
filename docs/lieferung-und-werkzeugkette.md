@@ -16,9 +16,14 @@
   ihren Transitiven mit — nichts davon geht an einen Besucher, es läuft kein
   Server, aber `next dev` läuft auf diesem Rechner. Wo eine Transitive hängt,
   kommt die geflickte Fassung als `pnpm.overrides` in `package.json`. Im
-  Moment sind es **null**: nach dem Sprung auf Next 16, Tailwind 4 und
-  Vitest 5 waren alle elf früheren Overrides überflüssig — geprüft ohne
-  jeden Override und mit frisch aufgelöster Lockfile. Wer eine Abhängigkeit
+  Moment ist es **einer**: `minimatch` 7 bis 11.0.0 geht auf 11.x
+  (GHSA-g3hv-75wg-m249). `eslint` zieht die geflickte Reihe ab 10.15.0
+  selbst, `typescript-eslint` hängt noch auf 10.x — zieht auch das nach,
+  fliegt der Override raus. Der Bereich trifft nur verwundbare Fassungen,
+  er zeigt also von selbst ins Leere, sobald niemand sie mehr verlangt.
+  Die elf früheren waren nach dem Sprung auf Next 16, Tailwind 4 und
+  Vitest 5 überflüssig — geprüft ohne jeden Override und mit frisch
+  aufgelöster Lockfile. Wer eine Abhängigkeit
   hebt, schaut danach in `pnpm audit` und räumt Overrides weg, die ins Leere
   zeigen.
   Die einzige Ausnahme steht in `pnpm.auditConfig.ignoreGhsas`:
