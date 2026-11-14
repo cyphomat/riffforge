@@ -32,13 +32,13 @@ export const SIEBEN_DRILLS: Drill[] = [
       "Jeder Ton gleich laut, auch der tiefste",
       "Handballen wandert mit: was nicht klingt, wird gedämpft",
     ],
-    tab: `e|-------------------5-------------------|
-B|----------------5-----5----------------|
-G|-------------5-----------5-------------|
-D|----------5-----------------5----------|
-A|-------5-----------------------5-------|
-E|----5-----------------------------5----|
-B|-5-----------------------------------5-|`,
+    tab: `e|-------------5-------------|
+B|-----------5---5-----------|
+G|---------5-------5---------|
+D|-------5-----------5-------|
+A|-----5---------------5-----|
+E|---5-------------------5---|
+B|-5-----------------------5-|`,
     why: "Bund 5 einer Saite klingt wie die nächsthöhere leere Saite — auch bei der neuen: im fünften Bund der tiefen B liegt das E, dein bisher tiefster Ton. Die eine Ausnahme ist wie immer G nach B, dort ist es Bund 4.",
     startBpm: 60,
     targetBpm: 120,
@@ -183,13 +183,13 @@ B|-0--0-0---0--0-0---0--0-0---0--0-2----|
       "Den Umstieg auf die neue Saite nicht beschleunigen",
       "Rückweg genauso sauber wie der Hinweg",
     ],
-    tab: `e|-------------------------------------5--8-|
-B|-------------------------------5--8-------|
-G|-------------------------5--7-------------|
-D|-------------------5--7-------------------|
-A|-------------5--7-------------------------|
-E|-------5--8-------------------------------|
-B|-5--8-------------------------------------|`,
+    tab: `e|-------------------------5-8-|
+B|---------------------5-8-----|
+G|-----------------5-7---------|
+D|-------------5-7-------------|
+A|---------5-7-----------------|
+E|-----5-8---------------------|
+B|-5-8-------------------------|`,
     why: "Die A-Moll-Pentatonik, Box 1 — dieselbe, die du kennst, nur unten um zwei Töne länger: auf der B liegen im fünften und achten Bund E und G, beide gehören zur Tonleiter. Die Form wandert unverändert weiter, weil die Sieben zur E dieselbe Quarte ist wie die E zur A.",
     startBpm: 55,
     targetBpm: 140,
@@ -234,13 +234,13 @@ B|-0--0--0--0--3--3--0--0--5--5-|
       "Beim Sprung nach oben liegt sofort etwas auf der B",
       "Langsam genug, dass der Sprung nicht rumpelt",
     ],
-    tab: `e|------------------------------------------------|
-B|------------------------------------------------|
-G|----------7--------9--------------7-------------|
-D|-------7--------------7--------7----------------|
-A|------------------------------------------------|
-E|------------------------------------------------|
-B|-0--0--------0--0--------0--0--------0--3--0--0-|`,
+    tab: `e|---------------------------------|
+B|---------------------------------|
+G|-------7-----9---------7---------|
+D|-----7---------7-----7-----------|
+A|---------------------------------|
+E|---------------------------------|
+B|-0-0-----0-0-----0-0-----0-3-0-0-|`,
     why: "Die Figur oben liegt auf A, D und E — in B-Moll die Stufen sieben, drei und vier. Der Reiz ist der Abstand: zwischen dem tiefsten und dem höchsten Ton des Riffs liegen mehr als zwei Oktaven, und genau dieser Sprung ist auf sieben Saiten die typische Bewegung.",
     startBpm: 55,
     targetBpm: 130,
@@ -258,14 +258,14 @@ B|-0--0--------0--0--------0--0--------0--3--0--0-|`,
       "Die Töne auf der Sieben genauso singen lassen wie oben",
       "Nicht hetzen: tief gespielte Leads brauchen mehr Platz",
     ],
-    tab: `e|------------------------------------------|
-B|------------------------------------------|
-G|------------------------------------------|
-D|----------------------------------5-------|
-A|-7--5-----------------------5--7-----7----|
-E|-------8--5-----------5--8----------------|
-B|-------------8--5--8--------------------5-|
-                                          ~~~`,
+    tab: `e|-----------------------------|
+B|-----------------------------|
+G|-----------------------------|
+D|-----------------------5-----|
+A|-7-5---------------5-7---7---|
+E|-----8-5-------5-8-----------|
+B|---------8-5-8-------------5-|
+                             ~~~`,
     why: "Dieselbe A-Moll-Pentatonik wie oben, aber die Phrase läuft nach unten aus der gewohnten Box heraus und löst auf dem E der tiefen Saite auf. Tiefe Leads klingen nur dann nicht nach Gebrumm, wenn jeder Ton ausgespielt wird — deshalb hier weniger Noten als in derselben Figur eine Oktave höher.",
     startBpm: 50,
     targetBpm: 120,

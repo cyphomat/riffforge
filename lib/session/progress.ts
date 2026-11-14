@@ -210,10 +210,26 @@ export function totalMinutes(log: PracticeLog): number {
 export function heuteGeuebt(
   log: PracticeLog,
   now: Date = new Date(),
-): { minuten: number; bloecke: number } | null {
+): { minuten: number; sekunden: number; bloecke: number } | null {
   const heute = dayKey(now)
   const heutige = log.results.filter((r) => dayKey(new Date(r.at)) === heute)
   if (heutige.length === 0) return null
   const sekunden = heutige.reduce((summe, r) => summe + r.seconds, 0)
-  return { minuten: Math.max(1, Math.round(sekunden / 60)), bloecke: heutige.length }
+  return { minuten: Math.max(1, Math.round(sekunden / 60)), sekunden, bloecke: heutige.length }
+}
+
+/**
+ * Playing time in words. Below one minute it is given in seconds: "1 Minute"
+ * for ten seconds would be a claim, and "0 Minuten" an insult. From one
+ * minute on, rounded to whole minutes.
+ */
+export function spielzeit(sekunden: number, form: "lang" | "kurz" = "lang"): string {
+  const ganze = Math.max(0, Math.round(sekunden))
+  if (ganze < 60) {
+    if (form === "kurz") return `${ganze} Sek`
+    return ganze === 1 ? "1 Sekunde" : `${ganze} Sekunden`
+  }
+  const minuten = Math.round(ganze / 60)
+  if (form === "kurz") return `${minuten} Min`
+  return minuten === 1 ? "1 Minute" : `${minuten} Minuten`
 }
