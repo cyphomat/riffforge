@@ -106,6 +106,7 @@
 | `lib/backup-erinnerung.ts` | Wann eine Sicherung fällig ist. Rein, getestet. |
 | `lib/storage/lokal.ts` | Was das Gerät über sich weiss: letzte Sicherung, Willkommen, Darstellung, Saisonales, Stand der laufenden Session |
 | `hooks/use-install.ts` | `beforeinstallprompt` — und der iOS-Fall, der keines hat |
+| `hooks/use-scroll-top.ts` | Springt nach oben, wenn ein Bildschirm den vorigen an Ort und Stelle ablöst |
 | `landing/index.html` | Startseite zum Ablegen auf einer fremden Seite. Eine Datei. |
 | `assets/logo/totenkopf.txt` | Das Zeichen (ein Totenkopf) als Pixelraster, 32 × 32. Quelle für alle Icons, `app/icon.svg` und den Banner. |
 | `tools/icons.mjs` | Erzeugt `public/icons/` daraus — von Hand gepflegt laufen sie auseinander |

@@ -187,7 +187,12 @@ export function PracticeOverview() {
                   </span>
                   <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">
                     {block.drill.title}
-                    {runden > 1 && <span className="text-dim"> · {runden} Runden</span>}
+                    {runden > 1 && (
+                      <span className="text-dim">
+                        {" "}
+                        · <span className="whitespace-nowrap">{runden} Runden</span>
+                      </span>
+                    )}
                   </span>
                   <span className="ziffern flex-none text-[15px] font-bold text-akzent">
                     {block.bpm}

@@ -87,6 +87,7 @@ Komponente.
 - **Sicherheit (`sure`) ist Teil der Antwort, FSRS rechnet ohne sie.** Scheinwissen
   zieht nur die Fälligkeit in `dueCards` vor; `lib/theory/fsrs.ts` bleibt unberührt.
 - **Eine verlassene Session wird zurückgerechnet, nicht neu gewürfelt.** Gemerkt wird nur die Stelle (`lib/session/session-stand.ts`), der Plan kommt aus dem Log zu Beginn; der Log bleibt append-only.
+- **Ein neuer Bildschirm beginnt oben.** Wer Bildschirme an Ort und Stelle ablöst (Block, Bewertung, Fragen, Abschluss), ruft `useScrollTopOn` aus `hooks/use-scroll-top.ts`; Begründung in `docs/session-und-bildschirme.md`.
 - **Szenario-Karten (`lib/theory/szenarien.ts`) liegen nicht in `THEORY_CARDS`.**
   Nur die Transfer-Runde fragt sie; neue Karten bekommen ihre Nachrechnung in
   `szenarien.test.ts` und die richtige Antwort nicht immer an dieselbe Stelle.

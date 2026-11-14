@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { MdArrowBack, MdMusicNote, MdTune } from "react-icons/md"
 import { BlockRunner, type BlockOutcome } from "@/components/session/block-runner"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { SessionSummary } from "@/components/session/session-summary"
 import { STIMMUNG, buildSiebenSession, naechsterSiebenBlock } from "@/lib/session/sieben"
 import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
@@ -30,6 +31,7 @@ export function SiebenRunner() {
   const [results, setResults] = useState<DrillResult[]>([])
   // Hier würfelt die Roulette nur unter den Siebensaitigen — meist gibt es eine, dann bleibt sie still.
   const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
+  useScrollTopOn(`${blocks === null}|${current}`)
 
   const starten = () => {
     const gelesen = loadLog()

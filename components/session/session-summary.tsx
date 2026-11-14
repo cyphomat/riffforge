@@ -136,10 +136,22 @@ export function SessionSummary({
         <span className="kicker text-gruen">Feierabend</span>
         <h1 className="display mt-1 text-[38px] text-fg">Session steht</h1>
         <p className="ziffern mt-1 text-[13px] text-muted">
-          {minutes === 1 ? "1 Minute" : `${minutes} Minuten`} ·{" "}
-          {results.length === 1 ? "1 Block" : `${results.length} Blöcke`}
-          {fragen > 0 && ` · ${fragen === 1 ? "1 Frage" : `${fragen} Fragen`}`}
-          {streak > 1 && ` · ${streak} Wochen in Folge`}
+          {/* Each fact stays in one piece; the line only breaks between them. */}
+          {[
+            minutes === 1 ? "1 Minute" : `${minutes} Minuten`,
+            results.length === 1 ? "1 Block" : `${results.length} Blöcke`,
+            fragen > 0 && (fragen === 1 ? "1 Frage" : `${fragen} Fragen`),
+            streak > 1 && `${streak} Wochen in Folge`,
+          ]
+            .filter((text): text is string => typeof text === "string")
+            .map((text, i, alle) => (
+              <span key={text}>
+                <span className="whitespace-nowrap">
+                  {text}
+                  {i < alle.length - 1 && " ·"}
+                </span>{" "}
+              </span>
+            ))}
         </p>
 
         {gains.length > 0 && (

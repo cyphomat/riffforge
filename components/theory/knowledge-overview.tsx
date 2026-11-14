@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { MdCheck } from "react-icons/md"
 import { QuizCard } from "@/components/theory/quiz-card"
+import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 import { SZENARIO_KARTEN } from "@/lib/theory/szenarien"
 import { TRANSFER_AB, transferRunde } from "@/lib/theory/transfer"
@@ -42,6 +43,8 @@ export function KnowledgeOverview() {
   const [transfer, setTransfer] = useState(false)
   const [index, setIndex] = useState(0)
   const [fertig, setFertig] = useState(0)
+  // A round replaces the overview in place, and each question the one before.
+  useScrollTopOn(runde ? `frage-${index}` : "uebersicht")
 
   useEffect(() => {
     setLog(loadTheoryLog())

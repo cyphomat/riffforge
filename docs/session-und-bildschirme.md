@@ -147,6 +147,14 @@
   (`buildDrillSession`, zehn Minuten): wer ihn antippt, will genau den.
 - **Ein Drill über mehrere Runden ist ein Eintrag**, nicht drei. Der
   Session-Runner sammelt die Spielzeit und schreibt nach der letzten Runde.
+- **Ein neuer Bildschirm beginnt oben.** Block, Bewertung, Fragen und Abschluss
+  lösen sich an Ort und Stelle ab, die Seite wechselt nicht — der Browser
+  behält also die Scroll-Position. Beim Durchspielen lag die Überschrift des
+  nächsten Bildschirms dann oberhalb, und ein ungespielt beendeter Block sah
+  aus, als wäre nichts passiert: gleicher Aufbau, gleiche Uhr, nur der Name
+  darüber war ein anderer. `useScrollTopOn` springt bei jedem Wechsel nach
+  oben, ohne Gleiten. „Los" und „Pause" wechseln keinen Bildschirm und lassen
+  die Position in Ruhe.
 
 ## Der Roadie auf *Heute* und im Abschluss
 
