@@ -201,7 +201,7 @@ export function PracticeOverview() {
 
         <Link
           href="/session?minutes=15"
-          className={`btn mt-5 w-full py-5 text-[15px] ${geuebt ? "btn-ghost" : ""}`}
+          className={`btn mt-5 w-full px-3 py-5 text-[15px] tracking-[0.1em] min-[420px]:px-5 min-[420px]:tracking-[0.14em] ${geuebt ? "btn-ghost" : ""}`}
         >
           Session starten · 15 Min
         </Link>
@@ -312,7 +312,7 @@ export function PracticeOverview() {
         <>
           <h2 className="rule mt-9 mb-3">Bisher</h2>
           <div className="grid grid-cols-3 gap-[9px]">
-            <Stat value={daysPractisedInLast(log, 7)} label="Diese Woche" sub="von 7 Tagen" />
+            <Stat value={daysPractisedInLast(log, 7)} label="Woche" sub="von 7 Tagen" />
             <Stat value={totalMinutes(log)} label="Minuten" sub="insgesamt" />
             <Stat value={log.results.length} label="Blöcke" sub="gespielt" />
           </div>
