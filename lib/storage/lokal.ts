@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
 import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/gitarren"
+import { gehoert, LEERES_BUCH, riffbuchSchema, type Riffbuch } from "@/lib/session/riffbuch"
 import { boardWahlSchema, STANDARD_WAHL, type BoardWahl } from "@/lib/session/board"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
@@ -32,9 +33,10 @@ const SESSION_KEY = "mga.session-stand.v1"
 const GITARREN_KEY = "mga.gitarren.v1"
 const DROP_KEY = "mga.drop-gesehen.v1"
 const BOARD_KEY = "mga.board.v1"
+const RIFFBUCH_KEY = "mga.riffbuch.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY, BOARD_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY, BOARD_KEY, RIFFBUCH_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -360,4 +362,28 @@ export function boardWahl(): BoardWahl {
 
 export function merkeBoardWahl(wahl: BoardWahl): void {
   schreiben(BOARD_KEY, JSON.stringify(boardWahlSchema.parse(wahl)))
+}
+
+/**
+ * Das Riffbuch: welche Riffe auf diesem Gerät schon ganz erklungen sind.
+ *
+ * Gehört dem Gerät und wird nicht abgeglichen (siehe `lib/session/riffbuch.ts`).
+ * Kaputtes fällt auf ein leeres Buch zurück: es ist eine Hörliste, kein Verdienst.
+ */
+export function riffbuch(): Riffbuch {
+  const roh = lesen(RIFFBUCH_KEY)
+  if (!roh) return LEERES_BUCH
+  try {
+    const geprueft = riffbuchSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : LEERES_BUCH
+  } catch {
+    return LEERES_BUCH
+  }
+}
+
+/** Trägt ein Riff ein, wenn es noch fehlt. */
+export function merkeRiffGehoert(id: string, jetzt: Date = new Date()): void {
+  const buch = riffbuch()
+  const neu = gehoert(buch, id, jetzt)
+  if (neu !== buch) schreiben(RIFFBUCH_KEY, JSON.stringify(riffbuchSchema.parse(neu)))
 }

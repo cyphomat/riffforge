@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { NotenMitTab } from "@/components/session/noten-view"
 import { SongBedienung } from "@/components/session/song-bedienung"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
+import { BAND, dabei, bandUmschalten, stufeAb } from "@/lib/session/band"
+import { RAENGE } from "@/lib/session/merch"
 import { AMPS, PEDALE, type Amp, type Pedal } from "@/lib/session/board-daten"
 import { STANDARD_WAHL, gewaehlterAmp, kette, pedaleGeordnet, umschalten, type BoardWahl, type Besitz } from "@/lib/session/board"
 import { TUERCHEN } from "@/lib/session/advent-daten"
@@ -23,7 +25,7 @@ function Probe({ wahlStempel }: { wahlStempel: string }) {
     <div className="mt-3 space-y-3">
       <NotenMitTab song={PROBE.riff.song} mitNamen />
       {/* Der Schlüssel baut den Player neu, sobald sich das Board ändert — er liest es beim Anlegen. */}
-      <SongBedienung key={wahlStempel} song={PROBE.riff.song} bpm={bpm} onBpm={setBpm} engine={engine} />
+      <SongBedienung key={wahlStempel} song={PROBE.riff.song} bpm={bpm} onBpm={setBpm} engine={engine} riffId={PROBE.riff.id} />
     </div>
   )
 }
@@ -54,21 +56,21 @@ function Zeile({ an, onClick, kopf, wirkung, bleibt }: { an: boolean; onClick?: 
  * dem Log; gemerkt wird nur die Wahl, auf diesem Gerät.
  */
 export function BoardAnsicht() {
-  const [stand, setStand] = useState<{ besitz: Besitz; quests: QuestStand[] } | null>(null)
+  const [stand, setStand] = useState<{ besitz: Besitz; quests: QuestStand[]; band: string[] } | null>(null)
   const [wahl, setWahl] = useState<BoardWahl>(STANDARD_WAHL)
 
   useEffect(() => {
     const log = loadLog()
     const theorie = loadTheoryLog()
-    setStand({ besitz: berechneBesitz(log, theorie), quests: questStand(log, theorie) })
+    setStand({ besitz: berechneBesitz(log, theorie), quests: questStand(log, theorie), band: dabei(log) })
     setWahl(boardWahl())
   }, [])
 
   if (!stand) return null
-  const { besitz, quests } = stand
+  const { besitz, quests, band } = stand
   const geordnet = pedaleGeordnet(besitz)
   const ampSteht = gewaehlterAmp(besitz, wahl)
-  const stempel = `${wahl.aus.join(",")}|${ampSteht.id}|${besitz.pedale.size}`
+  const stempel = `${wahl.aus.join(",")}|${ampSteht.id}|${besitz.pedale.size}|${wahl.bandAus.join(",")}`
   // Alles, was man hat, vor und hinter dem Amp — an oder aus.
   const alle = kette(besitz, STANDARD_WAHL)
   const aendern = (neu: BoardWahl) => {
@@ -108,6 +110,23 @@ export function BoardAnsicht() {
               <Zeile key={p.id} an={!wahl.aus.includes(p.id)} onClick={() => aendern(umschalten(wahl, p.id))} kopf={`${p.name} · ${p.typ}`} wirkung={p.wirkung} />
             ))}
           {alle.nach.length === 0 && <li className="text-[13px] text-dim">Noch nichts hinter dem Amp.</li>}
+        </ul>
+
+        <h3 className="rule mt-5">Band</h3>
+        <p className="mt-3 text-[13px] leading-snug text-dim">
+          Spielt nur in der Wiedergabe mit, nie im Block — dort misst das Mikro.
+        </p>
+        <ul className="mt-3 space-y-[6px]">
+          {BAND.map((b) => {
+            const da = band.includes(b.id)
+            return da ? (
+              <Zeile key={b.id} an={!wahl.bandAus.includes(b.id)} onClick={() => aendern(bandUmschalten(wahl, b.id))} kopf={b.name} wirkung={b.wirkung} />
+            ) : (
+              <li key={b.id} className="border border-dashed border-line px-3 py-2.5 text-[13px] text-dim opacity-60">
+                {b.name} · kommt ab Rang {RAENGE[stufeAb(b.id)].titel}
+              </li>
+            )
+          })}
         </ul>
 
         <h3 className="rule mt-5">Zum Hören</h3>

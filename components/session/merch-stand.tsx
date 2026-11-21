@@ -40,6 +40,7 @@ import { DROPS } from "@/lib/session/drops-daten"
 import { gurtRiffs, type RiffSlot } from "@/lib/session/gurt"
 import { GurtAnsicht } from "@/components/session/gurt-ansicht"
 import { loadLog } from "@/lib/storage/practice-log"
+import { RiffbuchAnsicht } from "@/components/session/riffbuch-ansicht"
 import { BoardAnsicht } from "@/components/session/board-ansicht"
 import { AdventGurt } from "@/components/session/advent-gurt"
 import { Rampenlicht } from "@/components/session/rampenlicht"
@@ -473,6 +474,8 @@ export function MerchStand() {
         <AdventGurt log={log} />
 
         <BoardAnsicht />
+
+        <RiffbuchAnsicht />
 
         <h2 className="tape schief">Die Kutte</h2>
         {/* Die Kutte als eine Fläche, wie in Setlist: Aufnäher gehören auf

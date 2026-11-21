@@ -26,9 +26,11 @@ export const startBesitz = (): Besitz => ({ pedale: new Set(START_BESITZ.pedale)
 export const boardWahlSchema = z.object({
   aus: z.array(z.string()).max(40),
   amp: z.string().nullable(),
+  /** Mitglieder der Band, die nicht mitspielen sollen (`band.ts`). Fehlt es, spielen alle. */
+  bandAus: z.array(z.string()).max(10).default([]),
 })
 export type BoardWahl = z.infer<typeof boardWahlSchema>
-export const STANDARD_WAHL: BoardWahl = { aus: [], amp: null }
+export const STANDARD_WAHL: BoardWahl = { aus: [], amp: null, bandAus: [] }
 
 /** Die Stelle eines Pedals in der Kette; je kleiner, desto näher an der Gitarre. */
 function stelle(id: string): number {

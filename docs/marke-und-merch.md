@@ -281,3 +281,21 @@
 - **Das Rampenlicht ist reine Anzeige** (`rampenlicht.tsx`): ein Tipp auf eine verdiente Gitarre im Rack,
   Pfeiltasten blättern, Esc schließt. Es bewegt sich nichts, auch bei normaler Bewegung nicht; der
   Hintergrund ist deckend, damit der Name lesbar bleibt.
+
+## Band und Riffbuch
+
+- **Die Band spielt nur in der Wiedergabe, nie im Block** (`lib/session/band.ts`, im `SongPlayer`). Im Block
+  misst das Mikro, und eine Band, die sich selbst im Mikro hört, machte jede Timing-Messung zu Rauschen. Die
+  Wiedergabe ist während eines laufenden Blocks ohnehin gesperrt; der Vorbehalt entfällt damit, solange die
+  Band nur im Player läuft — und er kehrt zurück, wer sie je in den Block holt.
+- **Mitglieder kommen mit dem Rang** (Schlagzeug ab Proberaum, Bass ab Vorband). Der Rang fällt aus dem Log
+  und nie zurück, also geht auch keiner; gespeichert wird nichts. Ob ein Mitglied mitspielt, wählt das
+  Gerät (`BoardWahl.bandAus`, bei fehlendem Feld spielen alle). Der Ablauf (`band-ablauf.ts`) ist rein: Kick
+  auf Eins und Drei, Snare auf Zwei und Vier, Hi-Hat in Achteln, der Bass den Grundton auf jedem Schlag. Das
+  Schlagzeug läuft am Board vorbei, der Bass hindurch. Klänge sind Näherungen.
+- **Das Riffbuch ist die einzige gespeicherte Hörliste** (`riffbuch.ts`, `mga.riffbuch.v1`). „Gehört"
+  steht nirgends im Log, also wird es gespeichert — aber nur auf dem Gerät und nicht im Abgleich: es ist
+  nichts Verdientes, und ein zweites Gerät fängt leer an. Ein Riff kommt hinein, wenn der `SongPlayer` einen
+  Durchgang zu Ende gespielt hat (`onGehoert`), in der Zugabe, in der Probe am Board und bei den Türchen. Das
+  erste Datum bleibt, Unbekanntes kommt nicht hinein, Kaputtes fällt auf ein leeres Buch zurück. Es gibt
+  keinen Aufnäher dazu: Aufnäher fallen aus dem Log.

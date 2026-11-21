@@ -130,6 +130,10 @@ Komponente.
   nie Metronom oder Klicks.** Besitz fällt über Quests aus dem Log (kein Gold, kein Kontostand),
   nur die Wahl (was aus ist, welcher Amp) gehört dem Gerät; die Reihenfolge ist die des
   Effektlexikons; Begründung in `docs/marke-und-merch.md`.
+- **Die Band (`lib/session/band.ts`) spielt nur im `SongPlayer`, nie im Block,** weil dort das Mikro
+  misst. Mitglieder kommen mit dem Rang aus dem Log. Das Riffbuch (`riffbuch.ts`) ist die einzige
+  gespeicherte Hörliste und gehört nur dem Gerät, nie dem Abgleich; Begründung in
+  `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim

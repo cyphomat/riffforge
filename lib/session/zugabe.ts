@@ -14,6 +14,8 @@ import type { Song } from "@/lib/theory/song"
  */
 
 export interface ZugabeRiff {
+  /** Kennung für das Riffbuch. */
+  id: string
   titel: string
   song: Song
   bpm: number
@@ -29,9 +31,9 @@ export function zugabeRiff(ergebnisse: DrillResult[], tag: string): ZugabeRiff {
     .find((r) => ALLE_DRILLS_BY_ID[r.drillId]?.song)
   if (letzter) {
     const drill = ALLE_DRILLS_BY_ID[letzter.drillId]
-    return { titel: drill.title, song: drill.song!, bpm: letzter.bpm, herkunft: "session" }
+    return { id: drill.id, titel: drill.title, song: drill.song!, bpm: letzter.bpm, herkunft: "session" }
   }
   const riff = ADVENT_RIFFE[hash(`zugabe-${tag}`) % ADVENT_RIFFE.length]
   const mitte = Math.round((riff.startBpm + riff.targetBpm) / 2 / 5) * 5
-  return { titel: riff.titel, song: riff.song, bpm: mitte, herkunft: "advent" }
+  return { id: riff.id, titel: riff.titel, song: riff.song, bpm: mitte, herkunft: "advent" }
 }

@@ -93,6 +93,11 @@
 | `lib/session/wochengegner.ts` | Der Wochengegner: 20 Lebenspunkte, Treffer aus vier Quellen mit Deckel, Sieg durch eine Session, Combo — rein, alles aus Log und Wissens-Log |
 | `components/session/wochengegner-karte.tsx` | Gegner der Woche mit Lebensleiste auf *Heute* |
 | `components/ui/pixel-gegner.tsx` | Das Verstärker-Monster als Pixelbild aus Rechtecken |
+| `lib/session/band.ts` | Die Band: wer nach dem Rang dabei ist und wer auf diesem Gerät mitspielt — rein |
+| `lib/audio/band-ablauf.ts` | Was Schlagzeug und Bass in einem Durchgang spielen (Rock-Beat in Achteln, Grundton auf jedem Schlag) — rein, in Sekunden |
+| `lib/audio/band.ts` | Die Klänge des Schlagzeugs (Kick, Snare, Hi-Hat), synthetisch |
+| `lib/session/riffbuch.ts` | Das Riffbuch: Schema, Eintragen mit erstem Datum, Stand — rein; gespeichert wird in `lokal.ts` |
+| `components/session/riffbuch-ansicht.tsx` | Das Riffbuch auf dem Merch-Stand |
 | `lib/session/board-daten.ts` | Pedale und Amps als Daten (eigene Namen, keine Marken), Schemas; jedes Pedal trägt die Kennung seines Lexikon-Eintrags |
 | `lib/session/board.ts` | Das Board als Rechnung: Besitz, Wahl, Reihenfolge nach dem Effektlexikon, Kette für die Wiedergabe — rein |
 | `lib/session/quests-daten.ts`, `quests.ts` | Quests mit Lohn fürs Board; Fortschritt und Besitz fallen aus beiden Logs — rein |
