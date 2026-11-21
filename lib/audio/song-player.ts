@@ -1,5 +1,7 @@
 import type { Song } from "../theory/song"
 import type { AudioEngine } from "./audio-engine"
+import { spieleSchlag } from "./band"
+import { bassAblauf, schlagzeugAblauf } from "./band-ablauf"
 import { baueBoard, type BoardKette } from "./board"
 import { spieleKlick } from "./metronome"
 import { bauAblauf, einzaehler, klingendeNoten, type SongKlick, type SongTon } from "./song-ablauf"
@@ -58,6 +60,16 @@ export interface SongPlayerOptions {
    * Timing misst, will keinen Hall auf dem Klick. Ohne Board klingt der Ton wie bisher.
    */
   board?: BoardKette
+  /**
+   * Wer von der Band mitspielt. Nur hier, in der Wiedergabe: im Block misst das
+   * Mikro, und eine Band, die sich im Mikro hört, machte jede Messung zu Rauschen.
+   */
+  band?: BandWahl
+}
+
+export interface BandWahl {
+  schlagzeug: boolean
+  bass: boolean
 }
 
 export class SongPlayer {
@@ -68,6 +80,7 @@ export class SongPlayer {
   private ton: GainNode | null = null
   private abbauen: (() => void) | null = null
   private board: BoardKette | undefined
+  private band: BandWahl | undefined
   private timer: ReturnType<typeof setInterval> | null = null
   private song: Song | null = null
   /** Wann der nächste Durchgang beginnt. */
@@ -92,10 +105,16 @@ export class SongPlayer {
     this.klick = options.klick ?? true
     this.onEnde = options.onEnde
     this.board = options.board
+    this.band = options.band
   }
 
   get laeuft(): boolean {
     return this.timer !== null
+  }
+
+  /** Gilt ab dem nächsten Durchgang. */
+  setBand(band: BandWahl | undefined): void {
+    this.band = band
   }
 
   /** Gilt ab dem nächsten Start: ein laufendes Board wird nicht umgebaut. */
@@ -215,6 +234,7 @@ export class SongPlayer {
     this.durchgaenge.push({ beginn, ende: beginn + ablauf.dauer, toene: ablauf.toene })
     for (const ton of ablauf.toene) this.planeTon(ton.midi, beginn + ton.start, beginn + ton.ende)
     if (this.klick) this.planeKlicks(ablauf.klicks, beginn)
+    this.planeBand(song, beginn)
 
     this.naechster = beginn + ablauf.dauer
     if (!this.schleife) this.ende = this.naechster
@@ -237,6 +257,18 @@ export class SongPlayer {
     huelle.connect(ton)
     quelle.start(start)
     quelle.stop(ende + ABKLANG_S + 0.01)
+  }
+
+  /** Schlagzeug und Bass für einen Durchgang. Das Schlagzeug läuft am Board vorbei, der Bass hindurch. */
+  private planeBand(song: Song, beginn: number): void {
+    const { ctx, master, ton } = this
+    if (!ctx || !master || !ton || !this.band) return
+    if (this.band.schlagzeug) {
+      for (const s of schlagzeugAblauf(song, this.bpm)) spieleSchlag(ctx, master, beginn + s.zeit, s.art, s.laut)
+    }
+    if (this.band.bass) {
+      for (const n of bassAblauf(song, this.bpm)) this.planeTon(n.midi, beginn + n.zeit, beginn + n.zeit + n.dauer)
+    }
   }
 
   private planeKlicks(klicks: SongKlick[], beginn: number): void {

@@ -58,8 +58,8 @@ describe("Besitz und Wahl", () => {
   })
 
   it("lässt eine Wahl, die man nicht besitzt, auf den Übungscombo fallen", () => {
-    expect(gewaehlterAmp(startBesitz(), { aus: [], amp: "amp-saegewerk" }).id).toBe("amp-uebungscombo")
-    expect(gewaehlterAmp(alles(), { aus: [], amp: "amp-saegewerk" }).id).toBe("amp-saegewerk")
+    expect(gewaehlterAmp(startBesitz(), { ...STANDARD_WAHL, amp: "amp-saegewerk" }).id).toBe("amp-uebungscombo")
+    expect(gewaehlterAmp(alles(), { ...STANDARD_WAHL, amp: "amp-saegewerk" }).id).toBe("amp-saegewerk")
   })
 
   it("ignoriert eine unbekannte Kennung beim Umschalten", () => {
