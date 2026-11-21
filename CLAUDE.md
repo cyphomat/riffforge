@@ -118,6 +118,10 @@ Komponente.
   gespeichert.** Drops sind Daten in `drops-daten.ts`; selten und episch brauchen
   Fakt und Quelle, `drops.test.ts` prüft es. Der Roadie spricht nur auf *Heute* und im
   Abschluss, der Tag wählt den Satz; Begründung in `docs/marke-und-merch.md`.
+- **Der Wochengegner (`lib/session/wochengegner.ts`) fällt aus Log und Wissens-Log und wird
+  nicht gespeichert.** Jede Trefferquelle hat einen Deckel, ein Abend allein schafft ihn nie;
+  er steht nur auf *Heute* und im Abschluss, nie in der Session; Begründung in
+  `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
