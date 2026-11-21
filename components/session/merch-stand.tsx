@@ -40,6 +40,9 @@ import { DROPS } from "@/lib/session/drops-daten"
 import { gurtRiffs, type RiffSlot } from "@/lib/session/gurt"
 import { GurtAnsicht } from "@/components/session/gurt-ansicht"
 import { loadLog } from "@/lib/storage/practice-log"
+import { AdventGurt } from "@/components/session/advent-gurt"
+import { Rampenlicht } from "@/components/session/rampenlicht"
+import type { PracticeLog } from "@/lib/session/types"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
 
@@ -294,7 +297,10 @@ export function MerchStand() {
     rangTage: Array<string | null>
     riffs: RiffSlot[]
     drops: DropStand[]
+    log: PracticeLog
   } | null>(null)
+  // Welche Gitarre im Rampenlicht steht (Index in der Reihe der verdienten), oder keine.
+  const [licht, setLicht] = useState<number | null>(null)
   // Welche Bühne gross steht: die aktuelle, oder eine schon erreichte aus der Leiste.
   const [gezeigt, setGezeigt] = useState<number | null>(null)
 
@@ -309,11 +315,12 @@ export function MerchStand() {
       rangTage: berechneRangTage(log),
       riffs: gurtRiffs(log, isoLokal()),
       drops: dropStaende(DROPS, log, isoLokal()),
+      log,
     })
   }, [])
 
   if (!stand) return null
-  const { rang, liste, touren, festival, rangTage, riffs, drops } = stand
+  const { rang, liste, touren, festival, rangTage, riffs, drops, log } = stand
   const stufe = gezeigt ?? rang.stufe
   const buehne = RAENGE[stufe]
   const frueher = stufe !== rang.stufe
@@ -427,6 +434,14 @@ export function MerchStand() {
                     height={56}
                     className="pixel"
                   />
+                  {erreicht && (
+                    <button
+                      type="button"
+                      className="absolute inset-0 h-full w-full cursor-pointer"
+                      aria-label={`${r.gitarre} im Rampenlicht ansehen`}
+                      onClick={() => setLicht(i)}
+                    />
+                  )}
                 </figure>
               )
             })}
@@ -438,7 +453,23 @@ export function MerchStand() {
           </p>
         </section>
 
+        {licht !== null && (
+          <Rampenlicht
+            liste={RAENGE.slice(0, rang.stufe + 1).map((r, i) => ({
+              id: r.id,
+              name: r.gitarre,
+              bild: gitarreBild(r.id),
+              seit: rangTage[i] ? datum(rangTage[i]) : null,
+            }))}
+            index={licht}
+            onIndex={setLicht}
+            onZu={() => setLicht(null)}
+          />
+        )}
+
         <GurtAnsicht riffs={riffs} drops={drops} />
+
+        <AdventGurt log={log} />
 
         <h2 className="tape schief">Die Kutte</h2>
         {/* Die Kutte als eine Fläche, wie in Setlist: Aufnäher gehören auf
