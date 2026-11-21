@@ -47,6 +47,8 @@ const TON_SEKUNDEN = 5
 const NACHKLANG = 2.2
 /** Pegel der Töne; die Klicks haben ihren eigenen und müssen daneben hörbar bleiben. */
 const TON_PEGEL = 0.5
+/** Der Bass liegt unter der Gitarre: tiefe Töne wirken bei gleichem Pegel lauter, und er geht durchs Board. */
+const BASS_ANTEIL = 0.6
 
 export interface SongPlayerOptions {
   bpm?: number
@@ -257,7 +259,7 @@ export class SongPlayer {
     if (!this.schleife) this.ende = this.naechster
   }
 
-  private planeTon(midi: number, start: number, ende: number): void {
+  private planeTon(midi: number, start: number, ende: number, anteil = 1): void {
     const { ctx, ton } = this
     if (!ctx || !ton) return
 
@@ -267,8 +269,8 @@ export class SongPlayer {
     // Dort, wo die Note endet, wird abgedämpft: ohne das klänge eine Viertel
     // wie eine Halbe, weil die Saite ohnehin ausschwingt — und die Länge ist
     // der Lernstoff.
-    huelle.gain.setValueAtTime(TON_PEGEL, start)
-    huelle.gain.setValueAtTime(TON_PEGEL, ende)
+    huelle.gain.setValueAtTime(TON_PEGEL * anteil, start)
+    huelle.gain.setValueAtTime(TON_PEGEL * anteil, ende)
     huelle.gain.linearRampToValueAtTime(0, ende + ABKLANG_S)
     quelle.connect(huelle)
     huelle.connect(ton)
@@ -284,7 +286,7 @@ export class SongPlayer {
       for (const s of schlagzeugAblauf(song, this.bpm)) spieleSchlag(ctx, master, beginn + s.zeit, s.art, s.laut)
     }
     if (this.band.bass) {
-      for (const n of bassAblauf(song, this.bpm)) this.planeTon(n.midi, beginn + n.zeit, beginn + n.zeit + n.dauer)
+      for (const n of bassAblauf(song, this.bpm)) this.planeTon(n.midi, beginn + n.zeit, beginn + n.zeit + n.dauer, BASS_ANTEIL)
     }
   }
 
