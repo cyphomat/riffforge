@@ -132,3 +132,22 @@ export function combo(ergebnisse: DrillResult[]): number {
 
 /** Ab so vielen sauberen Blöcken in Folge steht die Combo auf dem Zettel. */
 export const COMBO_AB = 3
+
+/**
+ * Wie viele Wochen es gibt, in denen der Gegner gefallen ist — über alles, was
+ * im Log steht. Monoton: der Log wächst nur, und eine gefallene Woche bleibt es.
+ */
+export function gefalleneWochen(log: PracticeLog, theorie: TheoryLog): number {
+  const wochen = new Set<string>()
+  for (const r of log.results) {
+    const t = Date.parse(r.at)
+    if (!Number.isNaN(t)) wochen.add(weekKey(new Date(t)))
+  }
+  for (const a of theorie.answers) {
+    const t = Date.parse(a.at)
+    if (!Number.isNaN(t)) wochen.add(weekKey(new Date(t)))
+  }
+  let n = 0
+  for (const w of wochen) if (wochenTreffer(log, theorie, w).summe >= GEGNER_HP) n += 1
+  return n
+}

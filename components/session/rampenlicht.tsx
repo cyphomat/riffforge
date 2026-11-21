@@ -58,7 +58,7 @@ export function Rampenlicht({
       aria-modal="true"
       aria-label={`Rampenlicht: ${g.name}`}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center px-4"
-      style={{ background: "var(--backdrop)" }}
+      style={{ background: "color-mix(in srgb, var(--bg) 96%, transparent)" }}
       onClick={onZu}
     >
       <div

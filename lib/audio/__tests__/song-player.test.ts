@@ -96,8 +96,8 @@ describe("SongPlayer", () => {
     const { engine, gains } = falschesAudio()
     await new SongPlayer(engine, { bpm: 120, klick: false }).start(drei)
 
-    // gains[0] ist der Master, gains[1] die Hülle der ersten Note: Halbe auf 0, Ende bei 1 s.
-    const [pegel, zeit] = gains[1].gain.linearRampToValueAtTime.mock.calls[0]
+    // gains[0] ist der Master (Klicks), gains[1] der Ton-Bus, gains[2] die Hülle der ersten Note: Halbe auf 0, Ende bei 1 s.
+    const [pegel, zeit] = gains[2].gain.linearRampToValueAtTime.mock.calls[0]
     expect(pegel).toBe(0)
     expect(zeit).toBeCloseTo(0.1 + 1 + 0.04)
   })
@@ -289,5 +289,17 @@ describe("SongPlayer", () => {
 
     player.stop()
     expect(player.klingend()).toEqual([])
+  })
+})
+
+describe("SongPlayer mit Board", () => {
+  it("führt Töne durch den Ton-Bus, den Master lässt es für die Klicks frei, und beim Anhalten sind beide getrennt", async () => {
+    const { engine, gains } = falschesAudio()
+    const player = new SongPlayer(engine, { bpm: 120, klick: false })
+    await player.start(drei)
+    expect(gains.length).toBeGreaterThanOrEqual(3)
+    player.stop()
+    expect(gains[0].disconnect).toHaveBeenCalled()
+    expect(gains[1].disconnect).toHaveBeenCalled()
   })
 })

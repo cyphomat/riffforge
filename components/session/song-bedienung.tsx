@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { MdPlayArrow, MdStop } from "react-icons/md"
 import type { AudioEngine } from "@/lib/audio/audio-engine"
 import { SongPlayer } from "@/lib/audio/song-player"
+import { aktivesBoard } from "@/lib/storage/board"
 import type { Song } from "@/lib/theory/song"
 
 /** Wie bei den Drills: ein rundes Maß, damit der Knopf nicht mal 5 und mal 7 sagt. */
@@ -48,7 +49,7 @@ export function SongBedienung({
   const [schleife, setSchleife] = useState(true)
   const [klick, setKlick] = useState(true)
   const [player] = useState(
-    () => new SongPlayer(engine, { bpm, schleife: true, klick: true, onEnde: () => setSpielt(false) }),
+    () => new SongPlayer(engine, { bpm, schleife: true, klick: true, board: aktivesBoard(), onEnde: () => setSpielt(false) }),
   )
 
   useEffect(() => () => player.dispose(), [player])

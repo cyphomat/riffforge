@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { FORMEN, MATERIALIEN, type Stufe } from "./gurt"
 import { dayKey } from "./progress"
+import { questSchema } from "./quests-daten"
 import type { PracticeLog } from "./types"
 
 /**
@@ -59,6 +60,8 @@ export const dropSchema = z
     datum: tag,
     plektren: z.array(dropPlektrumSchema).min(3).max(12),
     sprueche: z.array(z.string().trim().min(1).max(160)).min(3).max(12),
+    /** Weitere Quests, deren Lohn im Board steht. */
+    quests: z.array(questSchema).max(6).optional(),
   })
   .superRefine((d, ctx) => {
     if (!d.datum.startsWith(d.id) || Number.isNaN(Date.parse(`${d.datum}T12:00:00Z`))) {

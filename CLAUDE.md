@@ -126,6 +126,10 @@ Komponente.
   gespeichert.** Ein Übungstag im Dezember öffnet ein Türchen, verpasste holt man nach; die
   Türchen sind Daten, ihre Riffe gehen durch `pruefeSong`, Fakten brauchen Quelle; nur auf
   *Heute* und `/advent`, nie in der Session; Begründung in `docs/marke-und-merch.md`.
+- **Das Board (`lib/session/board*.ts`, `lib/audio/board.ts`) färbt nur die Töne der Wiedergabe,
+  nie Metronom oder Klicks.** Besitz fällt über Quests aus dem Log (kein Gold, kein Kontostand),
+  nur die Wahl (was aus ist, welcher Amp) gehört dem Gerät; die Reihenfolge ist die des
+  Effektlexikons; Begründung in `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
