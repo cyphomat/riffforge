@@ -63,7 +63,7 @@ export function PracticeCalendar({ log, weeks, now = new Date() }: { log: Practi
           {marken.map(({ spalte, monat }) => (
             <span
               key={`m-${spalte}`}
-              className="overflow-visible whitespace-nowrap pb-[2px] font-mono text-[11.5px] leading-none text-muted"
+              className="overflow-visible whitespace-nowrap pb-[2px] font-mono text-[13px] leading-none text-muted"
               style={{ gridColumn: spalte + 2, gridRow: 1 }}
             >
               {MONTH[monat]}
@@ -72,7 +72,7 @@ export function PracticeCalendar({ log, weeks, now = new Date() }: { log: Practi
           {ZEILEN_NAMEN.map((zeile) => (
             <span
               key={`w-${zeile}`}
-              className="self-center font-mono text-[11.5px] leading-none text-muted"
+              className="self-center font-mono text-[13px] leading-none text-muted"
               style={{ gridColumn: 1, gridRow: zeile + 2 }}
             >
               {WEEKDAY[zeile]}
@@ -103,7 +103,7 @@ export function PracticeCalendar({ log, weeks, now = new Date() }: { log: Practi
             <dt className="kicker text-dim">Zuletzt</dt>
             <dd className="ziffern mt-1 text-[14px] text-fg">{zuletzt(tageSeitZuletzt(log, now))}</dd>
           </div>
-          <div className="flex items-center gap-1.5 self-end font-mono text-[11.5px] uppercase tracking-widest text-muted @md:self-start">
+          <div className="flex items-center gap-1.5 self-end font-mono text-[13px] uppercase tracking-[0.08em] text-muted @md:self-start">
             <i className="inline-block h-[9px] w-[9px] bg-akzent" /> Übungstag
           </div>
         </dl>

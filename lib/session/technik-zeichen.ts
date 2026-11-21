@@ -4,8 +4,8 @@ import type { Technique } from "./types"
  * A 16 × 16 pixel sign for each technique, for the drill list.
  *
  * Drawn from grids like the tour shirts, but with the app's colours, not a
- * picture's own: `a` is drawn in the current text colour and `b` in steel,
- * so the sign follows the line it sits in instead of bringing a palette of
+ * picture's own: `a` is drawn in full and `b` dimmed, both in the icon colour (steel),
+ * so all signs share one hue instead of bringing a palette of
  * its own. `.` is empty. `technik-zeichen.test.ts` holds every technique to
  * having one, at the right size.
  */

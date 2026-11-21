@@ -70,8 +70,8 @@ export function Rampenlicht({
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
         <img src={asset(g.bild)} alt={g.name} width={144} height={336} className="pixel my-6 block" />
-        <p className="display text-[26px] leading-none text-fg">{g.name}</p>
-        {g.seit && <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.12em] text-dim">seit {g.seit}</p>}
+        <p className="display text-[30px] leading-none text-fg">{g.name}</p>
+        {g.seit && <p className="mt-2 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">seit {g.seit}</p>}
       </div>
       <div className="mt-6 flex gap-[9px]" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="btn btn-ghost btn-small" disabled={index === 0} onClick={() => onIndex(index - 1)} aria-label="Vorherige Gitarre">

@@ -37,7 +37,7 @@ export function AdventGurt({ log }: { log: PracticeLog }) {
           {stand.plektren.map((p) => (
             <li key={p.id} className="flex flex-col items-center text-center">
               <Plektrum aussehen={{ farbe: p.farbe, form: p.form, material: p.material }} stufe="g" an />
-              <span className="mt-1 text-[11.5px] leading-tight text-muted">{p.name}</span>
+              <span className="mt-1 text-[13px] leading-tight text-muted">{p.name}</span>
             </li>
           ))}
         </ul>

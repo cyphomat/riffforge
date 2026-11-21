@@ -128,7 +128,7 @@ export function SongBedienung({
             >
               −{SCHRITT}
             </button>
-            <span className="display num min-w-[3ch] text-center text-[28px] leading-none text-akzent">{bpm}</span>
+            <span className="display num min-w-[3ch] text-center text-[30px] leading-none text-akzent">{bpm}</span>
             <button
               className="btn btn-ghost btn-small"
               onClick={() => onBpm(Math.min(MAX_BPM, bpm + SCHRITT))}

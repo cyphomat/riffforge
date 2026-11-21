@@ -41,7 +41,7 @@ export function DarstellungPanel() {
             key={wert}
             onClick={() => waehle(wert)}
             aria-pressed={wahl === wert}
-            className={`border px-3 py-3 font-mono text-[12px] uppercase tracking-[0.1em] ${
+            className={`border px-3 py-3 font-mono text-[13px] uppercase tracking-[0.08em] ${
               wahl === wert ? "border-akzent bg-(--tint-akzent) text-akzent" : "border-line text-muted"
             }`}
           >

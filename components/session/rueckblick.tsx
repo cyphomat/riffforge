@@ -26,7 +26,7 @@ function Stat({ value, label, sub }: { value: number; label: string; sub: string
     <div className="stat">
       <div className="n">{label}</div>
       <div className="v">{value}</div>
-      <div className="font-mono text-[11.5px] text-dim">{sub}</div>
+      <div className="font-mono text-[13px] text-dim">{sub}</div>
     </div>
   )
 }
@@ -90,7 +90,7 @@ function WochenSaeulen({ wochen }: { wochen: Woche[] }) {
                   x={x + SAEULE / 2}
                   y={y - 4}
                   textAnchor="middle"
-                  className="fill-(--fg) font-mono text-[11.5px] font-bold"
+                  className="fill-(--fg) font-mono text-[13px] font-bold"
                 >
                   {w.tage}
                 </text>
@@ -99,7 +99,7 @@ function WochenSaeulen({ wochen }: { wochen: Woche[] }) {
                 x={i * SLOT + SLOT / 2}
                 y={OBEN + HOCH + 16}
                 textAnchor="middle"
-                className={`font-mono text-[11.5px] ${istGewaehlt ? "fill-(--fg)" : "fill-(--dim)"}`}
+                className={`font-mono text-[13px] ${istGewaehlt ? "fill-(--fg)" : "fill-(--dim)"}`}
               >
                 {kalenderwoche(w.woche)}
               </text>
@@ -142,7 +142,7 @@ function Linie({
     return (
       <div>
         <div className="kicker text-dim">{titel}</div>
-        <p className="mt-2 font-mono text-[12px] text-dim">nichts im Fenster</p>
+        <p className="mt-2 font-mono text-[13px] text-dim">nichts im Fenster</p>
       </div>
     )
   }
@@ -186,7 +186,7 @@ function Linie({
           <span className="text-dim"> {einheit}</span>
         </span>
       </div>
-      <div className="ziffern text-[11.5px] text-dim">{kw(zeige.woche)}</div>
+      <div className="ziffern text-[13px] text-dim">{kw(zeige.woche)}</div>
       <svg
         viewBox={`0 0 ${B} ${H}`}
         className="mt-1 block w-full"
@@ -273,12 +273,12 @@ function DrillKarte({ verlauf }: { verlauf: DrillVerlauf }) {
     <div className="border border-line bg-panel px-[15px] py-[13px]">
       <div className="flex items-baseline justify-between gap-3">
         <div className="min-w-0">
-          <div className="display truncate text-[17px] text-fg">{drill?.title ?? verlauf.drillId}</div>
+          <div className="display truncate text-[20px] text-fg">{drill?.title ?? verlauf.drillId}</div>
           {drill && (
             <div className="kicker mt-0.5 text-dim">{TECHNIQUE_LABELS[drill.technique as Technique]}</div>
           )}
         </div>
-        <span className="ziffern flex-none text-[12px] text-muted">
+        <span className="ziffern flex-none text-[13px] text-muted">
           {verlauf.bloecke} {verlauf.bloecke === 1 ? "Block" : "Blöcke"}
         </span>
       </div>
@@ -295,7 +295,7 @@ function DrillKarte({ verlauf }: { verlauf: DrillVerlauf }) {
         )}
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-[14px] font-mono text-[12px] text-muted">
+      <div className="mt-3 grid grid-cols-2 gap-[14px] font-mono text-[13px] text-muted">
         <Entwicklungszeile punkte={verlauf.tempo} einheit="BPM" />
         {gemessen ? <Entwicklungszeile punkte={verlauf.streuung} einheit="ms" /> : <span />}
       </div>
@@ -329,7 +329,7 @@ function Pult({ kanaele }: { kanaele: Kanal[] }) {
             <div aria-hidden className="display num text-[20px] leading-none text-fg">
               {k.jetzt}
             </div>
-            <div aria-hidden className="ziffern -mt-1 text-[11.5px] text-dim">
+            <div aria-hidden className="ziffern -mt-1 text-[13px] text-dim">
               / {k.ziel}
             </div>
             <div aria-hidden className="bahn">
@@ -338,7 +338,7 @@ function Pult({ kanaele }: { kanaele: Kanal[] }) {
             </div>
             <div
               aria-hidden
-              className="line-clamp-3 w-full font-mono text-[11.5px] uppercase leading-tight text-muted [overflow-wrap:anywhere]"
+              className="line-clamp-3 w-full font-mono text-[13px] uppercase leading-tight text-muted [overflow-wrap:anywhere]"
             >
               {titel}
             </div>
@@ -373,7 +373,7 @@ export function Rueckblick() {
       <div className="spalte">
         <header className="mt-6">
           <span className="kicker">Rückblick</span>
-          <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Die Wochen</h1>
+          <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">Die Wochen</h1>
           <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
             {diese.tage === 0
               ? "Diese Woche noch nichts — sie ist aber auch noch nicht vorbei."

@@ -39,7 +39,7 @@
 - **Klein und gesperrt ist zweimal schlecht.** Die Etiketten standen auf
   10,5 px mit 0,22 em Sperrung; Versalien in Monospace so weit auseinander
   zerlegen das Wortbild, und auf einem Handy kommt beides zusammen. Der Boden
-  ist jetzt 11,5 px, die Sperrung höchstens 0,14 em. Wer ein Etikett setzt,
+  ist jetzt 13 px, die Sperrung höchstens 0,08 em (November 2026, vorher 11,5 px und 0,14 em: auf dem Handy las sich das im Augenwinkel nicht mehr). Wer ein Etikett setzt,
   nimmt `.kicker` statt eigener Pixelwerte — sonst wandert der Boden wieder
   nach unten.
 - **Ein Eingabefeld hat 16 px, sonst zoomt das iPhone.** Safari vergrössert
@@ -149,8 +149,8 @@
     gescheitert: die 5 liest sich als S, die 8 als 6 mit Loch, und das bei einem
     Tempo. Jersey ist für Trikotnummern gezeichnet und schmal wie Oswald, also
     läuft kein Titel auf 320 px über. Oswald bleibt Rückfall und trägt den Druck
-    der Shirts; kleine Schrift (Etiketten, Fliesstext) bleibt Monospace und
-    System — Pixelschrift unter 16 px franst aus.
+    der Shirts; kleine Schrift (Etiketten, Fliesstext) bleibt Plex Mono und
+    Plex Sans — Pixelschrift unter 16 px franst aus.
   - **Kanten sind Treppen.** `--pix-line`, `--pix-akzent`, `--pix-stahl` sind vier
     Balken, die um 2 px versetzt hinter dem Element liegen: die Ecken bleiben
     leer, ohne Bild und ohne `clip-path` — ein Clip schneidet den Fokusring ab,
@@ -180,3 +180,22 @@
 - **Rost ist „nicht ganz", Rot ist „kaputt".** `--rost` trägt die zähe
   Bewertung, die überfällige Karte, die fehlende Bedingung. Bleibt Rot dafür
   frei, heisst Rot wirklich noch etwas.
+- **Weniger Tapete, eine Textschrift (November 2026).** Daniel fand Schrift und
+  Trenner „etwas billig", und gemessen stimmte das: dieselbe Verzierung wiederholt
+  sich auf jedem Abschnitt, und Pixelschrift steht neben Systemschrift.
+  - **Die Zackenreihe unter der Navigation ist eine 2-px-Linie in Stahlblau**
+    (`.zacken`), der Schädel vor jeder Überschrift ist weg und die Linie dahinter
+    durchgezogen (`.rule`). Ein Zeichen, das auf jedem Abschnitt wiederkehrt, ist
+    Tapete; der Schädel bleibt das Zeichen der Marke (Logo, Rang, Merch).
+    `--glyph-zacke` und `--glyph-schaedel` bleiben als Masken definiert.
+  - **Jersey steht nur in Vielfachen von 10 px** (20, 30, 40, 60). Sie ist im
+    10er-Raster gezeichnet; in 16, 17, 22 oder 38 px werden die Kanten weich. Wer
+    eine Anzeigegrösse setzt, nimmt eine dieser Stufen.
+  - **Textschrift ist IBM Plex**, Sans für Fliesstext, Mono für Etiketten, Knöpfe und
+    Tabulatur (`next/font`, selbst ausgeliefert, wie die Pixelschriften). Plex Mono hat
+    wie die Systemmonospace 0,6 em je Zeichen, die 41 Zeichen der Tabulatur passen also
+    weiter; ihre Grösse (`tab-view.tsx`) füllt auf 375 px die Breite aus (12,75 px) und
+    steht in der Textfarbe statt in Grau.
+  - **Technik-Zeichen sind ein Farbton in zwei Stufen** (Stahlblau, die Füllung gedämpft),
+    nicht Text- plus Stahlfarbe je Zeichen.
+  - Deaktivierte Knöpfe stehen auf 80 % statt 55 % Deckkraft (vorher 2,4 : 1).

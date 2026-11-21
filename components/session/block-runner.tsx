@@ -201,7 +201,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
             Block {index + 1} von {total}
             {block.rounds > 1 && ` · Runde ${block.round} von ${block.rounds}`}
           </p>
-          <h2 className="display mt-1 text-[32px] text-fg">{drill.title}</h2>
+          <h2 className="display mt-1 text-[30px] text-fg">{drill.title}</h2>
           <p className="ziffern mt-1 text-[13px] text-muted">
             {formatClock(Math.round(timer.elapsed))} bei {metronome.bpm} BPM
           </p>
@@ -265,7 +265,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
             Block {index + 1} von {total}
             {block.rounds > 1 && ` · Runde ${block.round} von ${block.rounds}`}
           </p>
-          <h2 className="display mt-1 text-[32px] text-fg">{drill.title}</h2>
+          <h2 className="display mt-1 text-[30px] text-fg">{drill.title}</h2>
           <p className="mt-1 text-[14px] text-muted">{drill.goal}</p>
         </div>
         <span className="kicker flex-none border border-stahl px-2 py-[3px] text-stahl">
@@ -277,7 +277,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
       {gitarre && (
         <p className="card plain mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-3">
           <span className="kicker text-stahl">Heute spielst du</span>
-          <span className="display text-[24px] leading-none text-akzent">{gitarre}</span>
+          <span className="display text-[20px] leading-none text-akzent">{gitarre}</span>
         </p>
       )}
 
@@ -287,7 +287,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
           style={{ top: "calc(3.5rem + 8px + env(safe-area-inset-top, 0px))" }}
         >
           <div className="mx-auto flex max-w-[640px] items-baseline justify-between wide:max-w-[1080px]">
-            <span className="display num text-[22px] leading-none text-fg">{formatClock(timer.remaining)}</span>
+            <span className="display num text-[20px] leading-none text-fg">{formatClock(timer.remaining)}</span>
             <span className="ziffern text-[13px] text-muted">{metronome.bpm} BPM</span>
           </div>
         </div>
@@ -299,7 +299,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="kicker">Verbleibend</span>
-            <div className="display num text-[56px] leading-none text-fg">
+            <div className="display num text-[60px] leading-none text-fg">
               {formatClock(timer.remaining)}
             </div>
           </div>
@@ -310,7 +310,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
                 Skalenstrichen — das Zifferblatt am Verstärker. Das Glimmen ist
                 absichtlich kaum zu sehen: ein Röhrenamp glüht, er strahlt nicht. */}
             <div className="platte mt-1 inline-block">
-              <div className="display num glimmt text-[44px] leading-none text-akzent">
+              <div className="display num glimmt text-[40px] leading-none text-akzent">
                 {metronome.bpm}
               </div>
             </div>

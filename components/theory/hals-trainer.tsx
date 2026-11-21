@@ -177,7 +177,7 @@ export function HalsTrainer() {
             {richtung === "finden" ? "Ton finden" : "Ton benennen"} · {Math.min(index + 1, fragen.length)} von {fragen.length}
             {frage.wiederholung && " · nochmal"}
           </span>
-          <h1 className="display mt-1 text-[34px] leading-tight text-fg sm:text-[38px]" aria-live="polite">
+          <h1 className="display mt-1 text-[30px] leading-tight text-fg sm:text-[40px]" aria-live="polite">
             {richtung === "finden" ? (
               <>
                 {/* Tonnamen nicht in Versalien: aus Db würde DB. */}
@@ -228,7 +228,7 @@ export function HalsTrainer() {
                   }`}
                 >
                   {name}
-                  {auch && <span className="block text-[11.5px] text-dim">{auch}</span>}
+                  {auch && <span className="block text-[13px] text-dim">{auch}</span>}
                 </button>
               )
             })}
@@ -292,7 +292,7 @@ export function HalsTrainer() {
     <div className="huelle">
       <section className="card winkel mt-6">
         <span className="kicker text-akzent">Griffbrett</span>
-        <h1 className="display mt-2 text-[34px] text-fg sm:text-[38px]">Den Hals lernen</h1>
+        <h1 className="display mt-2 text-[30px] text-fg sm:text-[40px]">Den Hals lernen</h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Zwölf Stellen je Runde, rund zwei Minuten. Was hakt, kommt bald wieder, was sitzt, seltener —
           dieselbe Wiederholung wie bei den Wissenskarten. Gezählt wird auch die Zeit: wer suchen muss,
@@ -329,7 +329,7 @@ export function HalsTrainer() {
               key={r}
               onClick={() => setRichtung(r)}
               aria-pressed={richtung === r}
-              className={`border px-3 py-2 font-mono text-[12px] uppercase tracking-[0.1em] ${
+              className={`border px-3 py-2 font-mono text-[13px] uppercase tracking-[0.08em] ${
                 richtung === r ? "border-akzent bg-(--tint-akzent) text-akzent" : "border-line text-muted"
               }`}
             >
@@ -344,7 +344,7 @@ export function HalsTrainer() {
               key={option.name}
               onClick={() => setWahl(i)}
               aria-pressed={wahl === i}
-              className={`border px-[10px] py-[6px] font-mono text-[12px] ${
+              className={`border px-[10px] py-[6px] font-mono text-[13px] ${
                 wahl === i ? "border-akzent text-akzent" : "border-line text-muted"
               }`}
             >
@@ -361,7 +361,7 @@ export function HalsTrainer() {
       <section>
         <h2 className="rule mb-3 mt-8">{richtung === "finden" ? "Finden" : "Benennen"} — der Stand</h2>
         <Fretboard karte={karte} onPick={null} />
-        <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[12px] text-muted">
+        <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[13px] text-muted">
           <span className="flex items-center gap-[6px]">
             <span className="inline-block h-[10px] w-[10px] rounded-full bg-gruen" aria-hidden /> sitzt {zaehle("sitzt")}
           </span>

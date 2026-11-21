@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Anton, Jacquard_24, Jersey_10, Oswald, Permanent_Marker } from "next/font/google"
+import { Anton, IBM_Plex_Mono, IBM_Plex_Sans, Jacquard_24, Jersey_10, Oswald, Permanent_Marker } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ServiceWorker } from "@/components/service-worker"
@@ -18,6 +18,16 @@ const jacquard = Jacquard_24({ subsets: ["latin"], weight: "400", variable: "--f
 // aus wie ein S und die 8 wie eine 6 mit Loch — bei einem Tempo ist das ein
 // Fehler, kein Stil. Jersey ist für Trikotnummern gezeichnet.
 const jersey = Jersey_10({ subsets: ["latin"], weight: "400", variable: "--font-jersey" })
+
+// Die Textschrift: IBM Plex, Sans für Fliesstext und Mono für Etiketten,
+// Knöpfe und Tabulatur. Eine Familie statt der Systemschriften: `ui-sans-serif`
+// und `ui-monospace` sehen auf jedem Gerät anders aus und standen neben den
+// Pixelschriften als Standard-Browser-Look. next/font liefert sie selbst aus
+// (kein Aufruf zur Laufzeit, offline gleich). Plex Mono hat dieselbe Breite
+// pro Zeichen wie die Systemmonospace (0,6 em) — die 41 Zeichen der Tabulatur
+// passen also weiter.
+const plexSans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-plex-sans" })
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-plex-mono" })
 
 // Bleibt als Rückfall und für den Druck der Shirts (siehe `.druck`).
 // next/font lädt sie beim Build herunter und liefert sie selbst aus, damit
@@ -110,7 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="de"
       data-theme="dunkel"
-      className={`${oswald.variable} ${anton.variable} ${edding.variable} ${jacquard.variable} ${jersey.variable}`}
+      className={`${oswald.variable} ${anton.variable} ${edding.variable} ${jacquard.variable} ${jersey.variable} ${plexSans.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
       <head>

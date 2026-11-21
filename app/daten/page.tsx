@@ -8,7 +8,7 @@ export default function DatenPage() {
     <div className="huelle-breit">
       <header className="mt-6">
         <span className="kicker">Sicherung</span>
-        <h1 className="display mt-1 text-[38px] text-fg">Daten</h1>
+        <h1 className="display mt-1 text-[40px] text-fg">Daten</h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Dein Übungs-Log liegt nur in diesem Browser. Kein Konto, kein Server — aber auch
           kein Netz, das ihn auffängt. Hier holst du ihn raus und wieder rein.

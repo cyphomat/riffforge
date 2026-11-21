@@ -25,7 +25,7 @@ function Choice({
           : "border-line bg-panel hover:border-stahl"
       }`}
     >
-      <div className={`display text-[18px] ${active ? "text-akzent" : "text-fg"}`}>{label}</div>
+      <div className={`display text-[20px] ${active ? "text-akzent" : "text-fg"}`}>{label}</div>
       <div className="mt-1 text-[13px] text-muted">{hint}</div>
     </button>
   )
@@ -53,7 +53,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
     <div className="huelle">
       <section className="card mt-6">
         <span className="kicker">Einmal kurz</span>
-        <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Zwei Fragen</h1>
+        <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">Zwei Fragen</h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Danach nie wieder. Beides ändert nur, wo du <i>anfängst</i> — wie es weitergeht,
           entscheidet, was du tatsächlich spielst.

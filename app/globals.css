@@ -30,11 +30,11 @@
   --font-display: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-marke: var(--font-anton), var(--font-oswald), "Helvetica Neue", sans-serif;
   --font-metal: var(--font-jacquard), var(--font-anton), Georgia, serif;
-  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
-  /* Die Fliesstextschrift ist die des Systems. Tailwind 4.3 hat seine
-     Standardliste umgestellt; hier steht die bisherige ausdrücklich, damit
-     ein Versionssprung die Schrift nicht still austauscht. */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  /* Die Fliesstextschrift ist IBM Plex Sans, das System ist nur der Rückfall.
+     Tailwind 4.3 hat seine Standardliste umgestellt; hier steht die bisherige
+     ausdrücklich, damit ein Versionssprung die Schrift nicht still austauscht. */
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
 
   /* Pixel-Metal: eine Kante, kein Radius — die Ecken sind Treppen (`--pix-*`). */
@@ -283,25 +283,18 @@
   /* Überschrift mit auslaufender Linie — trennt Abschnitte, ohne einen
      Kasten zu brauchen. */
   .rule {
-    @apply flex items-center gap-[10px] font-mono text-[12px] font-bold uppercase tracking-[0.14em] text-muted;
+    @apply flex items-center gap-[10px] font-mono text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
   }
-  /* Ein Schädel vor jeder Überschrift, und die Linie dahinter ist gestrichelt
-     in 4-px-Pixeln statt verlaufend: ein Verlauf ist weich, und weich ist hier
-     das Gegenteil von Metal. */
-  .rule::before {
-    content: "";
-    flex: none;
-    width: 14px;
-    height: 14px;
-    background: var(--akzent);
-    -webkit-mask: var(--glyph-schaedel) center / 100% 100% no-repeat;
-    mask: var(--glyph-schaedel) center / 100% 100% no-repeat;
-  }
+  /* Die Linie hinter der Überschrift ist durchgezogen, 2 px, in der Farbe der
+     Rahmen. Der Schädel vor jeder Überschrift und die gestrichelte Linie sind
+     weg: ein Zeichen, das auf jedem Abschnitt wiederkehrt, ist Tapete, und
+     gestrichelt liest sich als Schnittlinie. Der Schädel bleibt das Zeichen
+     der Marke (Logo, Rang, Merch). */
   .rule::after {
     content: "";
     flex: 1;
     height: 2px;
-    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+    background: var(--line);
   }
 
   /* Fläche mit Bernsteinkante links: markiert, was gerade dran ist.
@@ -343,7 +336,7 @@
   }
 
   .kicker {
-    @apply font-mono text-[11.5px] font-bold uppercase tracking-[0.14em] text-muted;
+    @apply font-mono text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
   }
 
   /* Die Wortmarke, und sonst nichts. Anton ist für engen Satz gezeichnet —
@@ -371,19 +364,18 @@
     @apply font-semibold uppercase leading-[1.05] tracking-[0.01em];
   }
 
-  /* Die Zackenkante unter der Navigation: 16 × 8 Pixel, Bernstein, nach unten
-     gerichtet. Maske statt Bild, damit sie der Fassung folgt. */
+  /* Die Kante unter der Navigation: eine ruhige 2-px-Linie in Stahlblau.
+     Vorher eine Zackenreihe in Bernstein auf jeder Seite — das las sich als
+     Zierband, und Bernstein soll dem gehören, was zählt. */
   .zacken {
     position: absolute;
     left: 0;
     right: 0;
     top: 100%;
-    height: 8px;
+    height: 2px;
     pointer-events: none;
-    background: var(--akzent);
-    opacity: 0.9;
-    -webkit-mask: var(--glyph-zacke) 0 0 / 16px 8px repeat-x;
-    mask: var(--glyph-zacke) 0 0 / 16px 8px repeat-x;
+    background: var(--stahl);
+    opacity: 0.5;
   }
 
   /* Der Name und das Wort des Tages: Pixel-Blackletter, gemischt gesetzt —
@@ -415,7 +407,7 @@
   .btn {
     @apply inline-flex cursor-pointer items-center justify-center gap-2
            bg-(--tint-akzent) px-5 py-4 font-mono text-[13px] font-extrabold uppercase
-           tracking-[0.14em] text-akzent;
+           tracking-[0.08em] text-akzent;
     /* A link styled as a button inherits left-aligned text, a real button
        centres it. Both wrap the same way, in lines of similar length. */
     text-align: center;
@@ -430,7 +422,7 @@
     box-shadow: var(--pix-akzent), 0 2px 0 0 var(--lippe);
   }
   .btn:disabled {
-    @apply cursor-not-allowed bg-transparent text-dim opacity-55;
+    @apply cursor-not-allowed bg-transparent text-dim opacity-80;
     box-shadow: var(--pix-line);
   }
   .btn-ghost {
@@ -446,7 +438,7 @@
     box-shadow: var(--pix-stahl), 0 2px 0 0 var(--hartschatten);
   }
   .btn-small {
-    @apply px-3 py-2 text-[12px] tracking-[0.1em];
+    @apply px-3 py-2 text-[13px] tracking-[0.08em];
   }
 
   /* Balken: eingelassen, nicht aufgesetzt. */
@@ -467,12 +459,12 @@
     @apply px-[14px] pb-3 pt-[17px];
   }
   .stat .n {
-    @apply font-mono text-[11.5px] uppercase tracking-[0.12em] text-muted;
+    @apply font-mono text-[13px] uppercase tracking-[0.08em] text-muted;
   }
   .stat .v {
     /* `.display` und `.glimmt`, ausgeschrieben — siehe `.huelle-breit`. */
     font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
-    @apply mt-0.5 text-[28px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
+    @apply mt-0.5 text-[30px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
     text-shadow: var(--glimmen);
     font-variant-numeric: tabular-nums;
   }
@@ -566,14 +558,14 @@
     content: "> ";
     color: var(--stahl);
     font-style: normal;
-    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-plex-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
   }
 
   /* Abschnittsbruch mit umgekehrter Linie: die Regel läuft von links auf
      die Überschrift zu statt von ihr weg. Markiert, wo etwas aufhört. */
   .rule-backstage {
     /* `.rule`, ausgeschrieben — siehe `.huelle-breit`. */
-    @apply flex items-center gap-[10px] font-mono text-[12px] font-bold uppercase text-akzent tracking-[0.3em];
+    @apply flex items-center gap-[10px] font-mono text-[13px] font-bold uppercase text-akzent tracking-[0.08em];
   }
   .rule-backstage::after {
     display: none;
@@ -681,7 +673,7 @@
     color: var(--tinte-blass);
   }
   .zettel .nochmal {
-    @apply border-2 px-[5px] font-mono text-[11.5px] font-bold uppercase tracking-[0.12em];
+    @apply border-2 px-[5px] font-mono text-[13px] font-bold uppercase tracking-[0.08em];
     color: var(--stempel);
     border-color: var(--stempel);
     transform: rotate(-3deg);
@@ -735,7 +727,7 @@
     box-shadow: 0 0 0 1px var(--akzent);
   }
   .tour-leiste figcaption {
-    @apply hidden text-center font-mono text-[11.5px] leading-tight text-muted [overflow-wrap:anywhere];
+    @apply hidden text-center font-mono text-[13px] leading-tight text-muted [overflow-wrap:anywhere];
   }
   .tour-leiste .jetzt figcaption {
     color: var(--fg);
@@ -896,7 +888,7 @@
     }
   }
   .shirt-wenden {
-    @apply self-start border-0 border-b border-current bg-transparent py-1 font-mono text-[12px] tracking-[0.06em] text-akzent;
+    @apply self-start border-0 border-b border-current bg-transparent py-1 font-mono text-[13px] tracking-[0.04em] text-akzent;
   }
   .shirt-wenden:focus-visible {
     outline: 2px solid var(--akzent);
@@ -991,7 +983,7 @@
     @apply border border-line bg-panel;
   }
   details.info > summary {
-    @apply cursor-pointer list-none px-[15px] py-3 font-mono text-[11.5px] uppercase tracking-[0.15em] text-stahl;
+    @apply cursor-pointer list-none px-[15px] py-3 font-mono text-[13px] uppercase tracking-[0.08em] text-stahl;
   }
   details.info > summary::-webkit-details-marker {
     display: none;

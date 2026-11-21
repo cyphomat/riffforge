@@ -75,7 +75,9 @@ Komponente.
   Flächen, Bernstein nur auf dem, was zählt, Stahlblau für alles Zweitrangige.
   Kanten sind Treppen aus 2 px (`--pix-*`), Titel und Zahlen stehen in Jersey,
   nur der Name und das Wort des Tages in Pixel-Blackletter, das Zeichen ist ein
-  Totenkopf. Farben stehen als CSS-Variablen in `app/globals.css`, nicht als
+  Totenkopf. Jersey nur in 20/30/40/60 px (10er-Raster, sonst weiche Kanten),
+  Text in IBM Plex, Etiketten ab 13 px und höchstens 0,08 em gesperrt, der Schädel
+  nicht als Überschrift-Schmuck. Farben stehen als CSS-Variablen in `app/globals.css`, nicht als
   Hex-Werte in Komponenten. Der Grund bleibt matt, die Session bleibt ruhig —
   Grenzen und Gründe in `docs/design-und-themes.md`.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut

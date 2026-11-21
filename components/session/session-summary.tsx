@@ -146,7 +146,7 @@ export function SessionSummary({
       {/* Erst das Geschaffte, dann der Bericht. */}
       <section className="card mt-6">
         <span className="kicker text-gruen">Feierabend</span>
-        <h1 className="display mt-1 text-[38px] text-fg">Session steht</h1>
+        <h1 className="display mt-1 text-[40px] text-fg">Session steht</h1>
         <p className="ziffern mt-1 text-[13px] text-muted">
           {/* Each fact stays in one piece; the line only breaks between them. */}
           {[
@@ -216,13 +216,13 @@ export function SessionSummary({
           <span className="kicker text-akzent">Gegner der Woche besiegt</span>
           <div className="mt-2 flex items-center gap-4">
             <PixelGegner besiegt />
-            <p className="display text-[24px] leading-none text-fg">{sieg.name}</p>
+            <p className="display text-[20px] leading-none text-fg">{sieg.name}</p>
           </div>
         </aside>
       )}
 
       {kette >= COMBO_AB && (
-        <p className="mt-6 font-mono text-[12px] uppercase tracking-[0.14em] text-akzent">
+        <p className="mt-6 font-mono text-[13px] uppercase tracking-[0.08em] text-akzent">
           Combo ×{kette} · {kette} saubere Blöcke in Folge
         </p>
       )}

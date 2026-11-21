@@ -28,7 +28,7 @@ const NUMMER = new Map(reihenfolge().map((e, i) => [e.id, i + 1]))
 function Zeile({ titel, text, ton }: { titel: string; text: string; ton?: string }) {
   return (
     <div>
-      <dt className={`font-mono text-[11.5px] uppercase tracking-[0.12em] ${ton ?? "text-muted"}`}>{titel}</dt>
+      <dt className={`font-mono text-[13px] uppercase tracking-[0.08em] ${ton ?? "text-muted"}`}>{titel}</dt>
       <dd className="mt-[2px] text-[14.5px] leading-relaxed text-fg">{text}</dd>
     </div>
   )
@@ -59,7 +59,7 @@ function DelayRechner() {
 
   return (
     <div className="mt-4 border border-line bg-sunken p-3">
-      <label htmlFor="delay-bpm" className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-muted">
+      <label htmlFor="delay-bpm" className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
         Delay-Zeit zum Tempo
       </label>
       <div className="mt-2 flex items-center gap-2">
@@ -78,7 +78,7 @@ function DelayRechner() {
           aria-invalid={!gueltig}
           className="w-20 border border-line bg-bg px-2 py-[6px] font-mono text-[16px] text-fg"
         />
-        <span className="font-mono text-[12px] text-dim">BPM</span>
+        <span className="font-mono text-[13px] text-dim">BPM</span>
       </div>
       {ausLog && <p className="mt-2 text-[13px] text-dim">Tempo deines letzten Blocks.</p>}
       <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
@@ -90,7 +90,7 @@ function DelayRechner() {
           ] as const
         ).map(([titel, wert]) => (
           <div key={titel}>
-            <dt className="font-mono text-[11px] uppercase leading-tight tracking-[0.08em] text-muted">{titel}</dt>
+            <dt className="font-mono text-[13px] uppercase leading-tight tracking-[0.08em] text-muted">{titel}</dt>
             <dd className="mt-1 font-mono text-[15px] text-akzent">{ms(wert)}</dd>
           </div>
         ))}
@@ -108,8 +108,8 @@ function Eintrag({ effekt }: { effekt: Effekt }) {
   return (
     <article id={effekt.id} className="card scroll-mt-24">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="display text-[26px] text-fg">{effekt.name}</h3>
-        <span className="shrink-0 font-mono text-[12px] text-akzent" title="Stelle in der Kette">
+        <h3 className="display text-[30px] text-fg">{effekt.name}</h3>
+        <span className="shrink-0 font-mono text-[13px] text-akzent" title="Stelle in der Kette">
           {NUMMER.get(effekt.id)}
         </span>
       </div>
@@ -125,7 +125,7 @@ function Eintrag({ effekt }: { effekt: Effekt }) {
       </dl>
       {effekt.id === "fx-delay" && <DelayRechner />}
       {effekt.beispiele && (
-        <p className="mt-3 font-mono text-[12px] text-dim">z. B. {effekt.beispiele.join(", ")}</p>
+        <p className="mt-3 font-mono text-[13px] text-dim">z. B. {effekt.beispiele.join(", ")}</p>
       )}
     </article>
   )
@@ -140,7 +140,7 @@ export function EffektLexikon() {
     <div className="huelle-breit">
       <section className="card winkel mt-6">
         <span className="kicker text-akzent">Wissen</span>
-        <h1 className="display mt-2 text-[34px] text-fg sm:text-[38px]">Pedale und Effekte</h1>
+        <h1 className="display mt-2 text-[30px] text-fg sm:text-[40px]">Pedale und Effekte</h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
           Was ein Effekt tut, wo man ihn hört und vor allem: wo er in der Kette steht. Die Reihenfolge ist
           eine Konvention. Wo es sich lohnt, davon abzuweichen, steht es am Eintrag.
@@ -161,19 +161,19 @@ export function EffektLexikon() {
                 {station.eintraege.map((e, i) => (
                   <li key={e.id} className="flex items-center gap-[6px]">
                     {i > 0 && (
-                      <span aria-hidden className="font-mono text-[12px] text-dim">
+                      <span aria-hidden className="font-mono text-[13px] text-dim">
                         →
                       </span>
                     )}
                     {sichtbar(e) ? (
                       <a
                         href={`#${e.id}`}
-                        className="border border-akzent px-[10px] py-[6px] font-mono text-[12px] text-akzent hover:bg-(--tint-akzent)"
+                        className="border border-akzent px-[10px] py-[6px] font-mono text-[13px] text-akzent hover:bg-(--tint-akzent)"
                       >
                         {e.name}
                       </a>
                     ) : (
-                      <span className="border border-line px-[10px] py-[6px] font-mono text-[12px] text-dim">
+                      <span className="border border-line px-[10px] py-[6px] font-mono text-[13px] text-dim">
                         {e.name}
                       </span>
                     )}
@@ -193,7 +193,7 @@ export function EffektLexikon() {
               key={k.value}
               onClick={() => setFilter(k.value)}
               aria-pressed={filter === k.value}
-              className={`border px-[10px] py-[6px] font-mono text-[12px] ${
+              className={`border px-[10px] py-[6px] font-mono text-[13px] ${
                 filter === k.value ? "border-akzent text-akzent" : "border-line text-muted"
               }`}
             >
@@ -201,7 +201,7 @@ export function EffektLexikon() {
             </button>
           ))}
         </div>
-        <p className="mt-2 font-mono text-[12px] text-dim">
+        <p className="mt-2 font-mono text-[13px] text-dim">
           {gezeigt.length} von {EFFEKTE.length}
         </p>
 

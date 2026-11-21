@@ -28,7 +28,7 @@ export function StartGitarre({ gitarre, sieben, onAndere, onWeiter }: StartGitar
       <span className="kicker">Neue Session</span>
       <p className="card plain mt-4 px-4 py-4">
         <span className="kicker block text-stahl">Heute spielst du</span>
-        <span className="display mt-2 block text-[34px] leading-none text-akzent sm:text-[38px]">{gitarre}</span>
+        <span className="display mt-2 block text-[30px] leading-none text-akzent sm:text-[40px]">{gitarre}</span>
       </p>
 
       <button onClick={onWeiter} className="btn mt-6 w-full py-5 text-[15px]">
