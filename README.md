@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1681%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1704%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -435,7 +435,9 @@ Am **Board** hängen Pedale und Amps, die Songs und Riffe in der Wiedergabe fär
 (nicht das Metronom). Es gibt kein Gold: Ein Stück kommt, wenn eine **Quest**
 geschafft ist, etwa fünf Übungstage oder ein besiegter Wochengegner. Nach jeder
 Session spielt die **Zugabe** ein Riff übers Board; im Rack öffnet ein Tipp auf
-eine Gitarre das **Rampenlicht**.
+eine Gitarre das **Rampenlicht**. In der Wiedergabe spielt mit dem Rang eine
+**Band** mit: das Schlagzeug ab Proberaum, der Bass ab Vorband, nie im Block. Das
+**Riffbuch** merkt sich auf diesem Gerät, welche Riffe schon ganz erklungen sind.
 
 | Monat | Drop | Plektren (gewöhnlich / selten / episch) |
 |---|---|---|

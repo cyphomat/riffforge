@@ -5,6 +5,7 @@ import { MdPlayArrow, MdStop } from "react-icons/md"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
 import { SongPlayer } from "@/lib/audio/song-player"
 import { zugabeRiff } from "@/lib/session/zugabe"
+import { merkeRiffGehoert } from "@/lib/storage/lokal"
 import { aktiveBand, aktivesBoard } from "@/lib/storage/board"
 import type { DrillResult } from "@/lib/session/types"
 
@@ -17,7 +18,12 @@ export function ZugabeKnopf({ results, tag }: { results: DrillResult[]; tag: str
   const riff = zugabeRiff(results, tag)
   const [spielt, setSpielt] = useState(false)
   const [player] = useState(
-    () => new SongPlayer(engine, { schleife: false, klick: false, onEnde: () => setSpielt(false) }),
+    () => new SongPlayer(engine, {
+        schleife: false,
+        klick: false,
+        onGehoert: () => merkeRiffGehoert(riff.id),
+        onEnde: () => setSpielt(false),
+      }),
   )
   useEffect(() => () => player.dispose(), [player])
 

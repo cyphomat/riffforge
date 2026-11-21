@@ -5,6 +5,7 @@ import { MdPlayArrow, MdStop } from "react-icons/md"
 import type { AudioEngine } from "@/lib/audio/audio-engine"
 import { SongPlayer } from "@/lib/audio/song-player"
 import { aktiveBand, aktivesBoard } from "@/lib/storage/board"
+import { merkeRiffGehoert } from "@/lib/storage/lokal"
 import type { Song } from "@/lib/theory/song"
 
 /** Wie bei den Drills: ein rundes Maß, damit der Knopf nicht mal 5 und mal 7 sagt. */
@@ -34,6 +35,7 @@ export function SongBedienung({
   onBpm,
   engine,
   onKlingend,
+  riffId,
 }: {
   song: Song
   bpm: number
@@ -42,6 +44,8 @@ export function SongBedienung({
   engine: AudioEngine
   /** Meldet bei jedem Wechsel, welche Noten gerade zu hören sind; leer, wenn nichts klingt oder angehalten ist. */
   onKlingend?: (noten: number[]) => void
+  /** Kennung fürs Riffbuch: nach einem ganzen Durchgang gilt das Riff als gehört. */
+  riffId?: string
 }) {
   const [spielt, setSpielt] = useState(false)
   // Zum Üben ist die Schleife der Normalfall: ein Song, der nach einem
@@ -49,7 +53,7 @@ export function SongBedienung({
   const [schleife, setSchleife] = useState(true)
   const [klick, setKlick] = useState(true)
   const [player] = useState(
-    () => new SongPlayer(engine, { bpm, schleife: true, klick: true, board: aktivesBoard(), band: aktiveBand(), onEnde: () => setSpielt(false) }),
+    () => new SongPlayer(engine, { bpm, schleife: true, klick: true, board: aktivesBoard(), band: aktiveBand(), onGehoert: riffId ? () => merkeRiffGehoert(riffId) : undefined, onEnde: () => setSpielt(false) }),
   )
 
   useEffect(() => () => player.dispose(), [player])

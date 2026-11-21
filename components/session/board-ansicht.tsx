@@ -25,7 +25,7 @@ function Probe({ wahlStempel }: { wahlStempel: string }) {
     <div className="mt-3 space-y-3">
       <NotenMitTab song={PROBE.riff.song} mitNamen />
       {/* Der Schlüssel baut den Player neu, sobald sich das Board ändert — er liest es beim Anlegen. */}
-      <SongBedienung key={wahlStempel} song={PROBE.riff.song} bpm={bpm} onBpm={setBpm} engine={engine} />
+      <SongBedienung key={wahlStempel} song={PROBE.riff.song} bpm={bpm} onBpm={setBpm} engine={engine} riffId={PROBE.riff.id} />
     </div>
   )
 }

@@ -65,6 +65,8 @@ export interface SongPlayerOptions {
    * Mikro, und eine Band, die sich im Mikro hört, machte jede Messung zu Rauschen.
    */
   band?: BandWahl
+  /** Ein Durchgang ist zu Ende gespielt — einmal je Start, nicht beim Anhalten davor. */
+  onGehoert?: () => void
 }
 
 export interface BandWahl {
@@ -81,6 +83,10 @@ export class SongPlayer {
   private abbauen: (() => void) | null = null
   private board: BoardKette | undefined
   private band: BandWahl | undefined
+  private onGehoert?: () => void
+  /** Wann der erste Durchgang eines Starts vorbei ist; nach der Meldung null. */
+  private ersteEnde: number | null = null
+  private gemeldet = false
   private timer: ReturnType<typeof setInterval> | null = null
   private song: Song | null = null
   /** Wann der nächste Durchgang beginnt. */
@@ -106,6 +112,7 @@ export class SongPlayer {
     this.onEnde = options.onEnde
     this.board = options.board
     this.band = options.band
+    this.onGehoert = options.onGehoert
   }
 
   get laeuft(): boolean {
@@ -154,6 +161,8 @@ export class SongPlayer {
     this.ctx = ctx
     this.song = song
     this.ende = null
+    this.ersteEnde = null
+    this.gemeldet = false
     this.master = ctx.createGain()
     this.master.connect(ctx.destination)
     this.ton = ctx.createGain()
@@ -199,6 +208,7 @@ export class SongPlayer {
     // Das Board mit seinen Oszillatoren wird abgebaut, sonst liefe es leer weiter.
     this.abbauen?.()
     this.abbauen = null
+    this.ersteEnde = null
     this.ton?.disconnect()
     this.ton = null
     this.ende = null
@@ -213,6 +223,12 @@ export class SongPlayer {
   private nachsehen(): void {
     const ctx = this.ctx
     if (!ctx) return
+
+    if (this.ersteEnde !== null && ctx.currentTime >= this.ersteEnde) {
+      this.ersteEnde = null
+      this.gemeldet = true
+      this.onGehoert?.()
+    }
 
     if (this.ende !== null) {
       if (ctx.currentTime >= this.ende) {
@@ -236,6 +252,7 @@ export class SongPlayer {
     if (this.klick) this.planeKlicks(ablauf.klicks, beginn)
     this.planeBand(song, beginn)
 
+    if (this.ersteEnde === null && !this.gemeldet && this.onGehoert) this.ersteEnde = beginn + ablauf.dauer
     this.naechster = beginn + ablauf.dauer
     if (!this.schleife) this.ende = this.naechster
   }

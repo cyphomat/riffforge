@@ -22,7 +22,7 @@ function RiffTuerchen({ riff }: { riff: AdventRiff }) {
     <div className="mt-3 space-y-3">
       <p className="text-[13.5px] leading-snug text-muted">{riff.hinweis}</p>
       <NotenMitTab song={riff.song} mitNamen klingend={klingend} />
-      <SongBedienung key={riff.id} song={riff.song} bpm={bpm} onBpm={setBpm} engine={engine} onKlingend={setKlingend} />
+      <SongBedienung key={riff.id} song={riff.song} bpm={bpm} onBpm={setBpm} engine={engine} onKlingend={setKlingend} riffId={riff.id} />
       <p className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
         Start {riff.startBpm} BPM · Ziel {riff.targetBpm} BPM
       </p>
