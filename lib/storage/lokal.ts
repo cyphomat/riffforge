@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
 import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/gitarren"
+import { boardWahlSchema, STANDARD_WAHL, type BoardWahl } from "@/lib/session/board"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
 
@@ -30,9 +31,10 @@ const VERSTECKT_KEY = "mga.saisonal-versteckt.v1"
 const SESSION_KEY = "mga.session-stand.v1"
 const GITARREN_KEY = "mga.gitarren.v1"
 const DROP_KEY = "mga.drop-gesehen.v1"
+const BOARD_KEY = "mga.board.v1"
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY, BOARD_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -336,4 +338,26 @@ export function vergissSessionStand(): void {
   } catch {
     /* Nichts zu vergessen. */
   }
+}
+
+/**
+ * Die Wahl am Board: was ausgeschaltet ist und welcher Amp steht.
+ *
+ * Gehört dem Gerät, wie das Rack — am Handy im Proberaum steht ein anderes
+ * Board als zu Hause, und ein Abgleich müsste sich für eines entscheiden. Der
+ * Besitz dagegen fällt aus dem Log. Kaputtes fällt auf die Standardwahl zurück.
+ */
+export function boardWahl(): BoardWahl {
+  const roh = lesen(BOARD_KEY)
+  if (!roh) return STANDARD_WAHL
+  try {
+    const geprueft = boardWahlSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : STANDARD_WAHL
+  } catch {
+    return STANDARD_WAHL
+  }
+}
+
+export function merkeBoardWahl(wahl: BoardWahl): void {
+  schreiben(BOARD_KEY, JSON.stringify(boardWahlSchema.parse(wahl)))
 }

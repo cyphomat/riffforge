@@ -19,6 +19,7 @@ import { sichtbareDrops } from "@/lib/session/drops"
 import { DROPS } from "@/lib/session/drops-daten"
 import { uebungsSpruch } from "@/lib/session/roadie"
 import { COMBO_AB, combo, gegnerGefallenDurch, type Wochengegner } from "@/lib/session/wochengegner"
+import { ZugabeKnopf } from "@/components/session/zugabe-knopf"
 import { PixelGegner } from "@/components/ui/pixel-gegner"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
@@ -246,6 +247,8 @@ export function SessionSummary({
           <p className="text-[13.5px] italic leading-snug text-muted">„{spruch}“</p>
         </div>
       )}
+
+      <ZugabeKnopf results={results} tag={isoLokal()} />
 
       <div className="mt-6 flex flex-wrap gap-[9px]">
         <Link href="/" className="btn flex-1">

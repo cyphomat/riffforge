@@ -254,3 +254,30 @@
 - **Nur auf *Heute* und auf `/advent`, nie in der Session, ohne Animation.** Die Aufnäher stehen erst
   verdient an der Kutte (Reihe *Anlässe*, Gruppe `advent`, ein Bild `aufnaeher-advent.png` für beide Stufen,
   gezeichnet von `tools/advent.mjs`).
+
+## Board, Quests, Zugabe und Rampenlicht
+
+- **Das Board färbt nur die Töne** (`lib/audio/board.ts`, eingehängt im `SongPlayer`). Der Player hat zwei
+  Busse: Töne laufen durchs Board, Klicks gehen direkt zum Ausgang — wer sein Timing misst, will keinen Hall
+  auf dem Klick. Metronom, Hörfragen und Stimmgerät bleiben trocken. Es bleibt der eine AudioContext; die
+  Kette entsteht erst beim Start aus einer Tippgeste und wird beim Anhalten samt Oszillatoren abgebaut.
+  Das Delay folgt dem Tempo (punktierte Achtel) ab dem nächsten Start. Die Klänge sind Näherungen
+  (Sättigungskurve, Filter, rauschender Hall), keine Nachbauten.
+- **Die Reihenfolge gehört dem Lexikon, nicht dem Spieler.** Jedes Pedal trägt die Kennung seines Eintrags
+  in `lib/theory/effekte.ts`; vor oder hinter dem Amp steht es dort, wo `fx-amp` steht. `board.test.ts`
+  hält beides zusammen und prüft, dass keine Marken in den Namen stehen.
+- **Besitz fällt aus dem Log, die Wahl gehört dem Gerät.** Gespeichert wird nur, was *aus* ist und welcher
+  Amp steht (`mga.board.v1`, `lib/storage/lokal.ts`), wie beim Rack: das Board am Handy im Proberaum ist
+  nicht das zu Hause. Ein neues Pedal ist deshalb von selbst an. Am Anfang gibt es den Übungscombo und
+  einen Overdrive.
+- **Quests belohnen mit Gerät, nie mit Gold** (`quests-daten.ts`, `quests.ts`). Kein Kontostand, nichts zu
+  kaufen: ein Kontostand müsste gespeichert werden. Fortschritt ist eine Zahl, die nur wächst, also aus dem
+  Log jederzeit neu zu zählen; erfüllt bleibt erfüllt. Drops dürfen weitere Quests tragen (`quests` im
+  Drop-Schema), jeder Lohn muss ein Stück aus `board-daten.ts` sein, jedes nur einmal.
+- **Die Zugabe ist Ton auf Tippen** (`zugabe.ts`, `zugabe-knopf.tsx`): auf dem Abschluss-Zettel, einmal, ohne
+  Klick, nie in der Session. Gespielt wird, was Noten hat: der zuletzt geübte Song, sonst ein Advents-Riff, vom
+  Tag gewählt. Drills mit reiner Tabulatur haben keine Noten. Ein Riffbuch gibt es nicht, es bräuchte
+  einen gespeicherten „gehört"-Stand.
+- **Das Rampenlicht ist reine Anzeige** (`rampenlicht.tsx`): ein Tipp auf eine verdiente Gitarre im Rack,
+  Pfeiltasten blättern, Esc schließt. Es bewegt sich nichts, auch bei normaler Bewegung nicht; der
+  Hintergrund ist deckend, damit der Name lesbar bleibt.

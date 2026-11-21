@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1654%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1681%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -431,6 +431,12 @@ health off it, each source only up to its cap. When it falls, the summary shows
 a victory card; clean blocks in a row make a **combo**. In December there is the **Advent**:
 24 doors with mini riffs, picks, tips and two patches. Each practice day opens
 the next one; missed days can be caught up.
+
+The **board** holds pedals and amps that colour the playback of songs and riffs
+(not the metronome). There is no gold: a piece arrives when a **quest** is done,
+such as five practice days or a beaten enemy of the week. After each session the
+**encore** plays a riff through the board; in the rack a tap on a guitar opens
+the **spotlight**.
 
 | Month | Drop | Picks (common / rare / epic) |
 |---|---|---|

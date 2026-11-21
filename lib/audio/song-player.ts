@@ -1,5 +1,6 @@
 import type { Song } from "../theory/song"
 import type { AudioEngine } from "./audio-engine"
+import { baueBoard, type BoardKette } from "./board"
 import { spieleKlick } from "./metronome"
 import { bauAblauf, einzaehler, klingendeNoten, type SongKlick, type SongTon } from "./song-ablauf"
 import { gezupft, hertzAus } from "./zupfen"
@@ -52,12 +53,21 @@ export interface SongPlayerOptions {
   klick?: boolean
   /** Der letzte Durchgang ist verklungen (nur ohne Schleife) — nicht beim Anhalten. */
   onEnde?: () => void
+  /**
+   * Das Board, durch das die Töne laufen. Klicks laufen daran vorbei: wer sein
+   * Timing misst, will keinen Hall auf dem Klick. Ohne Board klingt der Ton wie bisher.
+   */
+  board?: BoardKette
 }
 
 export class SongPlayer {
   private engine: AudioEngine
   private ctx: AudioContext | null = null
   private master: GainNode | null = null
+  /** Die Töne, getrennt von den Klicks: nur sie laufen durchs Board. */
+  private ton: GainNode | null = null
+  private abbauen: (() => void) | null = null
+  private board: BoardKette | undefined
   private timer: ReturnType<typeof setInterval> | null = null
   private song: Song | null = null
   /** Wann der nächste Durchgang beginnt. */
@@ -81,10 +91,16 @@ export class SongPlayer {
     this.schleife = options.schleife ?? false
     this.klick = options.klick ?? true
     this.onEnde = options.onEnde
+    this.board = options.board
   }
 
   get laeuft(): boolean {
     return this.timer !== null
+  }
+
+  /** Gilt ab dem nächsten Start: ein laufendes Board wird nicht umgebaut. */
+  setBoard(board: BoardKette | undefined): void {
+    this.board = board
   }
 
   /** Gilt ab dem nächsten Durchgang. */
@@ -121,6 +137,9 @@ export class SongPlayer {
     this.ende = null
     this.master = ctx.createGain()
     this.master.connect(ctx.destination)
+    this.ton = ctx.createGain()
+    if (this.board) this.abbauen = baueBoard(ctx, this.ton, ctx.destination, this.board, this.bpm)
+    else this.ton.connect(ctx.destination)
 
     let beginn = ctx.currentTime + VORLAUF_S
     if (this.klick) {
@@ -158,6 +177,11 @@ export class SongPlayer {
     }
     this.master?.disconnect()
     this.master = null
+    // Das Board mit seinen Oszillatoren wird abgebaut, sonst liefe es leer weiter.
+    this.abbauen?.()
+    this.abbauen = null
+    this.ton?.disconnect()
+    this.ton = null
     this.ende = null
   }
 
@@ -197,8 +221,8 @@ export class SongPlayer {
   }
 
   private planeTon(midi: number, start: number, ende: number): void {
-    const { ctx, master } = this
-    if (!ctx || !master) return
+    const { ctx, ton } = this
+    if (!ctx || !ton) return
 
     const quelle = ctx.createBufferSource()
     quelle.buffer = this.pufferFuer(ctx, midi)
@@ -210,7 +234,7 @@ export class SongPlayer {
     huelle.gain.setValueAtTime(TON_PEGEL, ende)
     huelle.gain.linearRampToValueAtTime(0, ende + ABKLANG_S)
     quelle.connect(huelle)
-    huelle.connect(master)
+    huelle.connect(ton)
     quelle.start(start)
     quelle.stop(ende + ABKLANG_S + 0.01)
   }

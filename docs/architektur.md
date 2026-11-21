@@ -93,6 +93,16 @@
 | `lib/session/wochengegner.ts` | Der Wochengegner: 20 Lebenspunkte, Treffer aus vier Quellen mit Deckel, Sieg durch eine Session, Combo — rein, alles aus Log und Wissens-Log |
 | `components/session/wochengegner-karte.tsx` | Gegner der Woche mit Lebensleiste auf *Heute* |
 | `components/ui/pixel-gegner.tsx` | Das Verstärker-Monster als Pixelbild aus Rechtecken |
+| `lib/session/board-daten.ts` | Pedale und Amps als Daten (eigene Namen, keine Marken), Schemas; jedes Pedal trägt die Kennung seines Lexikon-Eintrags |
+| `lib/session/board.ts` | Das Board als Rechnung: Besitz, Wahl, Reihenfolge nach dem Effektlexikon, Kette für die Wiedergabe — rein |
+| `lib/session/quests-daten.ts`, `quests.ts` | Quests mit Lohn fürs Board; Fortschritt und Besitz fallen aus beiden Logs — rein |
+| `lib/session/zugabe.ts` | Welches Riff die Zugabe spielt: der zuletzt geübte Song, sonst ein Advents-Riff nach Tag |
+| `lib/audio/board.ts` | Das Board als Web-Audio-Kette (Sättigung, Chorus, Tremolo, Delay, Hall, Amp-Filter) am einen AudioContext |
+| `lib/storage/board.ts` | `aktivesBoard()`: Besitz aus den Logs, Wahl vom Gerät, als Klang für den Player |
+| `components/session/board-ansicht.tsx` | Board und Quests auf dem Merch-Stand, mit Probe zum Hören |
+| `components/session/zugabe-knopf.tsx` | Zugabe auf dem Abschluss-Zettel |
+| `components/session/rampenlicht.tsx` | Eine Gitarre aus dem Rack groß unter dem Scheinwerfer, reine Anzeige |
+| `components/session/advent-gurt.tsx` | Die Advents-Plektren am Gurt |
 | `lib/session/advent.ts` | Der Advent: welche Türchen offen sind (Übungstage im Dezember), Tage der Aufnäher — rein, alles aus dem Log |
 | `lib/session/advent-daten.ts` | Die 24 Türchen: Mini-Riffe, Plektren, Tipps, zwei Aufnäher; Schemas für Plektrum, Tipp und Riff |
 | `components/session/advent-karte.tsx` | Karte auf *Heute* im Dezember |
