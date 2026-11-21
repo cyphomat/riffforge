@@ -93,6 +93,11 @@
 | `lib/session/wochengegner.ts` | Der Wochengegner: 20 Lebenspunkte, Treffer aus vier Quellen mit Deckel, Sieg durch eine Session, Combo — rein, alles aus Log und Wissens-Log |
 | `components/session/wochengegner-karte.tsx` | Gegner der Woche mit Lebensleiste auf *Heute* |
 | `components/ui/pixel-gegner.tsx` | Das Verstärker-Monster als Pixelbild aus Rechtecken |
+| `lib/session/advent.ts` | Der Advent: welche Türchen offen sind (Übungstage im Dezember), Tage der Aufnäher — rein, alles aus dem Log |
+| `lib/session/advent-daten.ts` | Die 24 Türchen: Mini-Riffe, Plektren, Tipps, zwei Aufnäher; Schemas für Plektrum, Tipp und Riff |
+| `components/session/advent-karte.tsx` | Karte auf *Heute* im Dezember |
+| `components/session/advent-ansicht.tsx`, `app/advent/page.tsx` | Die Seite `/advent` mit den Türchen |
+| `tools/advent.mjs` | Der Advents-Aufnäher nach `public/merch/aufnaeher-advent.png` |
 | `components/session/roadie-heute.tsx` | Roadie-Satz und Karte des neuen Drops auf *Heute*; `RoadieBild` auch im Abschluss-Zettel |
 | `tools/drops.mjs` | Die Drop-Bühnen nach `public/bilder/drop-*.png` und der Roadie nach `public/bilder/roadie.png` |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |

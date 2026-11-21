@@ -122,6 +122,10 @@ Komponente.
   nicht gespeichert.** Jede Trefferquelle hat einen Deckel, ein Abend allein schafft ihn nie;
   er steht nur auf *Heute* und im Abschluss, nie in der Session; Begründung in
   `docs/marke-und-merch.md`.
+- **Der Advent (`lib/session/advent.ts`, `advent-daten.ts`) fällt aus dem Log und wird nicht
+  gespeichert.** Ein Übungstag im Dezember öffnet ein Türchen, verpasste holt man nach; die
+  Türchen sind Daten, ihre Riffe gehen durch `pruefeSong`, Fakten brauchen Quelle; nur auf
+  *Heute* und `/advent`, nie in der Session; Begründung in `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim
