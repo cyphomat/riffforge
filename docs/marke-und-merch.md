@@ -239,3 +239,18 @@
   Variablenfarben, ohne Bewegung.
 - **Die Combo** (`combo`, ab `COMBO_AB` = 3) ist die längste Kette sauberer Blöcke in Folge
   innerhalb einer Session. Ein wackeliger Block bricht sie. Sie steht nur auf dem Zettel.
+
+## Advent
+
+- **Ein Türchen öffnet sich mit einem Übungstag im Dezember, gezählt wird nichts** (`lib/session/advent.ts`).
+  So viele Übungstage, wie die Nummer sagt: zwei Tage öffnen 1 und 2. Daraus folgt ohne eigene Regel,
+  dass ein verpasster Tag sich nachholen lässt, dass kein Türchen vor seinem Datum aufgeht (an einem
+  Kalendertag zählt höchstens ein Übungstag) und dass ein geöffnetes nie wieder zufällt (der Log ist
+  append-only). Außerhalb des Dezembers zeigt `/advent` den letzten Stand.
+- **Die 24 sind Daten** (`advent-daten.ts`), gemischt: 8 Mini-Riffe, 8 Plektren, 6 Tipps mit „Warum" und
+  zwei Aufnäher hinter 12 und 24. Die Riffe sind eigene Melodien auf der tiefen E- und der A-Saite; ihr
+  Lernziel wird aus den Noten gerechnet (sie sind Schmuck, kein Lehrgang), `pruefeSong` prüft trotzdem das
+  Raster. Fakten mit Quelle stehen nicht darin; was sich nicht belegen lässt, kommt nicht hinein.
+- **Nur auf *Heute* und auf `/advent`, nie in der Session, ohne Animation.** Die Aufnäher stehen erst
+  verdient an der Kutte (Reihe *Anlässe*, Gruppe `advent`, ein Bild `aufnaeher-advent.png` für beide Stufen,
+  gezeichnet von `tools/advent.mjs`).

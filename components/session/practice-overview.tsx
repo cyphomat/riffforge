@@ -25,6 +25,7 @@ import { loadProfile } from "@/lib/storage/profile"
 import type { Profile } from "@/lib/session/profile"
 import { AnlassBanner } from "@/components/session/anlass-banner"
 import { RoadieHeute } from "@/components/session/roadie-heute"
+import { AdventKarte } from "@/components/session/advent-karte"
 import { WochengegnerKarte } from "@/components/session/wochengegner-karte"
 import { PixelFeuer, ZELLE } from "@/components/ui/pixel-feuer"
 import { Onboarding } from "@/components/session/onboarding"
@@ -219,6 +220,8 @@ export function PracticeOverview() {
       <RoadieHeute log={log} />
 
       <WochengegnerKarte log={log} />
+
+      <AdventKarte log={log} />
 
       <div className="mt-3 flex items-center gap-2">
         <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">oder</span>

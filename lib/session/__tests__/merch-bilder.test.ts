@@ -18,7 +18,7 @@ describe("Die Bilder am Merch-Stand", () => {
   it("haben für jede Leiter einen Aufnäher, 24 × 24", () => {
     // Technik-Aufnäher sind gerechnet, nicht gezeichnet — sie prüft technik-zeichen.test.ts.
     // Die der Anlässe stehen im Katalog erst, wenn sie verdient sind; hier alle.
-    const gruppen = new Set(katalog({ mitSieben: true, anlaesse: STANDARD.map((x) => x.id) }).filter((a) => !a.technik).map((a) => a.gruppe))
+    const gruppen = new Set(katalog({ mitSieben: true, anlaesse: STANDARD.map((x) => x.id), advent: [12, 24] }).filter((a) => !a.technik).map((a) => a.gruppe))
     for (const gruppe of gruppen) {
       const pfad = datei(aufnaeherBild(gruppe))
       expect(existsSync(pfad), gruppe).toBe(true)

@@ -8,6 +8,8 @@ import { HALS_PREFIX, istHalsAntwort } from "@/lib/theory/hals-id"
 import { HALS_STELLEN } from "@/lib/theory/hals-trainer"
 import { SITZT_AB_TAGEN } from "@/lib/theory/progress"
 import { STANDARD as ANLAESSE, trifft } from "./anlaesse"
+import { adventAufnaeherTage } from "./advent"
+import { AUFNAEHER_TUERCHEN, TUERCHEN } from "./advent-daten"
 import type { TheoryCard, TheoryLog } from "@/lib/theory/types"
 
 /**
@@ -178,9 +180,12 @@ function wochenLaeufe(tage: Tag[]): Array<{ tag: Tag; laenge: number }> {
 export function katalog({
   mitSieben,
   anlaesse = [],
+  advent = [],
 }: {
   mitSieben: boolean
   anlaesse?: string[]
+  /** Die Nummern der Advents-Türchen mit Aufnäher, die verdient sind (12, 24). */
+  advent?: number[]
 }): Omit<Aufnaeher, "verdient">[] {
   const out: Omit<Aufnaeher, "verdient">[] = []
   const p = (id: string, reihe: Reihe, gruppe: string, titel: string, text: string) =>
@@ -278,6 +283,12 @@ export function katalog({
   for (const a of ANLAESSE) {
     if (a.patch && anlaesse.includes(a.id)) p(`anlass-${a.id}`, "anlaesse", `anlass-${a.id}`, a.patch.titel, a.patch.text)
   }
+  // Der Advent: ein Aufnäher je Türchen mit Stickerei, nur wenn verdient, ein Bild für beide.
+  for (const t of TUERCHEN) {
+    if (t.art === "aufnaeher" && AUFNAEHER_TUERCHEN.includes(t.nr as 12 | 24) && advent.includes(t.nr)) {
+      p(`advent-${t.nr}`, "anlaesse", "advent", t.titel, t.text)
+    }
+  }
   return out
 }
 
@@ -303,7 +314,12 @@ export function aufnaeher(
   for (const tag of [...new Set(ergebnisse.map(tagVon))].sort()) {
     for (const a of ANLAESSE) if (a.patch && !anlassTage[a.id] && trifft(a, tag)) anlassTage[a.id] = tag
   }
-  const kat = katalog({ mitSieben: ergebnisse.some(istSieben), anlaesse: Object.keys(anlassTage) })
+  const adventTage = adventAufnaeherTage(log)
+  const kat = katalog({
+    mitSieben: ergebnisse.some(istSieben),
+    anlaesse: Object.keys(anlassTage),
+    advent: Object.keys(adventTage).map(Number),
+  })
   const gibt = new Set(kat.map((k) => k.id))
   const verdient: Record<string, Tag> = {}
   const setze = (id: string, tag: Tag) => {
@@ -324,6 +340,7 @@ export function aufnaeher(
   })
 
   for (const [id, tag] of Object.entries(anlassTage)) setze(`anlass-${id}`, tag)
+  for (const [nr, tag] of Object.entries(adventTage)) setze(`advent-${nr}`, tag)
 
   // ── Handwerk: sauber, gemessen, im Zieltempo
   const jeTag = new Map<Tag, DrillResult[]>()
