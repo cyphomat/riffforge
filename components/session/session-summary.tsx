@@ -18,6 +18,8 @@ import { isoLokal } from "@/lib/session/anlaesse"
 import { sichtbareDrops } from "@/lib/session/drops"
 import { DROPS } from "@/lib/session/drops-daten"
 import { uebungsSpruch } from "@/lib/session/roadie"
+import { COMBO_AB, combo, gegnerGefallenDurch, type Wochengegner } from "@/lib/session/wochengegner"
+import { PixelGegner } from "@/components/ui/pixel-gegner"
 import type { DrillResult, PracticeLog } from "@/lib/session/types"
 import { syncInBackground } from "@/lib/sync/run"
 import { lastSynced } from "@/lib/sync/settings"
@@ -89,6 +91,9 @@ export function SessionSummary({
   // bekommt deshalb seine Bühne zu sehen. Dieselbe Vorher-nachher-Rechnung.
   const [aufstieg, setAufstieg] = useState<Rang | null>(null)
   const [profil, setProfil] = useState<ReturnType<typeof loadProfile>>(null)
+  // Ist der Wochengegner durch diese Session gefallen? Dieselbe Vorher-nachher-Rechnung.
+  const [sieg, setSieg] = useState<Wochengegner | null>(null)
+  const kette = combo(results)
   // Der Roadie sagt einen Satz zur Übung; welcher, entscheidet der Tag, nicht der Zufall.
   const [spruch, setSpruch] = useState<string | null>(null)
   useEffect(() => {
@@ -107,6 +112,12 @@ export function SessionSummary({
     const nachher = rang(log)
     setAufstieg(nachher.stufe > vorher.stufe ? nachher : null)
     setProfil(loadProfile())
+    setSieg(
+      gegnerGefallenDurch(
+        { log: previousLog, theorie: previousTheory ?? theorie },
+        { log, theorie },
+      ),
+    )
   }, [previousLog, log, previousTheory])
   useEffect(() => {
     setSichern(
@@ -198,6 +209,22 @@ export function SessionSummary({
       </div>
 
       {aufstieg && <RangAufstieg rang={aufstieg} />}
+
+      {sieg && (
+        <aside className="card mt-6" aria-label={`${sieg.name} ist gefallen`}>
+          <span className="kicker text-akzent">Gegner der Woche besiegt</span>
+          <div className="mt-2 flex items-center gap-4">
+            <PixelGegner besiegt />
+            <p className="display text-[24px] leading-none text-fg">{sieg.name}</p>
+          </div>
+        </aside>
+      )}
+
+      {kette >= COMBO_AB && (
+        <p className="mt-6 font-mono text-[12px] uppercase tracking-[0.14em] text-akzent">
+          Combo ×{kette} · {kette} saubere Blöcke in Folge
+        </p>
+      )}
 
       {neu.length > 0 && (
         <>

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1620%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1636%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -423,7 +423,11 @@ Plektren und Sprüchen des Roadies. Gewöhnliche Plektren schaltet der Monat nac
 4 Übungstagen frei, seltene nach 12, epische nach 20. Selten und episch tragen
 einen belegten Fakt mit Quelle. Wie bei der Kutte wird nichts gespeichert, alles
 fällt aus dem Log. Der Roadie sagt auf *Heute* und auf dem Abschluss-Zettel
-einen Satz zur Übung — nie in der Session.
+einen Satz zur Übung — nie in der Session. Dazu steht auf *Heute* der **Gegner
+der Woche**, ein Verstärker-Monster mit 20 Lebenspunkten: Übungstage, saubere
+Blöcke, Riffe im Zieltempo und richtige Antworten nehmen ihm etwas, jede Quelle
+nur bis zu ihrem Deckel. Fällt er, zeigt der Abschluss-Zettel die Siegkarte;
+saubere Blöcke in Folge ergeben eine **Combo**.
 
 | Monat | Drop | Plektren (gewöhnlich / selten / episch) |
 |---|---|---|

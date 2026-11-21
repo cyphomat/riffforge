@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1620%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1636%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -424,7 +424,11 @@ pedals and guitarists, with a stage as pixel art, picks and lines from the
 roadie. The month unlocks common picks after 4 practice days, rare ones after 12
 and epic ones after 20. Rare and epic picks carry a sourced fact. Like the vest,
 nothing is stored: it all falls out of the log. The roadie says one line about
-your practice on *Today* and on the summary — never during a session.
+your practice on *Today* and on the summary — never during a session. *Today*
+also shows the **enemy of the week**, an amp monster with 20 hit points:
+practice days, clean blocks, riffs at target tempo and correct answers take
+health off it, each source only up to its cap. When it falls, the summary shows
+a victory card; clean blocks in a row make a **combo**.
 
 | Month | Drop | Picks (common / rare / epic) |
 |---|---|---|

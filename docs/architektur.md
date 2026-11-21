@@ -90,6 +90,9 @@
 | `lib/session/roadie.ts` | Die Sätze des Roadies: Grundsprüche, Drop-Sprüche, Satz zur Übung — der Tag wählt, nicht der Zufall |
 | `components/session/plektrum.tsx` | Ein Plektrum als SVG: Form, Material, Patina, Staub |
 | `components/session/gurt-ansicht.tsx` | Gurt und Drops auf dem Merch-Stand |
+| `lib/session/wochengegner.ts` | Der Wochengegner: 20 Lebenspunkte, Treffer aus vier Quellen mit Deckel, Sieg durch eine Session, Combo — rein, alles aus Log und Wissens-Log |
+| `components/session/wochengegner-karte.tsx` | Gegner der Woche mit Lebensleiste auf *Heute* |
+| `components/ui/pixel-gegner.tsx` | Das Verstärker-Monster als Pixelbild aus Rechtecken |
 | `components/session/roadie-heute.tsx` | Roadie-Satz und Karte des neuen Drops auf *Heute*; `RoadieBild` auch im Abschluss-Zettel |
 | `tools/drops.mjs` | Die Drop-Bühnen nach `public/bilder/drop-*.png` und der Roadie nach `public/bilder/roadie.png` |
 | `lib/session/shirt.ts` | Tourshirts als Pixelbild: Schnitt, Stofffarbe, Druck — gerechnet |

@@ -222,3 +222,20 @@
   Gurt" gedrückt wurde; gemerkt wird nur die Drop-ID, pro Gerät
   (`dropGesehen` in `lib/storage/lokal.ts`).
 
+
+## Wochengegner und Combo
+
+- **Der Gegner der Woche rechnet aus dem Log und speichert nichts** (`lib/session/wochengegner.ts`).
+  20 Lebenspunkte, Woche Montag bis Sonntag nach Gerätezeit wie die Serie. Treffer aus vier
+  Quellen, jede bis zu ihrem Deckel (`DECKEL`): Übungstage (4), saubere Blöcke (8), Riffe im
+  Zieltempo (je 2, höchstens 6) und richtige Wissensantworten (6). Die Deckel sorgen dafür, dass
+  ein einziger Abend ihn nie schafft und wer wenig Zeit hat, über Wissen trotzdem vorankommt.
+  Die Zahlen sind eine Vermutung und dürfen sich ändern, solange der Test mitzieht. Der Name
+  fällt aus einem Hash der Woche, nicht aus dem Zufall.
+- **Nur auf *Heute* und im Abschluss, nie in der Session.** Die Karte steht unter dem Roadie,
+  erst wer einmal geübt hat, sieht sie. Die Siegkarte erscheint im Abschluss, wenn genau diese
+  Session ihn gefällt hat (Vorher-nachher-Rechnung wie bei den Aufnähern, eine zweite Session
+  am selben Tag feiert nichts doppelt). Das Monster ist ein Pixelbild aus Rechtecken in
+  Variablenfarben, ohne Bewegung.
+- **Die Combo** (`combo`, ab `COMBO_AB` = 3) ist die längste Kette sauberer Blöcke in Folge
+  innerhalb einer Session. Ein wackeliger Block bricht sie. Sie steht nur auf dem Zettel.
