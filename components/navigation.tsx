@@ -53,7 +53,7 @@ export function Navigation() {
               href={item.href}
               onClick={wache(item.href)}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-10 flex-none items-center px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] transition-colors sm:px-2.5 sm:text-[12px] sm:tracking-widest ${
+              className={`flex min-h-10 flex-none items-center px-2 py-1.5 font-mono text-[13px] uppercase tracking-[0.04em] transition-colors sm:px-2.5 sm:text-[13px] sm:tracking-[0.08em] ${
                 active
                   ? "bg-(--tint-akzent) text-akzent shadow-(--pix-akzent)"
                   : "text-muted shadow-(--pix-line) hover:text-stahl hover:shadow-(--pix-stahl)"

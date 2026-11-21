@@ -30,7 +30,7 @@ function Stat({ value, label, sub }: { value: string | number; label: string; su
     <div className="stat">
       <div className="n">{label}</div>
       <div className="v">{value}</div>
-      {sub && <div className="font-mono text-[11.5px] text-dim">{sub}</div>}
+      {sub && <div className="font-mono text-[13px] text-dim">{sub}</div>}
     </div>
   )
 }
@@ -118,7 +118,7 @@ export function KnowledgeOverview() {
       <div className="spalte">
         <section className="card winkel mt-6">
           <span className="kicker text-akzent">Wissen</span>
-          <h1 className="display mt-2 text-[34px] text-fg sm:text-[38px]">
+          <h1 className="display mt-2 text-[30px] text-fg sm:text-[40px]">
             {faellig.length === 0
               ? "Alles beisammen"
               : stand.angefangen === 0
@@ -230,7 +230,7 @@ export function KnowledgeOverview() {
                     >
                       <span className="text-[14.5px] text-fg">{card.begriff}</span>
                       <span
-                        className={`shrink-0 font-mono text-[11.5px] ${
+                        className={`shrink-0 font-mono text-[13px] ${
                           tage !== null && tage >= SITZT_AB_TAGEN ? "text-gruen" : "text-dim"
                         }`}
                         title={tage === null ? "noch nie abgefragt" : "hält rund so lange"}

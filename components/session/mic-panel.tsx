@@ -49,12 +49,12 @@ export function MicPanel({ status, detail, level, hits, onToggle }: MicPanelProp
         )}
 
         {!listening && !blocked && (
-          <span className="font-mono text-[11.5px] uppercase tracking-widest text-dim">
+          <span className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
             {LABELS[status]}
           </span>
         )}
         {blocked && (
-          <span className="font-mono text-[11.5px] text-rost">{detail ?? LABELS[status]}</span>
+          <span className="font-mono text-[13px] text-rost">{detail ?? LABELS[status]}</span>
         )}
       </div>
 
@@ -63,7 +63,7 @@ export function MicPanel({ status, detail, level, hits, onToggle }: MicPanelProp
       {blocked && <div className="warnstreifen mt-3" aria-hidden />}
 
       {listening && (
-        <p className="mt-2 text-[12px] leading-relaxed text-dim">
+        <p className="mt-2 text-[13px] leading-relaxed text-dim">
           Kopfhörer benutzen — über Lautsprecher hört das Mikrofon das Metronom mit und zählt es
           als Anschlag.
         </p>

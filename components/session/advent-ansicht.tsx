@@ -23,7 +23,7 @@ function RiffTuerchen({ riff }: { riff: AdventRiff }) {
       <p className="text-[13.5px] leading-snug text-muted">{riff.hinweis}</p>
       <NotenMitTab song={riff.song} mitNamen klingend={klingend} />
       <SongBedienung key={riff.id} song={riff.song} bpm={bpm} onBpm={setBpm} engine={engine} onKlingend={setKlingend} riffId={riff.id} />
-      <p className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
+      <p className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
         Start {riff.startBpm} BPM · Ziel {riff.targetBpm} BPM
       </p>
     </div>
@@ -35,7 +35,7 @@ function Inhalt({ t }: { t: Tuerchen }) {
     case "tipp":
       return (
         <div className="mt-3">
-          <p className="display text-[22px] leading-none text-fg">{t.tipp.titel}</p>
+          <p className="display text-[20px] leading-none text-fg">{t.tipp.titel}</p>
           <p className="mt-2 text-[14px] leading-snug text-fg">{t.tipp.text}</p>
           <p className="mt-3 text-[13.5px] leading-snug text-muted">{t.tipp.warum}</p>
         </div>
@@ -45,7 +45,7 @@ function Inhalt({ t }: { t: Tuerchen }) {
         <div className="mt-3 flex items-center gap-4">
           <Plektrum aussehen={{ farbe: t.plektrum.farbe, form: t.plektrum.form, material: t.plektrum.material }} stufe="g" an groesse={72} />
           <div>
-            <p className="display text-[22px] leading-none text-fg">{t.plektrum.name}</p>
+            <p className="display text-[20px] leading-none text-fg">{t.plektrum.name}</p>
             <p className="mt-2 text-[13.5px] leading-snug text-muted">{t.plektrum.text}</p>
           </div>
         </div>
@@ -53,7 +53,7 @@ function Inhalt({ t }: { t: Tuerchen }) {
     case "riff":
       return (
         <div className="mt-3">
-          <p className="display text-[22px] leading-none text-fg">{t.riff.titel}</p>
+          <p className="display text-[20px] leading-none text-fg">{t.riff.titel}</p>
           <RiffTuerchen key={t.riff.id} riff={t.riff} />
         </div>
       )
@@ -63,7 +63,7 @@ function Inhalt({ t }: { t: Tuerchen }) {
           {/* eslint-disable-next-line @next/next/no-img-element -- statischer Export, kein Optimizer */}
           <img src={asset(aufnaeherBild("advent"))} alt="" width={72} height={72} className="pixel flex-none" />
           <div>
-            <p className="display text-[22px] leading-none text-fg">{t.titel}</p>
+            <p className="display text-[20px] leading-none text-fg">{t.titel}</p>
             <p className="mt-2 text-[13.5px] leading-snug text-muted">{t.text}</p>
             <Link href="/merch" className="btn btn-ghost btn-small mt-3">
               Zur Kutte ›
@@ -101,7 +101,7 @@ export function AdventAnsicht() {
 
   return (
     <div className="px-4 pb-10 pt-6">
-      <h1 className="display text-[34px] leading-none text-fg">Advent</h1>
+      <h1 className="display text-[30px] leading-none text-fg">Advent</h1>
       <p className="mt-3 text-[14px] leading-snug text-muted">
         {imDezember
           ? `${stand.offen} von ${TUERCHEN_ANZAHL} Türchen offen. Ein Übungstag im Dezember öffnet das nächste; was du verpasst, holst du nach.`

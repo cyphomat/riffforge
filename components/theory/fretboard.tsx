@@ -186,7 +186,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
               x={x(frage.bund)}
               y={y(frage.saite) + 4}
               textAnchor="middle"
-              className="fill-(--bg) font-mono text-[12px] font-bold"
+              className="fill-(--bg) font-mono text-[13px] font-bold"
             >
               {aufgeloest ? noteAt(frage) : "?"}
             </text>
@@ -230,7 +230,7 @@ export function Fretboard({ gegeben = [], gewaehlt, loesung, onPick, frage, kart
                         x={x(bund)}
                         y={y(saite) + 4}
                         textAnchor="middle"
-                        className={`font-mono text-[12px] ${
+                        className={`font-mono text-[13px] ${
                           istGegeben
                             ? "fill-(--bg) font-bold"
                             : istLoesung

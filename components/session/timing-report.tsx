@@ -86,8 +86,8 @@ function Scatter({ deviations }: { deviations: number[] }) {
           />
         )
       })}
-      <span className="absolute bottom-0.5 left-1.5 font-mono text-[11px] uppercase tracking-widest text-dim">früh</span>
-      <span className="absolute bottom-0.5 right-1.5 font-mono text-[11px] uppercase tracking-widest text-dim">spät</span>
+      <span className="absolute bottom-0.5 left-1.5 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">früh</span>
+      <span className="absolute bottom-0.5 right-1.5 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">spät</span>
     </div>
   )
 }
@@ -116,7 +116,7 @@ export function TimingReport({ analysis }: { analysis: TimingAnalysis }) {
 
       <div className="border-l-2 border-line pl-3">
         <p className="text-[14px] text-fg">{TREND_TEXT[analysis.trend]}.</p>
-        <p className="mt-1 text-[12px] leading-relaxed text-dim">
+        <p className="mt-1 text-[13px] leading-relaxed text-dim">
           Gemessen wird die Streuung, nicht der Versatz. {offsetText(analysis)}
         </p>
       </div>

@@ -70,7 +70,7 @@ function Karte({
             <TechnikZeichen technique={drill.technique} />
           </span>
           <div className="min-w-0">
-            <div className="display text-[18px] text-fg group-hover:text-akzent">{drill.title}</div>
+            <div className="display text-[20px] text-fg group-hover:text-akzent">{drill.title}</div>
             <div className="kicker mt-0.5 text-dim">{TECHNIQUE_LABELS[drill.technique]}</div>
           </div>
         </div>
@@ -78,7 +78,7 @@ function Karte({
           <div className="ziffern text-[15px] font-bold text-akzent">
             {nextBpm(drill, progress, profile)}
           </div>
-          <div className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
+          <div className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
             Ziel {drill.targetBpm}
           </div>
         </div>

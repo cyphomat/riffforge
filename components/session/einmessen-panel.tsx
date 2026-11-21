@@ -63,7 +63,7 @@ export function EinmessenPanel() {
         sicher. Gilt nur für dieses Gerät.
       </p>
 
-      <p className="mb-3 font-mono text-[12px] text-muted">
+      <p className="mb-3 font-mono text-[13px] text-muted">
         {stand
           ? `Eingemessen ${ART_TEXT[stand.art]}: ${stand.ms} ms · ${new Date(stand.at).toLocaleDateString("de-DE")}`
           : "Noch nicht eingemessen."}
@@ -125,7 +125,7 @@ export function EinmessenPanel() {
             setStand(null)
             setMeldung(null)
           }}
-          className="mt-2 font-mono text-[12px] text-dim underline-offset-4 hover:text-stahl hover:underline"
+          className="mt-2 font-mono text-[13px] text-dim underline-offset-4 hover:text-stahl hover:underline"
         >
           Einmessung vergessen
         </button>

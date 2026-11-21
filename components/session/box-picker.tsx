@@ -54,7 +54,7 @@ export function BoxPicker({ box, onChange }: BoxPickerProps) {
         ))}
       </div>
 
-      <p className="ziffern mt-3 text-[12px] text-dim">{boxBeschreibung(box)}</p>
+      <p className="ziffern mt-3 text-[13px] text-dim">{boxBeschreibung(box)}</p>
     </div>
   )
 }

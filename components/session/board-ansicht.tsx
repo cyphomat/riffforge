@@ -140,14 +140,14 @@ export function BoardAnsicht() {
           {quests.map(({ quest, stand: n, ziel, erfuellt }) => (
             <li key={quest.id} className={erfuellt ? "" : "opacity-90"}>
               <div className="flex items-baseline justify-between gap-3">
-                <span className="display text-[17px] leading-none text-fg">{quest.name}</span>
-                <span className={`font-mono text-[11px] uppercase tracking-[0.12em] ${quest.stufe === "legendär" ? "text-akzent" : "text-stahl"}`}>{quest.stufe}</span>
+                <span className="display text-[20px] leading-none text-fg">{quest.name}</span>
+                <span className={`font-mono text-[13px] uppercase tracking-[0.08em] ${quest.stufe === "legendär" ? "text-akzent" : "text-stahl"}`}>{quest.stufe}</span>
               </div>
               <p className="mt-1 text-[13px] leading-snug text-muted">{quest.text}</p>
               <div className="bar mt-2 h-[4px]">
                 <i style={{ width: `${Math.round((n / ziel) * 100)}%` }} />
               </div>
-              <p className="mt-1 font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
+              <p className="mt-1 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
                 {erfuellt ? "Geschafft" : `${n} von ${ziel}`} · Lohn: {name(quest.lohn.art, quest.lohn.id)}
               </p>
             </li>

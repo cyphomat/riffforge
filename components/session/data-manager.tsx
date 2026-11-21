@@ -161,7 +161,7 @@ export function DataManager() {
           </div>
         </div>
         {days.length > 0 && (
-          <p className="mt-2 font-mono text-[11.5px] text-dim">
+          <p className="mt-2 font-mono text-[13px] text-dim">
             seit {tagDeutsch(days[0])} · zuletzt {tagDeutsch(days[days.length - 1])}
             {days[days.length - 1] === dayKey(new Date()) && " (heute)"}
           </p>
@@ -222,7 +222,7 @@ export function DataManager() {
           <MdFileDownload className="h-[18px] w-[18px]" /> Exportieren
         </button>
         {gesichert && (
-          <p className="mt-2 font-mono text-[11.5px] text-dim">
+          <p className="mt-2 font-mono text-[13px] text-dim">
             zuletzt gesichert: {gesichert.toLocaleDateString("de-DE")}
           </p>
         )}

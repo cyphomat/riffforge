@@ -50,7 +50,7 @@ export function Welcome({ onStart, onImport }: WelcomeProps) {
     <div className="huelle">
       <section className="card winkel mt-6">
         <span className="kicker text-akzent">Willkommen</span>
-        <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">
+        <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">
           Fünfzehn Minuten am Tag
         </h1>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
@@ -71,7 +71,7 @@ export function Welcome({ onStart, onImport }: WelcomeProps) {
       <ul className="mt-6 border-t border-line">
         {PUNKTE.map((punkt) => (
           <li key={punkt.kopf} className="border-b border-line py-[13px]">
-            <div className="display text-[16px] text-fg">{punkt.kopf}</div>
+            <div className="display text-[20px] text-fg">{punkt.kopf}</div>
             <p className="mt-1 text-[14px] leading-relaxed text-muted">{punkt.text}</p>
           </li>
         ))}

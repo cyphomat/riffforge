@@ -175,7 +175,7 @@ export function SyncPanel({
   return (
     <section>
       {kopf && <h2 className="rule mb-1 mt-8">Abgleich</h2>}
-      <p className="mb-3 font-mono text-[12px] text-dim">
+      <p className="mb-3 font-mono text-[13px] text-dim">
         {settings.owner}/{settings.repo}
         {last && ` · zuletzt ${formatWhen(last)}`}
       </p>

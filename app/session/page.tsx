@@ -16,7 +16,7 @@ export default function SessionPage() {
   return (
     <Suspense
       fallback={
-        <p className="mx-auto max-w-[640px] px-4 pt-8 font-mono text-[12px] uppercase tracking-[0.18em] text-dim">
+        <p className="mx-auto max-w-[640px] px-4 pt-8 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
           Session wird vorbereitet…
         </p>
       }

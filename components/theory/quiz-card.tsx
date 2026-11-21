@@ -100,7 +100,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
     <div className="space-y-4">
       <div>
         {zaehler && <p className="kicker text-dim">{zaehler}</p>}
-        <h2 className="display mt-1 text-[26px] leading-tight text-fg sm:text-[30px]">
+        <h2 className="display mt-1 text-[30px] leading-tight text-fg sm:text-[30px]">
           {card.frage.text}
         </h2>
       </div>
@@ -318,7 +318,7 @@ export function QuizCard({ card, onAnswer, zaehler }: QuizCardProps) {
                           empfohlen ? "border-akzent bg-(--tint-akzent)" : "border-line"
                         }`}
                       >
-                        <span className="display block text-[17px] text-fg">{note.label}</span>
+                        <span className="display block text-[20px] text-fg">{note.label}</span>
                         <span className="text-[13px] text-dim">{note.hint}</span>
                       </button>
                     )

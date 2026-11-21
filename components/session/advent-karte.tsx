@@ -26,7 +26,7 @@ export function AdventKarte({ log }: { log: PracticeLog }) {
   return (
     <aside className="card mt-3" aria-label="Advent">
       <span className="kicker text-dim">Advent</span>
-      <p className="display mt-2 text-[22px] leading-none text-fg">
+      <p className="display mt-2 text-[20px] leading-none text-fg">
         {stand.offen} von {TUERCHEN_ANZAHL} Türchen offen
       </p>
       <p className="mt-2 text-[13.5px] leading-snug text-muted">

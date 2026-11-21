@@ -298,7 +298,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     return (
       <div className="huelle space-y-4 pt-8">
         <p className="kicker">Session von heute</p>
-        <h1 className="display text-[32px] text-fg">Du warst mitten drin.</h1>
+        <h1 className="display text-[30px] text-fg">Du warst mitten drin.</h1>
         <p className="text-[15px] text-muted">
           Es geht bei Block {angebot.current + 1} weiter. Was du schon gespielt hast, steht im Log.
         </p>
@@ -314,7 +314,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
 
   if (blocks === null || startingLog === null) {
     return (
-      <p className="huelle pt-8 font-mono text-[12px] uppercase tracking-[0.18em] text-dim">
+      <p className="huelle pt-8 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
         Session wird vorbereitet…
       </p>
     )

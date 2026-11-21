@@ -31,7 +31,7 @@ export function RiffbuchAnsicht() {
           {stand.gehoert.map((r) => (
             <li key={r.id} className="flex items-baseline justify-between gap-3 border border-line bg-sunken px-3 py-2">
               <span className="text-[14px] text-fg">{r.titel}</span>
-              <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">{tag(r.am)}</span>
+              <span className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">{tag(r.am)}</span>
             </li>
           ))}
           {Array.from({ length: Math.min(stand.offen, 3) }, (_, i) => (

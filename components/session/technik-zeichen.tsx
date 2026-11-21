@@ -2,9 +2,10 @@ import { TECHNIK_ZEICHEN, ZEICHEN_GROESSE } from "@/lib/session/technik-zeichen"
 import type { Technique } from "@/lib/session/types"
 
 /**
- * Das Pixelzeichen einer Technik. Strich in der Textfarbe, Akzent in Stahl —
- * so folgt es der Zeile, in der es steht. Die Raster stehen in
- * `lib/session/technik-zeichen.ts`.
+ * Das Pixelzeichen einer Technik. Ein Farbton in zwei Stufen: der Strich voll,
+ * die Füllung (`b`) gedämpft — das Zeichen ist Stahlblau und damit zweitrangig
+ * wie der Rest der Zeile. Vorher zwei Farben (Text und Stahl) je Zeichen, und
+ * jedes sah anders aus. Die Raster stehen in `lib/session/technik-zeichen.ts`.
  */
 export function TechnikZeichen({ technique, groesse = 32 }: { technique: Technique; groesse?: number }) {
   const raster = TECHNIK_ZEICHEN[technique]
@@ -15,7 +16,7 @@ export function TechnikZeichen({ technique, groesse = 32 }: { technique: Techniq
       height={groesse}
       shapeRendering="crispEdges"
       aria-hidden
-      className="shrink-0"
+      className="shrink-0 text-stahl"
     >
       {raster.flatMap((zeile, y) =>
         [...zeile].map((zeichen, x) =>
@@ -26,7 +27,8 @@ export function TechnikZeichen({ technique, groesse = 32 }: { technique: Techniq
               y={y}
               width={1}
               height={1}
-              fill={zeichen === "a" ? "currentColor" : "var(--stahl)"}
+              fill="currentColor"
+              fillOpacity={zeichen === "a" ? 1 : 0.45}
             />
           ),
         ),

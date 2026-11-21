@@ -64,7 +64,7 @@ function Stat({ value, label, sub }: { value: string | number; label: string; su
     <div className="stat">
       <div className="n">{label}</div>
       <div className="v">{value}</div>
-      {sub && <div className="font-mono text-[11.5px] text-dim">{sub}</div>}
+      {sub && <div className="font-mono text-[13px] text-dim">{sub}</div>}
     </div>
   )
 }
@@ -185,7 +185,7 @@ export function PracticeOverview() {
                   key={block.drill.id}
                   className="flex items-baseline gap-3 border-b border-line py-[9px] last:border-b-0"
                 >
-                  <span className="w-[76px] flex-none font-mono text-[11.5px] uppercase tracking-widest text-dim">
+                  <span className="w-[76px] flex-none font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
                     {ART[block.drill.kind]}
                   </span>
                   <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">
@@ -199,7 +199,7 @@ export function PracticeOverview() {
                   </span>
                   <span className="ziffern flex-none text-[15px] font-bold text-akzent">
                     {block.bpm}
-                    <span className="text-[11.5px] font-normal text-dim"> BPM</span>
+                    <span className="text-[13px] font-normal text-dim"> BPM</span>
                   </span>
                 </li>
               ))}
@@ -209,7 +209,7 @@ export function PracticeOverview() {
 
         <Link
           href="/session?minutes=15"
-          className={`btn mt-5 w-full px-3 py-5 text-[15px] tracking-[0.1em] min-[420px]:px-5 min-[420px]:tracking-[0.14em] ${geuebt ? "btn-ghost" : ""}`}
+          className={`btn mt-5 w-full px-3 py-5 text-[15px] tracking-[0.08em] min-[420px]:px-5 min-[420px]:tracking-[0.08em] ${geuebt ? "btn-ghost" : ""}`}
         >
           Session starten · 15 Min
         </Link>
@@ -224,7 +224,7 @@ export function PracticeOverview() {
       <AdventKarte log={log} />
 
       <div className="mt-3 flex items-center gap-2">
-        <span className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">oder</span>
+        <span className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">oder</span>
         {EXTRA_LENGTHS.map((length) => (
           <Link key={length} href={`/session?minutes=${length}`} className="btn btn-ghost btn-small">
             {length} Min
@@ -271,10 +271,10 @@ export function PracticeOverview() {
             <img src={asset(rangBild(merch.rang.id))} alt="" width={96} height={48} className="pixel shrink-0" />
             <span className="flex flex-col">
               <span className="kicker text-dim">Rang</span>
-              <span className="display text-[17px] text-fg">{merch.rang.titel}</span>
+              <span className="display text-[20px] text-fg">{merch.rang.titel}</span>
             </span>
           </span>
-          <span className="ziffern text-[12px] text-muted">{merch.aufnaeher} Aufnäher ›</span>
+          <span className="ziffern text-[13px] text-muted">{merch.aufnaeher} Aufnäher ›</span>
         </Link>
       )}
 
@@ -287,9 +287,9 @@ export function PracticeOverview() {
         >
           <span className="flex items-baseline gap-2">
             <span className="kicker text-dim">Rückblick</span>
-            <span className="display text-[17px] text-fg">KW {kalenderwoche(woche.woche)}</span>
+            <span className="display text-[20px] text-fg">KW {kalenderwoche(woche.woche)}</span>
           </span>
-          <span className="ziffern text-[12px] text-muted">
+          <span className="ziffern text-[13px] text-muted">
             {/* Montags ist die neue Woche noch leer — dann die Zahl, die
                 schon etwas sagt, statt einer Null, die nur mahnt. */}
             {woche.tage > 0 || !vorwoche
@@ -309,9 +309,9 @@ export function PracticeOverview() {
         >
           <span className="flex items-baseline gap-2">
             <span className="kicker text-dim">Saiten</span>
-            <span className="display text-[17px] text-rost">Neue fällig</span>
+            <span className="display text-[20px] text-rost">Neue fällig</span>
           </span>
-          <span className="ziffern text-[12px] text-muted">
+          <span className="ziffern text-[13px] text-muted">
             {saiten.grund === "gespielt" ? `${saiten.uebungstage} Übungstage drauf ›` : `${saiten.tage} Tage alt ›`}
           </span>
         </Link>
@@ -344,7 +344,7 @@ export function PracticeOverview() {
                   <div key={drill.id} className="border border-line bg-panel px-[15px] py-[13px]">
                     <div className="flex items-baseline justify-between gap-4">
                       <div className="min-w-0">
-                        <div className="display text-[17px] text-fg">{drill.title}</div>
+                        <div className="display text-[20px] text-fg">{drill.title}</div>
                         <div className="kicker mt-0.5 text-dim">
                           {TECHNIQUE_LABELS[drill.technique]}
                         </div>
@@ -355,7 +355,7 @@ export function PracticeOverview() {
                           <span className="text-dim"> / {drill.targetBpm} BPM</span>
                         </div>
                         {progress.bestTimingScore !== null && (
-                          <div className="font-mono text-[11.5px] uppercase tracking-[0.12em] text-stahl">
+                          <div className="font-mono text-[13px] uppercase tracking-[0.08em] text-stahl">
                             Timing {progress.bestTimingScore}
                           </div>
                         )}

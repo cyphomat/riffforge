@@ -73,7 +73,7 @@ export function RangAufstieg({ rang }: { rang: Rang }) {
           height={144}
           className="pixel mx-auto block h-auto w-[288px] max-w-full"
         />
-        <p className="display mt-3 text-center text-[28px] leading-none text-fg">{rang.titel}</p>
+        <p className="display mt-3 text-center text-[30px] leading-none text-fg">{rang.titel}</p>
         <p className="mt-2 text-center text-[13.5px] text-muted">
           {rang.wochen} Wochen mit mindestens einer Session. Der Rang fällt nie.
         </p>
@@ -181,7 +181,7 @@ export function TourShirtKarte({ tour }: { tour: Tour }) {
       </div>
 
       <div className="flex min-w-0 flex-col gap-[2px]">
-        <b className="display text-[17px] leading-tight text-fg [overflow-wrap:anywhere]">{tour.name}</b>
+        <b className="display text-[20px] leading-tight text-fg [overflow-wrap:anywhere]">{tour.name}</b>
         <span className="text-[13px] text-muted">
           {zeit}
           {tour.laufend && <span className="text-akzent"> · läuft</span>}
@@ -272,7 +272,7 @@ export function AufnaeherKachel({ a }: { a: Aufnaeher }) {
         <img src={asset(aufnaeherBild(a.gruppe))} alt="" width={48} height={48} className="pixel mb-2" />
       )}
       <div className="[overflow-wrap:anywhere]">
-        <div className={`display text-[17px] leading-tight ${a.verdient ? "text-fg" : "text-muted"}`}>
+        <div className={`display text-[20px] leading-tight ${a.verdient ? "text-fg" : "text-muted"}`}>
           {a.titel}
         </div>
         <p className={`mt-1 text-[13px] leading-snug ${a.verdient ? "text-muted" : "text-dim"}`}>
@@ -335,7 +335,7 @@ export function MerchStand() {
       <div className="spalte">
         <header className="mt-6">
           <span className="kicker">Merch</span>
-          <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Merch-Stand</h1>
+          <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">Merch-Stand</h1>
           <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
             Alles hier wird aus deinem Log berechnet. Belohnt wird Regelmässigkeit, nicht Menge.
           </p>
@@ -350,7 +350,7 @@ export function MerchStand() {
               ? `Erreicht am ${datum(rangTage[stufe]!)}`
               : `${rang.wochen} ${rang.wochen === 1 ? "Woche" : "Wochen"} auf Tour`}
           </span>
-          <h2 className={`display mt-1 text-[44px] leading-none ${frueher ? "text-muted" : "text-fg"}`}>
+          <h2 className={`display mt-1 text-[40px] leading-none ${frueher ? "text-muted" : "text-fg"}`}>
             {buehne.titel}
           </h2>
 

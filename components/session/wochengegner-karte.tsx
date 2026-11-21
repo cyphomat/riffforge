@@ -44,7 +44,7 @@ export function WochengegnerKarte({ log }: { log: PracticeLog }) {
       <div className="mt-2 flex items-center gap-4">
         <PixelGegner besiegt={gefallen} />
         <div className="min-w-0 flex-1">
-          <p className="display text-[22px] leading-none text-fg">{name}</p>
+          <p className="display text-[20px] leading-none text-fg">{name}</p>
           <p className="mt-2 text-[13px] leading-snug text-muted">
             {gefallen
               ? "Liegt am Boden. Bis Montag Ruhe."
@@ -55,7 +55,7 @@ export function WochengegnerKarte({ log }: { log: PracticeLog }) {
       <div className="mt-3">
         <Lebensleiste rest={rest} hp={hp} />
       </div>
-      <p className="mt-2 font-mono text-[11.5px] uppercase tracking-[0.12em] text-dim">
+      <p className="mt-2 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
         {treffer.summe} Treffer · {treffer.tage} Tage · {treffer.sauber} Blöcke · {treffer.ziel / 2} Riffe am Ziel · {treffer.wissen} Antworten
       </p>
     </aside>

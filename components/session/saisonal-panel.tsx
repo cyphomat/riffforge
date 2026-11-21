@@ -37,7 +37,7 @@ export function SaisonalPanel() {
             key={String(wert)}
             onClick={() => waehle(wert)}
             aria-pressed={an === wert}
-            className={`border px-3 py-3 font-mono text-[12px] uppercase tracking-[0.1em] ${
+            className={`border px-3 py-3 font-mono text-[13px] uppercase tracking-[0.08em] ${
               an === wert ? "border-akzent bg-(--tint-akzent) text-akzent" : "border-line text-muted"
             }`}
           >

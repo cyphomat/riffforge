@@ -80,7 +80,7 @@ export function SiebenRunner() {
       <div className="huelle">
         <header className="mt-6">
           <span className="kicker">Bonus</span>
-          <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Sieben Saiten</h1>
+          <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">Sieben Saiten</h1>
           <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
             Zehn Minuten für die Siebensaitige: drei Blöcke aus einem eigenen Katalog, mit
             Metronom und Timing wie sonst auch. Steht bewusst neben der täglichen Viertelstunde

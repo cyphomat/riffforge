@@ -112,7 +112,7 @@ export function Stimmgeraet({
       {!eingebettet && (
         <header className="mt-6">
           <span className="kicker">Stimmen</span>
-          <h1 className="display mt-1 text-[34px] text-fg sm:text-[38px]">Stimmgerät</h1>
+          <h1 className="display mt-1 text-[30px] text-fg sm:text-[40px]">Stimmgerät</h1>
           <p className="mt-2 text-[14.5px] leading-relaxed text-muted">
             Eine Saite anschlagen und klingen lassen. Die App hört hier die Tonhöhe — nur zum Stimmen;
             was du im Block spielst, bewertet sie weiter nur nach dem Rhythmus.
@@ -129,7 +129,7 @@ export function Stimmgeraet({
               setGestimmt(new Set())
             }}
             aria-pressed={stimmung === s}
-            className={`border px-3 py-2 font-mono text-[12px] uppercase tracking-[0.1em] ${
+            className={`border px-3 py-2 font-mono text-[13px] uppercase tracking-[0.08em] ${
               stimmung === s ? "border-akzent bg-(--tint-akzent) text-akzent" : "border-line text-muted"
             }`}
           >
@@ -183,7 +183,7 @@ export function Stimmgeraet({
             />
           )}
         </div>
-        <div className="mt-1 flex justify-between font-mono text-[11.5px] text-dim">
+        <div className="mt-1 flex justify-between font-mono text-[13px] text-dim">
           <span>zu tief</span>
           <span>zu hoch</span>
         </div>
@@ -212,7 +212,7 @@ export function Stimmgeraet({
           return (
             <div
               key={s.nummer}
-              className={`border py-2 text-center font-mono text-[12px] ${
+              className={`border py-2 text-center font-mono text-[13px] ${
                 aktiv ? "border-akzent text-akzent" : fertig ? "border-gruen text-gruen" : "border-line text-muted"
               }`}
             >

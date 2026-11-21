@@ -54,7 +54,7 @@ export function RoadieHeute({ log }: { log: PracticeLog }) {
             height={144}
             className="pixel mt-2 block h-auto w-[288px] max-w-full border border-line"
           />
-          <p className="display mt-3 text-[24px] leading-none text-fg">{neu.titel}</p>
+          <p className="display mt-3 text-[20px] leading-none text-fg">{neu.titel}</p>
           <p className="mt-2 text-[13.5px] leading-snug text-muted">{neu.text}</p>
           <div className="mt-3 flex gap-[9px]">
             <Link href="/merch" className="btn btn-small flex-1" onClick={() => merkeDropGesehen(neu.id)}>
