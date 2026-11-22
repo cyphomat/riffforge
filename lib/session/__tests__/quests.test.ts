@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { ALLE_DRILLS_BY_ID } from "../drills"
 import { AMPS_BY_ID, PEDALE_BY_ID } from "../board-daten"
-import { ALLE_QUESTS, besitz, fortschritt, questStand } from "../quests"
+import { ALLE_QUESTS, balkenFelder, besitz, fortschritt, questGeordnet, questStand } from "../quests"
 import { QUESTS, questSchema } from "../quests-daten"
 import type { PracticeLog } from "../types"
 import type { TheoryLog } from "@/lib/theory/types"
@@ -95,5 +95,24 @@ describe("Besitz", () => {
     const vorher = besitz(log(...tage(5)), LEER, JETZT)
     const nachher = besitz(log(...tage(5), ["2027-03-01", 1]), LEER, JETZT)
     for (const id of vorher.pedale) expect(nachher.pedale.has(id)).toBe(true)
+  })
+})
+
+describe("Anzeige der Quests", () => {
+  it("ordnet offene Quests nach Nähe zum Ziel, geschaffte kommen getrennt", () => {
+    const { offen, geschafft } = questGeordnet(questStand(log(...tage(5)), LEER, JETZT))
+    expect(geschafft.map((x) => x.quest.id)).toContain("quest-aufgewaermt")
+    expect(offen.every((x) => !x.erfuellt)).toBe(true)
+    const anteile = offen.map((x) => x.stand / x.ziel)
+    expect(anteile).toEqual([...anteile].sort((a, b) => b - a))
+    expect(offen.length + geschafft.length).toBe(ALLE_QUESTS.length)
+  })
+
+  it("füllt den Balken: leer bei null, mindestens ein Feld danach, voll erst am Ziel", () => {
+    expect(balkenFelder(0, 25)).toBe(0)
+    expect(balkenFelder(1, 100)).toBe(1)
+    expect(balkenFelder(13, 25)).toBe(5)
+    expect(balkenFelder(24, 25)).toBe(9)
+    expect(balkenFelder(25, 25)).toBe(10)
   })
 })

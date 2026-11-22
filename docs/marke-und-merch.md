@@ -274,6 +274,12 @@
   kaufen: ein Kontostand müsste gespeichert werden. Fortschritt ist eine Zahl, die nur wächst, also aus dem
   Log jederzeit neu zu zählen; erfüllt bleibt erfüllt. Drops dürfen weitere Quests tragen (`quests` im
   Drop-Schema), jeder Lohn muss ein Stück aus `board-daten.ts` sein, jedes nur einmal.
+  Die Liste (`board-ansicht.tsx`) zeigt offene Quests zuerst, die nächste am Ziel vorn (`questGeordnet`),
+  geschaffte getrennt darunter. Die Zahl „13/25" steht in Bernstein rechts neben dem Namen, der Balken hat zehn
+  Felder (`balkenFelder`: voll nur am Ziel, nach dem ersten Fortschritt nie leer), der Lohn steht als eigene
+  Zeile in normaler Schrift. Die Stufe trägt die Kante links (Bernstein legendär, Stahlblau episch), das Wort
+  nur für Screenreader. Vorher war der Fortschritt ein 4-px-Strich mit grauer Zahl darunter und der Lohn die
+  dunkelste Zeile.
 - **Die Zugabe ist Ton auf Tippen** (`zugabe.ts`, `zugabe-knopf.tsx`): auf dem Abschluss-Zettel, einmal, ohne
   Klick, nie in der Session. Gespielt wird, was Noten hat: der zuletzt geübte Song, sonst ein Advents-Riff, vom
   Tag gewählt. Drills mit reiner Tabulatur haben keine Noten. Ein Riffbuch gibt es nicht, es bräuchte

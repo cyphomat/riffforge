@@ -9,7 +9,7 @@ import { RAENGE } from "@/lib/session/merch"
 import { AMPS, PEDALE, type Amp, type Pedal } from "@/lib/session/board-daten"
 import { STANDARD_WAHL, gewaehlterAmp, kette, pedaleGeordnet, umschalten, type BoardWahl, type Besitz } from "@/lib/session/board"
 import { TUERCHEN } from "@/lib/session/advent-daten"
-import { besitz as berechneBesitz, questStand, type QuestStand } from "@/lib/session/quests"
+import { balkenFelder, besitz as berechneBesitz, questGeordnet, questStand, type QuestStand } from "@/lib/session/quests"
 import { boardWahl, merkeBoardWahl } from "@/lib/storage/lokal"
 import { loadLog } from "@/lib/storage/practice-log"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
@@ -43,9 +43,58 @@ function Zeile({ an, onClick, kopf, wirkung, bleibt }: { an: boolean; onClick?: 
         <span className={`h-3 w-3 flex-none border ${an ? "border-akzent bg-akzent" : "border-line"}`} aria-hidden />
         <span className="min-w-0 flex-1">
           <span className={`block text-[14px] leading-tight ${an ? "text-fg" : "text-muted"}`}>{kopf}</span>
-          <span className="mt-0.5 block text-[12.5px] leading-snug text-dim">{wirkung}</span>
+          <span className="mt-0.5 block text-[13px] leading-snug text-dim">{wirkung}</span>
         </span>
       </button>
+    </li>
+  )
+}
+
+const BALKEN_FELDER = 10
+
+/**
+ * Eine Quest: links der Name, rechts die Zahl, auf die es ankommt. Darunter der
+ * Balken in zehn Feldern, dann der Lohn in normaler Schrift. Die Kante links
+ * trägt die Stufe: Bernstein für legendär, Stahlblau für episch — ohne Wort, das
+ * Wort steht nur für Screenreader da.
+ */
+function QuestZeile({ q, lohn }: { q: QuestStand; lohn: string }) {
+  const { quest, stand: n, ziel, erfuellt } = q
+  const legendaer = quest.stufe === "legendär"
+  const leuchtend = balkenFelder(n, ziel, BALKEN_FELDER)
+  return (
+    <li className={`border-l-[3px] pl-3 ${legendaer ? "border-akzent" : "border-stahl"}`}>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="display text-[20px] leading-none text-fg">
+          {quest.name}
+          <span className="sr-only"> ({quest.stufe})</span>
+        </span>
+        {erfuellt ? (
+          <span className="display flex-none text-[20px] leading-none text-gruen">✓ Geschafft</span>
+        ) : (
+          <span className="display num flex-none text-[20px] leading-none text-akzent">
+            {n}/{ziel}
+          </span>
+        )}
+      </div>
+      <p className="mt-1.5 text-[14px] leading-snug text-muted">{quest.text}</p>
+      <div
+        className="mt-2 grid gap-[3px]"
+        style={{ gridTemplateColumns: `repeat(${BALKEN_FELDER}, minmax(0, 1fr))` }}
+        role="progressbar"
+        aria-label={quest.name}
+        aria-valuemin={0}
+        aria-valuemax={ziel}
+        aria-valuenow={n}
+      >
+        {Array.from({ length: BALKEN_FELDER }, (_, i) => (
+          <span key={i} className={`h-[8px] ${i < leuchtend ? (erfuellt ? "bg-gruen" : "bg-akzent") : "bg-line"}`} />
+        ))}
+      </div>
+      <p className="mt-2 text-[14px] text-muted">
+        <span className="kicker mr-2">Lohn</span>
+        <span className="text-fg">{lohn}</span>
+      </p>
     </li>
   )
 }
@@ -68,6 +117,7 @@ export function BoardAnsicht() {
 
   if (!stand) return null
   const { besitz, quests, band } = stand
+  const { offen, geschafft } = questGeordnet(quests)
   const geordnet = pedaleGeordnet(besitz)
   const ampSteht = gewaehlterAmp(besitz, wahl)
   const stempel = `${wahl.aus.join(",")}|${ampSteht.id}|${besitz.pedale.size}|${wahl.bandAus.join(",")}`
@@ -135,24 +185,27 @@ export function BoardAnsicht() {
 
       <h2 className="tape schief">Quests</h2>
       <section className="card">
-        <p className="mb-3 text-[13px] text-dim">Kein Gold, nichts zu kaufen: Ein Stück fürs Board gibt es, wenn das Ziel geschafft ist.</p>
-        <ul className="space-y-3">
-          {quests.map(({ quest, stand: n, ziel, erfuellt }) => (
-            <li key={quest.id} className={erfuellt ? "" : "opacity-90"}>
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="display text-[20px] leading-none text-fg">{quest.name}</span>
-                <span className={`font-mono text-[13px] uppercase tracking-[0.08em] ${quest.stufe === "legendär" ? "text-akzent" : "text-stahl"}`}>{quest.stufe}</span>
-              </div>
-              <p className="mt-1 text-[13px] leading-snug text-muted">{quest.text}</p>
-              <div className="bar mt-2 h-[4px]">
-                <i style={{ width: `${Math.round((n / ziel) * 100)}%` }} />
-              </div>
-              <p className="mt-1 font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
-                {erfuellt ? "Geschafft" : `${n} von ${ziel}`} · Lohn: {name(quest.lohn.art, quest.lohn.id)}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <p className="text-[14px] leading-relaxed text-muted">Kein Gold, nichts zu kaufen: Ein Stück fürs Board gibt es, wenn das Ziel geschafft ist.</p>
+        {offen.length > 0 && (
+          <>
+            <h3 className="rule mt-5">Offen · {offen.length}</h3>
+            <ul className="mt-4 space-y-5">
+              {offen.map((q) => (
+                <QuestZeile key={q.quest.id} q={q} lohn={name(q.quest.lohn.art, q.quest.lohn.id)} />
+              ))}
+            </ul>
+          </>
+        )}
+        {geschafft.length > 0 && (
+          <>
+            <h3 className="rule mt-6">Geschafft · {geschafft.length}</h3>
+            <ul className="mt-4 space-y-5">
+              {geschafft.map((q) => (
+                <QuestZeile key={q.quest.id} q={q} lohn={name(q.quest.lohn.art, q.quest.lohn.id)} />
+              ))}
+            </ul>
+          </>
+        )}
       </section>
     </>
   )
