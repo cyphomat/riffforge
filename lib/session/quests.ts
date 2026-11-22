@@ -69,6 +69,32 @@ export function questStand(
   })
 }
 
+/**
+ * Offene Quests zuerst, die nächste am Ziel vorn; geschaffte danach in der
+ * Reihenfolge der Liste. Wer die Liste öffnet, sieht oben, was als Nächstes
+ * fällt, nicht, was zufällig zuerst im Katalog stand.
+ */
+export function questGeordnet(staende: QuestStand[]): { offen: QuestStand[]; geschafft: QuestStand[] } {
+  const anteil = (q: QuestStand) => q.stand / q.ziel
+  const offen = staende
+    .map((q, i) => ({ q, i }))
+    .filter(({ q }) => !q.erfuellt)
+    .sort((a, b) => anteil(b.q) - anteil(a.q) || a.i - b.i)
+    .map(({ q }) => q)
+  return { offen, geschafft: staende.filter((q) => q.erfuellt) }
+}
+
+/**
+ * Wie viele von `felder` Feldern des Fortschrittsbalkens leuchten. Voll nur,
+ * wenn das Ziel erreicht ist (99 % sind 9 von 10, nicht 10), und leer nur bei
+ * null: wer angefangen hat, sieht mindestens ein Feld.
+ */
+export function balkenFelder(stand: number, ziel: number, felder = 10): number {
+  if (stand <= 0) return 0
+  if (stand >= ziel) return felder
+  return Math.min(felder - 1, Math.max(1, Math.floor((stand / ziel) * felder)))
+}
+
 /** Was jemand besitzt: der Anfang und der Lohn jeder erfüllten Quest. */
 export function besitz(log: PracticeLog, theorie: TheoryLog, jetzt: Date = new Date()): Besitz {
   const b = startBesitz()
