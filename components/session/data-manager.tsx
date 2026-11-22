@@ -276,7 +276,7 @@ export function DataManager() {
 
       {notice && (
         <p
-          className={`border-l-2 py-2 pl-3 font-mono text-[12.5px] ${
+          className={`border-l-2 py-2 pl-3 font-mono text-[13px] ${
             notice.tone === "ok" ? "border-gruen text-gruen" : "border-rot text-rot"
           }`}
         >

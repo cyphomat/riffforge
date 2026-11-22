@@ -132,7 +132,7 @@ export function KnowledgeOverview() {
           </p>
 
           {fertig > 0 && (
-            <p className="mt-3 flex items-center gap-2 font-mono text-[12.5px] text-gruen">
+            <p className="mt-3 flex items-center gap-2 font-mono text-[13px] text-gruen">
               <MdCheck className="h-4 w-4" />
               {fertig} {fertig === 1 ? "Frage" : "Fragen"} beantwortet
             </p>

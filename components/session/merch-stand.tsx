@@ -481,7 +481,7 @@ export function MerchStand() {
         {/* Die Kutte als eine Fläche, wie in Setlist: Aufnäher gehören auf
             Stoff, nicht auf den Seitengrund. */}
         <section className="card">
-          <p className="mb-1 text-[12.5px] text-dim">
+          <p className="mb-1 text-[13px] text-dim">
             {verdient.length} Aufnäher verdient. Je Reihe steht der nächste als
             Umriss da.
           </p>
@@ -518,7 +518,7 @@ export function MerchStand() {
         )}
 
         <h2 className="tape">Festival-Shirts</h2>
-        <p className="mb-3 text-[12.5px] text-dim">
+        <p className="mb-3 text-[13px] text-dim">
           Eins für jeden Rang. Langarm, damit man sie von den Tourshirts unterscheidet.
         </p>
         <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-[9px]">

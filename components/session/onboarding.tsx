@@ -72,7 +72,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
           />
         ))}
       </div>
-      <p className="mt-2 text-[12.5px] leading-relaxed text-dim">
+      <p className="mt-2 text-[13px] leading-relaxed text-dim">
         Setzt die Starttempi. Zu hoch gegriffen merkst du in der ersten Session — dann sagst du
         &bdquo;zäh&ldquo;, und es geht runter.
       </p>
@@ -89,7 +89,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
           />
         ))}
       </div>
-      <p className="mt-2 text-[12.5px] leading-relaxed text-dim">
+      <p className="mt-2 text-[13px] leading-relaxed text-dim">
         Ein Schwerpunkt, kein Filter. Die andere Seite kommt trotzdem dran, nur später.
       </p>
 

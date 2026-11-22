@@ -162,7 +162,7 @@ export function SyncPanel({
             </p>
             <p>
               Er liegt danach im Speicher dieses Browsers. Warum eng gefasst: alle Seiten unter{" "}
-              <span className="font-mono text-[12.5px]">github.io</span> teilen sich denselben
+              <span className="font-mono text-[13px]">github.io</span> teilen sich denselben
               Speicher — ein Token, der nur ein Datenrepo öffnen kann, begrenzt den Schaden, falls
               irgendeine dieser Seiten einmal eine Lücke hat.
             </p>
@@ -199,7 +199,7 @@ export function SyncPanel({
 
       {notice && (
         <p
-          className={`mt-3 border-l-2 py-2 pl-3 font-mono text-[12.5px] ${
+          className={`mt-3 border-l-2 py-2 pl-3 font-mono text-[13px] ${
             notice.tone === "ok" ? "border-gruen text-gruen" : "border-rot text-rot"
           }`}
         >

@@ -28,7 +28,7 @@ export function GurtAnsicht({ riffs, drops }: { riffs: RiffSlot[]; drops: DropSt
     <>
       <h2 className="tape">Gurt</h2>
       <section className="card">
-        <p className="mb-3 text-[12.5px] text-dim">
+        <p className="mb-3 text-[13px] text-dim">
           Ein Plektrum für jedes Riff, das an {GEUEBT_TAGE} verschiedenen Tagen mindestens „Sauber“ war.{" "}
           <span className="ziffern text-muted">
             {verdient} von {riffs.length}
@@ -100,7 +100,7 @@ function DropAbschnitt({ stand }: { stand: DropStand }) {
         />
         <p className="kicker mt-3 text-dim">{drop.thema}</p>
         <p className="mt-1 text-[14px] leading-relaxed text-muted">{drop.text}</p>
-        <p className="ziffern mt-2 text-[12.5px] text-dim">
+        <p className="ziffern mt-2 text-[13px] text-dim">
           {verdient} von {gesamt}
           {zugabe && " + Zugabe"} · {tage} {tage === 1 ? "Übungstag" : "Übungstage"} in diesem Monat
         </p>

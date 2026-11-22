@@ -107,7 +107,7 @@ export function DrillLibrary() {
       {SECTIONS.map((section) => (
         <section key={section.kind}>
           <h2 className="rule mb-1 mt-9">{section.title}</h2>
-          <p className="mb-3 text-[12.5px] text-dim">{section.blurb}</p>
+          <p className="mb-3 text-[13px] text-dim">{section.blurb}</p>
 
           <div className="grid gap-[9px] wide:grid-cols-2">
             {section.katalog
@@ -121,7 +121,7 @@ export function DrillLibrary() {
 
       <section>
         <h2 className="rule mb-1 mt-12">Sieben Saiten</h2>
-        <p className="mb-3 text-[12.5px] text-dim">
+        <p className="mb-3 text-[13px] text-dim">
           Eigener Katalog für die Siebensaitige, B Standard — im Tagesplan kommt davon nichts vor.{" "}
           <Link href="/sieben" className="text-stahl underline underline-offset-2">
             Als Modus starten
