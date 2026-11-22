@@ -173,7 +173,7 @@ export function PracticeOverview() {
         <h1 className={`metal mt-1 text-[72px] sm:text-[96px] ${TONE_CLASS[briefing.tone]}`}>
           {TONE_LABEL[briefing.tone]}
         </h1>
-        <p className="mt-2 text-[19px] font-semibold leading-snug text-fg">{briefing.line}</p>
+        <p className="mt-2 text-[19px] font-medium leading-snug text-fg">{briefing.line}</p>
         <p className="mt-1 text-[14.5px] leading-relaxed text-muted">{briefing.reason}</p>
 
         {plan && (
@@ -197,7 +197,7 @@ export function PracticeOverview() {
                       </span>
                     )}
                   </span>
-                  <span className="ziffern flex-none text-[15px] font-bold text-akzent">
+                  <span className="ziffern flex-none text-[15px] font-medium text-akzent">
                     {block.bpm}
                     <span className="text-[13px] font-normal text-dim"> BPM</span>
                   </span>
@@ -350,7 +350,7 @@ export function PracticeOverview() {
                         </div>
                       </div>
                       <div className="flex-none text-right">
-                        <div className="ziffern text-[15px] font-bold text-akzent">
+                        <div className="ziffern text-[15px] font-medium text-akzent">
                           {progress.bestBpm ?? "–"}
                           <span className="text-dim"> / {drill.targetBpm} BPM</span>
                         </div>
