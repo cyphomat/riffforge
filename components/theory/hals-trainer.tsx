@@ -370,7 +370,7 @@ export function HalsTrainer() {
           </span>
           <span>neu {zaehle("neu")}</span>
         </p>
-        <p className="mt-3 text-[12.5px] leading-relaxed text-dim">
+        <p className="mt-3 text-[13px] leading-relaxed text-dim">
           Grün hält eine Woche. Flink heisst unter {sekunden(FLINK_MS)}, zäh über {sekunden(ZAEH_MS)} — eine
           richtige, aber zähe Antwort kommt früher wieder als eine flinke.
         </p>

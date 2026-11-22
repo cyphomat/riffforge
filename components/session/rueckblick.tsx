@@ -51,7 +51,7 @@ function WochenSaeulen({ wochen }: { wochen: Woche[] }) {
 
   return (
     <div>
-      <p className="ziffern mb-2 text-[12.5px] text-muted" aria-live="polite">
+      <p className="ziffern mb-2 text-[13px] text-muted" aria-live="polite">
         {kw(zeige.woche)} · {zeige.tage} {zeige.tage === 1 ? "Tag" : "Tage"} · {zeige.minuten} Min ·{" "}
         {zeige.bloecke} {zeige.bloecke === 1 ? "Block" : "Blöcke"}
       </p>
@@ -290,7 +290,7 @@ function DrillKarte({ verlauf }: { verlauf: DrillVerlauf }) {
         ) : (
           <div>
             <div className="kicker text-dim">Streuung</div>
-            <p className="mt-2 text-[12.5px] leading-snug text-dim">ohne Mikrofon gespielt — nichts gemessen</p>
+            <p className="mt-2 text-[13px] leading-snug text-dim">ohne Mikrofon gespielt — nichts gemessen</p>
           </div>
         )}
       </div>
@@ -396,7 +396,7 @@ export function Rueckblick() {
         <details className="info mt-3">
           <summary>Als Tabelle</summary>
           <div className="overflow-x-auto px-[15px] pb-[15px]">
-            <table className="ziffern w-full text-left text-[12.5px] text-muted">
+            <table className="ziffern w-full text-left text-[13px] text-muted">
               <thead className="text-dim">
                 <tr>
                   <th className="py-1 pr-3 font-normal">Woche</th>
@@ -425,7 +425,7 @@ export function Rueckblick() {
           <>
             <h2 className="rule mb-3 mt-9">Am Pult</h2>
             <Pult kanaele={kanaele} />
-            <p className="mt-2 text-[12.5px] leading-relaxed text-dim">
+            <p className="mt-2 text-[13px] leading-relaxed text-dim">
               Der Fader steht auf dem letzten sauberen Tempo, die Bahn reicht von deinem Starttempo
               bis zum Ziel. Die <span className="text-stahl">Kerbe</span> zeigt, wo es am Anfang
               des Rückblicks stand.
@@ -434,7 +434,7 @@ export function Rueckblick() {
         )}
 
         <h2 className="rule mb-1 mt-9">Je Drill</h2>
-        <p className="mb-3 text-[12.5px] leading-relaxed text-dim">
+        <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Tempo heisst: das höchste, das in der Woche mit <i>sauber</i> oder besser abgehakt wurde.
           Streuung ist die gemessene Schwankung um den Klick — weniger ist besser.
         </p>
@@ -452,7 +452,7 @@ export function Rueckblick() {
           <details className="info mt-3">
             <summary>Als Tabelle</summary>
             <div className="overflow-x-auto px-[15px] pb-[15px]">
-              <table className="ziffern w-full text-left text-[12.5px] text-muted">
+              <table className="ziffern w-full text-left text-[13px] text-muted">
                 <thead className="text-dim">
                   <tr>
                     <th className="py-1 pr-3 font-normal">Drill</th>

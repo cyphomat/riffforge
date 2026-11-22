@@ -247,7 +247,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
               )
             })}
           </div>
-          <p className="mt-3 text-[12.5px] leading-relaxed text-dim">
+          <p className="mt-3 text-[13px] leading-relaxed text-dim">
             {suggested
               ? "Vorgeschlagen aus dem gemessenen Timing — überstimm es, wenn es sich anders angefühlt hat."
               : "Ehrlich antworten — daraus kommt das Tempo für das nächste Mal."}

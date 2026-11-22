@@ -70,7 +70,7 @@ export function EinmessenPanel() {
       </p>
 
       {laeuft ? (
-        <p className="border-l-2 border-akzent py-2 pl-3 font-mono text-[12.5px] text-akzent" aria-live="polite">
+        <p className="border-l-2 border-akzent py-2 pl-3 font-mono text-[13px] text-akzent" aria-live="polite">
           {laeuft.art === "lautsprecher" ? "Hör zu" : "Schlag auf jeden Klick an"} ·{" "}
           {laeuft.klick}/{laeuft.gesamt || "…"}
         </p>
@@ -110,7 +110,7 @@ export function EinmessenPanel() {
 
       {meldung && (
         <p
-          className={`mt-3 border-l-2 py-2 pl-3 font-mono text-[12.5px] ${
+          className={`mt-3 border-l-2 py-2 pl-3 font-mono text-[13px] ${
             meldung.ton === "ok" ? "border-gruen text-gruen" : "border-rost text-rost"
           }`}
         >

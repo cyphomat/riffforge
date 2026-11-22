@@ -242,7 +242,7 @@ export function Stimmgeraet({
         </>
       )}
 
-      <p className="mt-4 text-[12.5px] leading-relaxed text-dim">
+      <p className="mt-4 text-[13px] leading-relaxed text-dim">
         Am besten clean oder leise verzerrt, eine Saite allein, die anderen gedämpft. Gemessen genau
         auf unter drei Cent — bei voller Verzerrung und mehreren klingenden Saiten wird es unruhig.
       </p>
@@ -287,7 +287,7 @@ function SaitenPanel() {
         Saiten sterben am Spielen mehr als an der Zeit. Nach {SAITEN_UEBUNGSTAGE} Übungstagen oder{" "}
         {SAITEN_TAGE} Tagen erinnert dich <b className="text-muted">Heute</b> daran. Gilt für dieses Gerät.
       </p>
-      <p className={`mb-3 font-mono text-[12.5px] ${stand?.faellig ? "text-rost" : "text-muted"}`}>
+      <p className={`mb-3 font-mono text-[13px] ${stand?.faellig ? "text-rost" : "text-muted"}`}>
         {stand
           ? `Neu seit ${new Date(`${stand.seit}T12:00:00`).toLocaleDateString("de-DE")} · ${stand.uebungstage} ${
               stand.uebungstage === 1 ? "Übungstag" : "Übungstage"

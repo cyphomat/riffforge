@@ -40,7 +40,7 @@ export function RiffbuchAnsicht() {
             </li>
           ))}
         </ul>
-        {stand.offen > 3 && <p className="mt-2 text-[12.5px] text-dim">… und {stand.offen - 3} weitere.</p>}
+        {stand.offen > 3 && <p className="mt-2 text-[13px] text-dim">… und {stand.offen - 3} weitere.</p>}
       </section>
     </>
   )
