@@ -77,7 +77,10 @@ Komponente.
   nur der Name und das Wort des Tages in Pixel-Blackletter, das Zeichen ist ein
   Totenkopf. Jersey nur in 20/30/40/60 px (10er-Raster, sonst weiche Kanten),
   Text in IBM Plex, Etiketten ab 13 px und höchstens 0,08 em gesperrt, der Schädel
-  nicht als Überschrift-Schmuck. Farben stehen als CSS-Variablen in `app/globals.css`, nicht als
+  nicht als Überschrift-Schmuck. Gewichte nur 400 und 500 — Jersey und die
+  anderen Zierschriften gibt es nur in 400, jede Fettung darüber ist erfunden
+  (`font-synthesis: none`); Merch-Überschriften sind Jersey 30 px mit Linie, der
+  Edding gehört nur auf den Zettel. Farben stehen als CSS-Variablen in `app/globals.css`, nicht als
   Hex-Werte in Komponenten. Der Grund bleibt matt, die Session bleibt ruhig —
   Grenzen und Gründe in `docs/design-und-themes.md`.
 - **Beim Abgleich gewinnt keine Seite.** Konflikt heisst: neu lesen, erneut

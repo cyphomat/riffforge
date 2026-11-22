@@ -61,6 +61,12 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+  /* Keine erfundene Fettung: Jersey, Jacquard, Anton und der Edding gibt es nur
+     in 400. Fragt eine Regel mehr an, nimmt der Browser sonst die Schrift und
+     verbreitert sie künstlich — bei Pixelschrift ein Klumpen. */
+  html {
+    font-synthesis: none;
+  }
 }
 
 /* ── Riffforge ── Backline.
@@ -283,7 +289,7 @@
   /* Überschrift mit auslaufender Linie — trennt Abschnitte, ohne einen
      Kasten zu brauchen. */
   .rule {
-    @apply flex items-center gap-[10px] font-mono text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
+    @apply flex items-center gap-[10px] font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-muted;
   }
   /* Die Linie hinter der Überschrift ist durchgezogen, 2 px, in der Farbe der
      Rahmen. Der Schädel vor jeder Überschrift und die gestrichelte Linie sind
@@ -336,7 +342,7 @@
   }
 
   .kicker {
-    @apply font-mono text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
+    @apply font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-muted;
   }
 
   /* Die Wortmarke, und sonst nichts. Anton ist für engen Satz gezeichnet —
@@ -361,7 +367,9 @@
   /* Grosse Zahlen und Namen: Oswald, versal, eng geführt. */
   .display {
     font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
-    @apply font-semibold uppercase leading-[1.05] tracking-[0.01em];
+    /* Stärke 400, nicht 600: Jersey gibt es nur in 400, bei 600 fettet der
+       Browser künstlich nach und schmiert das Pixelraster zu. */
+    @apply font-normal uppercase leading-[1.05] tracking-[0.01em];
   }
 
   /* Die Kante unter der Navigation: eine ruhige 2-px-Linie in Stahlblau.
@@ -464,7 +472,7 @@
   .stat .v {
     /* `.display` und `.glimmt`, ausgeschrieben — siehe `.huelle-breit`. */
     font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", Helvetica, Arial, sans-serif;
-    @apply mt-0.5 text-[30px] leading-[1.05] font-semibold uppercase tracking-[0.01em] text-akzent;
+    @apply mt-0.5 text-[30px] leading-[1.05] font-normal uppercase tracking-[0.01em] text-akzent;
     text-shadow: var(--glimmen);
     font-variant-numeric: tabular-nums;
   }
@@ -565,7 +573,7 @@
      die Überschrift zu statt von ihr weg. Markiert, wo etwas aufhört. */
   .rule-backstage {
     /* `.rule`, ausgeschrieben — siehe `.huelle-breit`. */
-    @apply flex items-center gap-[10px] font-mono text-[13px] font-bold uppercase text-akzent tracking-[0.08em];
+    @apply flex items-center gap-[10px] font-mono text-[13px] font-medium uppercase text-akzent tracking-[0.08em];
   }
   .rule-backstage::after {
     display: none;
@@ -757,23 +765,28 @@
     filter: grayscale(1) brightness(0.45);
   }
 
-  /* Überschriften im Merch-Stand als Streifen Gaffa mit Edding darauf, aus
-     Setlist: leicht schief geklebt, die Enden gerissen. Papier und Tinte wie
-     auf dem Zettel — dieselbe Handschrift auf demselben Grund. */
+  /* Überschriften im Merch-Stand: Jersey in 30 px mit der durchgezogenen
+     Linie dahinter, wie die Unterüberschriften, nur grösser. Vorher ein
+     Streifen Gaffa mit Edding (aus Setlist) — beides schief, in Papierweiss
+     und in der schwersten Schrift der App: die lautesten Stellen standen
+     über Text, der ohnehin klein ist. Der Edding bleibt auf dem Zettel, wo
+     er Handschrift auf Papier ist. Der Name `.tape` bleibt, damit die
+     Überschriften nicht umgeschrieben werden müssen; `.schief` tut nichts
+     mehr. */
   .tape {
-    @apply mb-[14px] mt-9 w-fit max-w-full px-[14px] pb-1 pt-[5px] uppercase [overflow-wrap:anywhere];
-    font-family: var(--font-edding), var(--font-oswald), "Helvetica Neue", sans-serif;
-    font-size: 17px;
-    line-height: 1.25;
-    letter-spacing: 0.03em;
-    color: var(--tinte);
-    background: var(--papier);
-    transform: rotate(-0.8deg);
-    clip-path: polygon(0 8%, 3% 0, 97% 4%, 100% 0, 99% 52%, 100% 100%, 96% 94%, 4% 100%, 0 92%, 1% 46%);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+    @apply mb-[14px] mt-9 flex items-center gap-3 uppercase text-fg [overflow-wrap:anywhere];
+    font-family: var(--font-jersey), var(--font-oswald), "Helvetica Neue", sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
   }
-  .tape.schief {
-    transform: rotate(0.6deg);
+  .tape::after {
+    content: "";
+    flex: 1;
+    min-width: 12px;
+    height: 2px;
+    background: var(--line);
   }
 
   /* ── Das Tourshirt, aus Setlist ──

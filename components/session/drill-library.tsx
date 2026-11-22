@@ -75,7 +75,7 @@ function Karte({
           </div>
         </div>
         <div className="flex-none text-right">
-          <div className="ziffern text-[15px] font-bold text-akzent">
+          <div className="ziffern text-[15px] font-medium text-akzent">
             {nextBpm(drill, progress, profile)}
           </div>
           <div className="font-mono text-[13px] uppercase tracking-[0.08em] text-dim">

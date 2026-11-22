@@ -141,9 +141,10 @@
   (AA). Gewendet wird in 3D, ohne Drehung bei reduzierter Bewegung; hinten
   stehen höchstens 33 Daten, alle mit Art des Tages (*Session*, *Lick*,
   *Sieben Saiten*) in der aufklappbaren Liste darunter (`termine`).
-  Ebenfalls aus Setlist: die **Gaffa-Etiketten** (`.tape`) als
-  Überschriften im Merch-Stand — Edding auf Papierstreifen, mit derselben
-  Tinte wie der Zettel —, die **Bildleiste der Ränge** statt der Segmente
+  Ebenfalls aus Setlist: die **Überschriften** (`.tape`) im Merch-Stand —
+  seit November 2026 Jersey in 30 px mit Linie dahinter; die Gaffa-Streifen
+  mit Edding waren das lauteste Element der Seite und die schwerste Schrift
+  der App, der Edding bleibt auf dem Zettel —, die **Bildleiste der Ränge** statt der Segmente
   (erreichte Bühnen sind Knöpfe und holen ihre Szene mit dem Tag des
   Aufstiegs, `rangTage`, gross nach oben; was noch kommt, bleibt dunkel und
   stumm), und die Kutte als **eine Fläche** (`.card`). Die Anordnung folgt Setlist
