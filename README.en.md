@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1706%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1781%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -228,6 +228,13 @@ the warm-up, a hand for palm muting, the X of a dead note.
 | Eighth Pendulum | Pentatonic | Eighth notes and rests: an eighth is half a quarter | 60 → 90 |
 | Distances | Pentatonic | Hear and read distances: fourth and fifth across several strings | 60 → 100 |
 | Two Places | Pentatonic | Positions: the same note in two places, first in position 1, then in position 2 | 50 → 80 |
+
+**Tabs you can listen to.** Under every tab there is a *Listen* button before you
+start (and in the pause): the drill sounds at the metronome's tempo, with
+count-in, click and loop. Power chords, palm mutes, dead notes, hammer-ons,
+slides and bends sound as the tab shows them; the beats are louder than the
+steps between, so you hear the bar before you have to play it. Inside the block
+the metronome runs, so there is no listening there.
 
 ## One lick
 

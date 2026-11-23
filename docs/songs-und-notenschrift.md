@@ -150,3 +150,32 @@ nichts, dort gibt es kein Anhören.
 - Weitere Songs: Töne, Längen, Abstände und Lagen sind abgedeckt. Als Nächstes
   brauchen sie Sechzehntel, Punktierte oder Vorzeichen im Notensatz (siehe „Noch
   nicht gesetzt") — oder eine dritte Lage, wenn die Hand die zweite sicher hat.
+
+## Drills anhören
+
+Der Wunsch kam von einem Tester: wer anfängt, erkennt den Anschlagrhythmus aus
+dem Text einer Tabulatur schlecht. Songs konnten sich schon anhören, Drills
+nicht — ihre Tab ist ein String ohne Noten.
+
+- **Der Klang steht neben der Tab, nicht in ihr.** Der erste Plan war, die
+  ASCII-Tab zu lesen und den Abstand der Spalten als Zeit zu nehmen. Der Abstand
+  trägt nur ungefähr: im Gallop sind es 3, 2 und 4 Spalten für Achtel und zwei
+  Sechzehntel, im Tremolo steht jede Note in einer Spalte. Also steht der Klang
+  in `lib/theory/drill-spiel.ts` als Raster plus Figur in Wörtern, und
+  `drill-spiel.test.ts` hält ihn gegen die Tab: dieselben Griffe in derselben
+  Reihenfolge. Wer eine der beiden ändert, muss die andere mitnehmen.
+- **Ganze Takte.** Eine Figur füllt ganze Takte, sonst verrutscht der Klick in
+  der Schleife. Einige Drills haben deshalb Luft am Ende (`.`), und die Tab der
+  Chug-Übung hat zwölf statt elf Anschläge — elf waren ein Zählfehler.
+- **Der Schlag ist lauter.** Anschläge auf dem Schlag klingen voller als die
+  Schritte dazwischen, tote Noten und Legato leiser. Daran hört man die Eins,
+  bevor man sie spielen muss.
+- **Kein Song-Player.** `SongPlayer` kennt eine Stimme, Achtel und keine
+  toten Noten; Powerchords, Sechzehntel und Slides brauchen mehr. `DrillPlayer`
+  teilt mit ihm nur die Uhr, den Zupfton, den Klick und den Master-Knoten.
+- **Anhören nur vor dem Los und in der Pause**, aus demselben Grund wie bei Songs:
+  im Block läuft das Metronom, und zwei Takte gegeneinander helfen niemandem.
+- **Offen:** der Sieben-Saiter-Katalog und die Lick-Schmiede haben noch keinen
+  Klang; die klingende Stelle leuchtet in der Tab (anders als in der Notenschrift)
+  noch nicht mit; Gleiten ist ein Tonhöhen-Rutsch des Zupftons, keine Messung
+  gegen eine echte Gitarre.

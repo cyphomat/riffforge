@@ -53,6 +53,10 @@
 | `lib/audio/zupfen.ts` | Ein gezupfter Ton aus Obertönen — rein, auf den Cent gemessen |
 | `lib/audio/song-ablauf.ts` | Wann in einem Song-Durchgang was erklingt, in Sekunden — rein, das Tempo nachgerechnet |
 | `lib/audio/song-player.ts` | Spielt einen Song auf der einen Uhr: Durchgänge im Voraus planen, Schleife, Einzähler, Klick. Anhalten trennt den Master-Knoten |
+| `lib/theory/drill-spiel.ts` | Wie ein Drill klingt: je Drill ein Raster und eine Figur in Wörtern (`6:0 . m0 x`), dazu der Leser `liesFigur`. Die Tabulatur ist Text und kein Zeitraster, deshalb steht der Klang daneben und `drill-spiel.test.ts` hält beide gegeneinander |
+| `lib/audio/drill-ablauf.ts` | Wann was in einer Figur erklingt, in Sekunden: Akzent auf dem Schlag, Palm Mute und tote Note kurz, Slide und Bending als Gleiten. Rein |
+| `lib/audio/drill-player.ts` | Spielt die Figur auf der einen Uhr ab, wie `SongPlayer`, aber mit Akkorden, Klacken, dumpfem Filter und Tonhöhen-Gleiten |
+| `components/session/drill-bedienung.tsx` | Anhören, Schleife, Klick unter der Tabulatur im Block; nur vor dem Los und in der Pause |
 | `components/session/song-bedienung.tsx` | Anhören, Tempo, Schleife und Klick für einen Song; den `AudioEngine` bringt der Aufrufer mit |
 | `components/session/song-ansicht.tsx` | Was ein Song-Block zeigt: Notenschrift, Tonnamen auf Wunsch, Anhören — nicht während der Block läuft |
 | `components/theory/intervall-hoeren.tsx` | Spielt die Töne einer Hörfrage: zwei bei einem Intervall (`IntervallHoeren`), einen bei einer Leersaite (`SaiteHoeren`), Anker plus Ton bei einer Ankerkarte (`AnkerHoeren`) |

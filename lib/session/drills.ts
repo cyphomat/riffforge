@@ -100,13 +100,13 @@ E|-0--0--0--0--0--0--0--0--|
       "Ziel ist ein trockenes 'tschk', kein dumpfes Nichts",
       "Auf gleiche Lautstärke hören, nicht auf Geschwindigkeit",
     ],
-    tab: `e|----------------------------------|
-B|----------------------------------|
-G|----------------------------------|
-D|----------------------------------|
-A|----------------------------------|
-E|-0--0--0--0--0--0--0--0--0--0--0--|
-   PM-----------------------------`,
+    tab: `e|-------------------------------------|
+B|-------------------------------------|
+G|-------------------------------------|
+D|-------------------------------------|
+A|-------------------------------------|
+E|-0--0--0--0--0--0--0--0--0--0--0--0--|
+   PM--------------------------------`,
     why: "Palm Muting kürzt die Ausklingzeit, ohne die Tonhöhe zu ändern. Dadurch wird der Ton perkussiv: Du hörst den Rhythmus deutlicher als die Harmonie — die Basis des Metal-Riffings.",
     startBpm: 80,
     targetBpm: 170,
