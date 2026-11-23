@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { BeatIndicator } from "@/components/session/beat-indicator"
 import { MicPanel } from "@/components/session/mic-panel"
+import { DrillBedienung } from "@/components/session/drill-bedienung"
 import { SongAnsicht } from "@/components/session/song-ansicht"
 import { TabView } from "@/components/session/tab-view"
 import { TimingReport } from "@/components/session/timing-report"
@@ -390,6 +391,9 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
       )}
 
       {drill.tab && !drill.song && <TabView tab={drill.tab} />}
+      {drill.tab && !drill.song && !timer.isRunning && (
+        <DrillBedienung key={drill.id} drillId={drill.id} bpm={metronome.bpm} engine={engine} />
+      )}
 
       <div>
         <h3 className="rule mb-2">Worauf achten</h3>

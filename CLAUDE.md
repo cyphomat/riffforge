@@ -94,6 +94,7 @@ Komponente.
 - **Eine verlassene Session wird zurückgerechnet, nicht neu gewürfelt.** Gemerkt wird nur die Stelle (`lib/session/session-stand.ts`), der Plan kommt aus dem Log zu Beginn; der Log bleibt append-only.
 - **Ein neuer Bildschirm beginnt oben.** Wer Bildschirme an Ort und Stelle ablöst (Block, Bewertung, Fragen, Abschluss), ruft `useScrollTopOn` aus `hooks/use-scroll-top.ts`; Begründung in `docs/session-und-bildschirme.md`.
 - **Eine Drill-Tabulatur ist höchstens 41 Zeichen breit**, sonst schneidet das Handy sie ab; `drills-tab.test.ts` prüft es, breitere werden in Systeme zerlegt. Spielzeit unter einer Minute steht in Sekunden (`spielzeit`).
+- **Der Klang eines Drills steht neben der Tabulatur, nicht in ihr** (`lib/theory/drill-spiel.ts`). Die Tab ist Text ohne Zeitraster; `drill-spiel.test.ts` verlangt dieselben Griffe in derselben Reihenfolge und ganze Takte. Anhören gibt es nur vor dem Los und in der Pause; Begründung in `docs/songs-und-notenschrift.md`.
 - **Szenario-Karten (`lib/theory/szenarien.ts`) liegen nicht in `THEORY_CARDS`.**
   Nur die Transfer-Runde fragt sie; neue Karten bekommen ihre Nachrechnung in
   `szenarien.test.ts` und die richtige Antwort nicht immer an dieselbe Stelle.

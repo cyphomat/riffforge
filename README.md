@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1706%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1781%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -224,6 +224,13 @@ Warm-up, Hand für Palm Mute, das X der Dead Note.
 | Achtel-Pendel | Pentatonic | Achtel und Pausen: eine Achtel ist eine halbe Viertel | 60 → 90 |
 | Abstände | Pentatonic | Abstände hören und lesen: Quarte und Quinte über mehrere Saiten | 60 → 100 |
 | Zwei Orte | Pentatonic | Lagen: derselbe Ton an zwei Orten, erst in Lage 1, dann in Lage 2 | 50 → 80 |
+
+**Tabs zum Anhören.** Unter jeder Tabulatur steht vor dem Los (und in der Pause)
+ein Knopf *Anhören*: der Drill erklingt im Tempo des Metronoms, mit Einzähler,
+Klick und Schleife. Powerchords, Palm Mutes, tote Anschläge, Hammer-ons, Slides
+und Bendings klingen, wie sie im Tab stehen; die Schläge sind lauter als die
+Schritte dazwischen, damit man den Takt hört, bevor man ihn spielen muss. Im
+Block selbst läuft das Metronom, dort gibt es kein Anhören.
 
 ## Ein Lick
 
