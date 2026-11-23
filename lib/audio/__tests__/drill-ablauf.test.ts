@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { figurVon } from "../../theory/drill-spiel"
-import { DUMPF_S, TOT_S, bauDrillAblauf, schrittSekunden } from "../drill-ablauf"
+import { DUMPF_S, TOT_S, bauDrillAblauf, klickzeiten, schrittSekunden } from "../drill-ablauf"
 
 /**
  * Das Tempo, nachgerechnet: bei 120 BPM dauert ein Schlag eine halbe Sekunde,
@@ -86,5 +86,30 @@ describe("bauDrillAblauf", () => {
 
   it("folgt dem Tempo: doppelt so schnell, halb so lang", () => {
     expect(ablauf("tech-gallop", 60).dauer).toBe(2 * ablauf("tech-gallop", 120).dauer)
+  })
+})
+
+describe("klickzeiten", () => {
+  it("klickt je Schlag so oft wie der Drill Klicks je Schlag hat", () => {
+    // Achtel-Drill bei 120 BPM: ein Klick alle Viertelsekunde, der Nebenschlag leiser.
+    const klicks = klickzeiten(4, 120, 2)
+    expect(klicks).toHaveLength(8)
+    expect(klicks.map((k) => k.zeit)).toEqual([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75])
+    expect(klicks.map((k) => k.nebenschlag)).toEqual([false, true, false, true, false, true, false, true])
+    expect(klicks.filter((k) => k.betont)).toHaveLength(1)
+  })
+
+  it("lässt den Klick eines Viertel-Drills, wie er war", () => {
+    const klicks = klickzeiten(8, 120, 1)
+    expect(klicks).toHaveLength(8)
+    expect(klicks.every((k) => !k.nebenschlag)).toBe(true)
+    expect(klicks.filter((k) => k.betont).map((k) => k.zeit)).toEqual([0, 2])
+  })
+
+  it("gibt dem Anhören denselben Klick wie dem Block", () => {
+    // Pentatonik Box: Achtel, Tempo 72 — 144 Klicks je Minute, ein Klick je Ton.
+    const a = bauDrillAblauf(figurVon("tech-pentatonic-box")!, 72, 2)
+    expect(a.klicks).toHaveLength(16)
+    expect(a.klicks[1].zeit).toBeCloseTo(60 / 72 / 2, 10)
   })
 })

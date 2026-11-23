@@ -22,12 +22,23 @@ import { figurVon } from "@/lib/theory/drill-spiel"
  * `AudioContext` gibt. Kein Abspielen von selbst: der Kontext entsteht erst
  * aus dem Tippen.
  */
-export function DrillBedienung({ drillId, bpm, engine }: { drillId: string; bpm: number; engine: AudioEngine }) {
+export function DrillBedienung({
+  drillId,
+  bpm,
+  subdivision,
+  engine,
+}: {
+  drillId: string
+  bpm: number
+  /** Klicks je Schlag im Block des Drills; der Klick beim Anhören folgt ihm. */
+  subdivision: number
+  engine: AudioEngine
+}) {
   const figur = useMemo(() => figurVon(drillId), [drillId])
   const [spielt, setSpielt] = useState(false)
   const [schleife, setSchleife] = useState(true)
   const [klick, setKlick] = useState(true)
-  const [player] = useState(() => new DrillPlayer(engine, { bpm, schleife: true, klick: true, onEnde: () => setSpielt(false) }))
+  const [player] = useState(() => new DrillPlayer(engine, { bpm, subdivision, schleife: true, klick: true, onEnde: () => setSpielt(false) }))
 
   useEffect(() => () => player.dispose(), [player])
   useEffect(() => player.setBpm(bpm), [bpm, player])
