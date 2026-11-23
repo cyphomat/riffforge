@@ -1,6 +1,6 @@
 import type { Figur } from "../theory/drill-spiel"
 import type { AudioEngine } from "./audio-engine"
-import { bauDrillAblauf, SCHLAEGE_JE_TAKT, schrittSekunden, type DrillKlick, type DrillTon } from "./drill-ablauf"
+import { bauDrillAblauf, klickzeiten, SCHLAEGE_JE_TAKT, schrittSekunden, type DrillKlick, type DrillTon } from "./drill-ablauf"
 import { spieleKlick } from "./metronome"
 import { gezupft, hertzAus } from "./zupfen"
 
@@ -32,6 +32,8 @@ export interface DrillPlayerOptions {
   schleife?: boolean
   /** Einzähler und Klick im Takt. */
   klick?: boolean
+  /** Klicks je Schlag wie im Block des Drills: 1 = Viertel, 2 = Achtel. */
+  subdivision?: number
   onEnde?: () => void
 }
 
@@ -50,6 +52,7 @@ export class DrillPlayer {
   private bpm: number
   private schleife: boolean
   private klick: boolean
+  private subdivision: number
   private onEnde?: () => void
 
   constructor(engine: AudioEngine, options: DrillPlayerOptions = {}) {
@@ -57,6 +60,7 @@ export class DrillPlayer {
     this.bpm = options.bpm ?? 80
     this.schleife = options.schleife ?? true
     this.klick = options.klick ?? true
+    this.subdivision = Math.max(1, options.subdivision ?? 1)
     this.onEnde = options.onEnde
   }
 
@@ -96,10 +100,8 @@ export class DrillPlayer {
 
     let beginn = ctx.currentTime + VORLAUF_S
     if (this.klick) {
-      const schlag = schrittSekunden(this.bpm, 1)
-      const zaehler = Array.from({ length: SCHLAEGE_JE_TAKT }, (_, i) => ({ zeit: i * schlag, betont: i === 0 }))
-      this.planeKlicks(zaehler, beginn)
-      beginn += SCHLAEGE_JE_TAKT * schlag
+      this.planeKlicks(klickzeiten(SCHLAEGE_JE_TAKT, this.bpm, this.subdivision), beginn)
+      beginn += SCHLAEGE_JE_TAKT * schrittSekunden(this.bpm, 1)
     }
     this.naechster = beginn
     this.planeDurchgang()
@@ -141,7 +143,7 @@ export class DrillPlayer {
     const { ctx, figur, master } = this
     if (!ctx || !figur || !master) return
 
-    const ablauf = bauDrillAblauf(figur, this.bpm)
+    const ablauf = bauDrillAblauf(figur, this.bpm, this.subdivision)
     const beginn = this.naechster
     for (const ton of ablauf.toene) this.planeTon(ton, beginn)
     if (this.klick) this.planeKlicks(ablauf.klicks, beginn)
@@ -215,7 +217,7 @@ export class DrillPlayer {
   private planeKlicks(klicks: DrillKlick[], beginn: number): void {
     const { ctx, master } = this
     if (!ctx || !master) return
-    for (const k of klicks) spieleKlick(ctx, beginn + k.zeit, k.betont, false, 1, master)
+    for (const k of klicks) spieleKlick(ctx, beginn + k.zeit, k.betont, k.nebenschlag, 1, master)
   }
 
   private pufferFuer(ctx: AudioContext, midi: number): AudioBuffer {

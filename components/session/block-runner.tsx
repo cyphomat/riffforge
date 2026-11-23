@@ -392,7 +392,7 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
 
       {drill.tab && !drill.song && <TabView tab={drill.tab} />}
       {drill.tab && !drill.song && !timer.isRunning && (
-        <DrillBedienung key={drill.id} drillId={drill.id} bpm={metronome.bpm} engine={engine} />
+        <DrillBedienung key={drill.id} drillId={drill.id} bpm={metronome.bpm} subdivision={drill.subdivision} engine={engine} />
       )}
 
       <div>

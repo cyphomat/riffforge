@@ -36,13 +36,15 @@ export interface DrillTon {
 export interface DrillKlick {
   zeit: number
   betont: boolean
+  /** Ein Klick zwischen den Schlägen: leiser, wie im Metronom des Blocks. */
+  nebenschlag: boolean
 }
 
 export interface DrillAblauf {
   /** Länge eines Durchgangs: ganze Schritte der Figur, damit eine Schleife nahtlos anschließt. */
   dauer: number
   toene: DrillTon[]
-  /** Ein Klick je Schlag. */
+  /** Die Klicks des Blocks: je Schlag so viele, wie der Drill `subdivision` hat. */
   klicks: DrillKlick[]
 }
 
@@ -51,7 +53,22 @@ export function schrittSekunden(bpm: number, raster: number): number {
   return 60 / bpm / raster
 }
 
-export function bauDrillAblauf(figur: Figur, bpm: number): DrillAblauf {
+/**
+ * Die Klicks für ganze Schläge, so dicht wie das Metronom im Block: bei
+ * `subdivision` 2 klickt es auf jedem Achtel. Wer sich das Gehörte danach im
+ * Block zum Klick spielt, hört denselben Klick; ein Klick nur auf den Vierteln
+ * ließe ein Achtel-Drill doppelt so schnell wirken, als er im Block läuft.
+ */
+export function klickzeiten(schlaege: number, bpm: number, subdivision: number): DrillKlick[] {
+  const proTakt = SCHLAEGE_JE_TAKT * subdivision
+  return Array.from({ length: schlaege * subdivision }, (_, k) => ({
+    zeit: (k * schrittSekunden(bpm, 1)) / subdivision,
+    betont: k % proTakt === 0,
+    nebenschlag: k % subdivision !== 0,
+  }))
+}
+
+export function bauDrillAblauf(figur: Figur, bpm: number, subdivision = 1): DrillAblauf {
   const schritt = schrittSekunden(bpm, figur.raster)
   const dauer = figur.schritte * schritt
   const toene: DrillTon[] = []
@@ -99,9 +116,6 @@ export function bauDrillAblauf(figur: Figur, bpm: number): DrillAblauf {
   return {
     dauer,
     toene,
-    klicks: Array.from({ length: schlaege }, (_, k) => ({
-      zeit: k * schrittSekunden(bpm, 1),
-      betont: k % SCHLAEGE_JE_TAKT === 0,
-    })),
+    klicks: klickzeiten(schlaege, bpm, subdivision),
   }
 }
