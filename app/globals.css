@@ -123,6 +123,7 @@
     --pix-line: -2px 0 0 0 var(--line), 2px 0 0 0 var(--line), 0 -2px 0 0 var(--line), 0 2px 0 0 var(--line);
     --pix-akzent: -2px 0 0 0 var(--akzent), 2px 0 0 0 var(--akzent), 0 -2px 0 0 var(--akzent), 0 2px 0 0 var(--akzent);
     --pix-stahl: -2px 0 0 0 var(--stahl), 2px 0 0 0 var(--stahl), 0 -2px 0 0 var(--stahl), 0 2px 0 0 var(--stahl);
+    --pix-gruen: -2px 0 0 0 var(--gruen), 2px 0 0 0 var(--gruen), 0 -2px 0 0 var(--gruen), 0 2px 0 0 var(--gruen);
 
     /* Zwei Masken aus Rechtecken: ein 7 × 7 Schädel und eine 16 × 8 Zacke.
        Als Maske, nicht als Bild — die Farbe kommt vom Element, also folgt sie
