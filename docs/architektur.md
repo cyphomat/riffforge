@@ -105,6 +105,8 @@
 | `lib/session/repertoire.ts` | Das Repertoire: echte Songs mit Abschnitten, Lernstand und Sound — Schema, Regeln, Fortschritt und Übetempo in BPM, rein, keine Noten; gespeichert wird in `lokal.ts` |
 | `lib/session/repertoire-session.ts` | Das Repertoire in der Session: welcher Abschnitt dran ist, welchen Block er füllt, der namenlose Log-Eintrag — rein |
 | `lib/session/repertoire-formular.ts` | Formulareingaben als Text: in einen Song oder Abschnitt wandeln, Fehler mit Feldnamen auf Deutsch — rein |
+| `lib/session/repertoire-datei.ts` | Das Repertoire als eigene Datei: schreiben, prüfen, mit dem Stand hier verschmelzen und sagen, was sich ändert — rein |
+| `components/session/repertoire-datei.tsx` | Datei sichern (am Handy über das Teilen-Menü) und einlesen mit Vorschau |
 | `components/session/repertoire-ansicht.tsx` | `/drills/repertoire`: Liste mit Fortschritt, der offene Song steht in `?song=` |
 | `components/session/repertoire-song.tsx` | Ein Song: Abschnitte, Status mit einem Tipp, Sound, Löschen |
 | `components/session/repertoire-formulare.tsx` | Formulare für Song und Abschnitt, Löschen mit Rückfrage |

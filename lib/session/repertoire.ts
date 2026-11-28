@@ -6,7 +6,8 @@ import { TECHNIQUES } from "./types"
  *
  * The app only keeps track of the learning state — no notes, no tabs, no files.
  * The data lives on this device (see `lib/storage/lokal.ts`) and is neither
- * synced nor part of the backup file. The repository is public: real song data
+ * synced nor part of the backup file; it travels in a file of its own
+ * (`repertoire-datei.ts`). The repository is public: real song data
  * never goes into it, not even as a test fixture.
  *
  * This is not the catalogue in `songs.ts`: those are our own riffs with a
@@ -42,6 +43,10 @@ export const abschnittSchema = z.object({
   zuletzt: datum.optional(),
   /** When it was last practised while already in place: the last repetition. */
   wiederholt: datum.optional(),
+  /** When status or practice tempo last changed. Decides which file wins on import. */
+  standAm: datum.optional(),
+  /** When name, bars, track or tags were last edited. */
+  geaendert: datum.optional(),
 })
 export type Abschnitt = z.infer<typeof abschnittSchema>
 
@@ -57,6 +62,13 @@ export const soundSchema = z.object({
   boost: text.optional(),
 })
 export type Sound = z.infer<typeof soundSchema>
+
+type Lage = { spur: string; von: number; bis: number }
+
+/** Rhythm and lead may cover the same bars; one track may not cover a bar twice. */
+export function ueberlappt(a: Lage, b: Lage): boolean {
+  return a.spur.toLowerCase() === b.spur.toLowerCase() && a.von <= b.bis && b.von <= a.bis
+}
 
 export const repertoireSongSchema = z
   .object({
@@ -79,6 +91,8 @@ export const repertoireSongSchema = z
     quelle: text.regex(/^[^/\\]*$/, "nur der Dateiname, kein Pfad"),
     abschnitte: z.array(abschnittSchema),
     sound: soundSchema.optional(),
+    /** When the song's own data or sound was last edited. */
+    geaendert: datum.optional(),
   })
   .superRefine((song, ctx) => {
     const melden = (index: number, message: string) => ctx.addIssue({ code: "custom", path: ["abschnitte", index], message })
@@ -87,8 +101,7 @@ export const repertoireSongSchema = z
       if (a.bis > song.takte) melden(i, `${a.name}: der Song hat nur ${song.takte} Takte`)
       const davor = song.abschnitte.slice(0, i)
       if (davor.some((b) => b.id === a.id)) melden(i, `${a.name}: Kennung doppelt`)
-      // Rhythm and lead may cover the same bars; one track may not cover a bar twice.
-      const doppelt = davor.find((b) => b.spur.toLowerCase() === a.spur.toLowerCase() && a.von <= b.bis && b.von <= a.bis)
+      const doppelt = davor.find((b) => ueberlappt(a, b))
       if (doppelt) melden(i, `${a.name} überlappt ${doppelt.name}`)
     })
   })
@@ -134,24 +147,46 @@ function datiert(a: Abschnitt, jetzt: Date): Abschnitt {
   return { ...a, erstmals: { ...a.erstmals, [a.status]: jetzt.toISOString() } }
 }
 
+const gleich = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
+
+/** What the song says about itself, without its sections and dates. */
+export function songDaten(s: RepertoireSong) {
+  return [s.titel, s.band, s.tempoHeader, s.stimmung, s.takte, s.taktarten, s.quelle, s.sound ?? null]
+}
+
+/** What a section is, as opposed to how far it has been learned. */
+export function abschnittDaten(a: Abschnitt) {
+  return [a.name, a.von, a.bis, a.spur, a.technikTags]
+}
+
 /**
  * Adds a song or replaces the one with the same id. An invalid song changes
  * nothing (ask `repertoireSongSchema` for the reasons). Dates a section already
  * has survive the replacement, even if the incoming song does not carry them.
+ * Edits of existing data are stamped; a newly added song or section is not, so
+ * an untouched section never counts as newer than a practised one.
  */
 export function songSpeichern(repertoire: Repertoire, song: RepertoireSong, jetzt: Date = new Date()): Repertoire {
   const geprueft = repertoireSongSchema.safeParse(song)
   if (!geprueft.success) return repertoire
   const alt = repertoire.songs.find((s) => s.id === geprueft.data.id)
+  const am = jetzt.toISOString()
+  const songGeaendert = alt && !gleich(songDaten(alt), songDaten(geprueft.data)) ? am : alt?.geaendert
   const neu: RepertoireSong = {
     ...geprueft.data,
+    ...(songGeaendert ? { geaendert: songGeaendert } : {}),
     abschnitte: geprueft.data.abschnitte.map((a) => {
       const bisher = alt?.abschnitte.find((b) => b.id === a.id)
+      const standNeu = bisher && (bisher.status !== a.status || bisher.uebetempoProzent !== a.uebetempoProzent)
+      const standAm = standNeu ? am : bisher?.standAm
+      const geaendert = bisher && !gleich(abschnittDaten(bisher), abschnittDaten(a)) ? am : bisher?.geaendert
       const gemerkt = {
         ...a,
         erstmals: { ...a.erstmals, ...bisher?.erstmals },
         ...(bisher?.zuletzt ? { zuletzt: bisher.zuletzt } : {}),
         ...(bisher?.wiederholt ? { wiederholt: bisher.wiederholt } : {}),
+        ...(standAm ? { standAm } : {}),
+        ...(geaendert ? { geaendert } : {}),
       }
       return datiert(gemerkt, jetzt)
     }),
@@ -174,7 +209,7 @@ export function statusSetzen(
 ): Repertoire {
   const abschnitt = repertoire.songs.find((s) => s.id === songId)?.abschnitte.find((a) => a.id === abschnittId)
   if (!abschnitt || abschnitt.status === status) return repertoire
-  const neu = datiert({ ...abschnitt, status }, jetzt)
+  const neu = datiert({ ...abschnitt, status, standAm: jetzt.toISOString() }, jetzt)
   return {
     songs: repertoire.songs.map((s) =>
       s.id === songId ? { ...s, abschnitte: s.abschnitte.map((a) => (a.id === abschnittId ? neu : a)) } : s,
@@ -198,7 +233,7 @@ export function abschnittGeuebt(
   if (!abschnitt) return repertoire
   const am = jetzt.toISOString()
   const neu = datiert(
-    { ...abschnitt, status, zuletzt: am, ...(abschnitt.status === "sitzt" ? { wiederholt: am } : {}) },
+    { ...abschnitt, status, zuletzt: am, standAm: am, ...(abschnitt.status === "sitzt" ? { wiederholt: am } : {}) },
     jetzt,
   )
   return {

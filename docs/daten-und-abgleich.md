@@ -77,7 +77,7 @@
   Guitar-Pro-Dateien. `songs.ts` und `pruefeSong` haben damit nichts zu tun:
   das sind eigene Riffe mit nachgerechnetem Lernziel.
   Es wird **nicht abgeglichen und steht nicht in der Sicherungsdatei**: wer
-  den Browser leert, verliert es. Weil es anders als Riffbuch oder Rack
+  den Browser leert, verliert es, was nicht als eigene Datei gesichert ist. Weil es anders als Riffbuch oder Rack
   Handarbeit ist, wird Kaputtes beiseitegelegt (`mga.repertoire.v1.broken`),
   und gelingt das nicht, wird auch nicht darübergeschrieben. Ein eigener
   Export ist offen.
@@ -95,3 +95,21 @@
   Eintrag passt auf dem Handy nicht in die Leiste. Sie sagt auf jedem
   Bildschirm ausser beim Bearbeiten, dass der Stand nur auf diesem Gerät liegt,
   und meldet, wenn das Speichern scheitert.
+- **Das Repertoire reist als eigene Datei** (`repertoire-datei.ts`,
+  `riffforge-repertoire-JJJJ-MM-TT.json`, in `.gitignore`). Sie ist getrennt von
+  der Sicherung, weil diese und der Abgleich ohne echte Songdaten bleiben
+  sollen. Gelesen wird ganz oder gar nicht: ein kaputter Song, eine fremde
+  `app`/`art` oder eine neuere `version` ändern nichts. Übernommen wird erst nach
+  der Vorschau. Songs finden sich über die Kennung, sonst über Titel und Band;
+  Abschnitte über die Kennung, sonst über Name und Spur. Anders als beim Log
+  gibt es hier veränderliche Werte, deshalb entscheidet das Datum, und zwar
+  getrennt: `standAm` für Status und Übetempo, `geaendert` für Beschreibung und
+  Songdaten. So nimmt ein umbenannter Abschnitt auf dem einen Gerät dem anderen
+  nicht den neueren Übungsstand. Ältere Daten ohne `standAm` zählen mit ihrem
+  jüngsten Übungs- oder Erreicht-Datum, bei Gleichstand gilt, was hier steht.
+  Neu Angelegtes bekommt keinen Stempel, damit ein unberührter Abschnitt nie
+  neuer wirkt als ein geübter. Gelöscht wird beim Einlesen nichts, auch kein
+  Tag und kein Sound-Wert; hier Gelöschtes kommt aus einer alten Datei deshalb
+  zurück. Ein Abschnitt, der einen anderen auf derselben Spur überlappen würde,
+  wird nicht übernommen, und die Vorschau sagt es. Auf iPhone und iPad geht die
+  Datei über das Teilen-Menü hinaus, sonst als Download.

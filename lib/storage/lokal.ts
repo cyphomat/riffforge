@@ -15,6 +15,7 @@ import {
   type Repertoire,
   type RepertoireSong,
 } from "@/lib/session/repertoire"
+import { zusammenfuehren } from "@/lib/session/repertoire-datei"
 import { boardWahlSchema, STANDARD_WAHL, type BoardWahl } from "@/lib/session/board"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { aufgezogen, gespielt, LEERES_SAITENBUCH, saitenBuchSchema, type SaitenBuch } from "@/lib/session/saiten"
@@ -410,7 +411,8 @@ export function merkeRiffGehoert(id: string, jetzt: Date = new Date()): void {
 /**
  * Das Repertoire (`lib/session/repertoire.ts`): echte Songs und ihr Lernstand.
  *
- * Gehört dem Gerät, wird nicht abgeglichen und steht nicht in der Sicherung.
+ * Gehört dem Gerät, wird nicht abgeglichen und steht nicht in der Sicherung;
+ * mitgenommen wird es als eigene Datei (`repertoire-datei.ts`).
  * Anders als beim Riffbuch ist das Handarbeit: Kaputtes wird beiseitegelegt,
  * und gelingt das nicht, wird auch nicht darübergeschrieben.
  */
@@ -447,4 +449,14 @@ export function merkeAbschnittGeuebt(songId: string, abschnittId: string, status
 
 export function merkeAbschnittStatus(songId: string, abschnittId: string, status: AbschnittStatus, jetzt: Date = new Date()): boolean {
   return repertoireAendern((alt) => statusSetzen(alt, songId, abschnittId, status, jetzt))
+}
+
+/**
+ * Lays an imported file over what is here. Merged again at this moment, so a
+ * change made while the preview was open is not lost. A file that changes
+ * nothing counts as done.
+ */
+export function importiereRepertoire(datei: Repertoire): boolean {
+  if (!zusammenfuehren(repertoire(), datei).aendert) return true
+  return repertoireAendern((alt) => zusammenfuehren(alt, datei).repertoire)
 }

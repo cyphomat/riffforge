@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1871%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1898%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -804,7 +804,14 @@ eigenen Guitar-Pro-Datei lernt. Je Song legst du Abschnitte an (Takte, Spur,
 Übetempo in Prozent und BPM, Technik) und tippst ihren Stand an: *neu*,
 *langsam* oder *sitzt*. Dazu passen Notizen zum Sound. Gespeichert wird nur der
 Lernstand, keine Noten. Das Repertoire bleibt auf dem Gerät und steht weder im
-Abgleich noch in der Sicherungsdatei: wer die Browserdaten löscht, verliert es.
+Abgleich noch in der Sicherungsdatei: wer die Browserdaten löscht, verliert es,
+was nicht als eigene Datei gesichert ist.
+
+Diese **eigene Datei** sicherst du unter der Songliste (am iPhone über das
+Teilen-Menü, am Mac als Download) und liest sie auf einem anderen Gerät wieder
+ein. Vorher zeigt die App, was neu ist und was sich ändert. Einlesen legt dazu
+und löscht nichts, der neuere Übungsstand bleibt; eine kaputte oder fremde Datei
+ändert nichts und sagt, warum.
 
 In der **täglichen Session** füllt ein Abschnitt die letzte Riff-Runde: drei
 Minuten mit Takten, Spur, Stimmung, Sound und Metronom im Übetempo, gespielt

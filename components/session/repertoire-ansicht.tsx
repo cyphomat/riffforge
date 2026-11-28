@@ -8,6 +8,7 @@ import { LEERES_REPERTOIRE, fortschritt, type Repertoire, type RepertoireSong } 
 import { repertoire } from "@/lib/storage/lokal"
 import { SongFormular } from "./repertoire-formulare"
 import { RepertoireSongAnsicht } from "./repertoire-song"
+import { RepertoireDatei } from "./repertoire-datei"
 
 const PFAD = "/drills/repertoire"
 const songPfad = (id: string) => `${PFAD}?song=${encodeURIComponent(id)}`
@@ -16,7 +17,7 @@ function Hinweis() {
   return (
     <p className="mt-3 border border-line bg-sunken px-3 py-2.5 text-[13.5px] leading-relaxed text-muted">
       <span className="text-stahl">Nur auf diesem Gerät, nicht in der Sicherung.</span> Wer die Browserdaten löscht,
-      verliert das Repertoire.
+      verliert das Repertoire. Sichere es ab und zu als eigene Datei, unten in der Songliste.
     </p>
   )
 }
@@ -113,6 +114,7 @@ export function RepertoireAnsicht() {
           <button type="button" onClick={() => setAnlegen(true)} className="btn mt-5 w-full">
             Song anlegen
           </button>
+          <RepertoireDatei anzahl={songs.length} onGeaendert={neuLesen} />
         </>
       )}
       <Link href="/drills" className="btn btn-ghost btn-small mt-6 w-full py-3">
