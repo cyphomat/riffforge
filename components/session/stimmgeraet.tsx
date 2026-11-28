@@ -14,9 +14,9 @@ import {
 } from "@/lib/audio/stimmen"
 import type { Tonhoehe } from "@/lib/audio/tonhoehe"
 import { dayKey } from "@/lib/session/progress"
-import { SAITEN_TAGE, SAITEN_UEBUNGSTAGE, saitenStand, type SaitenStand } from "@/lib/session/saiten"
+import { SAITEN_TAGE, SAITEN_UEBUNGSTAGE, saitenZeilen, type SaitenStand, type SaitenZeile } from "@/lib/session/saiten"
 import { loadLog } from "@/lib/storage/practice-log"
-import { merkeSaitenwechsel, saitenGewechselt } from "@/lib/storage/lokal"
+import { gitarren, merkeSaitenwechsel, saitenBuch } from "@/lib/storage/lokal"
 
 /** How often the needle asks for a new estimate, in ms. */
 const TAKT_MS = 80
@@ -260,43 +260,65 @@ export function Stimmgeraet({
   )
 }
 
+const liesSaiten = () =>
+  saitenZeilen(loadLog(), saitenBuch(), gitarren().map((g) => g.name))
+
+function saitenSatz(stand: SaitenStand | null): string {
+  if (!stand) return "Noch nicht eingetragen."
+  return `Neu seit ${new Date(`${stand.seit}T12:00:00`).toLocaleDateString("de-DE")} · ${stand.uebungstage} ${
+    stand.uebungstage === 1 ? "Übungstag" : "Übungstage"
+  } · ${stand.tage} ${stand.tage === 1 ? "Tag" : "Tage"}${stand.faellig ? " · neue fällig" : ""}`
+}
+
 /**
- * Die Saiten: wann zuletzt neu aufgezogen, und wie viel seither gespielt.
- * Steht beim Stimmgerät, weil man nach dem Aufziehen ohnehin hier landet.
+ * Die Saiten je Gitarre aus dem Rack: wann zuletzt neu aufgezogen, und wie viel
+ * seither gespielt. Steht beim Stimmgerät, weil man nach dem Aufziehen ohnehin
+ * hier landet.
  */
 function SaitenPanel() {
-  const [stand, setStand] = useState<SaitenStand | null>(null)
-  const [geladen, setGeladen] = useState(false)
+  const [zeilen, setZeilen] = useState<SaitenZeile[] | null>(null)
 
   useEffect(() => {
-    setStand(saitenStand(loadLog(), saitenGewechselt()))
-    setGeladen(true)
+    setZeilen(liesSaiten())
   }, [])
 
-  if (!geladen) return null
+  if (!zeilen) return null
 
-  const neu = () => {
-    merkeSaitenwechsel(dayKey(new Date()))
-    setStand(saitenStand(loadLog(), saitenGewechselt()))
+  const neu = (gitarre: string | null) => {
+    merkeSaitenwechsel(gitarre, dayKey(new Date()))
+    setZeilen(liesSaiten())
   }
+  const mitRack = zeilen.some((z) => z.gitarre !== null)
 
   return (
     <section>
       <h2 className="rule mb-1 mt-9">Saiten</h2>
       <p className="mb-3 text-[13px] leading-relaxed text-dim">
         Saiten sterben am Spielen mehr als an der Zeit. Nach {SAITEN_UEBUNGSTAGE} Übungstagen oder{" "}
-        {SAITEN_TAGE} Tagen erinnert dich <b className="text-muted">Heute</b> daran. Gilt für dieses Gerät.
+        {SAITEN_TAGE} Tagen erinnert dich <b className="text-muted">Heute</b> daran. Ab zwei Gitarren
+        zählt ein Übungstag für die, die in der Session gewürfelt war. Gilt für dieses Gerät.
       </p>
-      <p className={`mb-3 font-mono text-[13px] ${stand?.faellig ? "text-rost" : "text-muted"}`}>
-        {stand
-          ? `Neu seit ${new Date(`${stand.seit}T12:00:00`).toLocaleDateString("de-DE")} · ${stand.uebungstage} ${
-              stand.uebungstage === 1 ? "Übungstag" : "Übungstage"
-            } · ${stand.tage} ${stand.tage === 1 ? "Tag" : "Tage"}${stand.faellig ? " · neue fällig" : ""}`
-          : "Noch nicht eingetragen."}
-      </p>
-      <button onClick={neu} className="btn btn-ghost w-full">
-        Heute neu aufgezogen
-      </button>
+      <ul className="space-y-[9px]">
+        {zeilen.map(({ gitarre, stand }) => (
+          <li key={gitarre ?? ""} className="border border-line bg-panel px-3 py-2.5">
+            {mitRack && (
+              <span className="block text-[14.5px] text-fg">{gitarre ?? "Ohne Gitarre eingetragen"}</span>
+            )}
+            <span className={`block font-mono text-[13px] ${stand?.faellig ? "text-rost" : "text-muted"}`}>
+              {saitenSatz(stand)}
+            </span>
+            {(gitarre !== null || !mitRack) && (
+              <button
+                onClick={() => neu(gitarre)}
+                aria-label={gitarre ? `${gitarre}: heute neu aufgezogen` : undefined}
+                className="btn btn-ghost btn-small mt-2 w-full py-3"
+              >
+                Heute neu aufgezogen
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

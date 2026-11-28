@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest"
 import { dayKey } from "../progress"
-import { SAITEN_TAGE, SAITEN_UEBUNGSTAGE, saitenStand } from "../saiten"
+import {
+  LEERES_SAITENBUCH,
+  SAITEN_TAGE,
+  SAITEN_UEBUNGSTAGE,
+  aufgezogen,
+  gespielt,
+  saitenBuchSchema,
+  saitenStand,
+  saitenZeilen,
+} from "../saiten"
 import type { DrillResult, PracticeLog } from "../types"
 
 // Freitag, 16. Oktober 2026, abends.
@@ -77,5 +86,53 @@ describe("saitenStand", () => {
     const morgen = new Date(HEUTE)
     morgen.setDate(morgen.getDate() + 1)
     expect(saitenStand(log(block(0)), dayKey(morgen), HEUTE)!.tage).toBe(0)
+  })
+})
+
+describe("Saiten je Gitarre", () => {
+  const rack = ["Wolfgang", "Arrow"]
+  const spielLog = log(block(3), block(2), block(1))
+
+  it("liest den Eintrag von früher ohne Gitarre", () => {
+    const alt = saitenBuchSchema.parse({ gewechselt: dayKey(vor(2)) })
+    expect(alt).toEqual({ gewechselt: dayKey(vor(2)), je: {}, tage: {} })
+    const zeilen = saitenZeilen(spielLog, alt, rack, HEUTE)
+    expect(zeilen.map((z) => z.gitarre)).toEqual([null, "Wolfgang", "Arrow"])
+    expect(zeilen[0].stand!.uebungstage).toBe(2)
+  })
+
+  it("löst ihn mit dem ersten Eintrag einer Gitarre ab", () => {
+    const buch = aufgezogen({ ...LEERES_SAITENBUCH, gewechselt: dayKey(vor(9)) }, "Wolfgang", dayKey(vor(2)))
+    const zeilen = saitenZeilen(spielLog, buch, rack, HEUTE)
+    expect(zeilen.map((z) => z.gitarre)).toEqual(rack)
+    expect(zeilen[0].stand!.seit).toBe(dayKey(vor(2)))
+    expect(zeilen[1].stand).toBeNull()
+  })
+
+  it("zählt ab zwei Gitarren nur die Tage, an denen diese dran war", () => {
+    let buch = aufgezogen(LEERES_SAITENBUCH, "Wolfgang", dayKey(vor(3)))
+    buch = aufgezogen(buch, "Arrow", dayKey(vor(3)))
+    buch = gespielt(gespielt(buch, "Wolfgang", dayKey(vor(2))), "Wolfgang", dayKey(vor(2)))
+    const [wolfgang, arrow] = saitenZeilen(spielLog, buch, rack, HEUTE)
+    expect(wolfgang.stand!.uebungstage).toBe(1)
+    expect(arrow.stand!.uebungstage).toBe(0)
+  })
+
+  it("zählt mit einer einzigen Gitarre jeden Übungstag", () => {
+    const buch = aufgezogen(LEERES_SAITENBUCH, "Wolfgang", dayKey(vor(3)))
+    expect(saitenZeilen(spielLog, buch, ["Wolfgang"], HEUTE)[0].stand!.uebungstage).toBe(3)
+  })
+
+  it("vergisst beim Wechsel die Tage des alten Satzes", () => {
+    let buch = gespielt(LEERES_SAITENBUCH, "Wolfgang", dayKey(vor(5)))
+    buch = gespielt(buch, "Wolfgang", dayKey(vor(1)))
+    expect(aufgezogen(buch, "Wolfgang", dayKey(vor(1))).tage.Wolfgang).toEqual([dayKey(vor(1))])
+  })
+
+  it("kommt ohne Rack mit dem einen Eintrag aus", () => {
+    const buch = aufgezogen(LEERES_SAITENBUCH, null, dayKey(vor(2)))
+    const zeilen = saitenZeilen(spielLog, buch, [], HEUTE)
+    expect(zeilen).toHaveLength(1)
+    expect(zeilen[0].stand!.uebungstage).toBe(2)
   })
 })

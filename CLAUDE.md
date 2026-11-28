@@ -117,8 +117,8 @@ Komponente.
   prüft `effekte.test.ts`; der Delay-Rechner liest das Tempo des letzten Blocks aus dem
   Log (`letztesTempo`), das Lexikon schreibt nie hinein; Streitfälle stehen als `ausnahme` am Eintrag; Begründung
   in `docs/wissen-und-theorie.md`.
-- **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt je Technik+Riff-Paar
-  und nie in den Log.** Das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
+- **Die Gitarrenroulette (`lib/session/gitarren.ts`) würfelt einmal je Durchgang
+  und nie in den Log.** Die Gitarre steht nur am Start, nicht in den Blöcken; das Rack gehört dem Gerät, unter zwei Gitarren zeigt die
   App nichts; Begründung in `docs/session-und-bildschirme.md`.
 - **Der Gurt (`lib/session/gurt.ts`, `drops.ts`) fällt aus dem Log und wird nicht
   gespeichert.** Drops sind Daten in `drops-daten.ts`; selten und episch brauchen

@@ -45,12 +45,10 @@ export interface BlockRunnerProps {
   block: SessionBlock
   index: number
   total: number
-  /** Die Gitarre der Roulette für diese Runde; null: nichts zeigen. */
-  gitarre?: string | null
   onComplete: (outcome: BlockOutcome) => void
 }
 
-export function BlockRunner({ block, index, total, gitarre = null, onComplete }: BlockRunnerProps) {
+export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProps) {
   const onDoneRef = useRef(onComplete)
   onDoneRef.current = onComplete
   const onDone = useCallback((outcome: BlockOutcome) => onDoneRef.current(outcome), [])
@@ -273,14 +271,6 @@ export function BlockRunner({ block, index, total, gitarre = null, onComplete }:
           {TECHNIQUE_LABELS[drill.technique]}
         </span>
       </div>
-
-      {/* Die Roulette: eine Zeile, kein Fenster. Bernstein nur auf dem Namen, er ist das, was zählt. */}
-      {gitarre && (
-        <p className="card plain mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-3">
-          <span className="kicker text-stahl">Heute spielst du</span>
-          <span className="display text-[20px] leading-none text-akzent">{gitarre}</span>
-        </p>
-      )}
 
       {platteWeg && (
         <div

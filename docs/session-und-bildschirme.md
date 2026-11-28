@@ -6,23 +6,21 @@
 
 ## Konventionen
 
-- **Die Gitarrenroulette würfelt je Technik+Riff-Paar, nicht je Block.** Das Riff
-  ist dieselbe Technik im Kontext; mittendrin umzugreifen kostet nur Ruhe. Das
-  Warm-up bekommt keine Gitarre, die nächste Technik nie dieselbe wie die davor.
-  Gewürfelt wird einmal beim Planen (`zuweisen` in `lib/session/gitarren.ts`),
-  „+5 Minuten" würfelt nur die neuen Blöcke. Anders als der Plan lässt sich der
-  Zufall nicht zurückrechnen: die Gitarren stehen im Session-Stand, damit
-  „Weiter" dieselben zeigt. Ins Übungs-Log kommen sie nicht — er ist append-only
-  und wird abgeglichen, ein Zufall hätte dort nichts zu suchen. Das Rack gehört
-  dem Gerät (`mga.gitarren.v1`); unter zwei Gitarren bleibt die Karte weg, im
+- **Die Gitarrenroulette würfelt einmal je Durchgang.** Vorher würfelte jede
+  Technik neu; im Üben hiess das mehrmals umgreifen, und das kostet nur Ruhe.
+  Gewürfelt wird beim Start (`wuerfle` in `lib/session/gitarren.ts`), „+5
+  Minuten" behält die Gitarre. Anders als der Plan lässt sich der Zufall nicht
+  zurückrechnen: die Gitarre steht im Session-Stand, und „Du warst mitten drin"
+  nennt sie. Ins Übungs-Log kommt sie nicht — er ist append-only und wird
+  abgeglichen, ein Zufall hätte dort nichts zu suchen. Das Rack gehört dem Gerät
+  (`mga.gitarren.v1`); unter zwei Gitarren wird nicht gewürfelt, im
   Sieben-Saiter-Modus zählen nur Siebensaitige.
-  Eine frische Session beginnt mit einem eigenen Start-Schirm
-  (`components/session/start-gitarre.tsx`): die Gitarre des ersten Paars, „Weiter",
-  „Andere Gitarre" und das Stimmgerät zum Aufklappen. Eingebettet statt als Link
-  nach `/stimmen`, weil der Weg hin und zurück die Würfelung verlöre — vor Block 1
-  wird noch nichts gemerkt. „Andere Gitarre" würfelt alles neu, die erste
-  ist dabei nie die gezeigte (`erstesNicht`). Bei „Weiter bei Block X" und ohne
-  Roulette entfällt der Schirm.
+  Gezeigt wird sie nur auf dem Start-Schirm
+  (`components/session/start-gitarre.tsx`), nicht in den Blöcken: mit „Weiter",
+  „Andere Gitarre" (nie die eben gezeigte) und dem Stimmgerät zum Aufklappen.
+  Eingebettet statt als Link nach `/stimmen`, weil der Weg hin und zurück die
+  Würfelung verlöre — vor Block 1 wird noch nichts gemerkt. Bei „Weiter bei
+  Block X" und ohne Roulette entfällt der Schirm.
 
 - **Eine verlassene Session wird nicht neu gewürfelt.** Im UX-Check kam heraus:
   wer nach dem Warm-up die Seite verliess und zurückkam, bekam ein *anderes*

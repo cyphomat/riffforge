@@ -1,14 +1,11 @@
 import { z } from "zod"
-import type { SessionBlock } from "./types"
 
 /**
  * Die Gitarrenroulette: welche Gitarre in die Hand kommt.
  *
- * Gewürfelt wird je Technik+Riff-Paar, nicht je Block. Das Riff ist dieselbe
- * Technik im musikalischen Kontext; mittendrin umzugreifen kostet nur Ruhe.
- * Die Gitarre der Runde bleibt also über das Riff stehen, und die nächste
- * Technik würfelt neu — nie dieselbe wie davor. Das Warm-up bekommt keine, es
- * ist zu kurz, um dafür die Gitarre zu wechseln.
+ * Gewürfelt wird einmal je Durchgang, beim Start. Die Gitarre bleibt dann bis
+ * zum Ende in der Hand, auch beim Verlängern: zwischen den Übungen umzugreifen
+ * kostet nur Ruhe.
  *
  * Das Ergebnis ist kein Übungsergebnis und kommt nicht in den Log: er ist
  * append-only und wird abgeglichen, ein Zufall hätte dort nichts zu suchen.
@@ -46,51 +43,24 @@ export function gitarreWeg(liste: Gitarre[], name: string): Gitarre[] {
   return liste.filter((gitarre) => gitarre.name !== name)
 }
 
-/** Eine Gitarre je Block, in Blockreihenfolge; `null` heisst: hier wird nichts gezeigt. */
-export type Zuweisung = (string | null)[]
-
-function ziehe(pool: string[], nicht: string | null, random: () => number): string {
-  const kandidaten = pool.filter((name) => name !== nicht)
-  const aus = kandidaten.length > 0 ? kandidaten : pool
-  return aus[Math.min(Math.floor(random() * aus.length), aus.length - 1)]
-}
-
 /**
- * Verteilt die Gitarren auf die Blöcke.
- *
- * `bisher` bleibt stehen: „+5 Minuten" hängt Blöcke an, und die schon
- * gezeigten dürfen dabei nicht neu gewürfelt werden. Gerechnet wird nur ab
- * dem ersten Block ohne Eintrag.
+ * Würfelt die Gitarre des Durchgangs.
  *
  * Mit weniger als zwei Gitarren zur Auswahl gibt es nichts zu würfeln — dann
- * bleibt überall `null` und die App zeigt keine Karte.
+ * `null`, und die App zeigt nichts.
  *
- * `erstesNicht`: der Start-Schirm würfelt auf Wunsch neu, und die erste
- * Gitarre soll dann eine andere sein als die eben gezeigte.
+ * `nicht`: der Start-Schirm würfelt auf Wunsch neu, und es soll dann eine
+ * andere sein als die eben gezeigte.
  */
-export function zuweisen(
-  bisher: Zuweisung,
-  blocks: SessionBlock[],
+export function wuerfle(
   liste: Gitarre[],
   random: () => number,
-  optionen: { nurSieben?: boolean; erstesNicht?: string } = {},
-): Zuweisung {
+  optionen: { nurSieben?: boolean; nicht?: string } = {},
+): string | null {
   const pool = (optionen.nurSieben ? liste.filter((gitarre) => gitarre.sieben) : liste).map(
     (gitarre) => gitarre.name,
   )
-  const ergebnis = bisher.slice(0, blocks.length)
-  let aktuell = [...ergebnis].reverse().find((name) => name !== null) ?? null
-
-  for (let i = ergebnis.length; i < blocks.length; i++) {
-    const art = blocks[i].drill.kind
-    if (pool.length < 2 || art === "warmup") {
-      ergebnis.push(null)
-      continue
-    }
-    // Neu gewürfelt wird an jeder Technik — und wo noch keine in der Hand ist.
-    // Der Start-Schirm würfelt „andere Gitarre": die erste Ziehung meidet die eben gezeigte.
-    if (art === "technique" || aktuell === null) aktuell = ziehe(pool, aktuell ?? optionen.erstesNicht ?? null, random)
-    ergebnis.push(aktuell)
-  }
-  return ergebnis
+  if (pool.length < 2) return null
+  const kandidaten = pool.filter((name) => name !== optionen.nicht)
+  return kandidaten[Math.min(Math.floor(random() * kandidaten.length), kandidaten.length - 1)]
 }

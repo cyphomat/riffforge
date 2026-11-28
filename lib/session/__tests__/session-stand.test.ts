@@ -48,10 +48,10 @@ describe("ausgangsLog und ergebnisseSeit", () => {
   })
 })
 
-describe("Gitarren im Stand", () => {
-  it("nimmt die gewürfelten Gitarren mit, auch die leeren Stellen", () => {
-    const mit = { ...stand, gitarren: [null, "Solar S-Type", "Solar S-Type"] }
-    expect(sessionStandSchema.parse(mit).gitarren).toEqual([null, "Solar S-Type", "Solar S-Type"])
+describe("Gitarre im Stand", () => {
+  it("nimmt die gewürfelte Gitarre mit", () => {
+    const mit = { ...stand, gitarre: "Solar S-Type" }
+    expect(sessionStandSchema.parse(mit).gitarre).toBe("Solar S-Type")
   })
 
   it("lässt einen Stand von vor der Roulette gültig", () => {
