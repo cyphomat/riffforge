@@ -5,6 +5,7 @@ import {
   type Sound,
   type TechnikTag,
 } from "./repertoire"
+import type { GpSong } from "./repertoire-gp"
 
 /**
  * Between the forms and the schema: a draft holds what was typed, as text.
@@ -18,6 +19,8 @@ export const STIMMUNGEN = [
 ] as const
 
 export const SPUREN = ["Rhythmus", "Lead"] as const
+/** The practice tempo, in percent, a new section starts with. */
+export const UEBETEMPO_NEU = 70
 
 export interface SoundEntwurf {
   amp: string
@@ -198,7 +201,7 @@ export function abschnittEntwurf(song: RepertoireSong, abschnitt?: Abschnitt): A
     von: belegtBis < song.takte ? String(belegtBis + 1) : "",
     bis: "",
     spur,
-    uebetempo: "70",
+    uebetempo: String(UEBETEMPO_NEU),
     technikTags: [],
   }
 }
@@ -229,4 +232,63 @@ export function abschnittAusEntwurf(
 
 export function abschnittEntfernen(song: RepertoireSong, abschnittId: string): RepertoireSong {
   return { ...song, abschnitte: song.abschnitte.filter((a) => a.id !== abschnittId) }
+}
+
+/**
+ * The different tunings of the guitar tracks, each with the first track that
+ * has it. Drums and basses (fewer than six strings) do not count.
+ */
+export function gitarrenStimmungen(gp: GpSong): { spur: string; saiten: string }[] {
+  const gefunden = new Map<string, string>()
+  for (const spur of gp.spuren) {
+    const saiten = spur.saiten.join(" ")
+    if (!spur.schlagzeug && spur.saiten.length >= 6 && !gefunden.has(saiten)) gefunden.set(saiten, spur.name)
+  }
+  return [...gefunden].map(([saiten, spur]) => ({ spur, saiten }))
+}
+
+/**
+ * The song form as the file fills it. What the file does not say stays empty;
+ * only the sound, which no file is asked for, is kept.
+ */
+export function entwurfAusGp(alt: SongEntwurf, gp: GpSong, dateiname: string): SongEntwurf {
+  return {
+    ...alt,
+    titel: gp.titel,
+    band: gp.band,
+    tempo: String(gp.tempo),
+    stimmung: gitarrenStimmungen(gp)[0]?.saiten ?? "",
+    takte: String(gp.takte),
+    taktarten: gp.taktarten.join(", "),
+    quelle: dateiname,
+  }
+}
+
+export interface AbschnittVorschlag {
+  name: string
+  von: number
+  bis: number
+}
+
+/** Each marker starts a part that lasts to the next one, the last to the end. */
+export function abschnittVorschlaege(gp: GpSong): AbschnittVorschlag[] {
+  return gp.marken.map((marke, i) => ({
+    name: marke.name || `Abschnitt ${i + 1}`,
+    von: marke.takt,
+    bis: (gp.marken[i + 1]?.takt ?? gp.takte + 1) - 1,
+  }))
+}
+
+/** Adds the accepted proposals to a song, as new sections on the first track. */
+export function mitVorschlaegen(song: RepertoireSong, vorschlaege: AbschnittVorschlag[], kennung: () => string): Ergebnis {
+  const neue = vorschlaege.map((vorschlag) => ({
+    ...vorschlag,
+    id: kennung(),
+    spur: SPUREN[0],
+    status: "neu" as const,
+    uebetempoProzent: UEBETEMPO_NEU,
+    technikTags: [],
+    erstmals: {},
+  }))
+  return pruefen({ ...song, abschnitte: [...song.abschnitte, ...neue] })
 }

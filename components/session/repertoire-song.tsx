@@ -14,7 +14,8 @@ import {
 import { TECHNIQUE_LABELS } from "@/lib/session/types"
 import { merkeAbschnittStatus, vergissSong } from "@/lib/storage/lokal"
 import { SoundNotizen, STATUS_AKTIV, takteText } from "./repertoire-teile"
-import { AbschnittFormular, Loeschen, Meldungen, NICHT_GESPEICHERT, SongFormular } from "./repertoire-formulare"
+import { AbschnittFormular, Loeschen, NICHT_GESPEICHERT, SongFormular } from "./repertoire-formulare"
+import { Meldungen } from "./repertoire-meldungen"
 
 function AbschnittKarte({
   song,

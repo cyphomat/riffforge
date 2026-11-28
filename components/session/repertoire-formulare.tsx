@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react"
+import { useId, useState, type FormEvent, type ReactNode } from "react"
 import { technikTagSchema, uebetempoBpm, type Abschnitt, type RepertoireSong } from "@/lib/session/repertoire"
 import {
   SPUREN,
@@ -8,36 +8,26 @@ import {
   abschnittAusEntwurf,
   abschnittEntfernen,
   abschnittEntwurf,
+  abschnittVorschlaege,
+  entwurfAusGp,
+  gitarrenStimmungen,
+  mitVorschlaegen,
   songAusEntwurf,
   songEntwurf,
   stimmungAusText,
   type SoundEntwurf,
 } from "@/lib/session/repertoire-formular"
 import { TECHNIQUE_LABELS } from "@/lib/session/types"
+import type { GpSong } from "@/lib/session/repertoire-gp"
 import { merkeSong } from "@/lib/storage/lokal"
+import { GpDatei } from "./repertoire-gp"
+import { Meldungen } from "./repertoire-meldungen"
+import { takteText } from "./repertoire-teile"
 
 export const NICHT_GESPEICHERT =
   "Speichern hat nicht geklappt. Der Speicher dieses Browsers ist voll oder gesperrt — die Änderung ist nicht gesichert."
 
 const kennung = () => crypto.randomUUID()
-
-export function Meldungen({ fehler }: { fehler: string[] }) {
-  const ref = useRef<HTMLDivElement>(null)
-  // The messages may sit below the fold on a phone; bring them into view.
-  useEffect(() => {
-    if (fehler.length > 0) ref.current?.scrollIntoView({ block: "nearest" })
-  }, [fehler])
-  if (fehler.length === 0) return null
-  return (
-    <div ref={ref} role="alert" className="my-3 border border-rot bg-sunken px-3 py-2.5">
-      <ul className="space-y-1 text-[14px] leading-relaxed text-fg">
-        {fehler.map((meldung) => (
-          <li key={meldung}>{meldung}</li>
-        ))}
-      </ul>
-    </div>
-  )
-}
 
 /** A delete button that asks first. `onLoeschen` says whether it worked. */
 export function Loeschen({ knopf, frage, onLoeschen }: { knopf: string; frage: string; onLoeschen: () => boolean }) {
@@ -161,10 +151,24 @@ export function SongFormular({
   const setzeSound = (feld: keyof SoundEntwurf) => (wert: string) =>
     setEntwurf((alt) => ({ ...alt, sound: { ...alt.sound, [feld]: wert } }))
   const stimmung = stimmungAusText(entwurf.stimmung).join(" ")
+  // What a chosen file offers beyond the fields: tunings and sections.
+  const [gp, setGp] = useState<GpSong | null>(null)
+  const [abgewaehlt, setAbgewaehlt] = useState<number[]>([])
+  const stimmungen = gp ? gitarrenStimmungen(gp) : []
+  const vorschlaege = gp ? abschnittVorschlaege(gp) : []
+
+  const ausDatei = (gelesen: GpSong, dateiname: string) => {
+    setEntwurf((alt) => entwurfAusGp(alt, gelesen, dateiname))
+    setGp(gelesen)
+    setAbgewaehlt([])
+    setFehler([])
+  }
 
   const speichern = (event: FormEvent) => {
     event.preventDefault()
-    const ergebnis = songAusEntwurf(entwurf, song?.id ?? kennung(), song)
+    let ergebnis = songAusEntwurf(entwurf, song?.id ?? kennung(), song)
+    const gewaehlt = vorschlaege.filter((v) => !abgewaehlt.includes(v.von))
+    if (ergebnis.ok && gewaehlt.length > 0) ergebnis = mitVorschlaegen(ergebnis.song, gewaehlt, kennung)
     if (!ergebnis.ok) return setFehler(ergebnis.fehler)
     if (!merkeSong(ergebnis.song)) return setFehler([NICHT_GESPEICHERT])
     onGespeichert(ergebnis.song.id)
@@ -173,6 +177,7 @@ export function SongFormular({
   return (
     <form onSubmit={speichern} noValidate className="mt-6 space-y-4">
       <h1 className="display text-[40px] text-fg">{song ? "Song bearbeiten" : "Neuer Song"}</h1>
+      {!song && <GpDatei onGelesen={ausDatei} />}
       <Feld label="Titel" wert={entwurf.titel} onChange={setze("titel")} />
       <Feld label="Band" wert={entwurf.band} onChange={setze("band")} />
       <div className="grid grid-cols-2 gap-3">
@@ -187,6 +192,21 @@ export function SongFormular({
             </Wahl>
           ))}
         </div>
+        {stimmungen.length > 1 && (
+          <div className="mt-3 grid gap-2 px-[2px]">
+            <p className="text-[13px] text-dim">Die Datei hat verschiedene Gitarrenstimmungen:</p>
+            {stimmungen.map((s) => (
+              <Wahl key={s.saiten} aktiv={stimmung === s.saiten} onClick={() => setze("stimmung")(s.saiten)}>
+                {s.spur ? `${s.spur}: ` : ""}
+                {/* Note names keep their small b. */}
+                <span className="normal-case">{s.saiten}</span>
+              </Wahl>
+            ))}
+          </div>
+        )}
+        {gp && stimmungen.length === 0 && (
+          <p className="mt-2 text-[13px] text-dim">Keine Gitarrenstimmung in der Datei gefunden.</p>
+        )}
       </Feld>
       <Feld label="Taktarten" wert={entwurf.taktarten} onChange={setze("taktarten")} platzhalter="4/4, 7/8" />
       <Feld label="Dateiname der Guitar-Pro-Datei" wert={entwurf.quelle} onChange={setze("quelle")} platzhalter="song.gp5" />
@@ -205,6 +225,32 @@ export function SongFormular({
           <Feld label="Boost" wert={entwurf.sound.boost} onChange={setzeSound("boost")} />
         </div>
       </details>
+
+      {vorschlaege.length > 0 && (
+        <fieldset>
+          <legend className="kicker text-dim">Abschnitte aus der Datei</legend>
+          <p className="mt-1 text-[13px] leading-relaxed text-dim">
+            Sie werden mitgespeichert. Antippen wählt ab; ändern lassen sie sich danach.
+          </p>
+          <div className="mt-3 grid gap-2 px-[2px]">
+            {vorschlaege.map((v) => {
+              const aktiv = !abgewaehlt.includes(v.von)
+              return (
+                <Wahl
+                  key={v.von}
+                  aktiv={aktiv}
+                  onClick={() => setAbgewaehlt((alt) => (aktiv ? [...alt, v.von] : alt.filter((von) => von !== v.von)))}
+                >
+                  <span className="break-words">
+                    {aktiv ? "✓ " : ""}
+                    {v.name} · {takteText(v.von, v.bis)}
+                  </span>
+                </Wahl>
+              )
+            })}
+          </div>
+        </fieldset>
+      )}
 
       <Meldungen fehler={fehler} />
       <Knoepfe onAbbrechen={onAbbrechen} />

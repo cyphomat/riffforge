@@ -95,6 +95,18 @@
   Eintrag passt auf dem Handy nicht in die Leiste. Sie sagt auf jedem
   Bildschirm ausser beim Bearbeiten, dass der Stand nur auf diesem Gerät liegt,
   und meldet, wenn das Speichern scheitert.
+- **Ein neuer Song lässt sich aus der Guitar-Pro-Datei ausfüllen**
+  (`repertoire-gp.ts`). In `.gp3` bis `.gp5` stehen Titel, Band, Tempo,
+  Taktarten, Marken und Stimmungen vor den Noten; gelesen wird bis hinter die
+  letzte Spur, keine Note. Ein eigener Leser statt einer Bibliothek, weil jede
+  davon Notensatz und Wiedergabe mitbringt. `.gpx` und `.gp` sind anders
+  gebaut und werden mit einem Satz abgelehnt. Marken werden zu
+  Abschnittsvorschlägen (bis zur nächsten Marke), Stimmungen kommen von Spuren
+  ab sechs Saiten ohne Schlagzeug. Reisst die Spurliste ab, bleibt der Rest
+  gültig und die Stimmung leer. Tempowechsel stehen zwischen den Noten, also
+  zählt das Tempo aus dem Kopf. Ausgefüllt ist nicht gespeichert. Das
+  Auswahlfeld hat kein `accept`, weil iOS unbekannte Endungen ausgraut. Die
+  Testdateien baut der Test Byte für Byte; Version 5.10 ist nur so geprüft.
 - **Das Repertoire reist als eigene Datei** (`repertoire-datei.ts`,
   `riffforge-repertoire-JJJJ-MM-TT.json`, in `.gitignore`). Sie ist getrennt von
   der Sicherung, weil diese und der Abgleich ohne echte Songdaten bleiben
