@@ -6,6 +6,7 @@ import { MicPanel } from "@/components/session/mic-panel"
 import { DrillBedienung } from "@/components/session/drill-bedienung"
 import { SongAnsicht } from "@/components/session/song-ansicht"
 import { TabView } from "@/components/session/tab-view"
+import { RepertoireNotizen, RepertoireStand } from "@/components/session/repertoire-block"
 import { TimingReport } from "@/components/session/timing-report"
 import { useAudioEngine } from "@/hooks/use-audio-engine"
 import { useCountdown } from "@/hooks/use-countdown"
@@ -15,6 +16,8 @@ import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { analyseTiming, suggestRating, type TimingAnalysis } from "@/lib/audio/timing"
 import { einmessung } from "@/lib/storage/lokal"
 import { setBlockLaeuft } from "@/lib/ui/session-wache"
+import { REPERTOIRE_RATING, REPERTOIRE_TITEL } from "@/lib/session/repertoire-session"
+import type { AbschnittStatus } from "@/lib/session/repertoire"
 import { RATINGS, TECHNIQUE_LABELS, type Rating, type SessionBlock, type TimingResult } from "@/lib/session/types"
 import { MdPause, MdPlayArrow, MdSkipNext } from "react-icons/md"
 
@@ -39,6 +42,8 @@ export interface BlockOutcome {
   rating: Rating | null
   seconds: number
   timing?: TimingResult
+  /** Repertoire blocks only: the status tapped after playing. */
+  status?: AbschnittStatus
 }
 
 export interface BlockRunnerProps {
@@ -53,7 +58,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
   onDoneRef.current = onComplete
   const onDone = useCallback((outcome: BlockOutcome) => onDoneRef.current(outcome), [])
 
-  const { drill } = block
+  const { drill, repertoire } = block
   const [phase, setPhase] = useState<"play" | "rate">("play")
   useScrollTopOn(phase)
   const [analysis, setAnalysis] = useState<TimingAnalysis | null>(null)
@@ -200,7 +205,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
             Block {index + 1} von {total}
             {block.rounds > 1 && ` · Runde ${block.round} von ${block.rounds}`}
           </p>
-          <h2 className="display mt-1 text-[30px] text-fg">{drill.title}</h2>
+          <h2 className="display mt-1 break-words text-[30px] text-fg">{drill.title}</h2>
           <p className="ziffern mt-1 text-[13px] text-muted">
             {formatClock(Math.round(timer.elapsed))} bei {metronome.bpm} BPM
           </p>
@@ -208,37 +213,45 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
 
         {analysis && <TimingReport analysis={analysis} />}
 
-        <div>
-          <h3 className="rule mb-3">Wie lief&apos;s?</h3>
-          <div className="grid gap-[9px] sm:grid-cols-2">
-            {RATINGS.map((option) => {
-              const isSuggested = suggested === option.value
-              // Der Vorschlag ist bernsteinfarben, wenn er gute Nachricht ist,
-              // und rostfarben, wenn die Messung "das war zäh" sagt. Bernstein
-              // markiert, was gerade dran ist — nicht, was schiefging.
-              const rau = isSuggested && option.value <= 2
-              return (
-                <button
-                  key={option.value}
-                  onClick={() => rate(option.value)}
-                  className={`border p-[14px] text-left transition-colors ${
-                    rau
-                      ? "border-rost bg-(--tint-rost)"
-                      : isSuggested
-                        ? "border-akzent bg-(--tint-akzent) hover:bg-(--tint-akzent-stark)"
-                        : "border-line bg-panel hover:border-stahl"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`display text-[19px] ${
-                        rau ? "text-rost" : isSuggested ? "text-akzent" : "text-fg"
-                      }`}
-                    >
-                      {option.label}
-                    </span>
-                    {isSuggested && (
-                      <span className={`kicker ${rau ? "text-rost" : "text-akzent"}`}>gemessen</span>
+        {repertoire ? (
+          <RepertoireStand
+            bisher={repertoire.status}
+            onWahl={(status) =>
+              onDone({ bpm: metronome.bpm, rating: REPERTOIRE_RATING, seconds: Math.round(timer.elapsed), status })
+            }
+          />
+        ) : (
+          <div>
+            <h3 className="rule mb-3">Wie lief&apos;s?</h3>
+            <div className="grid gap-[9px] sm:grid-cols-2">
+              {RATINGS.map((option) => {
+                const isSuggested = suggested === option.value
+                // Der Vorschlag ist bernsteinfarben, wenn er gute Nachricht ist,
+                // und rostfarben, wenn die Messung "das war zäh" sagt. Bernstein
+                // markiert, was gerade dran ist — nicht, was schiefging.
+                const rau = isSuggested && option.value <= 2
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => rate(option.value)}
+                    className={`border p-[14px] text-left transition-colors ${
+                      rau
+                        ? "border-rost bg-(--tint-rost)"
+                        : isSuggested
+                          ? "border-akzent bg-(--tint-akzent) hover:bg-(--tint-akzent-stark)"
+                          : "border-line bg-panel hover:border-stahl"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`display text-[19px] ${
+                          rau ? "text-rost" : isSuggested ? "text-akzent" : "text-fg"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
+                      {isSuggested && (
+                        <span className={`kicker ${rau ? "text-rost" : "text-akzent"}`}>gemessen</span>
                     )}
                   </div>
                   <div className="mt-1 text-[13px] text-muted">{option.hint}</div>
@@ -252,6 +265,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
               : "Ehrlich antworten — daraus kommt das Tempo für das nächste Mal."}
           </p>
         </div>
+        )}
       </div>
     )
   }
@@ -264,11 +278,11 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
             Block {index + 1} von {total}
             {block.rounds > 1 && ` · Runde ${block.round} von ${block.rounds}`}
           </p>
-          <h2 className="display mt-1 text-[30px] text-fg">{drill.title}</h2>
+          <h2 className="display mt-1 break-words text-[30px] text-fg">{drill.title}</h2>
           <p className="mt-1 text-[14px] text-muted">{drill.goal}</p>
         </div>
         <span className="kicker flex-none border border-stahl px-2 py-[3px] text-stahl">
-          {TECHNIQUE_LABELS[drill.technique]}
+          {repertoire ? REPERTOIRE_TITEL : TECHNIQUE_LABELS[drill.technique]}
         </span>
       </div>
 
@@ -363,7 +377,7 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
           Noten, und ein Anschlag je Klick wäre dort nicht das, was verlangt ist.
           Das Messen gegen die Klicks würde ein richtiges Spiel als schlecht
           bewerten. */}
-      {!drill.song && (
+      {!drill.song && !repertoire && (
         <MicPanel
           status={mic.status}
           detail={mic.detail}
@@ -385,17 +399,21 @@ export function BlockRunner({ block, index, total, onComplete }: BlockRunnerProp
         <DrillBedienung key={drill.id} drillId={drill.id} bpm={metronome.bpm} subdivision={drill.subdivision} engine={engine} />
       )}
 
-      <div>
-        <h3 className="rule mb-2">Worauf achten</h3>
-        <ul className="border-t border-line">
-          {drill.cues.map((cue) => (
-            <li key={cue} className="flex gap-3 border-b border-line py-[9px] text-[14px] text-fg">
-              <span className="ziffern flex-none text-akzent">›</span>
-              <span>{cue}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {repertoire && <RepertoireNotizen stelle={repertoire} />}
+
+      {drill.cues.length > 0 && (
+        <div>
+          <h3 className="rule mb-2">Worauf achten</h3>
+          <ul className="border-t border-line">
+            {drill.cues.map((cue) => (
+              <li key={cue} className="flex gap-3 border-b border-line py-[9px] text-[14px] text-fg">
+                <span className="ziffern flex-none text-akzent">›</span>
+                <span>{cue}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {drill.why && (
         <details className="info">

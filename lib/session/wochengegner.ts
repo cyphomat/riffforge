@@ -1,4 +1,5 @@
 import { ALLE_DRILLS_BY_ID } from "./drills"
+import { istRepertoire } from "./repertoire-session"
 import { SIEBEN_DRILLS_BY_ID } from "./drills-sieben"
 import { hash } from "./gurt"
 import { dayKey, weekKey } from "./progress"
@@ -120,7 +121,8 @@ export function gegnerGefallenDurch(
  * Block bricht die Kette, zählt aber nicht gegen einen.
  */
 export function combo(ergebnisse: DrillResult[]): number {
-  const geordnet = [...ergebnisse].sort((a, b) => a.at.localeCompare(b.at))
+  // A repertoire block is not rated, so it neither extends nor breaks the chain.
+  const geordnet = ergebnisse.filter((r) => !istRepertoire(r)).sort((a, b) => a.at.localeCompare(b.at))
   let beste = 0
   let lauf = 0
   for (const r of geordnet) {

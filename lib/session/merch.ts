@@ -1,4 +1,5 @@
 import { ALLE_DRILLS_BY_ID } from "./drills"
+import { istRepertoire } from "./repertoire-session"
 import { SIEBEN_DRILLS_BY_ID } from "./drills-sieben"
 import { LEAD_DRILL_ID, SITZT_AB } from "./lead"
 import { dayKey, weekKey } from "./progress"
@@ -347,7 +348,9 @@ export function aufnaeher(
   for (const r of ergebnisse) jeTag.set(tagVon(r), [...(jeTag.get(tagVon(r)) ?? []), r])
   let tight = 0
   for (const tag of tage) {
-    if (!jeTag.get(tag)!.every((r) => r.rating >= SITZT_AB)) continue
+    // Repertoire blocks are not rated; a day with nothing else proves nothing.
+    const bewertet = jeTag.get(tag)!.filter((r) => !istRepertoire(r))
+    if (bewertet.length === 0 || !bewertet.every((r) => r.rating >= SITZT_AB)) continue
     tight += 1
     TIGHT_STUFEN.forEach((n, i) => tight >= n && setze(i === 0 ? "tight" : `tight-${n}`, tag))
   }

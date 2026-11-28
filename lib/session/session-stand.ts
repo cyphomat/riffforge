@@ -30,6 +30,11 @@ export const sessionStandSchema = z.object({
    * optional, damit ein Stand ohne Roulette gültig bleibt.
    */
   gitarre: z.string().optional(),
+  /**
+   * The repertoire section of this run, by id only. It cannot be recomputed:
+   * practising it changes what would be picked next.
+   */
+  repertoire: z.object({ songId: z.string(), abschnittId: z.string() }).optional(),
 })
 
 export type SessionStand = z.infer<typeof sessionStandSchema>

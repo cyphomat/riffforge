@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1848%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1871%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -792,6 +792,15 @@ in percent and BPM, technique) and tap their state: *neu*, *langsam* or *sitzt*.
 Sound notes go along with it. Only the learning state is stored, no notation.
 The repertoire stays on the device and is part of neither the sync nor the backup
 file: clear the browser data and it is gone.
+
+In the **daily session** one section fills the last riff round: three minutes with
+bars, track, tuning, sound and a metronome at practice tempo, played from your own
+file. The app works out which one is up: at most three open sections at a time,
+the one that has waited longest first; a section that is in place returns after
+two weeks, with at most one repetition per week. Afterwards you tap its new state.
+The practice log only says "Repertoire" with tempo and duration, no song, band or
+file. The block counts towards the streak, rank and minutes, but not as a clean
+block.
 
 ### Syncing between devices
 
