@@ -143,6 +143,9 @@ Komponente.
 - **Das Repertoire (`lib/session/repertoire.ts`) verwaltet nur den Lernstand echter Songs,
   keine Noten, und gehört nur dem Gerät.** Echte Songdaten, Tabs und Dateien kommen nie ins
   Repo, auch nicht als Test-Fixture; Begründung in `docs/daten-und-abgleich.md`.
+- **Aus Guitar-Pro-Dateien (`lib/session/repertoire-gp.ts`) wird nur der Kopf gelesen,** nie
+  eine Note, und nur beim Anlegen eines Songs; Test-Dateien baut der Test selbst;
+  Begründung in `docs/daten-und-abgleich.md`.
 - **Das Repertoire reist als eigene Datei (`lib/session/repertoire-datei.ts`).** Einlesen zeigt
   erst die Vorschau, legt nur dazu und ersetzt nie einen neueren Übungsstand; eine kaputte oder
   fremde Datei ändert nichts; Begründung in `docs/daten-und-abgleich.md`.

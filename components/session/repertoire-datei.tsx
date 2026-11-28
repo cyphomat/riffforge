@@ -13,7 +13,8 @@ import {
   type Zusammenfuehrung,
 } from "@/lib/session/repertoire-datei"
 import { importiereRepertoire, repertoire } from "@/lib/storage/lokal"
-import { Meldungen, NICHT_GESPEICHERT } from "./repertoire-formulare"
+import { NICHT_GESPEICHERT } from "./repertoire-formulare"
+import { Meldungen } from "./repertoire-meldungen"
 
 interface Vorschau {
   name: string

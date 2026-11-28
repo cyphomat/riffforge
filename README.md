@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1898%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1916%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -803,7 +803,10 @@ Das **Repertoire** (*Drills → Repertoire*) ist für echte Songs, die man mit d
 eigenen Guitar-Pro-Datei lernt. Je Song legst du Abschnitte an (Takte, Spur,
 Übetempo in Prozent und BPM, Technik) und tippst ihren Stand an: *neu*,
 *langsam* oder *sitzt*. Dazu passen Notizen zum Sound. Gespeichert wird nur der
-Lernstand, keine Noten. Das Repertoire bleibt auf dem Gerät und steht weder im
+Lernstand, keine Noten. Beim Anlegen eines Songs kann die App Titel, Band,
+Tempo, Takte, Stimmung und die Marken als Abschnitte aus einer `.gp3`-, `.gp4`-
+oder `.gp5`-Datei übernehmen; gelesen wird sie nur im Browser, die Noten gar
+nicht. Das Repertoire bleibt auf dem Gerät und steht weder im
 Abgleich noch in der Sicherungsdatei: wer die Browserdaten löscht, verliert es,
 was nicht als eigene Datei gesichert ist.
 

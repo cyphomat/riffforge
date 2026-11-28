@@ -106,6 +106,9 @@
 | `lib/session/repertoire-session.ts` | Das Repertoire in der Session: welcher Abschnitt dran ist, welchen Block er füllt, der namenlose Log-Eintrag — rein |
 | `lib/session/repertoire-formular.ts` | Formulareingaben als Text: in einen Song oder Abschnitt wandeln, Fehler mit Feldnamen auf Deutsch — rein |
 | `lib/session/repertoire-datei.ts` | Das Repertoire als eigene Datei: schreiben, prüfen, mit dem Stand hier verschmelzen und sagen, was sich ändert — rein |
+| `lib/session/repertoire-gp.ts` | Liest aus `.gp3`/`.gp4`/`.gp5` Titel, Band, Tempo, Takte, Taktarten, Marken und Stimmungen — nur den Kopf, rein |
+| `components/session/repertoire-gp.tsx` | Guitar-Pro-Datei wählen und das Formular für einen neuen Song füllen |
+| `components/session/repertoire-meldungen.tsx` | Fehlermeldungen der Repertoire-Seiten |
 | `components/session/repertoire-datei.tsx` | Datei sichern (am Handy über das Teilen-Menü) und einlesen mit Vorschau |
 | `components/session/repertoire-ansicht.tsx` | `/drills/repertoire`: Liste mit Fortschritt, der offene Song steht in `?song=` |
 | `components/session/repertoire-song.tsx` | Ein Song: Abschnitte, Status mit einem Tipp, Sound, Löschen |
