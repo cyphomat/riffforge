@@ -25,11 +25,11 @@ export const sessionStandSchema = z.object({
   beantworteteFragen: z.number().int().min(0),
   carried: z.record(z.string(), z.object({ seconds: z.number(), bpm: z.number() })),
   /**
-   * Die gewürfelten Gitarren je Block (`lib/session/gitarren.ts`). Anders als
-   * der Plan lassen sie sich nicht zurückrechnen, deshalb stehen sie hier;
-   * optional, damit ein Stand von vor der Roulette gültig bleibt.
+   * Die gewürfelte Gitarre des Durchgangs (`lib/session/gitarren.ts`). Anders
+   * als der Plan lässt sie sich nicht zurückrechnen, deshalb steht sie hier;
+   * optional, damit ein Stand ohne Roulette gültig bleibt.
    */
-  gitarren: z.array(z.string().nullable()).optional(),
+  gitarre: z.string().optional(),
 })
 
 export type SessionStand = z.infer<typeof sessionStandSchema>

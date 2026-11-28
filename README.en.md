@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1804%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1803%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -93,9 +93,8 @@ a ✕ for the day. *Daten → Saisonales* turns it off entirely. It is the only
 decoration in the app and therefore has tight limits
 (`docs/design-und-themes.md`).
 
-**A guitar from the rack.** For every technique the session rolls one of your
-guitars, and you play the riff that goes with it on the same one; the second
-round never lands on the first one's guitar. You keep the rack under
+**A guitar from the rack.** At the start the session rolls one of your
+guitars, and you play it for the whole run. You keep the rack under
 *Daten → Gitarren*; it only applies to this browser. It needs two guitars or
 more, and in the seven-string mode it only draws from the seven-strings.
 
@@ -733,11 +732,12 @@ it. A test pins this limit down and turns red once it falls.
 
 ### Strings
 
-Below the tuner the app keeps when the strings were last changed — one button,
-*Heute neu aufgezogen* (put on new today), and it counts from there. Strings
-die of playing more than of time: after **25 practice days** from the log, or
-after **90 days** at the latest, *Heute* shows a line *Saiten · neue fällig*
-(strings due). Before that it shows nothing. The date belongs to the device,
+Below the tuner the app keeps, for each guitar in the rack, when its strings
+were last changed — one button, *Heute neu aufgezogen* (put on new today), and
+it counts from there. Strings die of playing more than of time: after **25
+practice days**, or after **90 days** at the latest, *Heute* shows a line with
+the guitar and *Neue fällig* (new ones due). Before that it shows nothing. With
+two or more guitars a practice day counts for the one the session rolled. The date belongs to the device,
 like the calibration — the guitar next to this computer, not the one at the
 rehearsal room — and goes neither into sync nor into the backup file.
 

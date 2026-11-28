@@ -20,7 +20,7 @@
 | `lib/audio/stimmen.ts` | Das Stimmgerät als Rechnung: Saite, Cent, Glättung |
 | `lib/audio/stimmgeraet.ts` | Mikrofon → AnalyserNode, für das Stimmgerät |
 | `components/session/stimmgeraet.tsx` | Der vierte Eingang: das Stimmgerät, `/stimmen`; eingebettet auch im Start-Schirm |
-| `lib/session/saiten.ts` | Wann die Saiten fällig sind: Übungstage aus dem Log, Tage seit dem Wechsel |
+| `lib/session/saiten.ts` | Wann die Saiten je Gitarre fällig sind: Spieltage, Tage seit dem Wechsel |
 | `lib/session/types.ts` | Domänen-Typen + Zod-Schemas für alles Persistierte |
 | `lib/session/drills.ts` | Der Übungs-Katalog (reine Daten) |
 | `lib/session/progress.ts` | Auswertung des Logs: Tempo-Fortschreibung, Streak, Mastery, `heuteGeuebt` |
@@ -83,9 +83,9 @@
 | `lib/session/letztes-tempo.ts` | Das Tempo des zuletzt gespielten Blocks aus dem Log, nach Zeitstempel; `null` außerhalb der Grenzen. Rein |
 | `lib/theory/effekte.ts` | Das Pedal- und Effektlexikon: Einträge mit Platz in der Signalkette (reine Daten), geprüft von `effekte.test.ts` |
 | `lib/theory/noten-karten.ts` | Wissenskarten mit Notenbild: Antwort aus dem Bild gerechnet, Bilder als echte `Song`-Daten |
-| `lib/session/gitarren.ts` | Die Gitarrenroulette: Rack-Schema, Standardliste, Würfeln je Technik+Riff-Paar — rein |
-| `components/session/gitarren-panel.tsx` | Das Rack bearbeiten, auf *Daten*; die Karte selbst zeigt `block-runner.tsx` |
-| `components/session/start-gitarre.tsx` | Start-Schirm einer frischen Session: gewürfelte Gitarre, neu würfeln, Stimmgerät aufklappen |
+| `lib/session/gitarren.ts` | Die Gitarrenroulette: Rack-Schema, Standardliste, Würfeln je Durchgang — rein |
+| `components/session/gitarren-panel.tsx` | Das Rack bearbeiten, auf *Daten* |
+| `components/session/start-gitarre.tsx` | Start-Schirm eines frischen Durchgangs: gewürfelte Gitarre, neu würfeln, Stimmgerät aufklappen |
 | `lib/session/merch.ts` | Der Merch-Stand: Rang, Aufnäher, Tourshirts — alles aus den Logs |
 | `components/session/merch-stand.tsx` | Rang, Kutte und Tourshirts als Bildschirm |
 | `lib/session/gurt.ts` | Der Gurt: Riff-Plektren, Aussehen aus der Drill-ID, Patina und Staub — rein, alles aus dem Log |

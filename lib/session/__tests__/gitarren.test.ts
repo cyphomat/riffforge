@@ -1,112 +1,45 @@
 import { describe, expect, it } from "vitest"
-import { DRILLS } from "../drills"
 import {
   MAX_GITARREN,
   STANDARD_GITARREN,
   gitarreDazu,
   gitarreWeg,
   gitarrenSchema,
-  zuweisen,
+  wuerfle,
 } from "../gitarren"
-import type { BlockKind, SessionBlock } from "../types"
 
-function block(kind: BlockKind): SessionBlock {
-  const drill = DRILLS.find((d) => d.kind === kind)
-  if (!drill) throw new Error(`kein Drill vom Typ ${kind}`)
-  return { drill, seconds: 180, bpm: 100, round: 1, rounds: 1 }
-}
-
-/** Die Form einer Session: Warm-up, dann zweimal Technik und Riff. */
-const SESSION = [
-  block("warmup"),
-  block("technique"),
-  block("riff"),
-  block("technique"),
-  block("riff"),
-]
-
-/** Ein Zufall, der reihum durch 0 … 1 läuft — deterministisch, aber nicht immer dasselbe. */
-function reihum(werte: number[]): () => number {
-  let i = 0
-  return () => werte[i++ % werte.length]
-}
+/** Zufallswerte quer durch 0 … 1, bis knapp unter 1. */
+const WERTE = [0, 0.26, 0.51, 0.76, 0.999999]
 
 describe("Gitarrenroulette", () => {
-  it("gibt dem Warm-up keine Gitarre", () => {
-    expect(zuweisen([], SESSION, STANDARD_GITARREN, Math.random)[0]).toBeNull()
-  })
-
-  it("lässt das Riff auf der Gitarre der Technik", () => {
-    for (let versuch = 0; versuch < 50; versuch++) {
-      const z = zuweisen([], SESSION, STANDARD_GITARREN, Math.random)
-      expect(z[2]).toBe(z[1])
-      expect(z[4]).toBe(z[3])
-    }
-  })
-
-  it("nimmt in Runde zwei nie dieselbe Gitarre wie in Runde eins", () => {
-    for (let versuch = 0; versuch < 200; versuch++) {
-      const z = zuweisen([], SESSION, STANDARD_GITARREN, Math.random)
-      expect(z[3]).not.toBe(z[1])
-    }
-  })
-
-  it("würfelt auch mit zwei Gitarren sauber im Wechsel", () => {
-    const zwei = STANDARD_GITARREN.slice(0, 2)
-    const z = zuweisen([], SESSION, zwei, Math.random)
-    expect(new Set([z[1], z[3]]).size).toBe(2)
-  })
-
-  it("bleibt mit zu wenig Gitarren still", () => {
-    expect(zuweisen([], SESSION, [], Math.random).every((g) => g === null)).toBe(true)
-    expect(zuweisen([], SESSION, STANDARD_GITARREN.slice(0, 1), Math.random).every((g) => g === null)).toBe(true)
-  })
-
   it("erreicht jede Gitarre, auch bei Zufall nahe 1", () => {
-    const gesehen = new Set<string | null>()
-    for (const r of [0, 0.26, 0.51, 0.76, 0.999999]) {
-      gesehen.add(zuweisen([], SESSION, STANDARD_GITARREN, () => r)[1])
-    }
+    const gesehen = new Set(WERTE.map((r) => wuerfle(STANDARD_GITARREN, () => r)))
     expect(gesehen).toEqual(new Set(STANDARD_GITARREN.map((g) => g.name)))
   })
 
-  it("lässt Gezeigtes beim Verlängern stehen", () => {
-    const vorher = zuweisen([], SESSION, STANDARD_GITARREN, Math.random)
-    const mehr = [...SESSION, block("technique"), block("riff")]
-    const nachher = zuweisen(vorher, mehr, STANDARD_GITARREN, Math.random)
-    expect(nachher.slice(0, SESSION.length)).toEqual(vorher)
-    expect(nachher[5]).not.toBe(vorher[3])
-    expect(nachher[6]).toBe(nachher[5])
+  it("bleibt mit zu wenig Gitarren still", () => {
+    expect(wuerfle([], Math.random)).toBeNull()
+    const eine = STANDARD_GITARREN.slice(0, 1)
+    expect(wuerfle(eine, Math.random)).toBeNull()
+    expect(wuerfle(eine, Math.random, { nicht: eine[0].name })).toBeNull()
   })
 
-  it("würfelt bei einem Riff ohne Technik davor trotzdem", () => {
-    const z = zuweisen([], [block("riff"), block("riff")], STANDARD_GITARREN, reihum([0.1]))
-    expect(z[0]).not.toBeNull()
-    expect(z[1]).toBe(z[0])
-  })
-
-  it("würfelt auf Wunsch neu und nimmt dann zuerst eine andere Gitarre", () => {
-    for (const r of [0, 0.26, 0.51, 0.76, 0.999999]) {
+  it("würfelt auf Wunsch neu und nimmt dann eine andere Gitarre", () => {
+    for (const r of WERTE) {
       for (const gezeigt of STANDARD_GITARREN) {
-        const z = zuweisen([], SESSION, STANDARD_GITARREN, () => r, { erstesNicht: gezeigt.name })
-        expect(z[1]).not.toBe(gezeigt.name)
-        expect(z[2]).toBe(z[1])
-        expect(z[3]).not.toBe(z[1])
+        const neu = wuerfle(STANDARD_GITARREN, () => r, { nicht: gezeigt.name })
+        expect(neu).not.toBeNull()
+        expect(neu).not.toBe(gezeigt.name)
       }
     }
   })
 
-  it("bleibt mit „erstesNicht“ still, wenn es nichts zu würfeln gibt", () => {
-    const eine = STANDARD_GITARREN.slice(0, 1)
-    expect(zuweisen([], SESSION, eine, Math.random, { erstesNicht: eine[0].name }).every((g) => g === null)).toBe(true)
-  })
-
   it("nimmt im Sieben-Saiter-Modus nur Siebensaitige — und würfelt bei einer nicht", () => {
-    expect(zuweisen([], SESSION, STANDARD_GITARREN, Math.random, { nurSieben: true }).every((g) => g === null)).toBe(true)
+    expect(wuerfle(STANDARD_GITARREN, Math.random, { nurSieben: true })).toBeNull()
     const zwei = [...STANDARD_GITARREN, { name: "Ibanez 7", sieben: true }]
-    const z = zuweisen([], SESSION, zwei, Math.random, { nurSieben: true })
-    expect(z.filter(Boolean).every((g) => g === "Solar H-Type 7 Saiter" || g === "Ibanez 7")).toBe(true)
-    expect(z[1]).not.toBeNull()
+    for (const r of WERTE) {
+      expect(["Solar H-Type 7 Saiter", "Ibanez 7"]).toContain(wuerfle(zwei, () => r, { nurSieben: true }))
+    }
   })
 })
 

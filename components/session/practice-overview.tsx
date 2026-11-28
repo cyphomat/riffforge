@@ -31,8 +31,8 @@ import { PixelFeuer, ZELLE } from "@/components/ui/pixel-feuer"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
-import { merkeWillkommen, saitenGewechselt, willkommenGesehen } from "@/lib/storage/lokal"
-import { saitenStand, type SaitenStand } from "@/lib/session/saiten"
+import { gitarren, merkeWillkommen, saitenBuch, willkommenGesehen } from "@/lib/storage/lokal"
+import { saitenZeilen, type SaitenZeile } from "@/lib/session/saiten"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 import { MdGridOn, MdLinearScale, MdMusicNote, MdTune } from "react-icons/md"
 
@@ -80,7 +80,7 @@ export function PracticeOverview() {
   const [merch, setMerch] = useState<{ rang: Rang; aufnaeher: number } | null>(null)
   const [woche, setWoche] = useState<Woche | null>(null)
   const [vorwoche, setVorwoche] = useState<Woche | null>(null)
-  const [saiten, setSaiten] = useState<SaitenStand | null>(null)
+  const [saiten, setSaiten] = useState<SaitenZeile[]>([])
 
   useEffect(() => {
     const gelesen = loadLog()
@@ -100,7 +100,7 @@ export function PracticeOverview() {
     const fenster = wochen(gelesen)
     setWoche(fenster.at(-1) ?? null)
     setVorwoche(fenster.length > 1 ? fenster.at(-2)! : null)
-    setSaiten(saitenStand(gelesen, saitenGewechselt()))
+    setSaiten(saitenZeilen(gelesen, saitenBuch(), gitarren().map((g) => g.name)))
     setLoaded(true)
   }, [])
 
@@ -302,19 +302,23 @@ export function PracticeOverview() {
       {/* Die Saiten — nur, wenn sie fällig sind. Eine Zeile, die jeden Tag
           „noch 14 Tage" sagt, liest nach einer Woche niemand mehr. Rost, weil
           es „nicht ganz" heisst, nicht „kaputt". */}
-      {saiten?.faellig && (
-        <Link
-          href="/stimmen"
-          className="mt-[9px] flex items-center justify-between gap-3 border border-rost bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
-        >
-          <span className="flex items-baseline gap-2">
-            <span className="kicker text-dim">Saiten</span>
-            <span className="display text-[20px] text-rost">Neue fällig</span>
-          </span>
-          <span className="ziffern text-[13px] text-muted">
-            {saiten.grund === "gespielt" ? `${saiten.uebungstage} Übungstage drauf ›` : `${saiten.tage} Tage alt ›`}
-          </span>
-        </Link>
+      {saiten.map(
+        ({ gitarre, stand }) =>
+          stand?.faellig && (
+            <Link
+              key={gitarre ?? ""}
+              href="/stimmen"
+              className="mt-[9px] flex items-center justify-between gap-3 border border-rost bg-panel px-[15px] py-3 transition-colors hover:border-akzent"
+            >
+              <span className="min-w-0">
+                <span className="kicker block text-dim">Saiten{gitarre && ` · ${gitarre}`}</span>
+                <span className="display text-[20px] text-rost">Neue fällig</span>
+              </span>
+              <span className="ziffern flex-none text-[13px] text-muted">
+                {stand.grund === "gespielt" ? `${stand.uebungstage} Übungstage drauf ›` : `${stand.tage} Tage alt ›`}
+              </span>
+            </Link>
+          ),
       )}
 
       </div>

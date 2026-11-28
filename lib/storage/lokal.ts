@@ -6,6 +6,7 @@ import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/g
 import { gehoert, LEERES_BUCH, riffbuchSchema, type Riffbuch } from "@/lib/session/riffbuch"
 import { boardWahlSchema, STANDARD_WAHL, type BoardWahl } from "@/lib/session/board"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
+import { aufgezogen, gespielt, LEERES_SAITENBUCH, saitenBuchSchema, type SaitenBuch } from "@/lib/session/saiten"
 import { alsDarstellung, DARSTELLUNG_EREIGNIS, DARSTELLUNG_KEY, type Darstellung } from "@/lib/ui/darstellung"
 
 /**
@@ -127,27 +128,29 @@ export function merkeLickBox(box: LickBox): void {
 
 
 /**
- * Wann die Saiten zuletzt neu aufgezogen wurden, als `YYYY-MM-DD`.
+ * Wann welche Gitarre neue Saiten bekam und an welchen Tagen sie dran war.
  *
  * Gehört dem Gerät, nicht dem Log: ein Wartungsdatum ist keine Übung, und im
- * Log würde es als Gig gezählt. Die Übungstage seither kommen trotzdem aus dem
- * Log — `lib/session/saiten.ts` rechnet beides zusammen.
+ * Log würde es als Gig gezählt. `lib/session/saiten.ts` rechnet beides
+ * zusammen; ein Eintrag von früher (nur `gewechselt`) bleibt lesbar.
  */
-const saitenSchema = z.object({ gewechselt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) })
-
-export function saitenGewechselt(): string | null {
+export function saitenBuch(): SaitenBuch {
   const roh = lesen(SAITEN_KEY)
-  if (!roh) return null
+  if (!roh) return LEERES_SAITENBUCH
   try {
-    const geprueft = saitenSchema.safeParse(JSON.parse(roh))
-    return geprueft.success ? geprueft.data.gewechselt : null
+    const geprueft = saitenBuchSchema.safeParse(JSON.parse(roh))
+    return geprueft.success ? geprueft.data : LEERES_SAITENBUCH
   } catch {
-    return null
+    return LEERES_SAITENBUCH
   }
 }
 
-export function merkeSaitenwechsel(tag: string): void {
-  schreiben(SAITEN_KEY, JSON.stringify({ gewechselt: tag }))
+export function merkeSaitenwechsel(gitarre: string | null, tag: string): void {
+  schreiben(SAITEN_KEY, JSON.stringify(aufgezogen(saitenBuch(), gitarre, tag)))
+}
+
+export function merkeGespielt(gitarre: string, tag: string): void {
+  schreiben(SAITEN_KEY, JSON.stringify(gespielt(saitenBuch(), gitarre, tag)))
 }
 
 /**

@@ -7,8 +7,10 @@ import { BlockRunner, type BlockOutcome } from "@/components/session/block-runne
 import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { SessionSummary } from "@/components/session/session-summary"
 import { STIMMUNG, buildSiebenSession, naechsterSiebenBlock } from "@/lib/session/sieben"
-import { zuweisen, type Zuweisung } from "@/lib/session/gitarren"
-import { gitarren } from "@/lib/storage/lokal"
+import { wuerfle } from "@/lib/session/gitarren"
+import { StartGitarre } from "@/components/session/start-gitarre"
+import { gitarren, merkeGespielt } from "@/lib/storage/lokal"
+import { dayKey } from "@/lib/session/progress"
 import { appendResults, loadLog } from "@/lib/storage/practice-log"
 import { loadProfile } from "@/lib/storage/profile"
 import { EMPTY_LOG, type DrillResult, type PracticeLog, type SessionBlock } from "@/lib/session/types"
@@ -30,8 +32,10 @@ export function SiebenRunner() {
   const [current, setCurrent] = useState(0)
   const [results, setResults] = useState<DrillResult[]>([])
   // Hier würfelt die Roulette nur unter den Siebensaitigen — meist gibt es eine, dann bleibt sie still.
-  const [gitarrenJeBlock, setGitarrenJeBlock] = useState<Zuweisung>([])
-  useScrollTopOn(`${blocks === null}|${current}`)
+  const [gitarre, setGitarre] = useState<string | null>(null)
+  const [startSchirm, setStartSchirm] = useState(false)
+  useScrollTopOn(`${blocks === null}|${startSchirm}|${current}`)
+  const wuerfleSieben = (nicht?: string) => wuerfle(gitarren(), Math.random, { nurSieben: true, nicht })
 
   const starten = () => {
     const gelesen = loadLog()
@@ -39,7 +43,9 @@ export function SiebenRunner() {
     setLog(gelesen)
     const plan = buildSiebenSession(gelesen, { profile: loadProfile() }).blocks
     setBlocks(plan)
-    setGitarrenJeBlock(zuweisen([], plan, gitarren(), Math.random, { nurSieben: true }))
+    const gewuerfelt = wuerfleSieben()
+    setGitarre(gewuerfelt)
+    setStartSchirm(gewuerfelt !== null)
     setCurrent(0)
     setResults([])
   }
@@ -64,6 +70,8 @@ export function SiebenRunner() {
     // Pro Block geschrieben, nicht am Ende: ein abgebrochener Durchgang zählt
     // trotzdem für alles, was wirklich gespielt wurde.
     setLog(appendResults([result]))
+    // Für die Saiten: diese Gitarre war heute dran.
+    if (gitarre) merkeGespielt(gitarre, dayKey(new Date(result.at)))
     setResults((bisher) => [...bisher, result])
     setCurrent((index) => index + 1)
   }
@@ -72,7 +80,6 @@ export function SiebenRunner() {
     if (!blocks) return
     const mehr = [...blocks, naechsterSiebenBlock(log, blocks.map((block) => block.drill.id))]
     setBlocks(mehr)
-    setGitarrenJeBlock((bisher) => zuweisen(bisher, mehr, gitarren(), Math.random, { nurSieben: true }))
   }
 
   if (blocks === null) {
@@ -118,6 +125,17 @@ export function SiebenRunner() {
     )
   }
 
+  if (startSchirm && gitarre !== null) {
+    return (
+      <StartGitarre
+        gitarre={gitarre}
+        sieben
+        onAndere={() => setGitarre(wuerfleSieben(gitarre))}
+        onWeiter={() => setStartSchirm(false)}
+      />
+    )
+  }
+
   const block = blocks[current]
 
   if (!block) {
@@ -145,7 +163,6 @@ export function SiebenRunner() {
         block={block}
         index={current}
         total={blocks.length}
-        gitarre={gitarrenJeBlock[current] ?? null}
         onComplete={fertig}
       />
     </div>

@@ -19,12 +19,17 @@
   einem Sägezahn in bekannter Höhe als „Mikrofon": +6, 0, −14 Cent und das
   tiefe B kamen genau so an.
 - **Saiten zählen Übungstage, nicht Tage.** Unter dem Stimmgerät trägt man
-  ein, wann neue drauf kamen; fällig sind sie nach **25 Übungstagen** aus dem
-  Log oder spätestens nach **90 Kalendertagen**, und erst dann steht auf
+  je Gitarre aus dem Rack ein, wann neue drauf kamen; fällig sind sie nach
+  **25 Übungstagen** oder spätestens nach **90 Kalendertagen**, und erst dann steht auf
   *Heute* eine Zeile — vorher nichts, weil eine Erinnerung, die immer dasteht,
   keine ist. Die 25 stammen aus Roadie, Daniels Orga-App, die dieselbe
   Erinnerung aus demselben Log rechnete; jetzt rechnet sie die App, die den
-  Log aus erster Hand hat. Das Datum gehört **dem Gerät** (`lib/storage/lokal.ts`,
+  Log aus erster Hand hat. Welche Gitarre dran war, steht nicht im Log: ab
+  zwei Gitarren merkt sich das Gerät die Tage, an denen sie gewürfelt war und
+  ein Block bewertet wurde, und zählt nur die — sonst wäre bei vier Gitarren im
+  Wechsel jeder Satz viel zu früh fällig. Mit einer Gitarre zählt jeder
+  Übungstag aus dem Log. Ein Eintrag von früher ohne Gitarre gilt, bis die erste
+  einen eigenen hat. Das Datum gehört **dem Gerät** (`lib/storage/lokal.ts`,
   wie die Einmessung), nicht dem Log: ein Saitenwechsel ist kein Gig, und im
   Log würde er als Eintrag ohne Drill den Kalender, die Serie und die
   Aufnäher verfälschen. Deshalb geht er weder in den Abgleich noch in die

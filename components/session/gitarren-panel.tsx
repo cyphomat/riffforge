@@ -8,8 +8,8 @@ import { gitarren, merkeGitarren, vergissGitarren } from "@/lib/storage/lokal"
 /**
  * Das Rack für die Gitarrenroulette, auf *Daten*.
  *
- * Jede Runde (Technik und Riff) würfelt eine dieser Gitarren. Unter zwei
- * Gitarren gibt es nichts zu würfeln — dann bleibt die Karte weg. Die Liste
+ * Jeder Durchgang würfelt beim Start eine dieser Gitarren. Unter zwei Gitarren
+ * gibt es nichts zu würfeln — dann entfällt der Start-Schirm. Die Liste
  * gehört dem Gerät und nur ihm.
  */
 export function GitarrenPanel() {
@@ -45,7 +45,7 @@ export function GitarrenPanel() {
     <section>
       <h2 className="rule mb-1 mt-9">Gitarren</h2>
       <p className="text-[14px] leading-relaxed text-muted">
-        Zu jeder Technik wird eine davon gewürfelt, das Riff dazu spielst du auf derselben. Ab zwei
+        Zum Start wird eine davon gewürfelt, die spielst du den ganzen Durchgang. Ab zwei
         Gitarren. Im Sieben-Saiter-Modus kommen nur Siebensaitige in Frage. Gilt nur für diesen
         Browser.
       </p>

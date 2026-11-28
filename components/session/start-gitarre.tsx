@@ -5,7 +5,7 @@ import { MdCasino, MdMusicNote, MdTune } from "react-icons/md"
 import { Stimmgeraet } from "./stimmgeraet"
 
 interface StartGitarreProps {
-  /** Die Gitarre des ersten Technik+Riff-Paars. */
+  /** Die Gitarre dieses Durchgangs. */
   gitarre: string
   /** Ob die Gitarre sieben Saiten hat: das Stimmgerät beginnt dann bei der Siebensaitigen. */
   sieben: boolean
