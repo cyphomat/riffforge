@@ -44,9 +44,11 @@ import { RiffbuchAnsicht } from "@/components/session/riffbuch-ansicht"
 import { BoardAnsicht } from "@/components/session/board-ansicht"
 import { AdventGurt } from "@/components/session/advent-gurt"
 import { Rampenlicht } from "@/components/session/rampenlicht"
+import { AlbumKarte } from "@/components/session/album-karte"
 import type { PracticeLog } from "@/lib/session/types"
 import { loadTheoryLog } from "@/lib/storage/theory-log"
 import { THEORY_CARDS } from "@/lib/theory/cards"
+import { alben, type Album } from "@/lib/session/album"
 
 /** `2026-06-15` → `15.6.2026` — wie man ein Datum auf einen Aufnäher stickt. */
 export function datum(tag: string): string {
@@ -300,6 +302,7 @@ export function MerchStand() {
     riffs: RiffSlot[]
     drops: DropStand[]
     log: PracticeLog
+    album: Album | null
   } | null>(null)
   // Welche Gitarre im Rampenlicht steht (Index in der Reihe der verdienten), oder keine.
   const [licht, setLicht] = useState<number | null>(null)
@@ -318,11 +321,12 @@ export function MerchStand() {
       riffs: gurtRiffs(log, isoLokal()),
       drops: dropStaende(DROPS, log, isoLokal()),
       log,
+      album: alben(log, loadTheoryLog())[0] ?? null,
     })
   }, [])
 
   if (!stand) return null
-  const { rang, liste, touren, festival, rangTage, riffs, drops, log } = stand
+  const { rang, liste, touren, festival, rangTage, riffs, drops, log, album } = stand
   const stufe = gezeigt ?? rang.stufe
   const buehne = RAENGE[stufe]
   const frueher = stufe !== rang.stufe
@@ -417,6 +421,8 @@ export function MerchStand() {
             Gezählt werden Wochen mit mindestens einer Session, nicht Sessions. Der Rang fällt nie.
           </p>
         </section>
+
+        {album && <AlbumKarte album={album} />}
 
         <h2 className="tape">Gitarrenrack</h2>
         {/* Eine Gitarre je Rang, wie die Festival-Shirts: die verdienten und die

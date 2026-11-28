@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1784%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1804%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -445,6 +445,12 @@ Session spielt die **Zugabe** ein Riff übers Board; im Rack öffnet ein Tipp au
 eine Gitarre das **Rampenlicht**. In der Wiedergabe spielt mit dem Rang eine
 **Band** mit: das Schlagzeug ab Proberaum, der Bass ab Vorband, nie im Block. Das
 **Riffbuch** merkt sich auf diesem Gerät, welche Riffe schon ganz erklungen sind.
+
+Das **Jahresalbum** (`/album`, über den Merch-Stand) presst jede Woche mit
+Gitarre zu einem Track: Titel nach der prägenden Technik, gespielte Songs, neue
+saubere Bestwerte und der gefällte Wochengegner. Auf dem Cover steht ein Pegel
+mit einem Balken je Woche. Bis 3 Tracks ist es eine Demo, ab 4 eine EP, ab 12
+eine LP. Pausen fehlen einfach, gespeichert wird nichts.
 
 | Monat | Drop | Plektren (gewöhnlich / selten / episch) |
 |---|---|---|

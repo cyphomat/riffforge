@@ -140,6 +140,10 @@ Komponente.
   misst. Mitglieder kommen mit dem Rang aus dem Log. Das Riffbuch (`riffbuch.ts`) ist die einzige
   gespeicherte Hörliste und gehört nur dem Gerät, nie dem Abgleich; Begründung in
   `docs/marke-und-merch.md`.
+- **Das Jahresalbum (`lib/session/album.ts`, `/album`) fällt aus Log und Wissens-Log und wird
+  nicht gespeichert.** Eine Woche mit Übung ist ein Track, sie gehört zum Jahr ihres
+  Donnerstags; keine Spielzeit, kein „Pressen"; nur am Merch-Stand und auf `/album`;
+  Begründung in `docs/marke-und-merch.md`.
 - **TypeScript bleibt auf 6.** TypeScript 7 ist der Neubau in Go und hat
   keine JavaScript-Schnittstelle; `typescript-eslint` (über
   eslint-config-next) verlangt ausdrücklich unter 6.1, und Next ruft beim

@@ -306,3 +306,27 @@
   Durchgang zu Ende gespielt hat (`onGehoert`), in der Zugabe, in der Probe am Board und bei den Türchen. Das
   erste Datum bleibt, Unbekanntes kommt nicht hinein, Kaputtes fällt auf ein leeres Buch zurück. Es gibt
   keinen Aufnäher dazu: Aufnäher fallen aus dem Log.
+
+## Jahresalbum
+
+- **Das Album rechnet aus Log und Wissens-Log und speichert nichts** (`lib/session/album.ts`). Roadie
+  presst am Jahresende ein festes Dokument, weil sich dort Quellen ändern oder wegfallen; hier wachsen
+  beide Logs nur, also gibt es keinen Knopf. Trägt ein zweites Gerät spät etwas nach, kommt der Track
+  dazu — und nummeriert die folgenden neu.
+- **Eine Woche mit Übung ist ein Track, eine Pause ist keiner.** Gezählt wie der Rang: jeder Block
+  zählt, auch ein sehr kurzer. Die Woche gehört zum Jahr ihres Donnerstags; KW 53 2026 reicht bis zum
+  3. Januar 2027, ab dem Montag danach steht „Erschienen". Einträge aus der Zukunft fallen weg.
+- **Keine Spielzeit.** Im echten Log standen Wochen mit 0 und 13 Sekunden; eine Tracklänge „0:00"
+  behauptet etwas Falsches. Auf dem Track stehen Tage und Blöcke.
+- **Titel aus Technik und Woche** („Gallop of the Molten Wolf"): die Technik mit den meisten Blöcken,
+  das Warm-up nur, wenn sonst nichts war, der Rest aus einem Hash der Woche. Auf einer Platte doppelt
+  keiner; bei einer Dublette rückt die spätere Woche weiter. In der laufenden Woche kann sich der Titel
+  noch ändern. Die Wortlisten sind eigene, keine Muster bekannter Songtitel.
+- **Bestwert heisst besser als vorher:** das erste saubere Mal ist keiner. Verglichen wird über
+  Jahresgrenzen. Ein nie gefallener Wochengegner erscheint nirgends, auch nicht als Null.
+- **Format:** Demo bis 3 Tracks, EP ab 4, LP ab 12. „Noch N Übungswochen bis zur …" steht nur da,
+  solange die restlichen Wochen des Jahres dafür reichen. Die Zahlen sind eine Vermutung.
+- **Das Cover** ist ein Pixelbild (64 × 64): der Totenkopf über einem Pegel, ein Balken je Track, Höhe
+  nach Übungstagen, Bernstein bei gefälltem Gegner. Die Farben der Pappe sind Bild, nicht App-Palette,
+  und stehen deshalb als Hex-Werte im Code, wie beim Shirt-Stoff.
+- **Der Eingang liegt am Merch-Stand links unter dem Rang**, nicht auf *Heute* und nie in der Session.
