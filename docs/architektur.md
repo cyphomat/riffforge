@@ -110,6 +110,9 @@
 | `lib/storage/board.ts` | `aktivesBoard()`: Besitz aus den Logs, Wahl vom Gerät, als Klang für den Player |
 | `components/session/board-ansicht.tsx` | Board und Quests auf dem Merch-Stand, mit Probe zum Hören |
 | `components/session/zugabe-knopf.tsx` | Zugabe auf dem Abschluss-Zettel |
+| `lib/session/album.ts` | Das Jahresalbum: Tracks, Titel, Format und Cover-Pixel aus beiden Logs — rein |
+| `components/session/album-ansicht.tsx`, `app/album/page.tsx` | Die Seite `/album`: Cover, Trackliste, Rückseite |
+| `components/session/album-cover.tsx`, `album-karte.tsx` | Das Cover als SVG; die Karte zum Album am Merch-Stand |
 | `components/session/rampenlicht.tsx` | Eine Gitarre aus dem Rack groß unter dem Scheinwerfer, reine Anzeige |
 | `components/session/advent-gurt.tsx` | Die Advents-Plektren am Gurt |
 | `lib/session/advent.ts` | Der Advent: welche Türchen offen sind (Übungstage im Dezember), Tage der Aufnäher — rein, alles aus dem Log |

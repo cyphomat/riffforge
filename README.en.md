@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1784%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1804%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -446,6 +446,12 @@ such as five practice days or a beaten enemy of the week. After each session the
 the **spotlight**. With rank a **band** joins the playback: drums from
 Proberaum, bass from Vorband, never during a block. The **riff book** remembers
 on this device which riffs have played all the way through.
+
+The **year album** (`/album`, from the merch stand) presses every week with the
+guitar into a track: a title after the week's main technique, the songs played,
+new clean personal bests and the defeated enemy of the week. The cover shows a
+level meter with one bar per week. Up to 3 tracks make a demo, 4 an EP, 12 an
+LP. Breaks are simply absent, and nothing is stored.
 
 | Month | Drop | Picks (common / rare / epic) |
 |---|---|---|
