@@ -143,6 +143,9 @@ Komponente.
 - **Das Repertoire (`lib/session/repertoire.ts`) verwaltet nur den Lernstand echter Songs,
   keine Noten, und gehört nur dem Gerät.** Echte Songdaten, Tabs und Dateien kommen nie ins
   Repo, auch nicht als Test-Fixture; Begründung in `docs/daten-und-abgleich.md`.
+- **Das Repertoire reist als eigene Datei (`lib/session/repertoire-datei.ts`).** Einlesen zeigt
+  erst die Vorschau, legt nur dazu und ersetzt nie einen neueren Übungsstand; eine kaputte oder
+  fremde Datei ändert nichts; Begründung in `docs/daten-und-abgleich.md`.
 - **Ein Repertoire-Abschnitt ersetzt die letzte Riff-Runde (`lib/session/repertoire-session.ts`)
   und steht namenlos im Log** (`"repertoire"`, feste Bewertung, nie als sauber gezählt). Wer
   Bewertungen aus dem Log liest, überspringt ihn mit `istRepertoire`; Begründung in

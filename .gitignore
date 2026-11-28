@@ -35,3 +35,6 @@ next-env.d.ts
 *.GP
 *.GP[3-5]
 *.GPX
+
+# Exportierte Repertoires enthalten echte Songdaten
+riffforge-repertoire*.json
