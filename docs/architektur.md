@@ -102,6 +102,7 @@
 | `lib/audio/band.ts` | Die Klänge des Schlagzeugs (Kick, Snare, Hi-Hat), synthetisch |
 | `lib/session/riffbuch.ts` | Das Riffbuch: Schema, Eintragen mit erstem Datum, Stand — rein; gespeichert wird in `lokal.ts` |
 | `components/session/riffbuch-ansicht.tsx` | Das Riffbuch auf dem Merch-Stand |
+| `lib/session/repertoire.ts` | Das Repertoire: echte Songs mit Abschnitten, Lernstand und Sound — Schema und Regeln, rein, keine Noten; gespeichert wird in `lokal.ts`, noch ohne Oberfläche |
 | `lib/session/board-daten.ts` | Pedale und Amps als Daten (eigene Namen, keine Marken), Schemas; jedes Pedal trägt die Kennung seines Lexikon-Eintrags |
 | `lib/session/board.ts` | Das Board als Rechnung: Besitz, Wahl, Reihenfolge nach dem Effektlexikon, Kette für die Wiedergabe — rein |
 | `lib/session/quests-daten.ts`, `quests.ts` | Quests mit Lohn fürs Board; Fortschritt und Besitz fallen aus beiden Logs — rein |

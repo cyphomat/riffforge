@@ -27,3 +27,11 @@ yarn-error.log*
 next-env.d.ts
 # Bau-Stempel, erzeugt von tools/version.mjs
 /public/version.json
+
+# Guitar-Pro-Dateien gehören nie ins öffentliche Repo
+*.gp
+*.gp[3-5]
+*.gpx
+*.GP
+*.GP[3-5]
+*.GPX
