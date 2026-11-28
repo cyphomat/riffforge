@@ -5,6 +5,7 @@ import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lea
 import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/gitarren"
 import { gehoert, LEERES_BUCH, riffbuchSchema, type Riffbuch } from "@/lib/session/riffbuch"
 import {
+  abschnittGeuebt,
   repertoireAusText,
   repertoireSchema,
   songEntfernen,
@@ -438,6 +439,10 @@ export function merkeSong(song: RepertoireSong, jetzt: Date = new Date()): boole
 
 export function vergissSong(songId: string): boolean {
   return repertoireAendern((alt) => songEntfernen(alt, songId))
+}
+
+export function merkeAbschnittGeuebt(songId: string, abschnittId: string, status: AbschnittStatus, jetzt: Date = new Date()): boolean {
+  return repertoireAendern((alt) => abschnittGeuebt(alt, songId, abschnittId, status, jetzt))
 }
 
 export function merkeAbschnittStatus(songId: string, abschnittId: string, status: AbschnittStatus, jetzt: Date = new Date()): boolean {

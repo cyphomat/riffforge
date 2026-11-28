@@ -171,6 +171,29 @@
   Untergrenze sollte „0 Min" verhindern, behauptete aber etwas, das nicht
   gespielt wurde. Ab einer Minute wird wie bisher auf ganze Minuten gerundet.
 
+## Repertoire in der Session
+
+Ein Abschnitt aus dem Repertoire **ersetzt die letzte Riff-Runde**, er kommt
+nicht dazu: die Form der Session bleibt. Der Preis ist, dass das Katalog-Riff an
+dem Tag nur einmal läuft (und dort bewertet wird). Hat der Plan nur eine
+Riff-Runde, ist es ein einzeln gewählter Drill oder ist nichts fällig, bleibt
+alles, wie es war.
+
+Die Auswahl (`waehleAbschnitt`) ist ohne Zufall, damit *Heute* sie ankündigen
+kann. Höchstens drei offene Abschnitte sind gleichzeitig in Arbeit — sonst käme
+nach einem frisch eingetragenen Song jeder Teil nur alle paar Wochen dran. Was
+*sitzt*, ist nach 14 Tagen fällig und hat dann Vorrang, aber höchstens eine
+Wiederholung in 7 Tagen; sonst verdrängte ein grosses Repertoire das Neue.
+
+Am Ende steht statt der Bewertung der Lernstand: ein Tipp, ein Block. Erst dieser
+Tipp speichert — wer vorher geht, bekommt den Block nochmal. Der Session-Stand
+merkt sich die Kennungen des Abschnitts, weil das Üben selbst ändert, was als
+Nächstes dran wäre. Wurde er inzwischen gelöscht, läuft das Katalog-Riff.
+
+Ohne Mikrofon, wie bei Songs: echte Stücke haben Pausen und lange Noten. Das
+Tempo lässt sich im Block verstellen, geändert wird das Übetempo aber nur im
+Repertoire. Eine Taktbetonung gibt es nur bei genau einer x/4-Taktart.
+
 ## Der Roadie auf *Heute* und im Abschluss
 
 - **Der Roadie kommentiert die Übung mit einem Satz, nie in der Session.** Auf

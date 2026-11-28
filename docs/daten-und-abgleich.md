@@ -81,6 +81,13 @@
   Handarbeit ist, wird Kaputtes beiseitegelegt (`mga.repertoire.v1.broken`),
   und gelingt das nicht, wird auch nicht darübergeschrieben. Ein eigener
   Export ist offen.
+  **In den Log geht nur, dass geübt wurde** (`repertoireEintrag` in
+  `repertoire-session.ts`): `drillId` und `technique` sind `"repertoire"`, dazu
+  Tempo, Sekunden, Zeitpunkt — kein Name, keine Kennung, kein Status, denn der
+  Log wird abgeglichen. Das Pflichtfeld `rating` steht fest auf 2, damit auch
+  eine ältere Version den Block nie als sauber zählt. Wo ein fester Wert stören
+  würde (Ansage, Combo, saubere Tage, Tempoverlauf), wird der Eintrag
+  übersprungen; Serie, Rang, Kalender, Minuten und Übungstage zählen ihn.
   Überlappen dürfen sich Abschnitte nur auf **verschiedenen Spuren** —
   Rhythmus und Solo liegen oft über denselben Takten. Je Abschnitt bleibt das
   erste Datum für *langsam* und *sitzt* stehen; ein Rückschritt löscht nichts.

@@ -7,9 +7,11 @@ import {
   gitarren,
   lickBox,
   lickSeed,
+  merkeAbschnittGeuebt,
   merkeGespielt,
   merkeLickSeed,
   merkeSessionStand,
+  repertoire,
   sessionStand,
   vergissSessionStand,
 } from "@/lib/storage/lokal"
@@ -20,6 +22,7 @@ import { SessionSummary } from "@/components/session/session-summary"
 import { TheoryBreak } from "@/components/session/theory-break"
 import { useScrollTopOn } from "@/hooks/use-scroll-top"
 import { dayKey } from "@/lib/session/progress"
+import { mitRepertoire, repertoireEintrag, waehleAbschnitt, type RepertoireWahl } from "@/lib/session/repertoire-session"
 import { buildDrillSession, buildSession, nextExtraBlock, tagesZufall } from "@/lib/session/builder"
 import {
   FRAGEN_JE_PORTION,
@@ -87,10 +90,16 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
   /** Nach „+5 Minuten" ist der Plan nicht mehr aus dem Log zurückzurechnen; dann wird nichts mehr gemerkt. */
   const keinStand = useRef(false)
 
+  /** The repertoire section of this run, picked once at the start and kept in the session state. */
+  const wahl = useRef<RepertoireWahl | undefined>(undefined)
+
   const planFuer = (startLog: PracticeLog, profile: Profile | null) => {
     const single = drillId ? buildDrillSession(startLog, drillId, { minutes, profile }) : null
     // Mit dem Zufall des Tages: derselbe Plan, den *Heute* angekündigt hat.
-    const plan = (single ?? buildSession(startLog, { minutes, profile, random: tagesZufall() })).blocks
+    // Ein gezielt gewählter Drill bleibt, was er ist; sonst füllt das Repertoire einen Riff-Block.
+    const plan =
+      single?.blocks ??
+      mitRepertoire(buildSession(startLog, { minutes, profile, random: tagesZufall() }).blocks, repertoire(), wahl.current)
     setBlocks(plan)
     setEinschuebe(theorieEinschuebe(plan, { fokussiert: drillId !== undefined }))
   }
@@ -103,6 +112,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setStartingLog(initial)
     setStartingTheory(loadTheoryLog())
     setLog(initial)
+    wahl.current = (drillId ? null : waehleAbschnitt(repertoire())) ?? undefined
     planFuer(initial, loadProfile())
     rack.current = gitarren()
     const gewuerfelt = wuerfle(rack.current, Math.random)
@@ -130,6 +140,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
     setAngebot(null)
     setStartSchirm(false)
     setGitarre(stand.gitarre ?? null)
+    wahl.current = stand.repertoire
     planFuer(start, loadProfile())
   }
 
@@ -220,15 +231,21 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
       return
     }
 
-    const result: DrillResult = {
-      drillId: block.drill.id,
-      technique: block.drill.technique,
-      bpm: outcome.bpm,
-      rating: outcome.rating,
-      seconds,
-      at: new Date().toISOString(),
-      timing: outcome.timing,
-    }
+    // Der Lernstand bleibt auf dem Gerät; in den Log geht nur, dass geübt wurde.
+    const stelle = block.repertoire
+    if (stelle && outcome.status) merkeAbschnittGeuebt(stelle.songId, stelle.abschnittId, outcome.status)
+
+    const result: DrillResult = stelle
+      ? repertoireEintrag(outcome.bpm, seconds)
+      : {
+          drillId: block.drill.id,
+          technique: block.drill.technique,
+          bpm: outcome.bpm,
+          rating: outcome.rating,
+          seconds,
+          at: new Date().toISOString(),
+          timing: outcome.timing,
+        }
 
     // „Sitzt" heisst: nächstes Lick. Darunter bleibt dieses — Wiederholung
     // mit Abstand ist der Sinn, und eine Tempokurve über lauter verschiedene
@@ -282,6 +299,7 @@ export function SessionRunner({ minutes, drillId }: { minutes: number; drillId?:
       beantworteteFragen,
       carried: carried.current,
       gitarre: gitarre ?? undefined,
+      repertoire: wahl.current,
     })
   }, [blocks, startingLog, done, current, erledigteEinschuebe, beantworteteFragen, minutes, drillId, gitarre])
 

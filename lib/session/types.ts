@@ -1,5 +1,6 @@
 import { z } from "zod"
 import type { Song } from "@/lib/theory/song"
+import type { RepertoireStelle } from "./repertoire-session"
 
 export const TECHNIQUES = [
   "warmup",
@@ -139,6 +140,8 @@ export interface SessionBlock {
   round: number
   /** How many rounds this drill gets today. */
   rounds: number
+  /** Set when a section of the player's own repertoire fills this block. */
+  repertoire?: RepertoireStelle
 }
 
 export interface SessionPlan {

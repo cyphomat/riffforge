@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="App öffnen" src="https://img.shields.io/badge/App-öffnen-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1848%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1871%20grün-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Lizenz" src="https://img.shields.io/badge/Lizenz-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-läuft-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Abhängigkeiten" src="https://img.shields.io/badge/Abhängigkeiten-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -805,6 +805,15 @@ eigenen Guitar-Pro-Datei lernt. Je Song legst du Abschnitte an (Takte, Spur,
 *langsam* oder *sitzt*. Dazu passen Notizen zum Sound. Gespeichert wird nur der
 Lernstand, keine Noten. Das Repertoire bleibt auf dem Gerät und steht weder im
 Abgleich noch in der Sicherungsdatei: wer die Browserdaten löscht, verliert es.
+
+In der **täglichen Session** füllt ein Abschnitt die letzte Riff-Runde: drei
+Minuten mit Takten, Spur, Stimmung, Sound und Metronom im Übetempo, gespielt
+nach deiner Datei. Welcher dran ist, rechnet die App aus: höchstens drei offene
+Abschnitte gleichzeitig, der am längsten nicht geübte zuerst; was *sitzt*, kommt
+nach zwei Wochen wieder, höchstens eine Wiederholung pro Woche. Danach tippst du
+den neuen Stand an. Im Übungs-Log steht nur „Repertoire“ mit Tempo und Dauer,
+ohne Song, Band oder Datei. Der Block zählt für Serie, Rang und Minuten, aber
+nicht als sauberer Block.
 
 ### Abgleich zwischen Geräten
 

@@ -6,6 +6,7 @@ import Link from "next/link"
 // schreibt in denselben Log. Ohne das stünde hier die nackte Nummer.
 import { ALLE_DRILLS_BY_ID } from "@/lib/session/drills"
 import { nextBpm, progressFor, spielzeit, streakWeeks } from "@/lib/session/progress"
+import { istRepertoire, REPERTOIRE_TITEL } from "@/lib/session/repertoire-session"
 import { SITZT_AB } from "@/lib/session/lead"
 import { aufnaeher, neueAufnaeher, rang, type Aufnaeher, type Rang } from "@/lib/session/merch"
 import { loadProfile } from "@/lib/storage/profile"
@@ -193,11 +194,13 @@ export function SessionSummary({
           {results.map((result, index) => {
             const drill = ALLE_DRILLS_BY_ID[result.drillId]
             const sauber = result.rating >= SITZT_AB
+            // Unrated and without a name in the log: no stamp, no next tempo.
+            const eigenes = istRepertoire(result)
             const weiter = drill ? nextBpm(drill, progressFor(log, drill.id), profil) : null
             return (
               <li key={`${result.drillId}-${index}`} className={sauber ? "sauber" : ""}>
-                <span className="song">{drill?.title ?? result.drillId}</span>
-                {!sauber && <span className="nochmal">nochmal</span>}
+                <span className="song">{eigenes ? REPERTOIRE_TITEL : (drill?.title ?? result.drillId)}</span>
+                {!sauber && !eigenes && <span className="nochmal">nochmal</span>}
                 <span className="tempo">
                   {result.bpm} BPM
                   {weiter !== null && weiter !== result.bpm && ` → nächstes Mal ${weiter}`}

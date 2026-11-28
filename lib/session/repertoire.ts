@@ -38,6 +38,10 @@ export const abschnittSchema = z.object({
   technikTags: z.array(technikTagSchema),
   /** When the section first reached a status. Never overwritten, never removed. */
   erstmals: z.object({ langsam: datum.optional(), sitzt: datum.optional() }),
+  /** When the section was last practised in a session. */
+  zuletzt: datum.optional(),
+  /** When it was last practised while already in place: the last repetition. */
+  wiederholt: datum.optional(),
 })
 export type Abschnitt = z.infer<typeof abschnittSchema>
 
@@ -142,8 +146,14 @@ export function songSpeichern(repertoire: Repertoire, song: RepertoireSong, jetz
   const neu: RepertoireSong = {
     ...geprueft.data,
     abschnitte: geprueft.data.abschnitte.map((a) => {
-      const bisher = alt?.abschnitte.find((b) => b.id === a.id)?.erstmals
-      return datiert({ ...a, erstmals: { ...a.erstmals, ...bisher } }, jetzt)
+      const bisher = alt?.abschnitte.find((b) => b.id === a.id)
+      const gemerkt = {
+        ...a,
+        erstmals: { ...a.erstmals, ...bisher?.erstmals },
+        ...(bisher?.zuletzt ? { zuletzt: bisher.zuletzt } : {}),
+        ...(bisher?.wiederholt ? { wiederholt: bisher.wiederholt } : {}),
+      }
+      return datiert(gemerkt, jetzt)
     }),
   }
   return { songs: alt ? repertoire.songs.map((s) => (s.id === neu.id ? neu : s)) : [...repertoire.songs, neu] }
@@ -165,6 +175,32 @@ export function statusSetzen(
   const abschnitt = repertoire.songs.find((s) => s.id === songId)?.abschnitte.find((a) => a.id === abschnittId)
   if (!abschnitt || abschnitt.status === status) return repertoire
   const neu = datiert({ ...abschnitt, status }, jetzt)
+  return {
+    songs: repertoire.songs.map((s) =>
+      s.id === songId ? { ...s, abschnitte: s.abschnitte.map((a) => (a.id === abschnittId ? neu : a)) } : s,
+    ),
+  }
+}
+
+/**
+ * A section was played in a session: sets the status the player tapped and
+ * remembers the date. Playing a section that was already in place counts as its
+ * repetition. Unknown ids change nothing.
+ */
+export function abschnittGeuebt(
+  repertoire: Repertoire,
+  songId: string,
+  abschnittId: string,
+  status: AbschnittStatus,
+  jetzt: Date = new Date(),
+): Repertoire {
+  const abschnitt = repertoire.songs.find((s) => s.id === songId)?.abschnitte.find((a) => a.id === abschnittId)
+  if (!abschnitt) return repertoire
+  const am = jetzt.toISOString()
+  const neu = datiert(
+    { ...abschnitt, status, zuletzt: am, ...(abschnitt.status === "sitzt" ? { wiederholt: am } : {}) },
+    jetzt,
+  )
   return {
     songs: repertoire.songs.map((s) =>
       s.id === songId ? { ...s, abschnitte: s.abschnitte.map((a) => (a.id === abschnittId ? neu : a)) } : s,

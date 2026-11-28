@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { DRILLS } from "@/lib/session/drills"
 import { buildSession, tagesZufall } from "@/lib/session/builder"
+import { mitRepertoire, waehleAbschnitt } from "@/lib/session/repertoire-session"
 import { asset } from "@/lib/base-path"
 import { aufnaeher, rang as berechneRang, rangBild, type Rang } from "@/lib/session/merch"
 import { kalenderwoche, wochen, type Woche } from "@/lib/session/rueckblick"
@@ -31,7 +32,7 @@ import { PixelFeuer, ZELLE } from "@/components/ui/pixel-feuer"
 import { Onboarding } from "@/components/session/onboarding"
 import { PracticeCalendar } from "@/components/session/practice-calendar"
 import { Welcome } from "@/components/session/welcome"
-import { gitarren, merkeWillkommen, saitenBuch, willkommenGesehen } from "@/lib/storage/lokal"
+import { gitarren, merkeWillkommen, repertoire, saitenBuch, willkommenGesehen } from "@/lib/storage/lokal"
 import { saitenZeilen, type SaitenZeile } from "@/lib/session/saiten"
 import { EMPTY_LOG, TECHNIQUE_LABELS, type BlockKind, type PracticeLog, type SessionBlock } from "@/lib/session/types"
 import { MdGridOn, MdLinearScale, MdMusicNote, MdTune } from "react-icons/md"
@@ -92,7 +93,9 @@ export function PracticeOverview() {
     setWillkommen(!willkommenGesehen() && gelesen.results.length === 0)
     // Derselbe Plan, den die Session gleich baut: gleicher Log, gleicher
     // Zufall des Tages. Sonst kündigte das Plakat etwas anderes an.
-    setPlan(buildSession(gelesen, { minutes: 15, profile: loadProfile(), random: tagesZufall() }).blocks)
+    const eigene = repertoire()
+    const blocks = buildSession(gelesen, { minutes: 15, profile: loadProfile(), random: tagesZufall() }).blocks
+    setPlan(mitRepertoire(blocks, eigene, waehleAbschnitt(eigene)))
     setMerch({
       rang: berechneRang(gelesen),
       aufnaeher: aufnaeher(gelesen, loadTheoryLog(), THEORY_CARDS).filter((a) => a.verdient).length,
@@ -186,9 +189,9 @@ export function PracticeOverview() {
                   className="flex items-baseline gap-3 border-b border-line py-[9px] last:border-b-0"
                 >
                   <span className="w-[76px] flex-none font-mono text-[13px] uppercase tracking-[0.08em] text-dim">
-                    {ART[block.drill.kind]}
+                    {block.repertoire ? "Song" : ART[block.drill.kind]}
                   </span>
-                  <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg">
+                  <span className="min-w-0 flex-1 break-words text-[15px] leading-snug text-fg">
                     {block.drill.title}
                     {runden > 1 && (
                       <span className="text-dim">

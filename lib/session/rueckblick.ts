@@ -1,4 +1,5 @@
 import { ALLE_DRILLS_BY_ID } from "./drills"
+import { istRepertoire } from "./repertoire-session"
 import { startBpmFor, type Profile } from "./profile"
 import { dayKey, SAUBER_AB, weekKey } from "./progress"
 import type { DrillResult, PracticeLog } from "./types"
@@ -105,7 +106,8 @@ export function drillVerlaeufe(log: PracticeLog, now: Date = new Date(), max = W
   const imFenster = new Set(fenster)
   const jeDrill = new Map<string, DrillResult[]>()
   for (const r of log.results) {
-    if (!imFenster.has(weekKey(new Date(r.at)))) continue
+    // Different songs under one id: a tempo curve over them would mean nothing.
+    if (istRepertoire(r) || !imFenster.has(weekKey(new Date(r.at)))) continue
     jeDrill.set(r.drillId, [...(jeDrill.get(r.drillId) ?? []), r])
   }
 

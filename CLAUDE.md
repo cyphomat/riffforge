@@ -143,6 +143,10 @@ Komponente.
 - **Das Repertoire (`lib/session/repertoire.ts`) verwaltet nur den Lernstand echter Songs,
   keine Noten, und gehört nur dem Gerät.** Echte Songdaten, Tabs und Dateien kommen nie ins
   Repo, auch nicht als Test-Fixture; Begründung in `docs/daten-und-abgleich.md`.
+- **Ein Repertoire-Abschnitt ersetzt die letzte Riff-Runde (`lib/session/repertoire-session.ts`)
+  und steht namenlos im Log** (`"repertoire"`, feste Bewertung, nie als sauber gezählt). Wer
+  Bewertungen aus dem Log liest, überspringt ihn mit `istRepertoire`; Begründung in
+  `docs/session-und-bildschirme.md`.
 - **Das Jahresalbum (`lib/session/album.ts`, `/album`) fällt aus Log und Wissens-Log und wird
   nicht gespeichert.** Eine Woche mit Übung ist ein Track, sie gehört zum Jahr ihres
   Donnerstags; keine Spielzeit, kein „Pressen"; nur am Merch-Stand und auf `/album`;

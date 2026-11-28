@@ -1,5 +1,6 @@
 import { DRILLS_BY_ID } from "./drills"
 import { dayKey, daysSince, progressFor, streakWeeks } from "./progress"
+import { istRepertoire, REPERTOIRE_TITEL } from "./repertoire-session"
 import type { DrillResult, PracticeLog } from "./types"
 
 /**
@@ -36,6 +37,7 @@ function lastSessionResults(log: PracticeLog): DrillResult[] {
 }
 
 function titleOf(result: DrillResult): string {
+  if (istRepertoire(result)) return REPERTOIRE_TITEL
   return DRILLS_BY_ID[result.drillId]?.title ?? result.drillId
 }
 
@@ -63,7 +65,9 @@ export function briefingFor(log: PracticeLog, now: Date = new Date()): Briefing 
 
   // Ein wackeliger Block wiegt schwerer als drei saubere: was nicht sitzt,
   // bestimmt den Ton.
-  const weakest = recent.filter((result) => result.rating <= 2).sort((a, b) => a.rating - b.rating)[0]
+  // A repertoire block carries no rating of its own, so it says nothing here.
+  const bewertet = recent.filter((result) => !istRepertoire(result))
+  const weakest = bewertet.filter((result) => result.rating <= 2).sort((a, b) => a.rating - b.rating)[0]
   if (weakest) {
     return {
       tone: "technik",
@@ -94,14 +98,16 @@ export function briefingFor(log: PracticeLog, now: Date = new Date()): Briefing 
     }
   }
 
-  const last = recent.find((result) => DRILLS_BY_ID[result.drillId]?.kind !== "warmup") ?? recent[0]
+  const last = bewertet.find((result) => DRILLS_BY_ID[result.drillId]?.kind !== "warmup") ?? bewertet[0]
   // Nach Kalendertag, nicht nach 24 Stunden: gestern Abend ist gestern,
   // auch wenn es erst zwölf Stunden her ist.
   const playedToday = dayKey(new Date(recent[0].at)) === dayKey(now)
   return {
     tone: "solide",
     line: playedToday ? "Nochmal" : "Weiter im Text",
-    reason: `Zuletzt ${titleOf(last)} bei ${last.bpm} BPM, und es lief. Da machen wir weiter.`,
+    reason: last
+      ? `Zuletzt ${titleOf(last)} bei ${last.bpm} BPM, und es lief. Da machen wir weiter.`
+      : `Zuletzt ${REPERTOIRE_TITEL} geübt. Da machen wir weiter.`,
   }
 }
 
