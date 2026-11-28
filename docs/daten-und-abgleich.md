@@ -69,3 +69,18 @@
   beim Build), es gibt keine Analyse-Dienste und keine Einbettungen. Die CSP in
   `app/layout.tsx` schreibt das fest: wer einen Host hinzufügt, muss dort
   `connect-src` erweitern — und sich fragen, warum.
+- **Das Repertoire gehört dem Gerät und enthält keine Noten.** Gelernt wird mit
+  der eigenen Guitar-Pro-Datei; die App merkt sich nur Abschnitte, Status,
+  Übetempo, Technik-Tags und den Sound (`mga.repertoire.v1`). Von der Datei
+  bleibt der Name als Hinweis, ein Pfad wird abgelehnt. Das Repo ist
+  öffentlich, deshalb sind alle Testsongs erfunden und `.gitignore` sperrt
+  Guitar-Pro-Dateien. `songs.ts` und `pruefeSong` haben damit nichts zu tun:
+  das sind eigene Riffe mit nachgerechnetem Lernziel.
+  Es wird **nicht abgeglichen und steht nicht in der Sicherungsdatei**: wer
+  den Browser leert, verliert es. Weil es anders als Riffbuch oder Rack
+  Handarbeit ist, wird Kaputtes beiseitegelegt (`mga.repertoire.v1.broken`),
+  und gelingt das nicht, wird auch nicht darübergeschrieben. Ein eigener
+  Export ist offen.
+  Überlappen dürfen sich Abschnitte nur auf **verschiedenen Spuren** —
+  Rhythmus und Solo liegen oft über denselben Takten. Je Abschnitt bleibt das
+  erste Datum für *langsam* und *sitzt* stehen; ein Rückschritt löscht nichts.

@@ -140,6 +140,9 @@ Komponente.
   misst. Mitglieder kommen mit dem Rang aus dem Log. Das Riffbuch (`riffbuch.ts`) ist die einzige
   gespeicherte Hörliste und gehört nur dem Gerät, nie dem Abgleich; Begründung in
   `docs/marke-und-merch.md`.
+- **Das Repertoire (`lib/session/repertoire.ts`) verwaltet nur den Lernstand echter Songs,
+  keine Noten, und gehört nur dem Gerät.** Echte Songdaten, Tabs und Dateien kommen nie ins
+  Repo, auch nicht als Test-Fixture; Begründung in `docs/daten-und-abgleich.md`.
 - **Das Jahresalbum (`lib/session/album.ts`, `/album`) fällt aus Log und Wissens-Log und wird
   nicht gespeichert.** Eine Woche mit Übung ist ein Track, sie gehört zum Jahr ihres
   Donnerstags; keine Spielzeit, kein „Pressen"; nur am Merch-Stand und auf `/album`;

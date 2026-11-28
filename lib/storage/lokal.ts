@@ -4,6 +4,16 @@ import { z } from "zod"
 import { BOX_STANDARD, GRUNDTOENE, LAGEN, type LickBox } from "@/lib/session/lead"
 import { STANDARD_GITARREN, gitarrenSchema, type Gitarre } from "@/lib/session/gitarren"
 import { gehoert, LEERES_BUCH, riffbuchSchema, type Riffbuch } from "@/lib/session/riffbuch"
+import {
+  repertoireAusText,
+  repertoireSchema,
+  songEntfernen,
+  songSpeichern,
+  statusSetzen,
+  type AbschnittStatus,
+  type Repertoire,
+  type RepertoireSong,
+} from "@/lib/session/repertoire"
 import { boardWahlSchema, STANDARD_WAHL, type BoardWahl } from "@/lib/session/board"
 import { sessionStandSchema, type SessionStand } from "@/lib/session/session-stand"
 import { aufgezogen, gespielt, LEERES_SAITENBUCH, saitenBuchSchema, type SaitenBuch } from "@/lib/session/saiten"
@@ -35,9 +45,11 @@ const GITARREN_KEY = "mga.gitarren.v1"
 const DROP_KEY = "mga.drop-gesehen.v1"
 const BOARD_KEY = "mga.board.v1"
 const RIFFBUCH_KEY = "mga.riffbuch.v1"
+const REPERTOIRE_KEY = "mga.repertoire.v1"
+const REPERTOIRE_KAPUTT_KEY = `${REPERTOIRE_KEY}.broken`
 
 /** Alle Schlüssel dieses Moduls. `clearLokal` muss jeden erwischen. */
-const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY, BOARD_KEY, RIFFBUCH_KEY]
+const OWN_KEYS = [GESICHERT_KEY, WILLKOMMEN_KEY, LICK_KEY, BOX_KEY, EINMESS_KEY, SAITEN_KEY, DARSTELLUNG_KEY, SAISONAL_KEY, VERSTECKT_KEY, SESSION_KEY, GITARREN_KEY, DROP_KEY, BOARD_KEY, RIFFBUCH_KEY, REPERTOIRE_KEY, REPERTOIRE_KAPUTT_KEY]
 
 function lesen(key: string): string | null {
   if (typeof window === "undefined") return null
@@ -49,12 +61,15 @@ function lesen(key: string): string | null {
   }
 }
 
-function schreiben(key: string, wert: string): void {
-  if (typeof window === "undefined") return
+/** Says whether the write went through; most callers can do without knowing. */
+function schreiben(key: string, wert: string): boolean {
+  if (typeof window === "undefined") return false
   try {
     window.localStorage.setItem(key, wert)
+    return true
   } catch {
     /* Nicht schlimm — die Erinnerung kommt dann eben wieder. */
+    return false
   }
 }
 
@@ -389,4 +404,42 @@ export function merkeRiffGehoert(id: string, jetzt: Date = new Date()): void {
   const buch = riffbuch()
   const neu = gehoert(buch, id, jetzt)
   if (neu !== buch) schreiben(RIFFBUCH_KEY, JSON.stringify(riffbuchSchema.parse(neu)))
+}
+
+/**
+ * Das Repertoire (`lib/session/repertoire.ts`): echte Songs und ihr Lernstand.
+ *
+ * Gehört dem Gerät, wird nicht abgeglichen und steht nicht in der Sicherung.
+ * Anders als beim Riffbuch ist das Handarbeit: Kaputtes wird beiseitegelegt,
+ * und gelingt das nicht, wird auch nicht darübergeschrieben.
+ */
+function repertoireLesen(): { repertoire: Repertoire; schreibbar: boolean } {
+  const roh = lesen(REPERTOIRE_KEY)
+  const { repertoire, kaputt } = repertoireAusText(roh)
+  const schreibbar = !kaputt || schreiben(REPERTOIRE_KAPUTT_KEY, roh as string)
+  return { repertoire, schreibbar }
+}
+
+export function repertoire(): Repertoire {
+  return repertoireLesen().repertoire
+}
+
+/** `false`: nothing changed, either because the change was refused or because storage failed. */
+function repertoireAendern(aendern: (alt: Repertoire) => Repertoire): boolean {
+  const { repertoire: alt, schreibbar } = repertoireLesen()
+  const neu = aendern(alt)
+  if (!schreibbar || neu === alt) return false
+  return schreiben(REPERTOIRE_KEY, JSON.stringify(repertoireSchema.parse(neu)))
+}
+
+export function merkeSong(song: RepertoireSong, jetzt: Date = new Date()): boolean {
+  return repertoireAendern((alt) => songSpeichern(alt, song, jetzt))
+}
+
+export function vergissSong(songId: string): boolean {
+  return repertoireAendern((alt) => songEntfernen(alt, songId))
+}
+
+export function merkeAbschnittStatus(songId: string, abschnittId: string, status: AbschnittStatus, jetzt: Date = new Date()): boolean {
+  return repertoireAendern((alt) => statusSetzen(alt, songId, abschnittId, status, jetzt))
 }
