@@ -20,10 +20,12 @@ export type AbschnittStatus = (typeof ABSCHNITT_STATUS)[number]
 export const technikTagSchema = z.enum(TECHNIQUES).exclude(["warmup"])
 export type TechnikTag = z.infer<typeof technikTagSchema>
 
-const text = z.string().trim().min(1)
+// Every check carries a German message: the form shows them as they are.
+const text = z.string().trim().min(1, "fehlt")
 const datum = z.string().refine((s) => !Number.isNaN(Date.parse(s)), "kein Datum")
-const takt = z.number().int().min(1)
-const regler = z.number().min(0).max(10)
+const zahl = () => z.number("Zahl fehlt")
+const takt = zahl().int("nur ganze Takte").min(1, "mindestens 1")
+const regler = zahl().min(0, "nur 0 bis 10").max(10, "nur 0 bis 10")
 
 export const abschnittSchema = z.object({
   id: text,
@@ -32,7 +34,7 @@ export const abschnittSchema = z.object({
   bis: takt,
   spur: text,
   status: z.enum(ABSCHNITT_STATUS),
-  uebetempoProzent: z.number().int().min(30).max(120),
+  uebetempoProzent: zahl().int("nur ganze Prozent").min(30, "mindestens 30 Prozent").max(120, "höchstens 120 Prozent"),
   technikTags: z.array(technikTagSchema),
   /** When the section first reached a status. Never overwritten, never removed. */
   erstmals: z.object({ langsam: datum.optional(), sitzt: datum.optional() }),
@@ -58,17 +60,19 @@ export const repertoireSongSchema = z
     titel: text,
     band: text,
     /** The tempo in the file's header, in BPM. */
-    tempoHeader: z.number().int().min(20).max(400),
+    tempoHeader: zahl().int("nur ganze BPM").min(20, "mindestens 20 BPM").max(400, "höchstens 400 BPM"),
     /** Open strings, low to high, e.g. `["D", "A", "D", "G", "B", "E"]`. */
     stimmung: z
-      .array(z.string().regex(/^[A-H](#|b)?[0-8]?$/, "kein Ton"))
-      .min(6)
-      .max(8),
+      .array(z.string().regex(/^[A-H](#|b)?[0-8]?$/, { error: (issue) => `„${String(issue.input)}“ ist kein Ton` }))
+      .min(6, "6 bis 8 Saiten angeben")
+      .max(8, "6 bis 8 Saiten angeben"),
     takte: takt,
     /** The time signatures that occur in the song. */
-    taktarten: z.array(z.string().regex(/^[1-9]\d?\/(1|2|4|8|16)$/, "keine Taktart")).min(1),
+    taktarten: z
+      .array(z.string().regex(/^[1-9]\d?\/(1|2|4|8|16)$/, { error: (issue) => `„${String(issue.input)}“ ist keine Taktart` }))
+      .min(1, "mindestens eine, zum Beispiel 4/4"),
     /** Only the file name, as a reminder. A path would leak the home directory into the data. */
-    quelle: text.regex(/^[^/\\]+$/, "nur der Dateiname, kein Pfad"),
+    quelle: text.regex(/^[^/\\]*$/, "nur der Dateiname, kein Pfad"),
     abschnitte: z.array(abschnittSchema),
     sound: soundSchema.optional(),
   })
@@ -92,6 +96,18 @@ export const repertoireSchema = z.object({
 export type Repertoire = z.infer<typeof repertoireSchema>
 
 export const LEERES_REPERTOIRE: Repertoire = { songs: [] }
+
+/** How many sections are in place. */
+export function fortschritt(song: Pick<RepertoireSong, "abschnitte">): { sitzt: number; gesamt: number; anteil: number } {
+  const gesamt = song.abschnitte.length
+  const sitzt = song.abschnitte.filter((a) => a.status === "sitzt").length
+  return { sitzt, gesamt, anteil: gesamt === 0 ? 0 : sitzt / gesamt }
+}
+
+/** The practice tempo in BPM, rounded to a number a metronome can be set to. */
+export function uebetempoBpm(tempoHeader: number, prozent: number): number {
+  return Math.round((tempoHeader * prozent) / 100)
+}
 
 /**
  * Reads a stored string. `kaputt` says that there was something which could not

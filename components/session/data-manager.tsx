@@ -305,8 +305,9 @@ export function DataManager() {
         <h2 className="rule mb-1 mt-9">Löschen</h2>
         <p className="mb-3 text-[13px] leading-relaxed text-dim">
           Setzt alles zurück: Tempi, Serien, Bestwerte, die beantworteten
-          Wissensfragen, die beiden Antworten vom ersten Start — und trennt einen
-          eingerichteten Abgleich samt Token. Was im Datenrepo liegt, bleibt dort. Danach
+          Wissensfragen, das Repertoire (das steht in keiner Sicherung), die beiden
+          Antworten vom ersten Start — und trennt einen eingerichteten Abgleich samt
+          Token. Was im Datenrepo liegt, bleibt dort. Danach
           ist die App in diesem Browser wie frisch installiert. Vorher exportieren.
         </p>
         {confirmClear ? (

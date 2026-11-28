@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { DrillLibrary } from "@/components/session/drill-library"
 
 export const metadata = { title: "Drills · Riffforge" }
@@ -13,6 +14,9 @@ export default function DrillsPage() {
           sonst nimm die Session, die sucht selbst aus.
         </p>
       </header>
+      <Link href="/drills/repertoire" className="btn mt-4 w-full wide:max-w-[527px]">
+        Repertoire — deine echten Songs
+      </Link>
       <DrillLibrary />
     </div>
   )

@@ -84,3 +84,7 @@
   Überlappen dürfen sich Abschnitte nur auf **verschiedenen Spuren** —
   Rhythmus und Solo liegen oft über denselben Takten. Je Abschnitt bleibt das
   erste Datum für *langsam* und *sitzt* stehen; ein Rückschritt löscht nichts.
+  Die Oberfläche liegt unter *Drills* (`/drills/repertoire`): ein fünfter
+  Eintrag passt auf dem Handy nicht in die Leiste. Sie sagt auf jedem
+  Bildschirm ausser beim Bearbeiten, dass der Stand nur auf diesem Gerät liegt,
+  und meldet, wenn das Speichern scheitert.

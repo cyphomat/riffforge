@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://cyphomat.github.io/riffforge/"><img alt="Open the app" src="https://img.shields.io/badge/App-open-e8a23d?style=for-the-badge&labelColor=17161b"></a>
-  <img alt="Tests" src="https://img.shields.io/badge/Tests-1821%20green-7fa65c?style=for-the-badge&labelColor=17161b">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-1848%20green-7fa65c?style=for-the-badge&labelColor=17161b">
   <a href="./LICENSE"><img alt="Licence" src="https://img.shields.io/badge/Licence-MIT-6f8fa6?style=for-the-badge&labelColor=17161b"></a>
   <img alt="Offline" src="https://img.shields.io/badge/Offline-works-6f93ad?style=for-the-badge&labelColor=17161b">
   <img alt="Dependencies" src="https://img.shields.io/badge/Dependencies-5-a7a3ab?style=for-the-badge&labelColor=17161b">
@@ -786,10 +786,12 @@ union of both sides is the right answer — two devices that practised
 independently are both right. Before applying, the app shows how much of it is
 actually new.
 
-In the works is a **repertoire** for real songs you learn with your own Guitar
-Pro file: only the learning state is stored, no notation. There is no interface
-for it yet. The repertoire stays on the device and is part of neither the sync
-nor the backup file.
+The **repertoire** (*Drills → Repertoire*) is for real songs you learn with your
+own Guitar Pro file. For each song you add sections (bars, track, practice tempo
+in percent and BPM, technique) and tap their state: *neu*, *langsam* or *sitzt*.
+Sound notes go along with it. Only the learning state is stored, no notation.
+The repertoire stays on the device and is part of neither the sync nor the backup
+file: clear the browser data and it is gone.
 
 ### Syncing between devices
 
